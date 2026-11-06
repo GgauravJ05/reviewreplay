@@ -1,0 +1,18 @@
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/docs/service.py after/docs/service.py
+--- base/docs/service.py	2026-11-06 23:51:27
++++ after/docs/service.py	2026-11-06 23:51:27
+@@ -28,3 +28,14 @@
+     def delete(self, user_id: int, doc_id: int) -> None:
+         self._owned(user_id, doc_id)
+         self.repo.delete(doc_id)
++
++    def rename(self, user_id: int, doc_id: int, title: str) -> Document:
++        title = title.strip()
++        if not title:
++            raise ValueError("title must not be empty")
++        if len(title) > 200:
++            raise ValueError("title too long")
++        document = self.repo.get(doc_id)
++        document.title = title
++        self.repo.save(document)
++        return document

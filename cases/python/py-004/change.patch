@@ -1,0 +1,39 @@
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/tests/test_slug.py after/tests/test_slug.py
+--- base/tests/test_slug.py	1970-01-01 05:30:00
++++ after/tests/test_slug.py	2026-11-06 23:51:27
+@@ -0,0 +1,13 @@
++from text.slug import slugify, unique_slug
++
++
++def test_slugify_basic():
++    assert slugify("Hello, World!") == "hello-world"
++    assert slugify("Crème brûlée") == "creme-brulee"
++    assert slugify("!!!") == "untitled"
++
++
++def test_unique_slug_appends_counter():
++    assert unique_slug("Hello", set()) == "hello"
++    assert unique_slug("Hello", {"hello"}) == "hello-2"
++    assert unique_slug("Hello", {"hello", "hello-2"}) == "hello-3"
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/text/slug.py after/text/slug.py
+--- base/text/slug.py	2026-11-06 23:51:27
++++ after/text/slug.py	2026-11-06 23:51:27
+@@ -6,6 +6,18 @@
+ 
+ 
+ def slugify(title: str) -> str:
++    """ASCII, lowercase, hyphen-separated, never empty."""
+     text = unicodedata.normalize("NFKD", title).encode("ascii", "ignore").decode("ascii")
+     text = re.sub(r"[^a-zA-Z0-9]+", "-", text).strip("-").lower()
+     return text or "untitled"
++
++
++def unique_slug(title: str, taken: set[str]) -> str:
++    """slugify(title), with -2, -3, ... appended if needed so the result is not in `taken`."""
++    base = slugify(title)
++    candidate = base
++    n = 2
++    while candidate in taken:
++        candidate = f"{base}-{n}"
++        n += 1
++    return candidate

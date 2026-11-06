@@ -1,0 +1,9 @@
+{
+  "id": "ml-003",
+  "kind": "decoy",
+  "track": "ml",
+  "title": "Add training loop for the MLP classifier",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-06"
+}

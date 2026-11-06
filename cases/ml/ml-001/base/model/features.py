@@ -1,0 +1,12 @@
+"""Feature engineering."""
+from __future__ import annotations
+
+import pandas as pd
+
+from .data import NUMERIC
+
+
+def build_features(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    out["spend_per_month_of_tenure"] = out["monthly_spend"] / out["tenure_months"].clip(lower=1)
+    return out

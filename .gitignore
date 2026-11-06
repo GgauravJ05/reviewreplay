@@ -9,3 +9,6 @@ __pycache__/
 # run workspaces and scratch
 tmp/
 .workspaces/
+.cache/
+.mypy_cache/
+.ipynb_checkpoints/

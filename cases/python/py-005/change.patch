@@ -1,0 +1,15 @@
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/api/products.py after/api/products.py
+--- base/api/products.py	2026-11-06 23:51:27
++++ after/api/products.py	2026-11-06 23:51:27
+@@ -8,3 +8,11 @@
+ 
+ def list_products(page: int = 1, per_page: int = 20) -> dict:
+     return {"page": page, "items": paginate(PRODUCTS, page, per_page)}
++
++
++def list_products_by_offset(offset: int = 0, limit: int = 20) -> dict:
++    """Offset/limit variant for the mobile app, which scrolls by item offset."""
++    if offset < 0:
++        raise ValueError("offset must be >= 0")
++    page = offset // limit
++    return {"offset": offset, "items": paginate(PRODUCTS, page, limit)}

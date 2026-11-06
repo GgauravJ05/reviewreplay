@@ -1,0 +1,1 @@
+Off-by-one across files: paginate() is 1-based (docstring and guard in paging.py). Secondary real issues a reviewer may also report (count as valid_other): limit=0 raises ZeroDivisionError; offsets that aren't multiples of limit are rounded down.

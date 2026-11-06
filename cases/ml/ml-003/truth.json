@@ -1,0 +1,26 @@
+{
+  "bugs": [],
+  "known_ok": [
+    {
+      "id": "ok1",
+      "file": "net/train.py",
+      "anchor": "opt.zero_grad(set_to_none=True)",
+      "span": 1,
+      "note": "zero_grad after step is correct: gradients start as None and are cleared after every step, so they never accumulate."
+    },
+    {
+      "id": "ok2",
+      "file": "net/train.py",
+      "anchor": "loss = loss_fn(model(xb), yb)",
+      "span": 1,
+      "note": "CrossEntropyLoss gets raw logits: model.py's forward() has no softmax."
+    },
+    {
+      "id": "ok3",
+      "file": "net/train.py",
+      "anchor": "        model.train()",
+      "span": 1,
+      "note": "model.train() at the start of each epoch re-enables dropout after evaluate() switched to eval mode."
+    }
+  ]
+}

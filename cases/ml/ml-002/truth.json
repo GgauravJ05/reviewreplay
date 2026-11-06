@@ -1,0 +1,15 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "clinic/evaluate.py",
+      "anchor": "cv = StratifiedKFold(n_splits=folds, shuffle=True, random_state=seed)",
+      "span": 2,
+      "class": "group-leakage",
+      "severity": "important",
+      "summary": "Folds are split by row, but data.py says each patient has many visit rows, so the same patient lands in both train and test folds; it should split by patient_id (e.g. StratifiedGroupKFold).",
+      "trigger": "A patient's visits appear in train and test; the model recognizes patients and the PR-AUC is inflated."
+    }
+  ],
+  "known_ok": []
+}

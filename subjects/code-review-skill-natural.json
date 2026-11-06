@@ -1,0 +1,6 @@
+{
+  "name": "code-review-skill-natural",
+  "skill": {"name": "code-review-skill", "repo": "https://github.com/awesome-skills/code-review-skill", "commit": "4850184"},
+  "invoke": false,
+  "credit": "awesome-skills/code-review-skill (MIT). Installed; Claude decides whether to use it."
+}

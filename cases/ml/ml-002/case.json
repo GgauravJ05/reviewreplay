@@ -1,0 +1,9 @@
+{
+  "id": "ml-002",
+  "kind": "planted",
+  "track": "ml",
+  "title": "Add cross-validated evaluation for the readmission model",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-06"
+}

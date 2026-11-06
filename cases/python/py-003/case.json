@@ -1,0 +1,9 @@
+{
+  "id": "py-003",
+  "kind": "decoy",
+  "track": "python",
+  "title": "Add order status helpers for the support dashboard",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-06"
+}

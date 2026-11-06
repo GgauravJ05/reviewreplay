@@ -1,0 +1,9 @@
+{
+  "id": "py-004",
+  "kind": "clean",
+  "track": "python",
+  "title": "Add unique_slug for de-duplicating URL slugs",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-06"
+}

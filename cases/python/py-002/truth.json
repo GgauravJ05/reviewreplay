@@ -1,0 +1,15 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "docs/service.py",
+      "anchor": "document = self.repo.get(doc_id)",
+      "span": 1,
+      "class": "missing-authorization",
+      "severity": "blocking",
+      "summary": "rename fetches the document with repo.get instead of _owned, so any user can rename any other user's document (and learn which ids exist).",
+      "trigger": "User 2 calls rename(2, doc_id_owned_by_user_1, 'x') and the title changes."
+    }
+  ],
+  "known_ok": []
+}

@@ -1,0 +1,1 @@
+Leakage only visible by reading train.py's call order. Related real issue a reviewer may also report (valid_other): the scaling statistics aren't saved, so inference can't apply the same transform (train/serve skew). Credit: pattern from the ML guide in awesome-skills/code-review-skill PR #37.

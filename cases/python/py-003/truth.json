@@ -1,0 +1,19 @@
+{
+  "bugs": [],
+  "known_ok": [
+    {
+      "id": "ok1",
+      "file": "orders/status.py",
+      "anchor": "return order.events[-1].kind",
+      "span": 1,
+      "note": "Cannot raise IndexError: model.py guarantees every Order has a 'created' event and events are append-only."
+    },
+    {
+      "id": "ok2",
+      "file": "orders/status.py",
+      "anchor": "except Exception:",
+      "span": 3,
+      "note": "Broad except is intentional: it logs with traceback and re-raises, so nothing is swallowed."
+    }
+  ]
+}

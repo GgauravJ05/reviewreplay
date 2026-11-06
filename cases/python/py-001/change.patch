@@ -1,0 +1,39 @@
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/shop/checkout.py after/shop/checkout.py
+--- base/shop/checkout.py	2026-11-06 23:51:27
++++ after/shop/checkout.py	2026-11-06 23:51:27
+@@ -2,7 +2,17 @@
+ from __future__ import annotations
+ 
+ from .cart import Cart
++from .config import FLAT_SHIPPING_CENTS, FREE_SHIPPING_THRESHOLD
+ 
+ 
++def shipping_cents(cart: Cart) -> int:
++    """Flat-rate shipping, waived for orders at or above the free-shipping threshold."""
++    if not cart.lines:
++        return 0
++    if cart.subtotal_cents() >= FREE_SHIPPING_THRESHOLD:
++        return 0
++    return FLAT_SHIPPING_CENTS
++
++
+ def total_cents(cart: Cart) -> int:
+-    return cart.subtotal_cents()
++    return cart.subtotal_cents() + shipping_cents(cart)
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/tests/test_checkout.py after/tests/test_checkout.py
+--- base/tests/test_checkout.py	1970-01-01 05:30:00
++++ after/tests/test_checkout.py	2026-11-06 23:51:27
+@@ -0,0 +1,13 @@
++from shop.cart import Cart
++from shop.checkout import shipping_cents, total_cents
++
++
++def test_empty_cart_has_no_shipping():
++    assert shipping_cents(Cart()) == 0
++
++
++def test_large_order_ships_free():
++    cart = Cart()
++    cart.add("desk", 12_000)
++    assert shipping_cents(cart) == 0
++    assert total_cents(cart) == 12_000

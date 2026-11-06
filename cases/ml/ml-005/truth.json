@@ -1,0 +1,16 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "sales/segments.py",
+      "anchor": "merged = orders.merge(segments[[\"customer_id\", \"segment\"]], on=\"customer_id\", how=\"inner\")",
+      "span": 1,
+      "also": [{"file": "sales/schema.py", "anchor": "customer_segments: one row per customer per month", "span": 2}],
+      "class": "join-row-explosion",
+      "severity": "blocking",
+      "summary": "customer_segments has one row per customer per month, so joining on customer_id alone duplicates each order once per month and overstates revenue; it should join on customer_id and the order's month.",
+      "trigger": "A customer with 12 monthly segment rows has each order counted 12 times (and under every segment they ever had)."
+    }
+  ],
+  "known_ok": []
+}

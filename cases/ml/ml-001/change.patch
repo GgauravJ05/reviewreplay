@@ -1,0 +1,11 @@
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/model/features.py after/model/features.py
+--- base/model/features.py	2026-11-06 23:52:09
++++ after/model/features.py	2026-11-06 23:52:09
+@@ -9,4 +9,7 @@
+ def build_features(df: pd.DataFrame) -> pd.DataFrame:
+     out = df.copy()
+     out["spend_per_month_of_tenure"] = out["monthly_spend"] / out["tenure_months"].clip(lower=1)
++    # Standardize numeric columns so the logistic regression converges faster.
++    cols = NUMERIC + ["spend_per_month_of_tenure"]
++    out[cols] = (out[cols] - out[cols].mean()) / out[cols].std()
+     return out

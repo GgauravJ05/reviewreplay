@@ -1,0 +1,6 @@
+{
+  "name": "code-review-skill-invoked",
+  "skill": {"name": "code-review-skill", "repo": "https://github.com/awesome-skills/code-review-skill", "commit": "4850184"},
+  "invoke": true,
+  "credit": "awesome-skills/code-review-skill (MIT). Invoked explicitly with /code-review-skill."
+}

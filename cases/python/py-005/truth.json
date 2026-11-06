@@ -1,0 +1,22 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "api/products.py",
+      "anchor": "page = offset // limit",
+      "span": 2,
+      "also": [
+        {
+          "file": "api/paging.py",
+          "anchor": "if page < 1:",
+          "span": 2
+        }
+      ],
+      "class": "off-by-one",
+      "severity": "blocking",
+      "summary": "offset // limit gives a 0-based page but paginate() numbers pages from 1, so offset 0 raises ValueError and every other offset returns the previous page (offset 20 repeats items 1-20).",
+      "trigger": "list_products_by_offset(0) raises 'page starts at 1'; list_products_by_offset(20) returns product-1..product-20 instead of product-21..product-40."
+    }
+  ],
+  "known_ok": []
+}

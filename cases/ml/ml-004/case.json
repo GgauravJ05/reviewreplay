@@ -1,0 +1,9 @@
+{
+  "id": "ml-004",
+  "kind": "clean",
+  "track": "ml",
+  "title": "Add revenue-by-region report",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-06"
+}

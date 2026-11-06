@@ -1,0 +1,16 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "shop/checkout.py",
+      "anchor": "if cart.subtotal_cents() >= FREE_SHIPPING_THRESHOLD:",
+      "span": 2,
+      "also": [{"file": "shop/config.py", "anchor": "FREE_SHIPPING_THRESHOLD = 50", "span": 1}],
+      "class": "unit-mismatch",
+      "severity": "blocking",
+      "summary": "The subtotal is in cents but FREE_SHIPPING_THRESHOLD is in whole dollars, so any order of 50 cents or more ships free.",
+      "trigger": "A $5.00 order (500 cents) gets free shipping instead of being charged 799 cents."
+    }
+  ],
+  "known_ok": []
+}

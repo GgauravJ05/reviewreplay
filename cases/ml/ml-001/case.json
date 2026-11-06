@@ -1,0 +1,9 @@
+{
+  "id": "ml-001",
+  "kind": "planted",
+  "track": "ml",
+  "title": "Standardize numeric features",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-06"
+}
