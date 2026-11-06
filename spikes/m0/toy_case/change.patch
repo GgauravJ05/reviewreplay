@@ -1,0 +1,19 @@
+--- a/cart.py
++++ b/cart.py
+@@ -14,3 +14,16 @@
+ def subtotal(items: list[Item]) -> int:
+     """Sum of price * quantity over all items, in cents."""
+     return sum(i.price_cents * i.qty for i in items)
++
++
++def add_item(item: Item, cart: list[Item] = []) -> list[Item]:
++    """Add an item to a cart, creating a new cart if none is given."""
++    cart.append(item)
++    return cart
++
++
++def apply_discount(total_cents: int, percent: int) -> int:
++    """Apply a whole-number percentage discount (0-100); returns cents, rounded down in the shop's favour."""
++    if not 0 <= percent <= 100:
++        raise ValueError("percent must be between 0 and 100")
++    return total_cents - total_cents * percent // 100

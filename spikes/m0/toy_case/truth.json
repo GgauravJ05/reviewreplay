@@ -1,0 +1,16 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "cart.py",
+      "lines": [19, 22],
+      "class": "mutable-default-argument",
+      "severity": "blocking",
+      "summary": "add_item uses a mutable default list, so every call without a cart shares and grows the same list.",
+      "trigger": "add_item(a) then add_item(b) returns [a, b] instead of [b]"
+    }
+  ],
+  "known_ok": [
+    { "file": "cart.py", "lines": [25, 29], "note": "Integer division rounds the discount down on purpose (documented); range is validated." }
+  ]
+}
