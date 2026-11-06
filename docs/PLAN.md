@@ -187,6 +187,10 @@ work stays theirs and every result points to an exact version.
   `--no-session-persistence`.
 - The skill under test is provided explicitly (as a plugin dir via `--plugin-dir`, or placed in the
   workspace's `.claude/skills/`, whichever M0 proves isolates correctly).
+  **M0 result:** `.claude/skills/` (excluded from git) with `flags` mode and the normal login isolates
+  cleanly; see [spikes/m0/RESULTS.md](../spikes/m0/RESULTS.md). Each skill subject runs in two
+  conditions — **natural** (plain prompt) and **invoked** (`/<skill> …`) — because in M0 the skill
+  did not trigger by itself.
 - `--bare` authenticates **only** with `ANTHROPIC_API_KEY` (not the Claude subscription login).
   Runs are billed to that API key. The key is read from your environment; it is never stored in the repo.
 
@@ -357,4 +361,4 @@ respond before anything is posted publicly.
 1. **Model for runs:** Sonnet (cheaper, more runs) vs Opus (stronger reviewer). Proposal: Sonnet for M1–M2, one Opus comparison later.
 2. **License for ReviewBench at launch:** MIT for code, CC BY 4.0 for cases.
 3. **Judge model:** same family as the reviewer (simpler) or different (less self-preference). Proposal: Claude for M1, measure agreement, revisit if κ is low.
-4. **Where `builtin-code-review` fits:** it may not run under `--bare` the same way. M0 decides whether it's included as-is or measured separately.
+4. **Where `builtin-code-review` fits:** ~~M0 decides~~ M0 showed the built-in skills are present in every run (they ship with Claude Code). `builtin-code-review` is run as an **invoked** subject (`/code-review`); every other run logs whether it was triggered.

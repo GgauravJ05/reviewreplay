@@ -121,13 +121,18 @@ def build_workspace(root: Path, skill: str) -> list[str]:
     return []
 
 
-def run(mode: str, skill: str, review: bool, budget: float, timeout: int) -> dict:
-    tag = f"{mode}-{skill}-{'review' if review else 'inventory'}"
+def run(mode: str, skill: str, review: bool, budget: float, timeout: int,
+        invoke: bool = False) -> dict:
+    tag = f"{mode}-{skill}-{'review' if review else 'inventory'}{'-invoked' if invoke else ''}"
+    prompt = REVIEW_PROMPT if review else INVENTORY_PROMPT
+    if invoke:  # call the skill explicitly instead of relying on it to trigger by itself
+        prompt = f"/{SKILL_NAME} {prompt}"
     with tempfile.TemporaryDirectory(prefix="rb-m0-") as tmp:
         root = Path(tmp)
         extra = build_workspace(root, skill)
-        cmd = ["claude", "-p", REVIEW_PROMPT if review else INVENTORY_PROMPT,
-               "--output-format", "json", "--model", MODEL,
+        # stream-json logs every tool call, so we can see which skill (if any) a review invoked
+        cmd = ["claude", "-p", prompt,
+               "--output-format", "stream-json", "--verbose", "--model", MODEL,
                "--strict-mcp-config", "--no-session-persistence",
                "--allowedTools", READ_ONLY_TOOLS, "--disallowedTools", BLOCKED_TOOLS,
                "--max-budget-usd", str(budget), *extra]
@@ -138,9 +143,23 @@ def run(mode: str, skill: str, review: bool, budget: float, timeout: int) -> dic
                               capture_output=True, text=True, timeout=timeout)
         elapsed = round(time.monotonic() - started, 1)
 
-    try:
-        payload = json.loads(proc.stdout)
-    except json.JSONDecodeError:
+    payload: dict = {}
+    tool_calls: list[str] = []
+    skills_invoked: list[str] = []
+    for line in proc.stdout.splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if event.get("type") == "result":
+            payload = event
+        if event.get("type") == "assistant":
+            for block in event.get("message", {}).get("content", []):
+                if block.get("type") == "tool_use":
+                    tool_calls.append(block.get("name", "?"))
+                    if block.get("name") == "Skill":
+                        skills_invoked.append(str(block.get("input", {}).get("skill", "?")))
+    if not payload:
         payload = {"unparsed_stdout": proc.stdout[-4000:]}
     answer = str(payload.get("result", payload))
     leaks = sorted({c for c in CANARIES if c.lower() in answer.lower()})
@@ -154,8 +173,10 @@ def run(mode: str, skill: str, review: bool, budget: float, timeout: int) -> dic
         "cost_usd": payload.get("total_cost_usd"), "usage": payload.get("usage"),
         "num_turns": payload.get("num_turns"), "is_error": payload.get("is_error"),
         "leaked_canaries": leaks, "skill_under_test_visible": skill_seen,
+        "skills_invoked": skills_invoked, "tool_calls": tool_calls,
         "answer": answer, "stderr_tail": proc.stderr[-2000:],
-        "cmd": [c if not c.startswith(("Do not use", "Review the")) else "<prompt>" for c in cmd],
+        "prompt": prompt,
+        "cmd": [c if c != prompt else "<prompt>" for c in cmd],
     }
     OUT.mkdir(exist_ok=True)
     (OUT / f"{tag}.json").write_text(json.dumps(record, indent=2))
@@ -169,10 +190,12 @@ def main() -> None:
     ap.add_argument("--review", action="store_true", help="run a real review instead of the inventory probe")
     ap.add_argument("--budget", type=float, default=0.50, help="--max-budget-usd per run")
     ap.add_argument("--timeout", type=int, default=600)
+    ap.add_argument("--invoke", action="store_true", help="prefix the prompt with /code-review-skill")
     a = ap.parse_args()
-    r = run(a.mode, a.skill, a.review, a.budget, a.timeout)
+    r = run(a.mode, a.skill, a.review, a.budget, a.timeout, a.invoke)
     print(json.dumps({k: r[k] for k in ("tag", "exit_code", "is_error", "seconds", "cost_usd",
-                                        "num_turns", "leaked_canaries", "skill_under_test_visible")}))
+                                        "num_turns", "leaked_canaries", "skill_under_test_visible",
+                                        "skills_invoked")}))
 
 
 if __name__ == "__main__":

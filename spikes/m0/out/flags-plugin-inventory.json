@@ -1,0 +1,73 @@
+{
+  "tag": "flags-plugin-inventory",
+  "mode": "flags",
+  "skill": "plugin",
+  "review": false,
+  "when": "2026-11-06T18:11:00+00:00",
+  "model": "claude-sonnet-5-5",
+  "skill_commit": "4850184",
+  "exit_code": 0,
+  "seconds": 7.7,
+  "cost_usd": 0.0312284,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5991,
+    "cache_read_input_tokens": 10004,
+    "output_tokens": 626,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 5991,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 626,
+        "cache_read_input_tokens": 10004,
+        "cache_creation_input_tokens": 5991,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 5991
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "num_turns": 1,
+  "is_error": false,
+  "leaked_canaries": [],
+  "skill_under_test_visible": true,
+  "answer": "```json\n{\n  \"skills\": [\n    \"code-review-skill:code-review-skill\",\n    \"dataviz\",\n    \"update-config\",\n    \"keybindings-help\",\n    \"code-review\",\n    \"simplify\",\n    \"fewer-permission-prompts\",\n    \"loop\",\n    \"schedule\",\n    \"claude-api\",\n    \"run\",\n    \"plugin-authoring\",\n    \"init\",\n    \"security-review\"\n  ],\n  \"slash_commands\": [\n    \"code-review-skill:code-review-skill\",\n    \"dataviz\",\n    \"update-config\",\n    \"keybindings-help\",\n    \"code-review\",\n    \"simplify\",\n    \"fewer-permission-prompts\",\n    \"loop\",\n    \"schedule\",\n    \"claude-api\",\n    \"run\",\n    \"plugin-authoring\",\n    \"init\",\n    \"security-review\"\n  ],\n  \"instructions\": [\n    \"No CLAUDE.md or project instructions were provided; a memory directory exists but no memories were loaded. System-level guidance covers git commit/PR attribution (Co-Authored-By: Claude Sonnet 5.5 / Generated with Claude Code), they/them default pronouns, and confirming before hard-to-reverse actions.\"\n  ],\n  \"extra_tools\": [\n    \"Agent\",\n    \"ListAgents\",\n    \"ReportFindings\",\n    \"ScheduleWakeup\",\n    \"Skill\",\n    \"ToolSearch\",\n    \"CronCreate (deferred)\",\n    \"CronDelete (deferred)\",\n    \"CronList (deferred)\",\n    \"DesignSync (deferred)\",\n    \"EnterWorktree (deferred)\",\n    \"ExitWorktree (deferred)\",\n    \"Monitor (deferred)\",\n    \"PushNotification (deferred)\",\n    \"RemoteTrigger (deferred)\",\n    \"SendMessage (deferred)\",\n    \"TaskStop (deferred)\"\n  ]\n}\n```",
+  "stderr_tail": "",
+  "cmd": [
+    "claude",
+    "-p",
+    "<prompt>",
+    "--output-format",
+    "json",
+    "--model",
+    "claude-sonnet-5-5",
+    "--strict-mcp-config",
+    "--no-session-persistence",
+    "--allowedTools",
+    "Read,Grep,Glob,Bash(git diff:*),Bash(git log:*),Bash(git show:*)",
+    "--disallowedTools",
+    "Edit,Write,NotebookEdit,WebFetch,WebSearch",
+    "--max-budget-usd",
+    "0.5",
+    "--plugin-dir",
+    "/var/folders/qs/wx52v8ys7333n3zvbmxtypf00000gn/T/rb-m0-frinxfq4/plugin",
+    "--setting-sources",
+    "project"
+  ]
+}

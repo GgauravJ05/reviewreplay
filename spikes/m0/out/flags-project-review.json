@@ -1,0 +1,76 @@
+{
+  "tag": "flags-project-review",
+  "mode": "flags",
+  "skill": "project",
+  "review": true,
+  "when": "2026-11-06T18:11:51+00:00",
+  "model": "claude-sonnet-5-5",
+  "skill_commit": "4850184",
+  "exit_code": 0,
+  "seconds": 15.8,
+  "cost_usd": 0.0329122,
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 6294,
+    "cache_read_input_tokens": 25882,
+    "output_tokens": 514,
+    "output_tokens_details": {
+      "thinking_tokens": 127
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 6294,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 465,
+        "cache_read_input_tokens": 15878,
+        "cache_creation_input_tokens": 420,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 420
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "num_turns": 2,
+  "is_error": false,
+  "leaked_canaries": [],
+  "skill_under_test_visible": false,
+  "skills_invoked": [],
+  "tool_calls": [
+    "Bash"
+  ],
+  "answer": "**Bug: `cart.py:19`, mutable default argument in `add_item`**\n\n`cart: list[Item] = []` is evaluated once, when the function is defined. Every call that omits `cart` appends to the same shared list. The docstring says it creates a new cart if none is given, but it doesn't.\n\nFor example, `add_item(a)` returns `[a]`. A later `add_item(b)` for a different customer returns `[a, b]`, so carts leak between callers.\n\nFix:\n```python\ndef add_item(item: Item, cart: list[Item] | None = None) -> list[Item]:\n    if cart is None:\n        cart = []\n    cart.append(item)\n    return cart\n```\n\nI found no other bugs. `apply_discount` (line 26) validates the range. It computes `total - total*percent//100`, which floors the discount, so the customer pays the rounded-up amount. That matches the docstring's \"rounded down in the shop's favour\". It assumes non-negative totals, because a negative `total_cents` would floor toward negative infinity.",
+  "stderr_tail": "",
+  "cmd": [
+    "claude",
+    "-p",
+    "<prompt>",
+    "--output-format",
+    "stream-json",
+    "--verbose",
+    "--model",
+    "claude-sonnet-5-5",
+    "--strict-mcp-config",
+    "--no-session-persistence",
+    "--allowedTools",
+    "Read,Grep,Glob,Bash(git diff:*),Bash(git log:*),Bash(git show:*)",
+    "--disallowedTools",
+    "Edit,Write,NotebookEdit,WebFetch,WebSearch",
+    "--max-budget-usd",
+    "1.0",
+    "--setting-sources",
+    "project"
+  ]
+}
