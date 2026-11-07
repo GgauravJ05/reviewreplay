@@ -8,6 +8,11 @@ that introduced a bug (using the later fix), replays each one as an uncommitted 
 project, asks every reviewer to review it, and scores what each one catches, what it gets wrong,
 and what it costs.
 
+[![ReviewReplay replays a real click bug to Claude Code and grades every finding: same bug, two other real problems, two false alarms](docs/media/reviewreplay-demo.gif)](docs/media/reviewreplay-launch.mp4)
+
+<sub>▶ [Watch the 21-second launch video, with sound](docs/media/reviewreplay-launch.mp4): a real bug from
+pallets/click, rewound to the commit that caused it and replayed to Claude Code.</sub>
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
 ![No dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)

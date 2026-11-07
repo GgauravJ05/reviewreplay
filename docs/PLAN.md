@@ -1,6 +1,6 @@
 # ReviewReplay — Design Plan
 
-Status: planning · Repo: private until launch · Written 2026-11-06
+Status: v0.1, built in public · Written 2026-11-06
 
 ReviewReplay measures whether an AI code reviewer actually helps. It runs a reviewer
 (Claude with no skill, Claude with a review skill, Claude Code's built-in `/code-review`, …)

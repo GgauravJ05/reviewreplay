@@ -6,10 +6,9 @@ Static landing page for ReviewReplay. No build step: plain HTML, CSS and JavaScr
 python3 -m http.server 4173 -d site   # preview at http://localhost:4173
 ```
 
-**Deploy:** GitHub Pages (Settings → Pages → deploy from branch `main`, folder `/site` via a
-Pages workflow, or copy to `docs/`). The canonical and `og:image` URLs assume
-`https://ggauravj05.github.io/reviewreplay/`; update them if you use a custom domain.
-Pages on a private repository needs a paid plan, so publish after the repository goes public.
+**Deploy:** `.github/workflows/pages.yml` publishes `site/` to
+https://ggauravj05.github.io/reviewreplay/ on every push to `main` that touches it. Turn it on once
+under Settings → Pages → Source: GitHub Actions (the workflow skips while the repository is private).
 
 Built with tasteskill 2.5.1 (design-taste-frontend). The deal: a collage hero showing a real
 review diff (pallets/click, real-003) on a grain-gradient sage frame; a dark green-black, bone and
