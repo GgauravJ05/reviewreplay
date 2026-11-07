@@ -1,0 +1,19 @@
+{
+  "id": "real-005",
+  "kind": "real",
+  "track": "python",
+  "title": "Correctly implement multipart parsing for empty fields (#2639)",
+  "source": "https://github.com/pallets/werkzeug@67d870b9039e69df6e7ff4e8b9f6bdb51189b004",
+  "license": "BSD-3-Clause",
+  "added": "2026-11-07",
+  "repo": "https://github.com/pallets/werkzeug",
+  "commit": "67d870b9039e69df6e7ff4e8b9f6bdb51189b004",
+  "fix": "f0a1733f52a7241f51cc519593233e8be6aeaa0e",
+  "status": "ready",
+  "drafted_by": "claude-sonnet-5-5",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/pallets/werkzeug/issues/2658"
+}

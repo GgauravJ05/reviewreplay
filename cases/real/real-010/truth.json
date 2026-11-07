@@ -1,0 +1,17 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/black/lines.py",
+      "anchor": "and self.previous_defs[-1]",
+      "span": 2,
+      "class": "type-change",
+      "severity": "important",
+      "summary": "previous_defs changed from a list of int depths to a list of Line objects, but an existing condition still used `self.previous_defs[-1]` as a truthy depth check. A Line object is always truthy, so the condition no longer tests that the previous def was nested, and it should use `.depth`.",
+      "trigger": "Format non-stub code where a top-level compound statement follows a def: the check is always true for Line objects, so blank lines are inserted/removed wrongly (fix #3615 uses .depth).",
+      "occurrence": 3
+    }
+  ],
+  "known_ok": [],
+  "related_valid": []
+}

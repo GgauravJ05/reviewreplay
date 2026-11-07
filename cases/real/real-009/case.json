@@ -1,0 +1,19 @@
+{
+  "id": "real-009",
+  "kind": "real",
+  "track": "python",
+  "title": "Fix a regression with RefResolver-based resolution in newly created drafts",
+  "source": "https://github.com/python-jsonschema/jsonschema@90ea77961987da03188f5b9972631f89d20c4798",
+  "license": "MIT",
+  "added": "2026-11-07",
+  "repo": "https://github.com/python-jsonschema/jsonschema",
+  "commit": "90ea77961987da03188f5b9972631f89d20c4798",
+  "fix": "52c2419625e875e7e7c8124bcbfae8cde92bbda3",
+  "status": "ready",
+  "drafted_by": "claude-sonnet-5-5",
+  "signals": {
+    "referenced": false,
+    "blame_agrees": false
+  },
+  "issue": "https://github.com/python-jsonschema/jsonschema/issues/1124"
+}

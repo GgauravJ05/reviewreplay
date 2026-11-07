@@ -1,0 +1,25 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/werkzeug/sansio/multipart.py",
+      "anchor": "def _parse_data(self, data: bytes, *, start: bool) -> Tuple[bytes, int, bool]:",
+      "span": 23,
+      "class": "parsing",
+      "severity": "important",
+      "summary": "When no boundary is in the buffer, _parse_data cuts at last_newline() over the whole buffer, but in DATA_START the buffer begins with the CRLF before the part data, so the cut is at index 0..2 and almost nothing is emitted per call. Large multipart bodies are parsed wrongly or extremely slowly; the change also dropped the cheap `find(b'--' + boundary)` shortcut, so every call runs a full regex search.",
+      "trigger": "Upload a multipart body larger than the buffer: parsing stalls/slows dramatically (upstream fix f0a1733f restores the find() shortcut and makes last_newline search data[data_start:]).",
+      "also": [
+        {
+          "file": "src/werkzeug/sansio/multipart.py",
+          "anchor": "def last_newline(self) -> int:",
+          "span": 11
+        }
+      ]
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "The regex boundary search over the whole buffer on every chunk is quadratic in the part size."
+  ]
+}

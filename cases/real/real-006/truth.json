@@ -1,0 +1,16 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/attr/_make.py",
+      "anchor": "attrs = field_transformer(cls, attrs)",
+      "span": 6,
+      "class": "iterator-consumed",
+      "severity": "important",
+      "summary": "The result of field_transformer is used as-is. If the transformer returns a generator or other one-shot iterable, the order check consumes it, and the later steps (alias resolution, building the class) see an empty sequence.",
+      "trigger": "A field_transformer written as a generator (yield f for f in fields) worked in 25.1.0; after this change the class ends up with no attributes (upstream fix wraps the result in tuple())."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": []
+}

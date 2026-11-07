@@ -1,0 +1,18 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/attr/_make.py",
+      "anchor": "def slots_setstate(self, state):",
+      "span": 8,
+      "class": "compatibility",
+      "severity": "important",
+      "summary": "__setstate__ now assumes state is a dict and checks `name in state`. For old pickles, whose state is a tuple of values, this tests attribute names against the tuple's values, so no attributes are set.",
+      "trigger": "Unpickle a slotted attrs instance pickled with attrs < 22.2.0 (state is a tuple): no attribute is set and accessing one raises AttributeError (upstream fix #1085 accepts tuples)."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "__getstate__ now returns a dict, so pickles written by the new version cannot be read by older attrs versions."
+  ]
+}

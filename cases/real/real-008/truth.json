@@ -1,0 +1,25 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "rich/panel.py",
+      "anchor": "title_text.stylize_before(partial_border_style)",
+      "span": 1,
+      "class": "styling",
+      "severity": "minor",
+      "summary": "Title and subtitle are styled with only the border style (partial_border_style) instead of the combined panel style plus border style, so the panel's background style is not applied to the title or subtitle text.",
+      "trigger": "Panel('x', title='T', style='on blue'): the title and subtitle lose the blue background (Textualize/rich#3569; fix 30e5ed61 reverts to border_style).",
+      "occurrence": 1,
+      "also": [
+        {
+          "file": "rich/panel.py",
+          "anchor": "title_text.stylize_before(partial_border_style)",
+          "occurrence": 2,
+          "span": 1
+        }
+      ]
+    }
+  ],
+  "known_ok": [],
+  "related_valid": []
+}

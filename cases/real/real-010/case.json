@@ -1,0 +1,19 @@
+{
+  "id": "real-010",
+  "kind": "real",
+  "track": "python",
+  "title": "Enforce a blank line after a nested class in stubs (#3564)",
+  "source": "https://github.com/psf/black@d7a28dd78631fb962da95fb2d2de0e18ca6754a4",
+  "license": "MIT",
+  "added": "2026-11-07",
+  "repo": "https://github.com/psf/black",
+  "commit": "d7a28dd78631fb962da95fb2d2de0e18ca6754a4",
+  "fix": "dba3c2695c59fdb11825dbdf8f3b0ab6e0b368b2",
+  "status": "ready",
+  "drafted_by": "claude-sonnet-5-5",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": false
+  },
+  "issue": "https://github.com/psf/black/pull/3615"
+}

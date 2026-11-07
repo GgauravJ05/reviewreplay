@@ -97,7 +97,17 @@ def _ensure_commit(repo: Path, sha: str) -> None:
         _git(repo, "fetch", "-q", "origin", sha)
 
 
+RAW_EXPORT = "* -export-subst -export-ignore\n"
+
+
 def _export(repo: Path, rev: str, dest: Path) -> None:
+    # Export files exactly as committed: `export-subst` (e.g. .git_archival.txt) would differ
+    # per commit and `export-ignore` would drop files the patch touches.
+    attrs = repo / "info" / "attributes"
+    if RAW_EXPORT not in (attrs.read_text() if attrs.exists() else ""):
+        attrs.parent.mkdir(exist_ok=True)
+        with attrs.open("a") as f:
+            f.write(RAW_EXPORT)
     dest.mkdir(parents=True)
     archive = _git(repo, "archive", rev).stdout
     subprocess.run(["tar", "-x", "-C", str(dest)], input=archive, check=True)

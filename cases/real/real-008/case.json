@@ -1,0 +1,19 @@
+{
+  "id": "real-008",
+  "kind": "real",
+  "track": "python",
+  "title": "fix for panel title",
+  "source": "https://github.com/Textualize/rich@7a38204cb51dee761792a6b086784602899f06df",
+  "license": "MIT",
+  "added": "2026-11-07",
+  "repo": "https://github.com/Textualize/rich",
+  "commit": "7a38204cb51dee761792a6b086784602899f06df",
+  "fix": "30e5ed61a6064220fe2ff40f4713463488ee6d07",
+  "status": "ready",
+  "drafted_by": "claude-sonnet-5-5",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/Textualize/rich/issues/3569"
+}

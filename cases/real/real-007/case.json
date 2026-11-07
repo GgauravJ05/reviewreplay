@@ -1,0 +1,19 @@
+{
+  "id": "real-007",
+  "kind": "real",
+  "track": "python",
+  "title": "Change __getstate__ and __setstate__ to use a dict (#1004) (#1009)",
+  "source": "https://github.com/python-attrs/attrs@89a890a3262273514619d1881c6a8b0fe26c66ac",
+  "license": "MIT",
+  "added": "2026-11-07",
+  "repo": "https://github.com/python-attrs/attrs",
+  "commit": "89a890a3262273514619d1881c6a8b0fe26c66ac",
+  "fix": "c9150d278ced32056d73c239ff64034e5056bcb6",
+  "status": "ready",
+  "drafted_by": "claude-sonnet-5-5",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/python-attrs/attrs/pull/1085"
+}

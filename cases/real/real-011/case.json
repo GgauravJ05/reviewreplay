@@ -1,0 +1,19 @@
+{
+  "id": "real-011",
+  "kind": "real",
+  "track": "python",
+  "title": "Fix incorrect f-string tokenization (#4332)",
+  "source": "https://github.com/psf/black@e4aaa8a9947d951eb1e69979c3c58e197adbe40f",
+  "license": "MIT",
+  "added": "2026-11-07",
+  "repo": "https://github.com/psf/black",
+  "commit": "e4aaa8a9947d951eb1e69979c3c58e197adbe40f",
+  "fix": "455de7703ea2c4144f8c1bb2c352974ac9b2403f",
+  "status": "ready",
+  "drafted_by": "claude-sonnet-5-5",
+  "signals": {
+    "referenced": false,
+    "blame_agrees": false
+  },
+  "issue": "https://github.com/psf/black/pull/4339"
+}

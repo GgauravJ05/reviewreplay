@@ -1,0 +1,19 @@
+{
+  "id": "real-006",
+  "kind": "real",
+  "track": "python",
+  "title": "Perform attr order checks after field transformer. (#1401)",
+  "source": "https://github.com/python-attrs/attrs@e048efcb395443608d184a149c0adbca166cb833",
+  "license": "MIT",
+  "added": "2026-11-07",
+  "repo": "https://github.com/python-attrs/attrs",
+  "commit": "e048efcb395443608d184a149c0adbca166cb833",
+  "fix": "3b0378dd66d33ebddb52be85b8c4aac6a914b1a2",
+  "status": "ready",
+  "drafted_by": "claude-sonnet-5-5",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/python-attrs/attrs/pull/1417"
+}

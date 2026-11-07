@@ -1,0 +1,16 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "jsonschema/validators.py",
+      "anchor": "push_scope(id_of(self.schema))",
+      "span": 1,
+      "class": "none-handling",
+      "severity": "important",
+      "summary": "The legacy RefResolver scope push is done unconditionally with id_of(self.schema), even when the schema has no id and id_of returns None. A None scope is pushed onto the resolver's scope stack, which corrupts later reference/pointer resolution.",
+      "trigger": "Draft202012Validator(schema_without_$id, resolver=RefResolver('', schema)) with a '#/definitions/x' $ref: the pointer no longer resolves (issue #1124; fix pushes the scope only when id is not None)."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": []
+}

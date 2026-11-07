@@ -1,0 +1,19 @@
+{
+  "id": "real-012",
+  "kind": "real",
+  "track": "ml",
+  "title": "ENH Support Conv3d layer in LoRA and IA3 (#2082)",
+  "source": "https://github.com/huggingface/peft@0f9bdad7fa609317ca4e2ce80c04a7fffc417299",
+  "license": "Apache-2.0",
+  "added": "2026-11-07",
+  "repo": "https://github.com/huggingface/peft",
+  "commit": "0f9bdad7fa609317ca4e2ce80c04a7fffc417299",
+  "fix": "0b2c727f77df4eca39f9fc102fc389d1a92e2f92",
+  "status": "ready",
+  "drafted_by": "claude-sonnet-5-5",
+  "signals": {
+    "referenced": false,
+    "blame_agrees": false
+  },
+  "issue": "https://github.com/huggingface/peft/issues/3697"
+}

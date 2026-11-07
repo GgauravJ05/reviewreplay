@@ -1,0 +1,16 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/blib2to3/pgen2/tokenize.py",
+      "anchor": "fstring_state.current() == STATE_NOT_FSTRING",
+      "span": 4,
+      "class": "parsing",
+      "severity": "important",
+      "summary": "When a continued (multi-line) string token ends inside f-string braces, the state is STATE_IN_BRACES, not STATE_NOT_FSTRING. The check `current() == STATE_NOT_FSTRING` is false there, so an ordinary string is sent down the f-string branch. It is split as an f-string middle, which corrupts the tokenization and the parse.",
+      "trigger": "A multi-line (continued) string inside f-string braces, e.g. f\"{'''a\\nb'''}\": it is tokenized as an f-string middle and formatting fails (fix #4339 also accepts STATE_IN_BRACES)."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": []
+}

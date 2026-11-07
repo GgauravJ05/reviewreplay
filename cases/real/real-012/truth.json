@@ -1,0 +1,18 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/peft/tuners/lora/layer.py",
+      "anchor": "self.lora_A[adapter_name] = conv_layer(self.in_features, r, kernel_size, stride, padding, bias=False)",
+      "span": 1,
+      "class": "ml-silent",
+      "severity": "important",
+      "summary": "lora_A is built from the base conv's kernel_size, stride and padding only. It drops the base layer's dilation and padding_mode, so the LoRA branch uses dilation=1 and zero padding.",
+      "trigger": "Apply LoRA to a Conv2d/Conv3d with dilation=2 or padding_mode='reflect': lora_A uses dilation 1 and zero padding, so the adapter's receptive field and border handling differ from the base layer, or output shapes mismatch (issue #3697, fix #3758)."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "lora_B is built without padding/dilation, which is fine only because it is a 1x1 pointwise conv; a reviewer may ask about it."
+  ]
+}
