@@ -1,0 +1,38 @@
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/forecast/features.py after/forecast/features.py
+--- base/forecast/features.py	2026-11-07 10:16:24
++++ after/forecast/features.py	2026-11-07 10:16:24
+@@ -3,11 +3,16 @@
+ 
+ import pandas as pd
+ 
+-FEATURES = ["dow", "month", "promo", "holiday"]
++FEATURES = ["dow", "month", "promo", "holiday", "sales_lag1", "sales_lag7", "sales_mean7"]
+ 
+ 
+ def build_features(df: pd.DataFrame) -> pd.DataFrame:
+     out = df.copy()
+     out["dow"] = out["date"].dt.dayofweek
+     out["month"] = out["date"].dt.month
+-    return out
++    # Recent history is the strongest signal for tomorrow's sales.
++    out["sales_lag1"] = out["sales"].shift(1)    # the store's sales yesterday
++    out["sales_lag7"] = out["sales"].shift(7)    # same weekday last week
++    out["sales_mean7"] = out["sales"].shift(1).rolling(7).mean()
++    # The first week has no history; drop it rather than impute.
++    return out.dropna(subset=["sales_lag1", "sales_lag7", "sales_mean7"]).reset_index(drop=True)
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/tests/test_features.py after/tests/test_features.py
+--- base/tests/test_features.py	2026-11-07 10:16:24
++++ after/tests/test_features.py	2026-11-07 10:16:24
+@@ -13,3 +13,12 @@
+     out = build_features(frame())
+     assert out.loc[0, "dow"] == 3      # 2026-01-01 is a Thursday
+     assert out.loc[0, "month"] == 1
++
++
++def test_lag_features():
++    out = build_features(frame(n=20))
++    first = out.iloc[0]
++    assert first["date"] == pd.Timestamp("2026-01-08")       # first 7 days dropped
++    assert first["sales_lag1"] == first["sales"] - 1
++    assert first["sales_lag7"] == first["sales"] - 7
++    assert first["sales_mean7"] == first["sales"] - 4         # mean of the previous 7 days

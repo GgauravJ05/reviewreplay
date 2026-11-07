@@ -1,0 +1,32 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "forecast/features.py",
+      "anchor": "out[\"sales_lag1\"] = out[\"sales\"].shift(1)",
+      "span": 3,
+      "also": [
+        {
+          "file": "forecast/data.py",
+          "anchor": "return df.sort_values([\"date\", \"store_id\"])",
+          "span": 1
+        },
+        {
+          "file": "forecast/data.py",
+          "anchor": "\"\"\"One row per (date, store). Rows are ordered by date, then store",
+          "span": 2
+        }
+      ],
+      "class": "wrong-grouping",
+      "severity": "blocking",
+      "summary": "load_sales orders rows by date, then store, so shift() moves across stores, not days: sales_lag1 is another store's value (mostly the same day's), and lag7/mean7 are likewise mixed across stores. The features must be computed per store in date order (sort by store_id, date and groupby('store_id').shift).",
+      "trigger": "Three stores, 2026-01-09: store s2's sales_lag1 is 109, which is s1's sales that same day, not s2's 5008 the day before."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "Because most lag values are other stores' same-day sales, the features leak same-day information that is not available when forecasting, so the holdout MAE is optimistic.",
+    "dropna after shifting drops the first 7 rows of the whole frame, not the first 7 days of each store (also a consequence of not grouping).",
+    "Row-based shifts assume one row per store per day with no gaps; load_sales does not check for missing dates, so a missing day makes sales_lag7 something other than the same weekday last week."
+  ]
+}

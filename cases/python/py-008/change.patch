@@ -1,0 +1,42 @@
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/audit/reader.py after/audit/reader.py
+--- base/audit/reader.py	2026-11-07 10:15:52
++++ after/audit/reader.py	2026-11-07 10:15:52
+@@ -3,7 +3,7 @@
+ 
+ from datetime import datetime
+ from pathlib import Path
+-from typing import Iterable
++from typing import Iterator
+ 
+ from .models import SEVERITIES, Row
+ 
+@@ -15,7 +15,12 @@
+     return Row(datetime.fromisoformat(at), actor, action, severity)
+ 
+ 
+-def read_rows(path: str | Path) -> Iterable[Row]:
+-    """All records in the file, skipping blank lines and # comments."""
++def read_rows(path: str | Path) -> Iterator[Row]:
++    """Records in the file, skipping blank lines and # comments.
++
++    Yields rows lazily: production logs reach several GB a day and no longer fit in memory.
++    """
+     with open(path, encoding="utf-8") as fh:
+-        return [parse_line(line) for line in fh if line.strip() and not line.startswith("#")]
++        for line in fh:
++            if line.strip() and not line.startswith("#"):
++                yield parse_line(line)
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/tests/test_reader.py after/tests/test_reader.py
+--- base/tests/test_reader.py	2026-11-07 10:15:52
++++ after/tests/test_reader.py	2026-11-07 10:15:52
+@@ -13,3 +13,10 @@
+     rows = list(read_rows(p))
+     assert [r.actor for r in rows] == ["alice", "bob"]
+     assert rows[1].severity == "high"
++
++
++def test_read_rows_is_lazy(tmp_path):
++    p = tmp_path / "a.log"
++    p.write_text(LOG + "not\ta valid\tline\n")
++    rows = read_rows(p)
++    assert next(rows).actor == "alice"   # bad last line not parsed yet

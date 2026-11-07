@@ -1,0 +1,83 @@
+{
+  "case": "ml-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 14,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "Lag and rolling features (shift(1), shift(7), rolling(7)) are computed over the whole frame without groupby(\"store_id\"), so lags leak across stores and each store's first-week rows are kept with wrong values.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Names missing groupby store_id causing cross-store lag leakage, the key bug."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 14,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "shift(7) assumes rows are sorted by date with exactly one row per day; unsorted input or missing days silently yields incorrect lags.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Missing-day gaps assumption is a known other problem; the sorting claim is partly off since load_sales sorts by date."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 17,
+      "line_end": 24,
+      "severity": "minor",
+      "summary": "test_lag_features uses only one store with contiguous, sorted dates, so it cannot catch the cross-store leakage or the sorting/gap bugs.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test not covering the answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "FEATURES now includes lag columns, so any inference caller building features for future dates with unknown sales will get dropped rows or NaN values (no such callers found in the repo).",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative, admits no such callers exist in the repo."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0177199
+}

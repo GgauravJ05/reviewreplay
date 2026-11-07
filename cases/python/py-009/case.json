@@ -1,0 +1,9 @@
+{
+  "id": "py-009",
+  "kind": "decoy",
+  "track": "python",
+  "title": "Add logout and expired-session cleanup",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-07"
+}

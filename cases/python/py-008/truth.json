@@ -1,0 +1,22 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "audit/reader.py",
+      "anchor": "def read_rows(path: str | Path) -> Iterator[Row]:",
+      "span": 9,
+      "also": [
+        {"file": "audit/report.py", "anchor": "if not any(r.severity == \"high\" for r in rows):", "span": 4}
+      ],
+      "class": "iterator-consumed-twice",
+      "severity": "blocking",
+      "summary": "read_rows now returns a one-shot generator, but report.summarize (unchanged) iterates it twice: any() consumes rows up to and including the first high-severity row, so the summary loop never sees them. The first high-severity event, and everything before it, is missing from the daily security summary.",
+      "trigger": "Log: mallory export-db (high), alice login (low), bob delete-user (high). Before: 2 high events of 3. After: 1 high event of 2; mallory's export-db is gone."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "The generator keeps the file open until fully consumed or garbage-collected, so a caller that stops early leaves the handle open.",
+    "A parse error is now raised mid-iteration (after earlier rows were already processed or exported) instead of before any processing, so export_jsonl can leave a partial output file."
+  ]
+}

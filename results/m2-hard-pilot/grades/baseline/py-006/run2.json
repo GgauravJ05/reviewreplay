@@ -1,0 +1,101 @@
+{
+  "case": "py-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the cached list returned by load_rules in place, so promos are re-applied on every quote (discounts compound), expired promos persist, and /rules in api.py returns promos as tenant rules.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies the in-place += on the cached list causing promos to accumulate and persist."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "The cache returns a shared mutable list, so any caller that sorts or appends to it changes what all later callers see.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known shared mutable list problem for callers; not the specific engine accumulation bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "important",
+      "summary": "The per-process cache has no expiry, so a rule change saved in one worker leaves other workers serving stale rules until restart.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known stale-cache across processes problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "cache_clear() drops every tenant's cache entry on each save instead of only the changed tenant's.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Clearing all tenants' cache on save is only an efficiency nit, not incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 21,
+      "line_end": 21,
+      "severity": "important",
+      "summary": "The second test changes global DB state without cleaning up, and no test calls price_quote twice, so the cache mutation bug would go undetected.",
+      "index": 4,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test coverage gap for the answer-key bug, which is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0180959
+}

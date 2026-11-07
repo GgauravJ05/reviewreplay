@@ -1,0 +1,51 @@
+{
+  "case": "py-009",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 35,
+      "line_end": 47,
+      "severity": "minor",
+      "summary": "The store has no locking, so if the purge job runs on a separate thread from handlers, a concurrent revoke can pop a token mid-purge, causing a KeyError in purge and leaving _items inconsistent with _by_token.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2",
+        "ok3"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known lack of locking/thread race, a listed pre-existing problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 38,
+      "line_end": 46,
+      "severity": "minor",
+      "summary": "list.remove and del by index are O(n), so purging k sessions is O(n\u00b7k) and revoke does a linear scan with dataclass equality checks, which may be slow if _items grows large; rebuilding the list with a filter is suggested.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2",
+        "ok3"
+      ],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known O(n) remove cost in revoke, a listed known problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.015629900000000002
+}

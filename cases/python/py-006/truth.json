@@ -1,0 +1,20 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "pricing/store.py",
+      "anchor": "@lru_cache(maxsize=1024)",
+      "span": 4,
+      "also": [{"file": "pricing/engine.py", "anchor": "rules += active_promos(now)", "span": 1}],
+      "class": "shared-mutable-cache",
+      "severity": "blocking",
+      "summary": "lru_cache returns the same list object on every call, and engine.price_quote extends that list in place (`rules += active_promos(now)`), so promotions accumulate in the cached rules: each quote during a promotion adds another copy, and they stay after it ends.",
+      "trigger": "Two Black Friday quotes for acme on a $100 cart: the first discounts 1450 cents, the second 2305 (black-friday applied twice); a July quote afterwards still applies both copies."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "The cache is only invalidated by save_rules in this process; rules changed by another process or worker, or directly in the database, stay stale until restart.",
+    "Callers of load_rules (e.g. list_rules_handler) now share one mutable list, so any caller that mutates it corrupts every later read."
+  ]
+}

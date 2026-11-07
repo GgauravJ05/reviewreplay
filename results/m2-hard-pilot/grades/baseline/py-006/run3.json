@@ -1,0 +1,117 @@
+{
+  "case": "py-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the lru_cache-returned list in place, so every quote appends promos to the cached tenant rules, causing unbounded growth, expired promos persisting, and promo discounts applied multiple times.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies in-place += on cached list causing promo accumulation, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "pricing/api.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "The rules endpoint returns the same cached (mutated) list, so it will expose promos that were appended to the tenant's rules.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Shared cached list returned by the endpoint exposes the mutated promos; related to the known shared-mutable-list problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "important",
+      "summary": "`cache_clear()` only clears the cache in the saving process, so other workers/hosts keep serving stale rules indefinitely since there is no TTL.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches known issue of cache invalidation only in the local process."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "Invalidation wipes every tenant's cache on any save, which is correct but wasteful; per-tenant invalidation would need a manual dict cache.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Self-admittedly correct; just an efficiency remark, not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 21,
+      "line_end": 21,
+      "severity": "minor",
+      "summary": "`test_save_invalidates_cache` ends with a `save_rules` call and no assertion afterward, so its final step verifies nothing.",
+      "index": 4,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A test with no final assertion is a real test weakness in the changed tests, though minor."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No regression test calls `price_quote` twice, which would have caught the cached-list mutation bug.",
+      "index": 5,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 5,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests fail to cover an answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0190599
+}

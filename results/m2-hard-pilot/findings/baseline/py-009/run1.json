@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 34,
+      "line_end": 47,
+      "severity": "important",
+      "summary": "If purge_job runs on a different thread than request handlers, revoke and purge_expired update _by_token and _items in opposite order without a lock, so a concurrent logout and purge can cause KeyError in purge_expired (aborting the sweep) and ValueError in revoke (500 instead of 204)."
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 43,
+      "line_end": 48,
+      "severity": "minor",
+      "summary": "The backward index deletion loop in purge_expired (and list.remove in revoke) is O(n\u00b2) in the worst case; a list comprehension rebuild would be simpler."
+    }
+  ],
+  "extract_cost_usd": 0.0179798
+}

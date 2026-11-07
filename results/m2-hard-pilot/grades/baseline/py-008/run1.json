@@ -1,0 +1,27 @@
+{
+  "case": "py-008",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 25,
+      "line_end": 28,
+      "severity": "important",
+      "summary": "read_rows now returns a one-shot generator, but summarize() iterates it twice (any() then the for loop), so the second loop skips rows up to and including the first high-severity one, making total, by_actor and high wrong and causing render() to wrongly report no high-severity events.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the same defect: the generator returned by read_rows is iterated twice in summarize, so the second loop misses rows up to and including the first high-severity one."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0150279
+}

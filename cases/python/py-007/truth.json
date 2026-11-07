@@ -1,0 +1,23 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "billing/invoice.py",
+      "anchor": "seconds = (session.end - session.start).total_seconds()",
+      "span": 1,
+      "also": [
+        {"file": "billing/sessions.py", "anchor": "at = to_local(parse_utc(ev[\"at\"]), tz)", "span": 1},
+        {"file": "billing/sessions.py", "anchor": "start: datetime   # in the account's local time zone", "span": 2}
+      ],
+      "class": "timezone-dst",
+      "severity": "important",
+      "summary": "Session start/end are local times sharing one ZoneInfo object, and Python subtracts aware datetimes with the same tzinfo by wall clock, ignoring the UTC offset. Sessions that cross a DST change are billed for the wrong duration (one hour too few in autumn, one too many in spring); the duration must be computed in UTC.",
+      "trigger": "a-100 (New York) session 2026-11-01 04:30Z-07:30Z is 3 real hours but bills 2; session 2026-03-08 06:30Z-07:20Z is 50 minutes but bills 2."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "A stop event without a matching start, or a start that never stops, is silently dropped (unbilled); pre-existing in sessions.py.",
+    "A session with end == start (or clock skew giving end < start) is billed one hour by max(1, ...) without any check."
+  ]
+}

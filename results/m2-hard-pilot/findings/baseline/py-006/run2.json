@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the cached list returned by load_rules in place, so promos are re-applied on every quote (discounts compound), expired promos persist, and /rules in api.py returns promos as tenant rules."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "The cache returns a shared mutable list, so any caller that sorts or appends to it changes what all later callers see."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "important",
+      "summary": "The per-process cache has no expiry, so a rule change saved in one worker leaves other workers serving stale rules until restart."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "cache_clear() drops every tenant's cache entry on each save instead of only the changed tenant's."
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 21,
+      "line_end": 21,
+      "severity": "important",
+      "summary": "The second test changes global DB state without cleaning up, and no test calls price_quote twice, so the cache mutation bug would go undetected."
+    }
+  ],
+  "extract_cost_usd": 0.0185438
+}

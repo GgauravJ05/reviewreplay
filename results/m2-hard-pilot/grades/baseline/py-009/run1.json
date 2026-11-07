@@ -1,0 +1,50 @@
+{
+  "case": "py-009",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 34,
+      "line_end": 47,
+      "severity": "important",
+      "summary": "If purge_job runs on a different thread than request handlers, revoke and purge_expired update _by_token and _items in opposite order without a lock, so a concurrent logout and purge can cause KeyError in purge_expired (aborting the sweep) and ValueError in revoke (500 instead of 204).",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2",
+        "ok3"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known no-locking race issue, which counts as a known real problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 43,
+      "line_end": 48,
+      "severity": "minor",
+      "summary": "The backward index deletion loop in purge_expired (and list.remove in revoke) is O(n\u00b2) in the worst case; a list comprehension rebuild would be simpler.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2"
+      ],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "The O(n) list.remove in revoke is a known problem. The backward-deletion part is correct per ok1, and the finding is mostly a performance and style point."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0158579
+}

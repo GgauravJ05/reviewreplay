@@ -1,0 +1,59 @@
+{
+  "subjects": {
+    "baseline": {
+      "caught": {
+        "mean": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n_cases": 4
+      },
+      "precision": {
+        "mean": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n_cases": 4
+      },
+      "clean_pass": {
+        "mean": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n_cases": 1
+      },
+      "trapped": {
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_cases": 1
+      },
+      "reviews": 15,
+      "median_cost": 0.05074100000000001,
+      "median_seconds": 14.0,
+      "mean_findings": 2.8
+    }
+  },
+  "paired_vs_baseline": {},
+  "per_case": {
+    "baseline": {
+      "ml-006": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-006": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-007": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-008": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-009": {
+        "clean_pass": 1.0,
+        "trapped": 0.0
+      }
+    }
+  }
+}

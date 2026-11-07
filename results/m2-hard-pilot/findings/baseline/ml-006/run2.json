@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 14,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "Lag and rolling features (shift(1), shift(7), rolling(7)) are computed over the whole frame without groupby(\"store_id\"), so lags leak across stores and each store's first-week rows are kept with wrong values."
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 14,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "shift(7) assumes rows are sorted by date with exactly one row per day; unsorted input or missing days silently yields incorrect lags."
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 17,
+      "line_end": 24,
+      "severity": "minor",
+      "summary": "test_lag_features uses only one store with contiguous, sorted dates, so it cannot catch the cross-store leakage or the sorting/gap bugs."
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "FEATURES now includes lag columns, so any inference caller building features for future dates with unknown sales will get dropped rows or NaN values (no such callers found in the repo)."
+    }
+  ],
+  "extract_cost_usd": 0.0187378
+}

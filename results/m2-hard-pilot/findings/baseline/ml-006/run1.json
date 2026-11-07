@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Lag features (sales_lag1, sales_lag7, sales_mean7) use shift/rolling over the whole frame without groupby store_id, mixing sales across stores and producing wrong features that feed model training and MAE evaluation; first-week dropna also fails to drop per-store warm-up rows."
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "minor",
+      "summary": "sales_lag7 only equals same weekday last week if there are no missing dates; gaps in a store's history shift it, so reindexing to a full daily range per store would be more robust."
+    }
+  ],
+  "extract_cost_usd": 0.0175418
+}

@@ -1,0 +1,9 @@
+{
+  "id": "py-008",
+  "kind": "planted",
+  "track": "python",
+  "title": "Stream audit log rows instead of loading the whole file",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-07"
+}

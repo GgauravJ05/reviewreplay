@@ -1,0 +1,30 @@
+{
+  "bugs": [],
+  "known_ok": [
+    {
+      "id": "ok1",
+      "file": "auth/store.py",
+      "anchor": "for i in range(len(self._items) - 1, -1, -1):",
+      "span": 5,
+      "note": "Deleting by index while iterating backwards is correct: removing item i never shifts the indices still to be visited (all < i). Checked against 2,000 random stores."
+    },
+    {
+      "id": "ok2",
+      "file": "auth/store.py",
+      "anchor": "if session.expires_at <= now:",
+      "span": 1,
+      "note": "<= is correct: models.Session.is_valid says a session is valid while now < expires_at, so at expires_at it has expired and is purged."
+    },
+    {
+      "id": "ok3",
+      "file": "auth/store.py",
+      "anchor": "except KeyError:",
+      "span": 2,
+      "note": "Swallowing KeyError is intentional and documented: revoking an unknown or already-revoked token is a no-op so logout is idempotent."
+    }
+  ],
+  "related_valid": [
+    "The store has no locking; concurrent requests in one worker with threads could race. Pre-existing design (one store per worker), not introduced here.",
+    "_items.remove(session) in revoke is O(n) per logout."
+  ]
+}

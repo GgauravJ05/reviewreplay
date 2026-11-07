@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 25,
+      "line_end": 28,
+      "severity": "important",
+      "summary": "read_rows now returns a one-shot generator, but summarize() iterates it twice (any() then the for loop), so the second loop skips rows up to and including the first high-severity one, making total, by_actor and high wrong and causing render() to wrongly report no high-severity events."
+    }
+  ],
+  "extract_cost_usd": 0.0147618
+}

@@ -1,0 +1,45 @@
+{
+  "case": "py-008",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 23,
+      "line_end": 28,
+      "severity": "blocking",
+      "summary": "summarize() iterates the read_rows generator twice (any() pre-check then a for loop), so the generator is partly or fully consumed and total, by_actor and high are undercounted, which can make quiet wrongly report no high-severity events.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies the double iteration of the one-shot generator in summarize (any() then loop) causing missing high events."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_reader.py",
+      "line_start": 18,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "The laziness test never closes the generator, leaving the file handle open until garbage collection.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Unclosed generator in a test is a minor test hygiene issue, not a defect in the changed behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0157239
+}

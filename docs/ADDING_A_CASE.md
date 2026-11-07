@@ -55,18 +55,21 @@ silently breaks its key.
   "known_ok": [
     { "id": "ok1", "file": "...", "anchor": "...", "span": 1,
       "note": "Why this suspicious-looking code is correct." }
-  ]
+  ],
+  "related_valid": ["Another real problem in this change that a reviewer may fairly report."]
 }
 ```
 
 - `also`: other places a reviewer may legitimately point to (the other side of a cross-file bug).
 - `planted`/`real` cases need ≥1 bug; `clean`/`decoy` need none; `decoy` needs ≥1 `known_ok` with a note.
-- Put other real-but-unplanted problems you notice in NOTES.md; the grader credits them as `valid_other`.
+- `related_valid`: a list of other real problems in the change (one sentence each). The judge sees them
+  and credits a finding that reports one as `valid_other`. Without this, a reviewer that spots a real
+  secondary issue is scored as a false alarm (this happened in the M1 pilot).
 
 ## 3. What makes a good case
 
-- **Not a textbook one-liner.** M0 and the M1 smoke test showed single-function bugs are caught every
-  time. Aim for bugs that need the surrounding code: units or conventions defined in another file,
+- **Not a textbook one-liner.** M1 showed that single-function bugs, and even simple cross-file ones,
+  are caught every time. Aim for bugs that need the surrounding code: units or conventions defined in another file,
   an invariant stated in a docstring, a sibling method that does it right.
 - **One planted bug per case.** If you find a second one, fix it or record it in NOTES.md.
 - **Realistic change.** A feature or refactor a person would actually submit, ideally with a test that

@@ -1,0 +1,48 @@
+{
+  "case": "py-009",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 47,
+      "line_end": 47,
+      "severity": "minor",
+      "summary": "Possible race: without a lock, a threaded purge_job can race with revoke/create, so `del self._by_token[session.token]` may raise KeyError and abort the purge partway; add a lock or use pop(token, None).",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known lack of locking/race in the store, which is a listed pre-existing problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "`self._items.remove(session)` is O(n) on every logout, which may be slow with many live sessions; an insertion-ordered dict keyed by token would avoid this.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [
+        "ok3"
+      ],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known O(n) _items.remove in revoke."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.015483899999999998
+}

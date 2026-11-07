@@ -76,6 +76,12 @@ def test_decoy_trap():
     assert s["clean_pass"] == 0.0 and s["trapped"] == 1.0
 
 
+def test_valid_finding_near_decoy_spot_is_not_a_trap():
+    s = review_scores({"findings": [f("valid_other", "important", decoy=["ok3"])]}, {},
+                      FakeCase("decoy", False), None)
+    assert s["clean_pass"] == 1.0 and s["trapped"] == 0.0
+
+
 def test_skill_used_flag():
     s = review_scores({"findings": []}, {"skills_invoked": ["code-review-skill"]},
                       FakeCase("clean", False), "code-review-skill")

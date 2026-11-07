@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 23,
+      "line_end": 28,
+      "severity": "blocking",
+      "summary": "summarize() iterates the read_rows generator twice (any() pre-check then a for loop), so the generator is partly or fully consumed and total, by_actor and high are undercounted, which can make quiet wrongly report no high-severity events."
+    },
+    {
+      "file": "tests/test_reader.py",
+      "line_start": 18,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "The laziness test never closes the generator, leaving the file handle open until garbage collection."
+    }
+  ],
+  "extract_cost_usd": 0.0165278
+}

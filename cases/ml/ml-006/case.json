@@ -1,0 +1,9 @@
+{
+  "id": "ml-006",
+  "kind": "planted",
+  "track": "ml",
+  "title": "Add lag features to the store sales forecast",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-07"
+}

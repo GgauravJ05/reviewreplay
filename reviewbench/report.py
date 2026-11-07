@@ -4,7 +4,7 @@ Per review (one subject × case × run):
   bug cases     caught      any finding labelled `hit`
                 precision   (hit + valid_other) ÷ serious findings (blocking/important); None if none
   clean/decoy   clean_pass  no serious finding labelled false_alarm or unsure
-  decoy         trapped     a serious finding lands on a known_ok spot
+  decoy         trapped     a serious false_alarm/unsure finding lands on a known_ok spot
 Each case's score is the mean over its runs; a subject's metric is the mean over cases, with a
 95% bootstrap interval resampling cases. Comparisons to the baseline are paired by case.
 """
@@ -52,7 +52,9 @@ def review_scores(grade: dict, raw: dict, case: Case, subject_skill: str | None)
         bad = [f for f in serious if f["label"] in {"false_alarm", "unsure"}]
         s["clean_pass"] = 0.0 if bad else 1.0
         if case.kind == "decoy":
-            s["trapped"] = 1.0 if any(f["decoy_spot"] for f in serious) else 0.0
+            # trapped = a serious *wrong* claim at a known_ok spot; a real, different problem
+            # reported nearby (graded valid_other) is not a trap
+            s["trapped"] = 1.0 if any(f["decoy_spot"] for f in bad) else 0.0
     return s
 
 

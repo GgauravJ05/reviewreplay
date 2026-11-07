@@ -1,0 +1,61 @@
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/billing/invoice.py after/billing/invoice.py
+--- base/billing/invoice.py	2026-11-07 10:15:20
++++ after/billing/invoice.py	2026-11-07 10:15:20
+@@ -1,6 +1,7 @@
+ """Monthly invoice lines for GPU usage."""
+ from __future__ import annotations
+ 
++import math
+ from dataclasses import dataclass
+ 
+ from .accounts import ACCOUNTS
+@@ -13,15 +14,23 @@
+     amount_cents: int
+ 
+ 
++def billable_hours(session: Session) -> int:
++    """GPU time is billed per started hour (a 61-minute session is 2 hours)."""
++    seconds = (session.end - session.start).total_seconds()
++    return max(1, math.ceil(seconds / 3600))
++
++
+ def session_charge_cents(session: Session) -> int:
+-    return ACCOUNTS[session.account_id].session_fee_cents
++    account = ACCOUNTS[session.account_id]
++    return account.session_fee_cents + billable_hours(session) * account.hourly_rate_cents
+ 
+ 
+ def invoice_lines(sessions: list[Session]) -> list[Line]:
+     lines = []
+     for s in sorted(sessions, key=lambda s: s.start):
+         when = f"{s.start:%Y-%m-%d %H:%M %Z} to {s.end:%H:%M %Z}"
+-        lines.append(Line(f"GPU {s.gpu}, {when}", session_charge_cents(s)))
++        hours = billable_hours(s)
++        lines.append(Line(f"GPU {s.gpu}, {when} ({hours} h)", session_charge_cents(s)))
+     return lines
+ 
+ 
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/tests/test_invoice.py after/tests/test_invoice.py
+--- base/tests/test_invoice.py	2026-11-07 10:15:20
++++ after/tests/test_invoice.py	2026-11-07 10:15:20
+@@ -1,4 +1,4 @@
+-from billing.invoice import invoice_lines, invoice_total_cents
++from billing.invoice import billable_hours, invoice_lines, invoice_total_cents
+ from billing.sessions import sessions_from_events
+ 
+ EVENTS = [
+@@ -18,3 +18,14 @@
+ def test_invoice_lines_show_local_time():
+     line = invoice_lines(sessions_from_events(EVENTS))[0]
+     assert "2026-07-14 09:00 EDT" in line.description
++
++
++def test_billed_per_started_hour():
++    g1, g2 = sessions_from_events(EVENTS)
++    assert billable_hours(g1) == 2   # 90 minutes
++    assert billable_hours(g2) == 1   # 20 minutes
++
++
++def test_invoice_total():
++    # two sessions: 2 x 250 fee + (2 + 1) hours x 180
++    assert invoice_total_cents(sessions_from_events(EVENTS)) == 500 + 540

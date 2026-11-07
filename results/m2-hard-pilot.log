@@ -1,0 +1,60 @@
+[1/15] baseline py-007 run1: ok 11.4s $0.050 skills=[] total=$0.05
+[2/15] baseline ml-006 run1: ok 12.2s $0.046 skills=[] total=$0.10
+[3/15] baseline py-006 run1: ok 14.7s $0.051 skills=[] total=$0.15
+[4/15] baseline ml-006 run2: ok 11.1s $0.041 skills=[] total=$0.19
+[5/15] baseline py-008 run1: ok 16.0s $0.057 skills=[] total=$0.24
+[6/15] baseline py-009 run1: ok 15.7s $0.053 skills=[] total=$0.30
+[7/15] baseline py-008 run2: ok 14.0s $0.049 skills=[] total=$0.35
+[8/15] baseline py-007 run2: ok 14.8s $0.054 skills=[] total=$0.40
+[9/15] baseline py-006 run2: ok 18.2s $0.063 skills=[] total=$0.46
+[10/15] baseline ml-006 run3: ok 12.9s $0.042 skills=[] total=$0.51
+[11/15] baseline py-009 run2: ok 14.9s $0.055 skills=[] total=$0.56
+[12/15] baseline py-006 run3: ok 13.7s $0.058 skills=[] total=$0.62
+[13/15] baseline py-007 run3: ok 12.1s $0.050 skills=[] total=$0.67
+[14/15] baseline py-008 run3: ok 11.2s $0.047 skills=[] total=$0.72
+[15/15] baseline py-009 run3: ok 16.3s $0.055 skills=[] total=$0.77
+[extract 1/15] baseline/ml-006/run1.json: ok
+[extract 2/15] baseline/ml-006/run3.json: ok
+[extract 3/15] baseline/ml-006/run2.json: ok
+[extract 4/15] baseline/py-006/run1.json: ok
+[extract 5/15] baseline/py-007/run1.json: ok
+[extract 6/15] baseline/py-006/run2.json: ok
+[extract 7/15] baseline/py-006/run3.json: ok
+[extract 8/15] baseline/py-007/run2.json: ok
+[extract 9/15] baseline/py-007/run3.json: ok
+[extract 10/15] baseline/py-008/run1.json: ok
+[extract 11/15] baseline/py-008/run2.json: ok
+[extract 12/15] baseline/py-008/run3.json: ok
+[extract 13/15] baseline/py-009/run2.json: ok
+[extract 14/15] baseline/py-009/run1.json: ok
+[extract 15/15] baseline/py-009/run3.json: ok
+[grade 1/15] baseline/ml-006/run1.json: ok
+[grade 2/15] baseline/ml-006/run2.json: ok
+[grade 3/15] baseline/ml-006/run3.json: ok
+[grade 4/15] baseline/py-006/run1.json: ok
+[grade 5/15] baseline/py-006/run2.json: ok
+[grade 6/15] baseline/py-007/run1.json: ok
+[grade 7/15] baseline/py-006/run3.json: ok
+[grade 8/15] baseline/py-007/run2.json: ok
+[grade 9/15] baseline/py-007/run3.json: ok
+[grade 10/15] baseline/py-008/run1.json: ok
+[grade 11/15] baseline/py-008/run2.json: ok
+[grade 12/15] baseline/py-008/run3.json: ok
+[grade 13/15] baseline/py-009/run2.json: ok
+[grade 14/15] baseline/py-009/run1.json: ok
+[grade 15/15] baseline/py-009/run3.json: ok
+[grade 1/15] baseline/ml-006/run1.json: ok
+[grade 2/15] baseline/py-006/run1.json: ok
+[grade 3/15] baseline/ml-006/run3.json: ok
+[grade 4/15] baseline/ml-006/run2.json: ok
+[grade 5/15] baseline/py-007/run1.json: ok
+[grade 6/15] baseline/py-006/run2.json: ok
+[grade 7/15] baseline/py-007/run2.json: ok
+[grade 8/15] baseline/py-006/run3.json: ok
+[grade 9/15] baseline/py-007/run3.json: ok
+[grade 10/15] baseline/py-008/run1.json: ok
+[grade 11/15] baseline/py-008/run2.json: ok
+[grade 12/15] baseline/py-008/run3.json: ok
+[grade 13/15] baseline/py-009/run2.json: ok
+[grade 14/15] baseline/py-009/run3.json: ok
+[grade 15/15] baseline/py-009/run1.json: ok

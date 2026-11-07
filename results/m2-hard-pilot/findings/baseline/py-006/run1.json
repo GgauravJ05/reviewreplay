@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the list cached by lru_cache in load_rules, so promos accumulate across quotes (stacking discounts, persisting after expiry, unbounded growth, and leaking into the API rules endpoint)."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "save_rules calls load_rules.cache_clear(), clearing every tenant's cache on any single tenant's write, which is wasteful; a per-tenant cache would be more precise."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "The cache is per process with no TTL, so writes from other processes/workers or directly in the DB leave this process serving stale rules indefinitely."
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The last line of test_save_invalidates_cache writes to the DB without asserting anything and leaves state behind for other tests, looking like a missed cleanup/restore."
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No test calls price_quote, so the cache-mutation bug is not caught; a test calling price_quote twice and checking the discount is unchanged is needed."
+    }
+  ],
+  "extract_cost_usd": 0.020183800000000002
+}

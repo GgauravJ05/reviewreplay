@@ -1,0 +1,9 @@
+{
+  "id": "py-007",
+  "kind": "planted",
+  "track": "python",
+  "title": "Bill GPU sessions per started hour",
+  "source": "original",
+  "license": "MIT",
+  "added": "2026-11-07"
+}

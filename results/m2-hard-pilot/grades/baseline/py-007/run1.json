@@ -1,0 +1,45 @@
+{
+  "case": "py-007",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "billable_hours subtracts two aware datetimes sharing the same ZoneInfo, yielding wall-clock difference rather than elapsed time, so sessions crossing a DST change are over- or under-billed (and may cross a rounding boundary); should convert to UTC first.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies same-tzinfo aware datetime subtraction using wall clock, needing UTC conversion."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "New tests use only July fixtures with no DST change, so they don't catch the DST duration bug; a test across 2026-03-08 or 2026-11-01 in New York is needed.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests fail to cover the answer-key DST bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0159319
+}

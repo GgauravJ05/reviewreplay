@@ -1,0 +1,70 @@
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/auth/api.py after/auth/api.py
+--- base/auth/api.py	2026-11-07 10:17:08
++++ after/auth/api.py	2026-11-07 10:17:08
+@@ -18,3 +18,13 @@
+     if session is None:
+         return {"status": 401}
+     return {"status": 200, "user_id": session.user_id}
++
++
++def logout_handler(token: str) -> dict:
++    STORE.revoke(token)
++    return {"status": 204}
++
++
++def purge_job() -> int:
++    """Run every 10 minutes by the scheduler."""
++    return STORE.purge_expired(datetime.now(timezone.utc))
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/auth/store.py after/auth/store.py
+--- base/auth/store.py	2026-11-07 10:17:08
++++ after/auth/store.py	2026-11-07 10:17:08
+@@ -28,5 +28,25 @@
+     def active_for_user(self, user_id: int, now: datetime) -> list[Session]:
+         return [s for s in self._items if s.user_id == user_id and s.is_valid(now)]
+ 
++    def revoke(self, token: str) -> None:
++        """Log a session out. Revoking an unknown or already-revoked token is a no-op, so
++        logout is idempotent (clients retry it on flaky networks)."""
++        try:
++            session = self._by_token.pop(token)
++        except KeyError:
++            return
++        self._items.remove(session)
++
++    def purge_expired(self, now: datetime) -> int:
++        """Drop expired sessions to bound memory. Returns how many were removed."""
++        removed = 0
++        for i in range(len(self._items) - 1, -1, -1):
++            session = self._items[i]
++            if session.expires_at <= now:
++                del self._items[i]
++                del self._by_token[session.token]
++                removed += 1
++        return removed
++
+     def __len__(self) -> int:
+         return len(self._items)
+diff -ruN -x __pycache__ -x .pytest_cache -x .mypy_cache -x .ipynb_checkpoints -x .DS_Store base/tests/test_store.py after/tests/test_store.py
+--- base/tests/test_store.py	2026-11-07 10:17:08
++++ after/tests/test_store.py	2026-11-07 10:17:08
+@@ -10,3 +10,20 @@
+     s = store.create(7, T0)
+     assert store.get(s.token, T0 + timedelta(minutes=59)) == s
+     assert store.get(s.token, T0 + timedelta(hours=1)) is None
++
++
++def test_revoke_is_idempotent():
++    store = SessionStore()
++    s = store.create(7, T0)
++    store.revoke(s.token)
++    store.revoke(s.token)
++    assert store.get(s.token, T0) is None and len(store) == 0
++
++
++def test_purge_removes_only_expired():
++    store = SessionStore(ttl=timedelta(hours=1))
++    old = [store.create(1, T0) for _ in range(3)]
++    fresh = store.create(2, T0 + timedelta(minutes=30))
++    assert store.purge_expired(T0 + timedelta(hours=1)) == 3
++    assert len(store) == 1 and store.get(fresh.token, T0 + timedelta(hours=1)) == fresh
++    assert all(store.get(s.token, T0) is None for s in old)

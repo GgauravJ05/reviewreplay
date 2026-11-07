@@ -1,0 +1,22 @@
+{
+  "created": "2026-11-07T04:47:33+00:00",
+  "model": "claude-sonnet-5-5",
+  "cli_version": "2.1.319 (Claude Code)",
+  "runs": 3,
+  "auth": "keychain login",
+  "cases": [
+    "ml-006",
+    "py-006",
+    "py-007",
+    "py-008",
+    "py-009"
+  ],
+  "subjects": [
+    {
+      "name": "baseline",
+      "skill": null,
+      "prompt": "Review the uncommitted changes in this repository. Report any bugs you find, with file and line.",
+      "credit": null
+    }
+  ]
+}

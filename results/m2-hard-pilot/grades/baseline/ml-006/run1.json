@@ -1,0 +1,47 @@
+{
+  "case": "ml-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Lag features (sales_lag1, sales_lag7, sales_mean7) use shift/rolling over the whole frame without groupby store_id, mixing sales across stores and producing wrong features that feed model training and MAE evaluation; first-week dropna also fails to drop per-store warm-up rows.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies lag/rolling features computed without groupby store_id, mixing stores \u2014 the exact defect."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "minor",
+      "summary": "sales_lag7 only equals same weekday last week if there are no missing dates; gaps in a store's history shift it, so reindexing to a full daily range per store would be more robust.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known problem of missing dates breaking row-based lag7, not the cross-store mixing bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0162339
+}

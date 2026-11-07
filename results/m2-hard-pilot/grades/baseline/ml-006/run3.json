@@ -1,0 +1,83 @@
+{
+  "case": "ml-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 16,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Lag and rolling features (shift(1), shift(7), rolling 7 mean) are computed across the whole frame instead of per store_id, so a store's first rows take lag values from the previous store and dropna only removes the first 7 rows overall.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Names the cross-store lag computation without per-store grouping, the core bug."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 16,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Row-based shifts assume the data is sorted by date and has no gaps; with unsorted or missing dates, sales_lag7 isn't the same weekday last week and can leak future values (target leakage).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known gap/missing-dates problem with row-based shifts, not the cross-store bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "test_lag_features uses only a single store, so it cannot catch the cross-store lag bug.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test lacking coverage of the answer-key bug counts as valid other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "test_calendar_features passes only by coincidence because the first 7 rows are dropped, so out.loc[0] is 2026-01-08 (also a Thursday) and it no longer checks 2026-01-01.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Plausible consequence of dropna dropping first 7 rows; test coincidence is a real weakness of the change."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0178699
+}

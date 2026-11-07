@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 47,
+      "line_end": 47,
+      "severity": "minor",
+      "summary": "Possible race: without a lock, a threaded purge_job can race with revoke/create, so `del self._by_token[session.token]` may raise KeyError and abort the purge partway; add a lock or use pop(token, None)."
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "`self._items.remove(session)` is O(n) on every logout, which may be slow with many live sessions; an insertion-ordered dict keyed by token would avoid this."
+    }
+  ],
+  "extract_cost_usd": 0.0172898
+}
