@@ -13,6 +13,11 @@ and what it costs.
 ![No dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![Status: alpha](https://img.shields.io/badge/status-alpha-orange)
 
+> **v0.1, built in public.** The method and the tool work; the results are early (4 graded real
+> bugs so far, 8 more being graded, judge agreement checked against a second model, not yet a
+> person). Read the numbers as a direction. Progress, new cases and corrections land here as they
+> happen, and [contributions are welcome](CONTRIBUTING.md).
+
 ```bash
 pip install git+https://github.com/GgauravJ05/reviewreplay
 cd your-repo
@@ -82,7 +87,7 @@ Early pilots with Claude Code (`claude-sonnet-5-5`) as the reviewer:
 **Baseline vs a review skill** (19 cases, 114 reviews): on 4 real bugs in full repositories, Claude
 Code with [code-review-skill](https://github.com/awesome-skills/code-review-skill) found the bug
 12/12 times vs 11/12, with 81% vs 64% precision, **zero serious false alarms vs 3**, and half the
-minor noise — at 1.7× the cost. Small sample; a direction, not a verdict
+minor noise — at 1.6× the cost. Small sample; a direction, not a verdict
 ([details](results/m2-compare/README.md)).
 
 So "does it find the bug?" is no longer the interesting question for strong models. **How much

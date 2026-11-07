@@ -17,6 +17,7 @@ build/
 dist/
 .claude/
 
-# landing page build tools
+# landing page build tools and unpublished drafts
 site/.taste-skill/
 site/shots/
+docs/drafts/
