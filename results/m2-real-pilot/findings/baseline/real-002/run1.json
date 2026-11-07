@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 208,
+      "line_end": 337,
+      "severity": "blocking",
+      "summary": "The path traversal check uses startswith(base) without a trailing separator, so a sibling directory like /tmp/out2 passes for base /tmp/out; the same flaw is in the zip, rar, 7z and tar (line 108) code."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 266,
+      "line_end": 266,
+      "severity": "important",
+      "summary": "The rar symlink check unpacks info.file_redir as a 3-tuple, but it is None for RAR3 archives where is_symlink() is true, raising TypeError."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 364,
+      "severity": "important",
+      "summary": "If all 7z members are blocked, targets is empty and extract(targets=[]) may extract everything, including blocked paths; also name-based filtering could extract a blocked file sharing a name with an allowed one."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 330,
+      "line_end": 334,
+      "severity": "minor",
+      "summary": "The 7z badlink helper is never called and there are commented-out symlink blocks (dead code)."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 330,
+      "line_end": 334,
+      "severity": "minor",
+      "summary": "Blocked members are only logged with logger.error, so extraction reports success with files silently missing; it should raise or at least warn."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 190,
+      "line_end": 319,
+      "severity": "minor",
+      "summary": "list[zipfile.ZipInfo] annotations at lines 190, 243 and 319 are evaluated at import time and break on Python 3.8."
+    }
+  ],
+  "extract_cost_usd": 0.039374
+}

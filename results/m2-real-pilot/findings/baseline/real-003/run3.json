@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "Fish completion is broken: command substitution splits the new three-line output into separate list items, so the loop's `string split \\n` yields empty $metadata[2]/$metadata[3], causing no candidates or test errors."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 434,
+      "line_end": 434,
+      "severity": "important",
+      "summary": "Escaped newlines in values and help are emitted as literal `\\n` and never unescaped by the Fish script, so multi-line help displays a literal `\\n`."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 434,
+      "line_end": 434,
+      "severity": "minor",
+      "summary": "The `_` placeholder for 'no help' is indistinguishable from a real help string of `_`."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 186,
+      "line_end": 186,
+      "severity": "important",
+      "summary": "Unquoted `test` arguments like `test $metadata[1] = ...` and `test $metadata[3] != \"_\"` fail with 'Missing argument' errors when the list is short."
+    }
+  ],
+  "extract_cost_usd": 0.0184418
+}

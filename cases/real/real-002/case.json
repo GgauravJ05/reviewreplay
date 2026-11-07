@@ -1,0 +1,13 @@
+{
+  "id": "real-002",
+  "kind": "real",
+  "track": "python",
+  "title": "Don't extract bad files (huggingface/datasets#8056)",
+  "source": "https://github.com/huggingface/datasets@1bd0a5c087b72d705818405a7840a28d3955c08b",
+  "license": "Apache-2.0",
+  "added": "2026-11-07",
+  "repo": "https://github.com/huggingface/datasets",
+  "commit": "1bd0a5c087b72d705818405a7840a28d3955c08b",
+  "fix": "e693835eb1739d2e9b93f8ba0b5a59c38c1c2067",
+  "issue": "https://github.com/huggingface/datasets/pull/8490"
+}

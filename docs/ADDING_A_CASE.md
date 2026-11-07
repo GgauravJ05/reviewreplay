@@ -61,6 +61,7 @@ silently breaks its key.
 ```
 
 - `also`: other places a reviewer may legitimately point to (the other side of a cross-file bug).
+- `occurrence` (optional, 1-based): which match to use when the anchor text repeats verbatim in the file.
 - `planted`/`real` cases need ≥1 bug; `clean`/`decoy` need none; `decoy` needs ≥1 `known_ok` with a note.
 - `related_valid`: a list of other real problems in the change (one sentence each). The judge sees them
   and credits a finding that reports one as `valid_other`. Without this, a reviewer that spots a real
@@ -86,3 +87,22 @@ python3 -m reviewbench check
 Then **execute the case code** to prove the key: the bug's `trigger` must actually produce the wrong
 result, and clean/decoy code must actually be correct. (In M1 this caught a wrong trigger in py-005.)
 Running code leaves caches (`__pycache__`, `.pytest_cache`); the tools ignore them.
+
+## Real cases
+
+A real case reviews a bug-introducing commit from a public repo, in the full project.
+
+1. Find candidates: `python3 -m reviewbench mine https://github.com/<owner>/<repo> [--since 2025-06-01]`.
+   Prefer rows marked `agree` (the fix message's reference and `git blame` point at the same commit)
+   and ≤ 300 changed lines.
+2. Read the fix commit, its issue and the introducing diff. Keep it only if the fix clearly repairs a
+   behaviour bug introduced by that commit (not a feature, refactor or typing change).
+3. Write `cases/real/<id>/case.json` with `kind: "real"`, `repo`, `commit` (introducing; for a merged
+   PR, the merge commit), `fix`, and `issue` if any; `source` is `<repo url>@<commit>`; `license` is the
+   repo's license (permissive only).
+4. Write `truth.json` against the code at `commit` (anchors are resolved in the exported tree under
+   `.cache/real/`). Use whole-function spans and list every copy of the bug in `also`. Put the fix's
+   own evidence (message, tests) in `trigger`, and anything else the reviewer may fairly report in
+   `related_valid`.
+5. `python3 -m reviewbench check` exports the code and validates the case. We never run third-party
+   code, so say in NOTES.md what the evidence is.

@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 208,
+      "line_end": 208,
+      "severity": "blocking",
+      "summary": "The badpath check uses a plain string-prefix test, so sibling directories like /tmp/out_evil pass for base /tmp/out and members can be written outside the target directory (path traversal); the same flaw is copied into the zip, rar and 7z extractors (lines 261, 337) and the existing tar extractor (line 108)."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 364,
+      "severity": "important",
+      "summary": "In the 7z extractor, if all members are blocked, targets is an empty list, and py7zr may treat it like None and extract everything, bypassing the filter; this needs verification against the pinned py7zr version."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 364,
+      "severity": "minor",
+      "summary": "Blocked 7z members are only logged with logger.error, so extraction still reports success (probably intentional, matching tar behaviour)."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "badlink is defined but never called in SevenZipExtractor.safemembers because the call is commented out."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "TarExtractor.safemembers annotates members as tarfile.TarFile, but it is actually an iterable of TarInfo."
+    }
+  ],
+  "extract_cost_usd": 0.0200118
+}

@@ -1,0 +1,13 @@
+{
+  "id": "real-001",
+  "kind": "real",
+  "track": "python",
+  "title": "Raise an exception on end of input in CliRunner (pallets/click#2934)",
+  "source": "https://github.com/pallets/click@262bdf02288daf9a37b9e815b44acafd62b5c6fe",
+  "license": "BSD-3-Clause",
+  "added": "2026-11-07",
+  "repo": "https://github.com/pallets/click",
+  "commit": "262bdf02288daf9a37b9e815b44acafd62b5c6fe",
+  "fix": "93c6966eb3a575c2b600434d1cc9f4b3aee505ac",
+  "issue": "https://github.com/pallets/click/issues/2939"
+}

@@ -1,0 +1,22 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/click/shell_completion.py",
+      "anchor": "return f\"{item.type}\\n{value}\\n{help_escaped}\"",
+      "span": 1,
+      "also": [
+        {"file": "src/click/shell_completion.py", "anchor": "set -l metadata (string split \\n $completion);", "span": 1},
+        {"file": "src/click/shell_completion.py", "anchor": "if test $metadata[3] != \"_\";", "span": 5}
+      ],
+      "class": "protocol-delimiter-collision",
+      "severity": "blocking",
+      "summary": "FishComplete now separates type, value and help with newlines, but complete() already joins completion items with newlines and fish's command substitution ($response) splits on newlines, so each field arrives as a separate $completion. The per-item split then finds one field, $metadata[2]/[3] are missing, and fish completion breaks for every command.",
+      "trigger": "Any fish completion: the output 'plain\\nfoo\\n_\\nplain\\nbar\\n_' is iterated as six entries ('plain', 'foo', '_', ...), so no candidate is offered (regression reported as #3502; fixed in b7e5fd4)."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "A completion value or help containing a tab still breaks the value\\tdescription format fish expects."
+  ]
+}

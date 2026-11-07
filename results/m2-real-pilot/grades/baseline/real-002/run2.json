@@ -1,0 +1,99 @@
+{
+  "case": "real-002",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 208,
+      "line_end": 208,
+      "severity": "blocking",
+      "summary": "The badpath check uses a plain string-prefix test, so sibling directories like /tmp/out_evil pass for base /tmp/out and members can be written outside the target directory (path traversal); the same flaw is copied into the zip, rar and 7z extractors (lines 261, 337) and the existing tar extractor (line 108).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the string-prefix badpath flaw letting sibling directories pass, copied across extractors."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 364,
+      "severity": "important",
+      "summary": "In the 7z extractor, if all members are blocked, targets is an empty list, and py7zr may treat it like None and extract everything, bypassing the filter; this needs verification against the pinned py7zr version.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Speculative py7zr behavior with empty targets; unverified."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 364,
+      "severity": "minor",
+      "summary": "Blocked 7z members are only logged with logger.error, so extraction still reports success (probably intentional, matching tar behaviour).",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches known problem: bad members only logged, partial extraction reported as success."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "badlink is defined but never called in SevenZipExtractor.safemembers because the call is commented out.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Unused badlink is not shown to cause incorrect behavior; not a real defect claim."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "TarExtractor.safemembers annotates members as tarfile.TarFile, but it is actually an iterable of TarInfo.",
+      "index": 4,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Type annotation nit, pure style."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0186659
+}

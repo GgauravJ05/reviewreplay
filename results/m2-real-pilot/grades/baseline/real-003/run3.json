@@ -1,0 +1,87 @@
+{
+  "case": "real-003",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "Fish completion is broken: command substitution splits the new three-line output into separate list items, so the loop's `string split \\n` yields empty $metadata[2]/$metadata[3], causing no candidates or test errors.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the newline-split causing missing metadata fields, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 434,
+      "line_end": 434,
+      "severity": "important",
+      "summary": "Escaped newlines in values and help are emitted as literal `\\n` and never unescaped by the Fish script, so multi-line help displays a literal `\\n`.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Escaped newline handling in fish script is plausible but unverified and not the answer-key defect."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 434,
+      "line_end": 434,
+      "severity": "minor",
+      "summary": "The `_` placeholder for 'no help' is indistinguishable from a real help string of `_`.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Placeholder ambiguity is a minor speculative concern, not the identified bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 186,
+      "line_end": 186,
+      "severity": "important",
+      "summary": "Unquoted `test` arguments like `test $metadata[1] = ...` and `test $metadata[3] != \"_\"` fail with 'Missing argument' errors when the list is short.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Missing metadata elements causing test errors is a symptom of the same newline-splitting bug."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0175479
+}

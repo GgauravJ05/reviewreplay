@@ -1,0 +1,63 @@
+{
+  "case": "real-001",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 119,
+      "severity": "important",
+      "summary": "The new __next__ override on _NamedTextIOWrapper converts StopIteration into EOFError, so iterating sys.stdin or click.get_text_stream('stdin') under CliRunner raises EOFError instead of ending the loop; the conversion belongs in visible_input/hidden_input.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: __next__ override raises EOFError for all stdin iteration, not just prompts."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/testing.py",
+      "line_start": 351,
+      "line_end": 360,
+      "severity": "important",
+      "summary": "Replacing readline() with next(text_input) makes prompts with empty or short input raise EOFError and abort the run instead of receiving an empty string, breaking existing user tests.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Prompts with empty input raising EOFError may be intended upstream behavior; cannot verify from given info."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "tests/test_chain.py",
+      "line_start": 166,
+      "line_end": 166,
+      "severity": "important",
+      "summary": "The edited assertion removes the `assert not result.exception` check and slices output with [:-2], so the test passes even when the pipeline aborts from the new EOFError, hiding the regression.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known loosened test_chain assertion hiding the abort."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0168359
+}

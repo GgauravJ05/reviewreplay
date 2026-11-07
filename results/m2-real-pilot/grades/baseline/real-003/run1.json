@@ -1,0 +1,65 @@
+{
+  "case": "real-003",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 179,
+      "line_end": 193,
+      "severity": "blocking",
+      "summary": "The Fish script can't parse the new three-line-per-item completion format: Fish splits the output on newlines, so the loop runs once per line rather than per item, and all completions are lost.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: newline-separated fields get split per line by fish, breaking all completions."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 421,
+      "line_end": 436,
+      "severity": "important",
+      "summary": "format_completion escapes newlines in value and help text, but the Fish script never unescapes them, so users see literal \\n in descriptions and values containing newlines are corrupted.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Escaping of newlines not unescaped in fish is a different complaint, plausible but unverifiable."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The `.. versionchanged:: 8.3` note in the docstring doesn't match the changelog, which lists the fix as Unreleased after 8.3.3, so it should say 8.4.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Docstring version note mismatch is a documentation nit, not a behavioral defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0166619
+}

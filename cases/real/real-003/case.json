@@ -1,0 +1,13 @@
+{
+  "id": "real-003",
+  "kind": "real",
+  "track": "python",
+  "title": "Ensure fish completion handles multiline help strings (pallets/click#3126)",
+  "source": "https://github.com/pallets/click@19fd4d6e18bc9fce451f92f422696b11169faa57",
+  "license": "BSD-3-Clause",
+  "added": "2026-11-07",
+  "repo": "https://github.com/pallets/click",
+  "commit": "19fd4d6e18bc9fce451f92f422696b11169faa57",
+  "fix": "b7e5fd4cc7de70280eccd39f2bb956df617e5519",
+  "issue": "https://github.com/pallets/click/issues/3502"
+}

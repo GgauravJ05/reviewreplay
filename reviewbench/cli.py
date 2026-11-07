@@ -7,6 +7,7 @@
   python -m reviewbench grade   results/<id>
   python -m reviewbench report  results/<id>
   python -m reviewbench label   results/<id>/labels.csv
+  python -m reviewbench mine    https://github.com/<owner>/<repo> [--since 2025-06-01]
   python -m reviewbench agreement results/<id>/labels.csv
 """
 from __future__ import annotations
@@ -20,6 +21,7 @@ from . import claude
 from .cases import check_case, find_case_dirs, load_cases, make_patch
 from .grade import extract_all, grade_all
 from .label import label_sheet
+from .mine import as_dicts, mine, table
 from .report import agreement, write_label_sheet, write_report
 from .runner import run_all
 from .subjects import ROOT, load_subjects
@@ -66,6 +68,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("sheet")
     p.add_argument("--cases")
 
+    p = sub.add_parser("mine", help="list candidate real bugs (fix + introducing commit)")
+    p.add_argument("repo")
+    p.add_argument("--since", default="2025-06-01")
+    p.add_argument("--limit", type=int, default=40)
+    p.add_argument("--json", help="also write candidates to this file")
+    p.add_argument("--pattern", help="commit-message regex (default: regression wording)")
+
     p = sub.add_parser("agreement", help="judge vs. human labels (Cohen's kappa)")
     p.add_argument("sheet")
 
@@ -85,6 +94,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if a.cmd == "make-patch":
         for d in a.case_dirs:
+            if json.loads((Path(d) / "case.json").read_text()).get("kind") == "real":
+                print(f"skip {d}: real cases generate their patch from git")
+                continue
             make_patch(Path(d))
             print(f"wrote {Path(d) / 'change.patch'}")
         return 0
@@ -115,6 +127,13 @@ def main(argv: list[str] | None = None) -> int:
 
     if a.cmd == "label":
         label_sheet(Path(a.sheet), {c.id: c for c in _cases(a.cases)})
+        return 0
+
+    if a.cmd == "mine":
+        cands = mine(a.repo, a.since, a.limit, *([a.pattern] if a.pattern else []))
+        print(table(cands))
+        if a.json:
+            Path(a.json).write_text(json.dumps(as_dicts(cands), indent=2))
         return 0
 
     if a.cmd == "agreement":

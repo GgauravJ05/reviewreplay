@@ -1,0 +1,39 @@
+{
+  "subjects": {
+    "baseline": {
+      "caught": {
+        "mean": 0.8888888888888888,
+        "lo": 0.6666666666666666,
+        "hi": 1.0,
+        "n_cases": 3
+      },
+      "precision": {
+        "mean": 0.5555555555555555,
+        "lo": 0.38888888888888884,
+        "hi": 0.7222222222222222,
+        "n_cases": 3
+      },
+      "reviews": 9,
+      "median_cost": 0.0584442,
+      "median_seconds": 17.6,
+      "mean_findings": 4.111111111111111
+    }
+  },
+  "paired_vs_baseline": {},
+  "per_case": {
+    "baseline": {
+      "real-001": {
+        "caught": 1.0,
+        "precision": 0.7222222222222222
+      },
+      "real-002": {
+        "caught": 0.6666666666666666,
+        "precision": 0.38888888888888884
+      },
+      "real-003": {
+        "caught": 1.0,
+        "precision": 0.5555555555555555
+      }
+    }
+  }
+}

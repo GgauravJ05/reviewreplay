@@ -120,6 +120,9 @@ can tell a decoy hit apart from an ordinary false alarm.
   the commit that introduced the bug (the SZZ method) → that introducing commit is the change under review.
   Candidate sources: BugsInPy (Python), Defects4J (Java), plus hand-picked fixes. Check each source's
   license before including it.
+- **Implemented (M2):** real cases store only `repo`, `commit` (introducing) and `fix` in `case.json`;
+  the code is exported from git without history. `reviewbench mine` finds candidates by fix-message
+  references and blame. See [ADDING_A_CASE.md](ADDING_A_CASE.md#real-cases).
 - **Contamination:** real bugs from popular repos may be in the model's training data.
   Report **real** and **planted** scores separately, always.
 
@@ -311,7 +314,7 @@ Runs resume: a run that stops halfway continues from the last finished review.
 |---|---|---|---|
 | **M0** | Isolation spike | Prove a `--bare` run sees *only* the intended skill (probe prompt: "list every skill and command you can use"); measure the cost of one review | Probe output saved for each subject; cost per review known |
 | **M1** | Pilot | 10 cases (Python + ML; planted, clean, decoy) × 2 subjects (baseline, code-review-skill) × 3 runs = 60 reviews. Full pipeline end to end. **Every grade hand-labeled.** | First summary table; judge agreement κ measured; extractor checked. **Status 2026-11-07:** 90 reviews run (3 subjects incl. natural/invoked), all at ceiling; skill self-triggered 0/30; grader fixed; hand labels pending — see [results/m1-pilot/README.md](../results/m1-pilot/README.md) |
-| **M2** | First real result | 40 cases × 5 subjects × 3 runs = 600 reviews | Results posted on code-review-skill#32; PR #34 / #37 effects measured; METHOD.md written **Status 2026-11-07:** difficulty pilot: 5 harder cross-file cases, baseline still 100% recall (15 reviews); small cases can't create difficulty, so real bugs at full-repo scale come next — see [results/m2-hard-pilot/README.md](../results/m2-hard-pilot/README.md) |
+| **M2** | First real result | 40 cases × 5 subjects × 3 runs = 600 reviews | Results posted on code-review-skill#32; PR #34 / #37 effects measured; METHOD.md written **Status 2026-11-07:** difficulty pilot: 5 harder cross-file cases, baseline still 100% recall (15 reviews); small cases can't create difficulty, so real bugs at full-repo scale come next — see [results/m2-hard-pilot/README.md](../results/m2-hard-pilot/README.md). Real-bug pilot (3 cases, 9 reviews): recall still ~100%, precision 56% with many unverifiable claims — see [results/m2-real-pilot/README.md](../results/m2-real-pilot/README.md) |
 | **M3** | Real bugs | 10–20 real (SZZ) cases; real vs planted reported separately | Contamination comparison in the report |
 | **M4** | Launch | Make repo public, ADDING_A_SUBJECT.md, results page | Public repo + launch post |
 

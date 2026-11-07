@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 119,
+      "severity": "important",
+      "summary": "The new __next__ override on _NamedTextIOWrapper converts StopIteration into EOFError, so iterating sys.stdin or click.get_text_stream('stdin') under CliRunner raises EOFError instead of ending the loop; the conversion belongs in visible_input/hidden_input."
+    },
+    {
+      "file": "src/click/testing.py",
+      "line_start": 351,
+      "line_end": 360,
+      "severity": "important",
+      "summary": "Replacing readline() with next(text_input) makes prompts with empty or short input raise EOFError and abort the run instead of receiving an empty string, breaking existing user tests."
+    },
+    {
+      "file": "tests/test_chain.py",
+      "line_start": 166,
+      "line_end": 166,
+      "severity": "important",
+      "summary": "The edited assertion removes the `assert not result.exception` check and slices output with [:-2], so the test passes even when the pipeline aborts from the new EOFError, hiding the regression."
+    }
+  ],
+  "extract_cost_usd": 0.035814
+}

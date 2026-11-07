@@ -1,0 +1,18 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/click/testing.py",
+      "anchor": "def __next__(self) -> str:  # type: ignore",
+      "span": 6,
+      "class": "overbroad-behaviour-change",
+      "severity": "important",
+      "summary": "Overriding _NamedTextIOWrapper.__next__ to raise EOFError changes how the test stdin stream behaves for every reader, not just prompts: a command whose click.File argument is '-' iterates stdin, gets EOFError at the end of input, and click turns that into Abort, so the command fails under CliRunner. The EOFError should be raised only in the prompt functions.",
+      "trigger": "CliRunner().invoke(cmd, ['-'], input='a\\nb\\n') for a command taking click.File('r') and looping over it exits with code 1 (Aborted!) instead of 0 (per the upstream fix and issue #2939)."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "tests/test_chain.py was loosened (the `assert not result.exception` check removed, output sliced) so it passes despite the abort this change causes when a command reads stdin to the end; the upstream fix restored it."
+  ]
+}

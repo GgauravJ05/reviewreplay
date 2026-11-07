@@ -1,0 +1,101 @@
+{
+  "case": "real-003",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 180,
+      "line_end": 195,
+      "severity": "blocking",
+      "summary": "The Fish script splits command substitution output by newline, so the new three-line type/value/help format is parsed one line at a time, breaking Fish completion for every item.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: newline-separated fields get split by fish command substitution, breaking completion."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 431,
+      "line_end": 434,
+      "severity": "important",
+      "summary": "Escaped newlines (backslash-n) in help and value are never converted back because Fish echo doesn't interpret escapes without -e, so multi-line help shows literal \\n and values containing newlines complete wrongly (also for dir/file items).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Escape-handling claim is a different complaint, not the newline-splitting bug; validity unclear."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "tests/test_shell_completion.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "test_fish_multiline_help_complete only checks exit_code and Python output, doesn't exercise the Fish script, and would pass even if the for...else loop never hit the --at item.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test doesn't exercise the fish script, so it fails to cover the answer-key bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "`help_ = item.help or \"_\"` makes a real help string of \"_\" indistinguishable from no help.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Placeholder ambiguity is a trivial edge case, not a meaningful defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Docstring says versionchanged 8.3 but the changelog entry is under Unreleased after 8.3.3, so the version is inconsistent.",
+      "index": 4,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Docs/version nit, not a behavioral defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.018393899999999998
+}

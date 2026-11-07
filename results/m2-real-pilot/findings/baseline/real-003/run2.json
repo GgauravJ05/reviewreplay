@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 180,
+      "line_end": 195,
+      "severity": "blocking",
+      "summary": "The Fish script splits command substitution output by newline, so the new three-line type/value/help format is parsed one line at a time, breaking Fish completion for every item."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 431,
+      "line_end": 434,
+      "severity": "important",
+      "summary": "Escaped newlines (backslash-n) in help and value are never converted back because Fish echo doesn't interpret escapes without -e, so multi-line help shows literal \\n and values containing newlines complete wrongly (also for dir/file items)."
+    },
+    {
+      "file": "tests/test_shell_completion.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "test_fish_multiline_help_complete only checks exit_code and Python output, doesn't exercise the Fish script, and would pass even if the for...else loop never hit the --at item."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "`help_ = item.help or \"_\"` makes a real help string of \"_\" indistinguishable from no help."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Docstring says versionchanged 8.3 but the changelog entry is under Unreleased after 8.3.3, so the version is inconsistent."
+    }
+  ],
+  "extract_cost_usd": 0.020901799999999998
+}

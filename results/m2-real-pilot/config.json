@@ -1,0 +1,20 @@
+{
+  "created": "2026-11-07T06:13:48+00:00",
+  "model": "claude-sonnet-5-5",
+  "cli_version": "2.1.319 (Claude Code)",
+  "runs": 3,
+  "auth": "keychain login",
+  "cases": [
+    "real-001",
+    "real-002",
+    "real-003"
+  ],
+  "subjects": [
+    {
+      "name": "baseline",
+      "skill": null,
+      "prompt": "Review the uncommitted changes in this repository. Report any bugs you find, with file and line.",
+      "credit": null
+    }
+  ]
+}

@@ -108,8 +108,18 @@ def test_agreement_kappa(tmp_path):
 
 # ---- the real cases ----
 
+def _offline_case_dirs():
+    """Planted/clean/decoy cases, plus real cases whose git export is already cached."""
+    import json
+    from reviewbench.cases import REAL_CACHE, find_case_dirs
+    for d in find_case_dirs(ROOT / "cases"):
+        meta = json.loads((d / "case.json").read_text())
+        if meta["kind"] != "real" or (REAL_CACHE / f"{meta['id']}@{meta['commit'][:12]}").exists():
+            yield d
+
+
 def test_all_cases_load_and_resolve():
-    cases = load_cases(ROOT / "cases")
+    cases = [load_case(d) for d in _offline_case_dirs()]
     assert len(cases) >= 10
     for c in cases:
         for s in c.bugs + c.known_ok:

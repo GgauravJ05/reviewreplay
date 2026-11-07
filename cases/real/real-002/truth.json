@@ -1,0 +1,40 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/datasets/utils/extract.py",
+      "anchor": "def badpath(path: str, base: str) -> bool:",
+      "occurrence": 2,
+      "span": 3,
+      "also": [
+        {
+          "file": "src/datasets/utils/extract.py",
+          "anchor": "def badpath(path: str, base: str) -> bool:",
+          "occurrence": 3,
+          "span": 3
+        },
+        {
+          "file": "src/datasets/utils/extract.py",
+          "anchor": "def badpath(path: str, base: str) -> bool:",
+          "occurrence": 4,
+          "span": 3
+        },
+        {
+          "file": "src/datasets/utils/extract.py",
+          "anchor": "def badpath(path: str, base: str) -> bool:",
+          "occurrence": 1,
+          "span": 3
+        }
+      ],
+      "class": "path-traversal",
+      "severity": "important",
+      "summary": "The new zip/rar/7z safemembers checks (copied from the tar one) treat a member as safe if its resolved path merely starts with the output directory string, so a sibling directory whose name begins with the output directory's name passes: extracting into .../extracted, a member ../extracted_evil/x is written to .../extracted_evil. It must require the base itself or base + os.sep.",
+      "trigger": "Extract a zip containing '../extracted_evil/x' into '/data/extracted': badpath returns False and the file lands in '/data/extracted_evil/x' (per the upstream fix #8490)."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "Absolute member paths or symlinks are only partly handled by the string prefix check (e.g. case-insensitive filesystems, or base given with a trailing separator).",
+    "Bad members are skipped with only a log message, so a partially extracted archive is returned as if extraction succeeded."
+  ]
+}

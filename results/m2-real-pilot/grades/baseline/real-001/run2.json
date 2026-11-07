@@ -1,0 +1,63 @@
+{
+  "case": "real-001",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 119,
+      "severity": "blocking",
+      "summary": "The new `__next__` override on `_NamedTextIOWrapper` raises `EOFError` instead of `StopIteration`, so any command iterating over stdin (`for line in sys.stdin`, `click.File('-')`, `get_text_stream('stdin')`) crashes when input runs out instead of ending the loop.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes __next__ raising EOFError breaking stdin iteration for non-prompt readers, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/testing.py",
+      "line_start": 351,
+      "line_end": 360,
+      "severity": "important",
+      "summary": "Switching the prompt helpers from `readline()` to `next()` makes prompts abort on exhausted input instead of returning '' or using their default, a breaking change for existing tests that ships in a patch release (8.2.1).",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Prompt aborting on exhausted input is the intended behavior of the change, not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_utils.py",
+      "line_start": 182,
+      "line_end": 182,
+      "severity": "minor",
+      "summary": "`test_prompts_eof` only asserts `exit_code == 1`, so unrelated failures would also pass; it should check for `Aborted!` output or SystemExit, and it doesn't cover the hidden-input path.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Weak test assertion complaint is a style nit, not a real defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0170439
+}

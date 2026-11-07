@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 179,
+      "line_end": 193,
+      "severity": "blocking",
+      "summary": "The Fish script can't parse the new three-line-per-item completion format: Fish splits the output on newlines, so the loop runs once per line rather than per item, and all completions are lost."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 421,
+      "line_end": 436,
+      "severity": "important",
+      "summary": "format_completion escapes newlines in value and help text, but the Fish script never unescapes them, so users see literal \\n in descriptions and values containing newlines are corrupted."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The `.. versionchanged:: 8.3` note in the docstring doesn't match the changelog, which lists the fix as Unreleased after 8.3.3, so it should say 8.4."
+    }
+  ],
+  "extract_cost_usd": 0.018963800000000003
+}

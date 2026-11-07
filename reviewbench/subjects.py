@@ -107,12 +107,12 @@ def skill_source(skill: dict) -> Path:
 def build_workspace(case: Case, subject: Subject, root: Path) -> Path:
     """Fresh git repo of base/, change applied uncommitted, skill (if any) in .claude/skills/."""
     ws = root / "ws"
-    shutil.copytree(case.path / "base", ws, ignore=IGNORE_CACHES)
+    shutil.copytree(case.tree / "base", ws, ignore=IGNORE_CACHES, symlinks=True)
     git = ["git", "-C", str(ws), "-c", "user.name=rb", "-c", "user.email=rb@example.invalid"]
     subprocess.run(["git", "-C", str(ws), "init", "-q", "-b", "main"], check=True)
     subprocess.run(git + ["add", "-A"], check=True)
     subprocess.run(git + ["commit", "-q", "-m", "base"], check=True)
-    subprocess.run(["git", "-C", str(ws), "apply", str((case.path / "change.patch").resolve())],
+    subprocess.run(["git", "-C", str(ws), "apply", str((case.tree / "change.patch").resolve())],
                    check=True)
     # an installed skill must never show up as part of "the uncommitted changes"
     (ws / ".git" / "info" / "exclude").write_text(".claude/\n")

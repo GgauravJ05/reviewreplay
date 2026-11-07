@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 124,
+      "severity": "blocking",
+      "summary": "The `__next__` override on `_NamedTextIOWrapper` raises `EOFError` instead of `StopIteration`. Any code that iterates stdin, such as `for line in sys.stdin`, fails with a traceback at end of input under `CliRunner.invoke`. The same code works under real stdin."
+    },
+    {
+      "file": "tests/test_chain.py",
+      "line_start": 166,
+      "line_end": 167,
+      "severity": "important",
+      "summary": "The test was loosened: the `assert not result.exception` check was removed and the output comparison now uses `splitlines()[:-2]`. This hides a regression where the chain pipeline tests now end in an abort on exhausted input. The change in behavior is also not documented in `CHANGES.rst`, and tests at `tests/test_termui.py:245` and `tests/test_termui.py:454` had to add extra input newlines to cope with it."
+    }
+  ],
+  "extract_cost_usd": 0.036662
+}

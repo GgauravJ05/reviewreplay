@@ -37,7 +37,7 @@ def _wrap(text: str, indent: str = "    ") -> str:
 
 
 def _excerpt(case: Case, file: str, lines: str) -> str:
-    path = case.path / "after" / file
+    path = case.tree / "after" / file
     try:
         start, end = (int(x) for x in lines.split("-"))
         src = path.read_text(encoding="utf-8").splitlines()
