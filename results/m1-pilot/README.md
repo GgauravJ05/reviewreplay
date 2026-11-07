@@ -46,14 +46,27 @@ Estimated API-equivalent usage: reviews $4.31, extraction $1.54, judging $1.31 (
    usage-limit or login errors and resumes cleanly; test runs can use a `claude setup-token` login so the
    desktop app's login refreshes don't log the CLI out.
 
-## Still to do for M1
+## Grader check (second rater)
 
-- **Hand labels.** `labels.csv` has 189 graded findings (60 hit, 55 valid_other, 67 false_alarm, 7 unsure).
-  Label them blind with `python3 -m reviewbench label results/m1-pilot/labels.csv` (shows the answer
-  key, the finding and the code, never the judge's label or which subject wrote it; saves each answer,
-  resumable), then `python3 -m reviewbench agreement results/m1-pilot/labels.csv`. The judge is trusted for M2 only if
-  Cohen's κ ≥ 0.8. This matters more after finding 4: the re-graded judge is more lenient, and only
-  human labels can show whether it's now *too* lenient.
+Claude (Opus 5.5) labelled all 189 findings blind, with the same view the `label` command shows
+(answer key, finding, code, no judge label, no subject): `labels-claude.csv`.
+
+| | |
+|---|---|
+| Agreement | 95.2% (180 / 189) |
+| Cohen's κ | **0.93** (bar: 0.8) |
+| Disagreements | 9, all minor/note severity; 7 are judge `unsure` → rater `false_alarm` |
+
+No disagreement involves a `hit` or a serious finding, so no headline number in this pilot would
+change. The pattern: the judge says `unsure` for speculative remarks ("if order_id can be null…")
+where the rater says `false_alarm`. Both labels count against clean pass the same way, so this
+matters only for low-severity noise counts.
+
+**Caveat — this is not a human check.** The second rater is the same model family as the judge, so
+shared blind spots wouldn't show up as disagreement. It also saw the answer-key changes made
+during this pilot. Treat κ = 0.93 as a consistency check. A human pass with
+`python3 -m reviewbench label results/m1-pilot/labels.csv` (`labels.csv` is still unlabelled) is
+still needed before any public claim.
 
 ## Changes for M2
 
