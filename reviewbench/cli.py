@@ -6,6 +6,7 @@
   python -m reviewbench extract results/<id>
   python -m reviewbench grade   results/<id>
   python -m reviewbench report  results/<id>
+  python -m reviewbench label   results/<id>/labels.csv
   python -m reviewbench agreement results/<id>/labels.csv
 """
 from __future__ import annotations
@@ -18,6 +19,7 @@ from pathlib import Path
 from . import claude
 from .cases import check_case, find_case_dirs, load_cases, make_patch
 from .grade import extract_all, grade_all
+from .label import label_sheet
 from .report import agreement, write_label_sheet, write_report
 from .runner import run_all
 from .subjects import ROOT, load_subjects
@@ -58,6 +60,10 @@ def main(argv: list[str] | None = None) -> int:
 
     p = sub.add_parser("report")
     p.add_argument("run_dir")
+    p.add_argument("--cases")
+
+    p = sub.add_parser("label", help="hand-label findings blind, one at a time")
+    p.add_argument("sheet")
     p.add_argument("--cases")
 
     p = sub.add_parser("agreement", help="judge vs. human labels (Cohen's kappa)")
@@ -105,6 +111,10 @@ def main(argv: list[str] | None = None) -> int:
         sheet = write_label_sheet(Path(a.run_dir))
         print(out.read_text())
         print(f"label sheet: {sheet}")
+        return 0
+
+    if a.cmd == "label":
+        label_sheet(Path(a.sheet), {c.id: c for c in _cases(a.cases)})
         return 0
 
     if a.cmd == "agreement":

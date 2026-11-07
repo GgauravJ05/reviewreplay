@@ -49,8 +49,9 @@ Estimated API-equivalent usage: reviews $4.31, extraction $1.54, judging $1.31 (
 ## Still to do for M1
 
 - **Hand labels.** `labels.csv` has 189 graded findings (60 hit, 55 valid_other, 67 false_alarm, 7 unsure).
-  Fill `human_label` (same vocabulary: `hit`, `valid_other`, `false_alarm`, `unsure`) for all rows, then
-  `python3 -m reviewbench agreement results/m1-pilot/labels.csv`. The judge is trusted for M2 only if
+  Label them blind with `python3 -m reviewbench label results/m1-pilot/labels.csv` (shows the answer
+  key, the finding and the code, never the judge's label or which subject wrote it; saves each answer,
+  resumable), then `python3 -m reviewbench agreement results/m1-pilot/labels.csv`. The judge is trusted for M2 only if
   Cohen's κ ≥ 0.8. This matters more after finding 4: the re-graded judge is more lenient, and only
   human labels can show whether it's now *too* lenient.
 
