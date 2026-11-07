@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 18,
+      "severity": "blocking",
+      "summary": "Lag and rolling features (shift(1), shift(7), rolling mean) are computed over the whole frame rather than per store_id, leaking data across stores, and dropna only removes the first 7 rows overall so contaminated rows remain."
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Code assumes rows are sorted by date with no missing days; without sorting by store_id and date, lag7 is not the same weekday last week when days are missing."
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 6,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "build_features requires a sales column, so a future-dated prediction frame without sales raises KeyError, and if sales are NaN the dropna removes exactly the rows to be predicted."
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 6,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Multi-step forecasts need recursive or other handling for lag1 and mean7 beyond day +1, and none of this is covered by tests."
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 13,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "test_calendar_features passes only by coincidence: with n=10, 7 rows are dropped so loc[0] is 2026-01-08, also a Thursday; it no longer tests the first date and will break if the lag window changes."
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "test_lag_features uses a single store so it cannot catch the cross-store leakage bug; a two-store test is needed."
+    }
+  ],
+  "extract_cost_usd": 0.0213018
+}

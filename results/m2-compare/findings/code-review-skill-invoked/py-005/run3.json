@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "blocking",
+      "summary": "`offset // limit` yields a 0-based page but `paginate()` is 1-based, so the default offset=0 raises ValueError and later pages return the wrong items (fix: +1)."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "Offsets not aligned to the limit (e.g. offset=10, limit=20) are rounded down to a page start, causing repeated items."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "limit=0 causes a ZeroDivisionError in `offset // limit`."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "`paginate` silently caps limit at MAX_PER_PAGE, so a larger requested limit skips items."
+    }
+  ],
+  "extract_cost_usd": 0.0170678
+}

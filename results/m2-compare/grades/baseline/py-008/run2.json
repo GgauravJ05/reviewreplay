@@ -1,0 +1,27 @@
+{
+  "case": "py-008",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 25,
+      "line_end": 28,
+      "severity": "important",
+      "summary": "Now that read_rows returns a one-shot generator, the any() check at line 25 consumes rows up to and including the first high-severity row, so the loop at line 28 skips them. This drops the first high event from summary.high and undercounts total and by_actor, and it can wrongly report a quiet day.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes any() consuming the one-shot generator through the first high row so the later loop misses it, the same defect as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.014929900000000001
+}

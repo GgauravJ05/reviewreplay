@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 25,
+      "line_end": 28,
+      "severity": "important",
+      "summary": "read_rows now returns a one-shot generator, but summarize() iterates it twice (any() at line 25, then a for loop at line 28), so any() consumes rows and the second loop misses them, producing wrong totals, an empty summary.high, and a false 'No high-severity audit events today.' message."
+    },
+    {
+      "file": "audit/report.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Test coverage gap: test_read_rows_is_lazy checks laziness but no test runs summarize() on a log containing a high-severity row, which would have caught the bug."
+    }
+  ],
+  "extract_cost_usd": 0.0160458
+}

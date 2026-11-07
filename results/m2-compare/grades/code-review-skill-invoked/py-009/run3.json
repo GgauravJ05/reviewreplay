@@ -1,0 +1,69 @@
+{
+  "case": "py-009",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 48,
+      "line_end": 49,
+      "severity": "important",
+      "summary": "Without a lock, purge_expired can race with revoke on another thread; revoke pops the token from _by_token, so purge_expired's `del self._by_token[session.token]` raises KeyError. That aborts the purge partway and leaves _items and _by_token out of sync.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known lack-of-locking race, which counts as a known real problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 37,
+      "line_end": 37,
+      "severity": "minor",
+      "summary": "revoke uses list.remove, which is O(n); this matters only with many live sessions.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [
+        "ok3"
+      ],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known O(n) list.remove in revoke."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 46,
+      "line_end": 50,
+      "severity": "minor",
+      "summary": "purge_expired deletes from the middle of a list, which is O(n\u00b2) in the worst case; a dict or a single list rebuild would be O(n).",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2"
+      ],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Complaint is about performance of the backward deletion loop, which the key marks as correct, and it is not a listed known problem or a correctness defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0164519
+}

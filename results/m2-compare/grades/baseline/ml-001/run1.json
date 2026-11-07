@@ -1,0 +1,67 @@
+{
+  "case": "ml-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "build_features standardizes using mean/std of the whole DataFrame before train_test_split, leaking test data into training and making test AUC optimistic.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the whole-dataset statistics leaking test data before the split."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Training mean/std are not saved, so serving on new data computes its own statistics and features won't match what the model was trained on.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known unsaved-statistics train/serve skew problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Zero or NaN std (constant column or single-row frame) is not handled, producing NaN/inf features that make LogisticRegression.fit raise a ValueError.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known zero-variance/NaN std problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0158279
+}

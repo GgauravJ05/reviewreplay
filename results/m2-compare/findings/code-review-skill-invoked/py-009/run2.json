@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "`self._items.remove(session)` is O(n) on every logout, which could add up with many sessions."
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 43,
+      "line_end": 48,
+      "severity": "minor",
+      "summary": "`del self._items[i]` is O(n) per removal, so a large purge is O(n\u00b2); rebuilding the list in one pass or using an insertion-ordered dict keyed by token would be O(n)."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No tests cover `logout_handler` or `purge_job`; the reviewer calls them thin wrappers and low risk."
+    }
+  ],
+  "extract_cost_usd": 0.0173158
+}

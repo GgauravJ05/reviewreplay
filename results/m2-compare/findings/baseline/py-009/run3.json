@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 36,
+      "line_end": 47,
+      "severity": "minor",
+      "summary": "Possible race if purge_job runs on a separate thread: revoke pops from _by_token before removing from _items, so purge's `del self._by_token[session.token]` can raise KeyError; use pop(token, None) or add a lock."
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 37,
+      "line_end": 37,
+      "severity": "minor",
+      "summary": "`self._items.remove(session)` is an O(n) scan comparing dataclasses by value; a dict keyed by token would give O(1) removal if the list is only needed for ordered listing."
+    }
+  ],
+  "extract_cost_usd": 0.0169798
+}

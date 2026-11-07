@@ -1,0 +1,43 @@
+{
+  "case": "ml-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The default argument `device: torch.device = torch.device(\"cpu\")` is evaluated once at import time (reviewer says it is harmless because the default is immutable).",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "The finding itself says the default is harmless, so it describes no real defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "`fit` leaves the model in eval mode when it returns, which could surprise a caller that expects train mode afterwards.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Leaving the model in eval mode on return is a style or design concern, not incorrect behavior, since the answer key shows train() is re-enabled at the start of each epoch."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.015167900000000002
+}

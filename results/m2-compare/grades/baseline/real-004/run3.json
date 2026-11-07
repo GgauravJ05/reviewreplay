@@ -1,0 +1,45 @@
+{
+  "case": "real-004",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 697,
+      "line_end": 697,
+      "severity": "important",
+      "summary": "The state dict is captured at line 649 before the new fp32 upcast, so with cpu_ram_efficient_loading and mixed precision rank 0 broadcasts bf16/fp16 tensors while other ranks allocate fp32 receive buffers, which can hang, crash or corrupt weights.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the same defect: state dict captured before fp32 upcast, so rank 0 broadcasts bf16/fp16 while other ranks allocate fp32 buffers."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/fsdp/test_fsdp.py",
+      "line_start": 474,
+      "line_end": 474,
+      "severity": "minor",
+      "summary": "The new tests mock fully_shard and set cpu_ram_efficient_loading=False, so they never exercise the broken dtype-mismatch broadcast path.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests fail to cover the answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.034266000000000005
+}

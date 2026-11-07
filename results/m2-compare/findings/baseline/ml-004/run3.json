@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError if customers has duplicate customer_id values, so callers must be aware the function can raise."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If region has a categorical dtype, fillna(\"unknown\") raises because \"unknown\" is not an existing category."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "count on order_id skips NaN, so orders with null order_id are omitted from the orders count while their revenue is still summed; size() would count all rows."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "sum treats NaN amount_cents as 0, so such orders count toward orders but contribute no revenue."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "sort_values is not stable by default, so regions with equal revenue may appear in non-deterministic order; use kind=\"stable\" or a secondary sort key."
+    }
+  ],
+  "extract_cost_usd": 0.018077799999999998
+}

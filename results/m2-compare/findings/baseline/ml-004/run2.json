@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "fillna(\"unknown\") raises TypeError if customers[\"region\"] is categorical, since \"unknown\" isn't a listed category; cast to object first."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "Customers with a null region are also labeled \"unknown\", which contradicts the docstring saying \"unknown\" covers only customers missing from customers."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "(\"order_id\", \"count\") skips null order_id values; use \"size\" if every row should be counted."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "Sort uses the default non-stable quicksort, so regions with equal revenue may come out in varying order; pass kind=\"stable\"."
+    }
+  ],
+  "extract_cost_usd": 0.017875799999999997
+}

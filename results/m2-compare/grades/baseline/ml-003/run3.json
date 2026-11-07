@@ -1,0 +1,43 @@
+{
+  "case": "ml-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "`fit` returns only per-epoch validation accuracy and does not record training loss.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Not recording training loss is a design choice, not a defect causing incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "There are no tests for this file, and the reviewer only read the code without running it.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Lack of tests and not running the code is not a defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0147459
+}

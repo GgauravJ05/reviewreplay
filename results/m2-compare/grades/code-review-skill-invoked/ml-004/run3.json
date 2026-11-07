@@ -1,0 +1,79 @@
+{
+  "case": "ml-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "Using (\"order_id\", \"count\") skips null order_id values, so the order count is wrong if order_id can be null; \"size\" would count rows.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative; no evidence order_id can be null, and counting non-null ids is reasonable."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If region is a pandas Categorical dtype, fillna(\"unknown\") raises a TypeError because \"unknown\" isn't a category; it must be added first with .cat.add_categories.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative about Categorical dtype with no evidence in the change."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "Customers that exist but have a null region are also bucketed as \"unknown\", while the docstring only mentions missing customers, so the docstring is misleading.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Minor docstring nitpick, not an incorrect-behavior defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "There are no tests for this function.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Missing tests is not a defect and there are no answer-key bugs."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0159019
+}

@@ -1,0 +1,67 @@
+{
+  "case": "real-004",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 693,
+      "line_end": 693,
+      "severity": "important",
+      "summary": "The fp32 upcast runs before the move to meta, so every rank builds a full fp32 copy of trainable params while rank 0 also keeps the old low-precision original_sd, causing a large CPU RAM spike that defeats cpu_ram_efficient_loading.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Claims a RAM spike from upcast ordering; not the dtype mismatch between original_sd and sharded params, and can't verify."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 693,
+      "line_end": 693,
+      "severity": "minor",
+      "summary": "fsdp2_load_full_state_dict casts full_sd to the model's current dtype (fp32 after upcast), so loaded values keep only bf16 precision and fp32 master weights gain nothing from the checkpoint.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Precision-loss claim is speculative; checkpoint values are already bf16, and it isn't the stale original_sd dtype mismatch."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 693,
+      "line_end": 693,
+      "severity": "important",
+      "summary": "Only requires_grad params are upcast, so frozen params (e.g. LoRA base weights) stay bf16 while trainable ones become fp32, leaving mixed dtypes in an FSDP2 group that may need uniform dtype; tests don't cover this case.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Mixed dtype concern is speculative and differs from the original_sd stale dtype/broadcast hang bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    }
+  ],
+  "judge_cost_usd": 0.035546
+}

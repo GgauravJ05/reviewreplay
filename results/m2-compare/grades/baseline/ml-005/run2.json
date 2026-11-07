@@ -1,0 +1,47 @@
+{
+  "case": "ml-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The inner join drops orders whose customer_id is missing from segments, so revenue per segment is understated with no indication of the missing orders; a left join with a fill value like \"unknown\" is suggested.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known inner-join row-dropping issue, not the duplication bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "If segments has duplicate rows for a customer_id, the merge duplicates that customer's orders and inflates the summed amount_cents; deduplicate first or use validate=\"many_to_one\".",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Merge on customer_id with multiple segment rows per customer duplicates orders and inflates revenue, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.015365900000000002
+}

@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "minor",
+      "summary": "Default argument device=torch.device(\"cpu\") is evaluated once at definition time (reviewer says harmless since torch.device is immutable)."
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The change has no tests; a small smoke test of fit on random data should be added."
+    }
+  ],
+  "extract_cost_usd": 0.0155138
+}

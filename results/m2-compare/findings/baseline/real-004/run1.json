@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 690,
+      "line_end": 702,
+      "severity": "blocking",
+      "summary": "The fp32 upcast runs after original_sd = model.state_dict() is captured, so with cpu_ram_efficient_loading rank 0 broadcasts bf16/fp16 tensors while other ranks allocate fp32 receive buffers, causing mismatched dtypes in dist.broadcast (garbage weights, NCCL error or hang)."
+    },
+    {
+      "file": "tests/fsdp/test_fsdp.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new tests all set cpu_ram_efficient_loading = False, so the broadcast dtype-mismatch path is not covered and the bug would go undetected."
+    }
+  ],
+  "extract_cost_usd": 0.035636
+}

@@ -1,0 +1,27 @@
+{
+  "case": "py-007",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "billable_hours subtracts two aware datetimes sharing the same ZoneInfo, which uses wall-clock difference instead of real elapsed time, so sessions spanning a DST transition (spring forward, fall back, ambiguous fold times) are over- or under-billed; convert both to UTC before subtracting.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same cause: same-ZoneInfo aware datetime subtraction uses wall clock, misbilling DST-crossing sessions; fix is UTC conversion."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0152759
+}

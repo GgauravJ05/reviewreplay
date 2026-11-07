@@ -1,0 +1,25 @@
+{
+  "case": "py-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "unique_slug does not add its result to `taken`, so the caller must do it or two calls can return the same slug.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "No answer-key bugs and no code shown; the claim may be a design choice (caller manages `taken`), so it can't be confirmed as a real defect."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    }
+  ],
+  "judge_cost_usd": 0.0136579
+}

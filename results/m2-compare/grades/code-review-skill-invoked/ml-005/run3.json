@@ -1,0 +1,47 @@
+{
+  "case": "ml-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge doesn't check that customer_id is unique in segments, so a duplicated customer has their orders joined twice and revenue is silently double-counted (suggest validate=\"many_to_one\").",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes join on customer_id duplicating orders because segments has multiple rows per customer, double-counting revenue; same defect (though framed as duplicate customers rather than monthly rows)."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "Using how=\"inner\" silently drops orders whose customer has no row in segments, making segment totals lower than total revenue with no warning (suggest a left join with an \"unknown\" segment or an explicit unmatched-row check).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Inner join dropping unmatched orders is a listed known problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0155739
+}

@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 25,
+      "line_end": 28,
+      "severity": "important",
+      "summary": "summarize() iterates the one-shot generator from read_rows twice (any() at line 25 consumes rows, then the for loop at line 28 sees only the remainder), so totals and high-severity counts are wrong and the report can falsely say no high-severity events occurred."
+    },
+    {
+      "file": "audit/report.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No test covers summarize() with the generator-returning read_rows; the new test_read_rows_is_lazy only exercises the reader."
+    }
+  ],
+  "extract_cost_usd": 0.0157478
+}

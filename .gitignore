@@ -12,3 +12,6 @@ tmp/
 .cache/
 .mypy_cache/
 .ipynb_checkpoints/
+build/
+*.egg-info/
+dist/

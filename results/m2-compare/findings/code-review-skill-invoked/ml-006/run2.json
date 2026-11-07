@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "Lag and rolling features are not grouped by store_id (and rows may be unsorted or have missing dates), so values leak across stores and shift(7) may not mean same weekday last week; dropna only removes the first 7 rows of the whole frame."
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "test_calendar_features passes by coincidence because dropping the first 7 rows shifts out.loc[0] to 2026-01-08, which is also a Thursday; also test_lag_features uses a single store so it cannot catch the cross-store leakage."
+    }
+  ],
+  "extract_cost_usd": 0.0163218
+}

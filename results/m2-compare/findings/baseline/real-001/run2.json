@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 124,
+      "severity": "blocking",
+      "summary": "Overriding `__next__` on the runner's stdin wrapper to raise `EOFError` instead of `StopIteration` breaks all iteration over stdin (for loops, list(), click.File), causing commands to abort with exit code 1 after the last line."
+    },
+    {
+      "file": "tests/test_chain.py",
+      "line_start": 166,
+      "line_end": 167,
+      "severity": "minor",
+      "summary": "The test dropped `assert not result.exception` and slices off the last two lines with `[:-2]`, assuming the run ends in \"Aborted!\"; it would pass even if the pipeline failed for another reason, hiding the new EOF abort instead of supplying enough input."
+    }
+  ],
+  "extract_cost_usd": 0.0172398
+}

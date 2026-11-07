@@ -1,0 +1,67 @@
+{
+  "case": "real-003",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 194,
+      "severity": "blocking",
+      "summary": "The Fish completion script breaks because format_completion now emits three newline-separated lines per item, but Fish splits command substitution on newlines and iterates single lines, so metadata parsing fails and completion is broken for every command.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: newline-separated fields get split by fish command substitution, breaking metadata parsing."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 431,
+      "line_end": 435,
+      "severity": "minor",
+      "summary": "Escaping newlines as a literal \\n is lossy (indistinguishable from a literal backslash-n) and Fish does not unescape it, so users see a literal \\n in descriptions; replacing newlines with a space would be better.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Escaping newlines as literal \\n is lossy and displays literally in fish; a real, if minor, defect distinct from b1."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 190,
+      "line_end": 190,
+      "severity": "minor",
+      "summary": "The Fish script compares against \"_\" as the no-help sentinel, so a real help string that is exactly \"_\" is indistinguishable from no help.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A help string of exactly \"_\" is indistinguishable from the no-help sentinel; a real but minor edge case, not b1."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.017051900000000002
+}

@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "Using (\"order_id\", \"count\") skips null order_id values, so the order count is wrong if order_id can be null; \"size\" would count rows."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If region is a pandas Categorical dtype, fillna(\"unknown\") raises a TypeError because \"unknown\" isn't a category; it must be added first with .cat.add_categories."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "Customers that exist but have a null region are also bucketed as \"unknown\", while the docstring only mentions missing customers, so the docstring is misleading."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "There are no tests for this function."
+    }
+  ],
+  "extract_cost_usd": 0.0175098
+}

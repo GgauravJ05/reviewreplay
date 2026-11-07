@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 48,
+      "line_end": 49,
+      "severity": "important",
+      "summary": "Without a lock, purge_expired can race with revoke on another thread; revoke pops the token from _by_token, so purge_expired's `del self._by_token[session.token]` raises KeyError. That aborts the purge partway and leaves _items and _by_token out of sync."
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 37,
+      "line_end": 37,
+      "severity": "minor",
+      "summary": "revoke uses list.remove, which is O(n); this matters only with many live sessions."
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 46,
+      "line_end": 50,
+      "severity": "minor",
+      "summary": "purge_expired deletes from the middle of a list, which is O(n\u00b2) in the worst case; a dict or a single list rebuild would be O(n)."
+    }
+  ],
+  "extract_cost_usd": 0.0178038
+}

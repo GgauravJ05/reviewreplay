@@ -1,0 +1,45 @@
+{
+  "case": "py-007",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "billable_hours subtracts timezone-aware start/end in the same zone as wall-clock times, ignoring DST offset changes, so sessions crossing a DST switch are overbilled (spring forward) or undercounted (fall back); should convert to UTC before subtracting.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies same-zone aware datetime subtraction ignoring DST offset, fix via UTC conversion."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new tests have no session crossing a daylight-saving switch, so they don't catch the billing bug; a DST-crossing test case should be added.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests don't cover the DST bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0158639
+}

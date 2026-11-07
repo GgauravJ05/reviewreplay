@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "orders/model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "If an Order is built with a pre-populated events list, __post_init__ still appends a second 'created' event, so latest_status would wrongly return 'created' for an order that had already moved on (not triggered by current diff)."
+    }
+  ],
+  "extract_cost_usd": 0.014767800000000001
+}

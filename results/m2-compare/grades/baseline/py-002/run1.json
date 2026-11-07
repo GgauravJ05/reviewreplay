@@ -1,0 +1,47 @@
+{
+  "case": "py-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` skips the ownership check (uses `repo.get` instead of `self._owned`) and never uses `user_id`, so any user can rename another user's document by id.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: rename uses repo.get instead of _owned, allowing cross-user rename."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "important",
+      "summary": "Because `rename` bypasses `_owned`, it leaks which document ids exist: a nonexistent id raises a repo error while another user's id succeeds, whereas `_owned` would raise `NotFound` in both cases.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same root cause (bypassing _owned); the id-existence leak is the stated side effect in the key."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.015059900000000001
+}

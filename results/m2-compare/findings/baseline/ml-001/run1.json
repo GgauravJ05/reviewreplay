@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "build_features standardizes using mean/std of the whole DataFrame before train_test_split, leaking test data into training and making test AUC optimistic."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Training mean/std are not saved, so serving on new data computes its own statistics and features won't match what the model was trained on."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Zero or NaN std (constant column or single-row frame) is not handled, producing NaN/inf features that make LogisticRegression.fit raise a ValueError."
+    }
+  ],
+  "extract_cost_usd": 0.0161838
+}

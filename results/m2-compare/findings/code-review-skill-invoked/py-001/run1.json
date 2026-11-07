@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "blocking",
+      "summary": "The free-shipping check compares subtotal in cents against FREE_SHIPPING_THRESHOLD, which is in whole dollars (50), so the effective threshold is 50 cents and nearly all carts get free shipping."
+    },
+    {
+      "file": "tests/test_checkout.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "Tests miss the unit-mismatch bug: the only non-empty-cart test uses a $120 cart that passes under either unit, and there are no tests for carts below or exactly at the threshold."
+    }
+  ],
+  "extract_cost_usd": 0.0170298
+}

@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 208,
+      "line_end": 208,
+      "severity": "blocking",
+      "summary": "The path-traversal check uses startswith(base) without a trailing separator, so sibling directories like /cache/out_evil pass and members can be written outside the output directory; the same flawed check appears in the Rar (261), 7z (337) and tar (108) checks."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 364,
+      "line_end": 364,
+      "severity": "important",
+      "summary": "If all members are blocked, the 7z targets list is empty and py7zr may treat an empty list as no filter, extracting everything including malicious entries; extraction should be skipped when targets is empty."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 208,
+      "line_end": 208,
+      "severity": "minor",
+      "summary": "Blocked members are only logged with logger.error and skipped, so extraction reports success with a partial result instead of raising an error."
+    }
+  ],
+  "extract_cost_usd": 0.0175138
+}

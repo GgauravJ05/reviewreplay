@@ -1,0 +1,85 @@
+{
+  "case": "real-003",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "The Fish completion script breaks because format_completion now emits three lines per item (type, value, help), but Fish splits output into one list element per line, so the loop misparses items, `test` errors on missing indices, and no completions are produced.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes newline-separated fields being split per line by fish, breaking all completions."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 434,
+      "line_end": 434,
+      "severity": "minor",
+      "summary": "A help string that is literally `_` is indistinguishable from the 'no help' sentinel and is silently dropped (same problem in the zsh format).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A help string equal to '_' is dropped by the sentinel; a real, if minor, defect in the changed format."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 434,
+      "line_end": 434,
+      "severity": "minor",
+      "summary": "Escaping a newline as the two characters `\\n` shows a literal `\\n` in Fish's completion description; replacing newlines with a space would display better.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Display preference for newline escaping; not an incorrect behavior, and not the key bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "CHANGES.rst",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The `:issue:` changelog entry has no `:pr:` reference (cosmetic).",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Cosmetic changelog nit, not a code defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0173999
+}

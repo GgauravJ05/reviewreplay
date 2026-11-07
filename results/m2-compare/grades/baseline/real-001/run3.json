@@ -1,0 +1,99 @@
+{
+  "case": "real-001",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 124,
+      "severity": "blocking",
+      "summary": "_NamedTextIOWrapper.__next__ raises EOFError instead of StopIteration, so iterating sys.stdin under CliRunner crashes at end of input and breaks normal loop termination; the fix is to leave __next__ alone and raise EOFError in visible_input/hidden_input when readline() returns an empty string.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: __next__ raising EOFError breaks stdin iteration; fix is to raise EOFError only in prompt functions."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_chain.py",
+      "line_start": 166,
+      "line_end": 167,
+      "severity": "important",
+      "summary": "The test now slices off the last two output lines (empty line and 'Aborted!') instead of asserting no exception, so pipeline tests pass despite now aborting on prompt EOF, hiding a regression.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known loosened test_chain.py test masking the abort."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_termui.py",
+      "line_start": 245,
+      "line_end": 245,
+      "severity": "important",
+      "summary": "Tests were edited to add input because old inputs (empty or none) no longer work, a backward-incompatible change for users' existing tests that CHANGES.rst does not mention.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Prompts hitting EOF with no input aborting is intended upstream behavior; changelog complaint is not a code defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_termui.py",
+      "line_start": 454,
+      "line_end": 454,
+      "severity": "important",
+      "summary": "Tests were edited to add input because old inputs (empty or none) no longer work, a backward-incompatible change for users' existing tests that CHANGES.rst does not mention.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Same as above; intended behavior change, not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new test_prompts_eof only checks exit_code == 1 and does not cover iterating stdin, which is where the __next__ bug shows up.",
+      "index": 4,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test coverage gap for the answer-key bug, which is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0187279
+}

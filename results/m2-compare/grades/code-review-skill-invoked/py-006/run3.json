@@ -1,0 +1,45 @@
+{
+  "case": "py-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "pricing/store.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "load_rules is cached with lru_cache and returns a mutable list, so price_quote's in-place `rules += active_promos(now)` in engine.py:23 permanently appends promos to the shared cached list, causing stacked and expired promos to keep applying and wrong discounts (also visible in the listing endpoint).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies cached mutable list being extended in place by price_quote, accumulating promos."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "cache_clear() only affects the current process, so multiple workers keep serving stale rules without expiry, and a load_rules call racing with save_rules can re-cache old rows after the clear; a TTL is suggested.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Per-process cache staleness across workers is a known problem; the race point is an extra but the core matches."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0158539
+}

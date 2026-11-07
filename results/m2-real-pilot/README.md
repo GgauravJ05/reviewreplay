@@ -7,10 +7,10 @@ cases could not? Run: 3 real cases × baseline × 3 runs = **9 reviews**, `claud
 ## How real cases work
 
 - A case names a repo, the **bug-introducing commit** and the **fix commit**; no code is stored here.
-- `reviewbench` exports the parent and the introducing commit with `git archive` (no history, so
+- `reviewreplay` exports the parent and the introducing commit with `git archive` (no history, so
   the later fix can't leak), and the reviewer sees the whole project (143–341 files) with the
   introducing change uncommitted.
-- Candidates come from `reviewbench mine <repo>`: fix commits whose message signals a regression,
+- Candidates come from `reviewreplay mine <repo>`: fix commits whose message signals a regression,
   traced back by (a) the commit/PR the message names and (b) `git blame` of the lines the fix
   rewrites (SZZ). Both agreeing is the strongest signal.
 - Reviewers stay read-only (Read/Grep/Glob, `git diff/log/show/status`); third-party code is never
@@ -59,5 +59,5 @@ cases could not? Run: 3 real cases × baseline × 3 runs = **9 reviews**, `claud
   noise.
 - **Compare reviewers on precision and noise**, not recall: run code-review-skill (invoked) on these
   cases and the M1/M2 sets; its verify-before-reporting step (PR #34) targets exactly this.
-- **More real cases**: mine more repos in the background (`reviewbench mine`), prioritising agreeing
+- **More real cases**: mine more repos in the background (`reviewreplay mine`), prioritising agreeing
   candidates; aim for 10–20.

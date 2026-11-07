@@ -1,0 +1,45 @@
+{
+  "case": "py-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "The free-shipping check compares a cents subtotal to FREE_SHIPPING_THRESHOLD, which is in whole dollars (50). Shipping is therefore free for any cart of 50 cents or more.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies cents vs whole-dollar threshold mismatch causing free shipping at 50 cents."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_checkout.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests miss the unit mismatch. The only non-empty test uses a $120 cart, and no test covers a cart below the threshold that should pay shipping, or one exactly at the threshold.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests fail to cover the answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0151139
+}

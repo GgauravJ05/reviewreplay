@@ -1,0 +1,65 @@
+{
+  "case": "real-002",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 208,
+      "line_end": 208,
+      "severity": "blocking",
+      "summary": "The path-traversal check uses startswith(base) without a trailing separator, so sibling directories like /cache/out_evil pass and members can be written outside the output directory; the same flawed check appears in the Rar (261), 7z (337) and tar (108) checks.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies startswith(base) without trailing separator allowing sibling directories, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 364,
+      "line_end": 364,
+      "severity": "important",
+      "summary": "If all members are blocked, the 7z targets list is empty and py7zr may treat an empty list as no filter, extracting everything including malicious entries; extraction should be skipped when targets is empty.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Speculative about py7zr treating an empty targets list as no filter; cannot verify from given info."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 208,
+      "line_end": 208,
+      "severity": "minor",
+      "summary": "Blocked members are only logged with logger.error and skipped, so extraction reports success with a partial result instead of raising an error.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known problem that bad members are only logged and skipped, yielding partial extraction."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0170899
+}

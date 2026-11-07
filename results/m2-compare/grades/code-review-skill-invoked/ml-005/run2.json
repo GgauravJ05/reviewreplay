@@ -1,0 +1,65 @@
+{
+  "case": "ml-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge uses how=\"inner\", so orders whose customer_id is missing from segments are silently dropped, understating total revenue.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known inner-join dropping orders without segment rows."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "If segments has multiple rows per customer_id, the merge duplicates each order and double-counts revenue.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Multiple segment rows per customer duplicate orders and overstate revenue, same as the key."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "groupby(\"segment\") drops NaN segments by default, so after a left merge without filling, those rows are excluded unless dropna=False is passed.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known groupby NaN-dropping problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0158119
+}

@@ -1,0 +1,123 @@
+{
+  "case": "ml-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 18,
+      "severity": "blocking",
+      "summary": "Lag and rolling features (shift(1), shift(7), rolling mean) are computed over the whole frame rather than per store_id, leaking data across stores, and dropna only removes the first 7 rows overall so contaminated rows remain.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies lag/rolling computed over whole frame not per store, cross-store contamination and dropna issue."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Code assumes rows are sorted by date with no missing days; without sorting by store_id and date, lag7 is not the same weekday last week when days are missing.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Missing-day gap assumption is a known other problem, though the sorting remark partly touches b1; primarily the gap issue."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 6,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "build_features requires a sales column, so a future-dated prediction frame without sales raises KeyError, and if sales are NaN the dropna removes exactly the rows to be predicted.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Prediction-frame without sales is speculative design concern, not a defect in this change."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 6,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Multi-step forecasts need recursive or other handling for lag1 and mean7 beyond day +1, and none of this is covered by tests.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Multi-step forecasting handling is speculative and not the described defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 13,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "test_calendar_features passes only by coincidence: with n=10, 7 rows are dropped so loc[0] is 2026-01-08, also a Thursday; it no longer tests the first date and will break if the lag window changes.",
+      "index": 4,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test passing by coincidence is a minor test-quality claim, not a real incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "test_lag_features uses a single store so it cannot catch the cross-store leakage bug; a two-store test is needed.",
+      "index": 5,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 5,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Tests failing to cover the cross-store bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.019809900000000002
+}

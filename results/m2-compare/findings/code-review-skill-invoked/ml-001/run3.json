@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "build_features standardizes with the mean and std of the whole dataset before the train/test split, which leaks test data into scaling, makes AUC optimistic, and prevents reuse of training statistics at prediction time."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Standardizing a constant column or single-row frame gives zero or NaN std, producing NaN/inf values that make LogisticRegression raise an error (unconfirmed on the user's data)."
+    }
+  ],
+  "extract_cost_usd": 0.0157738
+}

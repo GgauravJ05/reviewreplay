@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "StratifiedKFold splits by visit rather than patient, so the same patient appears in both training and test folds, leaking patient-level features and inflating PR-AUC; should use StratifiedGroupKFold with patient_id groups."
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 22,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "cross_validate prints the score summary itself instead of leaving printing to the caller, who already receives the scores list."
+    }
+  ],
+  "extract_cost_usd": 0.0154478
+}

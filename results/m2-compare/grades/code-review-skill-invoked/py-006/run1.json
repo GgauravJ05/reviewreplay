@@ -1,0 +1,83 @@
+{
+  "case": "py-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the cached list returned by `load_rules` in place, so promos accumulate in the tenant's cached rules, expired promos persist, discounts compound, and `list_rules_handler` returns promos as tenant rules.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies in-place extend of cached list causing promo accumulation, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "The rules cache is per-process and `save_rules` only invalidates it in the writing process, so other workers serve stale rules indefinitely with no expiry.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known stale per-process cache problem, not the b1 mutation bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No test calls `price_quote` twice with an active promo, so the cache corruption bug goes undetected.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test-coverage gap for an answer-key bug counts as valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "The last `save_rules` call in `test_save_invalidates_cache` has no assertion after it, so it verifies nothing.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Missing trailing assertion in a test is a minor test quality nit, not a defect in changed code behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0174199
+}

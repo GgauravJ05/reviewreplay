@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "Fish completion script breaks because the three-line completion output is already split per line by `set -l response (...)`, so `string split \\n` yields wrong items and `$metadata[2]`/`$metadata[3]` are empty, failing completion for every command."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 436,
+      "line_end": 436,
+      "severity": "important",
+      "summary": "The string `_` is used as a sentinel for 'no help', so an option whose real help text is `_` loses its description."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 436,
+      "line_end": 436,
+      "severity": "important",
+      "summary": "Newlines in help text are replaced with a literal `\\n`, so Fish displays a visible backslash-n rather than a line break."
+    },
+    {
+      "file": "tests/test_shell_completion.py",
+      "line_start": 559,
+      "line_end": 559,
+      "severity": "important",
+      "summary": "New tests only check the Python output format and never execute the Fish script, so they pass despite the script being unable to parse the new format."
+    }
+  ],
+  "extract_cost_usd": 0.0178958
+}

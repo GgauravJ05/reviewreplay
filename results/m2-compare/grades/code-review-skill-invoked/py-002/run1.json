@@ -1,0 +1,65 @@
+{
+  "case": "py-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` calls `self.repo.get(doc_id)` instead of `self._owned(user_id, doc_id)`, so there is no ownership check and any authenticated user can rename any document by id.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies rename using repo.get instead of _owned, allowing any user to rename others' documents."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "Because `rename` skips `_owned`, it never raises `NotFound` for other users' documents, and a non-existent id raises the repo's own error, so callers can tell which document ids exist.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same root cause (skipping _owned), describing the id existence leak part of the bug."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "In `rename`, title validation runs before the ownership check, so a bad title gives `ValueError` before `NotFound`. This is inconsistent with the other methods' error order.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Error ordering nitpick with no real incorrect behavior; not the key bug and line unspecified."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0159819
+}

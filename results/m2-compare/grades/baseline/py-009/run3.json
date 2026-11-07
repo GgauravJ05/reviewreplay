@@ -1,0 +1,49 @@
+{
+  "case": "py-009",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 36,
+      "line_end": 47,
+      "severity": "minor",
+      "summary": "Possible race if purge_job runs on a separate thread: revoke pops from _by_token before removing from _items, so purge's `del self._by_token[session.token]` can raise KeyError; use pop(token, None) or add a lock.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2",
+        "ok3"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Race without locking is the known pre-existing no-locking design problem; fair to report."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 37,
+      "line_end": 37,
+      "severity": "minor",
+      "summary": "`self._items.remove(session)` is an O(n) scan comparing dataclasses by value; a dict keyed by token would give O(1) removal if the list is only needed for ordered listing.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [
+        "ok3"
+      ],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known O(n) _items.remove in revoke."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0155099
+}

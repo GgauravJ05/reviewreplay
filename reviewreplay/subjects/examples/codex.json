@@ -1,0 +1,5 @@
+{
+  "name": "codex",
+  "command": ["codex", "exec", "--sandbox", "read-only", "{prompt}"],
+  "credit": "OpenAI Codex CLI. Copy into subjects/ to enable; needs `codex` installed and logged in."
+}

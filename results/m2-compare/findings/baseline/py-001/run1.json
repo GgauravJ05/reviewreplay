@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "Unit mismatch: FREE_SHIPPING_THRESHOLD (50, whole dollars) is compared with cart.subtotal_cents() (cents), making the effective threshold 50 cents so almost all non-empty carts ship free."
+    },
+    {
+      "file": "tests/test_checkout.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Missing tests: the only non-empty test uses a 12,000-cent order that passes under both buggy and correct logic; need tests for an order under $50 (expect 799 cents shipping) and one at exactly $50."
+    }
+  ],
+  "extract_cost_usd": 0.0161078
+}

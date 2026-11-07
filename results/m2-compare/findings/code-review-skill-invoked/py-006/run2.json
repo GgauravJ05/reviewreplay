@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the list returned by the now lru_cached `load_rules`, so promos accumulate in the cached tenant rules, causing repeated discounts, never-expiring promos, and promos showing up in list_rules_handler."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "Per-process cache with no expiry means other workers/hosts keep serving stale rules after save_rules until restart, since cache_clear only runs in the saving process."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "important",
+      "summary": "Cache is cleared after put_rules without a lock, so a concurrent load_rules can cache stale rules just after the clear; the clear also drops all tenants' entries (performance cost only)."
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "Test ends with a second save_rules call and no assertion, no test calls price_quote twice (so the cache mutation bug passes), and the test leaves shared in-memory DB with globex's rule set to 12."
+    }
+  ],
+  "extract_cost_usd": 0.018899799999999998
+}

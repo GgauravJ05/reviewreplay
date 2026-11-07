@@ -1,0 +1,27 @@
+{
+  "case": "ml-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "Cross-validation uses StratifiedKFold, which splits by visit and ignores patient_id, so the same patient can appear in both train and test folds, causing data leakage and an inflated PR-AUC; it should use StratifiedGroupKFold with groups=df[\"patient_id\"] passed to cv.split.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies row-level StratifiedKFold leaking patients across folds and proposes StratifiedGroupKFold by patient_id, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0144699
+}

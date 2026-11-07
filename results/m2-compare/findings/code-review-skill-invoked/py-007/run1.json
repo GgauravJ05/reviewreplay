@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "billable_hours subtracts timezone-aware start/end in the same zone as wall-clock times, ignoring DST offset changes, so sessions crossing a DST switch are overbilled (spring forward) or undercounted (fall back); should convert to UTC before subtracting."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new tests have no session crossing a daylight-saving switch, so they don't catch the billing bug; a DST-crossing test case should be added."
+    }
+  ],
+  "extract_cost_usd": 0.0158518
+}

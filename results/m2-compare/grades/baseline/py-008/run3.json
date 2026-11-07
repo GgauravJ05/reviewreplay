@@ -1,0 +1,63 @@
+{
+  "case": "py-008",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 23,
+      "line_end": 28,
+      "severity": "blocking",
+      "summary": "summarize() iterates the one-shot generator returned by read_rows twice (any() pre-check then a for loop), so rows up to and including the first high-severity row are dropped, giving wrong total/by_actor/high values and a false 'No high-severity audit events' report.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the double iteration of the one-shot generator dropping rows through the first high-severity one."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "audit/export.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Parse errors now surface mid-iteration rather than at the read_rows() call, so callers wrapping only the call in try/except would no longer catch them (reviewer found no such callers).",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known problem that parse errors now surface mid-iteration rather than at the call."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "test_read_rows_is_lazy does not close the generator, leaving the file handle open until garbage collection (harmless in CPython).",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Relates to the known issue of the generator leaving the file handle open, though it is in a test."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0166319
+}

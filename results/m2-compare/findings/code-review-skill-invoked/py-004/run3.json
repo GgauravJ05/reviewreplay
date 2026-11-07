@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "unique_slug does not add its result to `taken`, so the caller must do it or two calls can return the same slug."
+    }
+  ],
+  "extract_cost_usd": 0.015357800000000001
+}

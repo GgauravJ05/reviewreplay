@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates in place the list that `lru_cache` now returns from `load_rules`, so promos pile up in the cache, are re-applied on every quote (including expired ones), and leak into the rules endpoint at api.py:18."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 11,
+      "line_end": 11,
+      "severity": "important",
+      "summary": "`cache_clear()` only invalidates the cache in the calling process, and `lru_cache` has no expiry, so other workers or hosts keep serving stale rules and may quote wrong prices."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 11,
+      "line_end": 13,
+      "severity": "minor",
+      "summary": "`cache_clear()` clears every tenant's cached entry rather than only the tenant being saved, which is correct but wasteful."
+    }
+  ],
+  "extract_cost_usd": 0.0179838
+}

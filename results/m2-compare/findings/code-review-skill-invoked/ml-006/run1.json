@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "Lag and rolling features (shift(1), shift(7), rolling(7)) are computed over the whole frame without grouping by store_id, so they mix data across stores, and only the first 7 rows overall are dropped instead of the first week per store."
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "test_lag_features uses a single-store frame, so it passes despite the ungrouped shift bug; it needs a multi-store frame in (date, store_id) order."
+    }
+  ],
+  "extract_cost_usd": 0.0160878
+}

@@ -1,0 +1,83 @@
+{
+  "case": "py-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the list returned by the now lru_cached `load_rules`, so promos accumulate in the cached tenant rules, causing repeated discounts, never-expiring promos, and promos showing up in list_rules_handler.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies in-place extend of the cached list accumulating promos, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "Per-process cache with no expiry means other workers/hosts keep serving stale rules after save_rules until restart, since cache_clear only runs in the saving process.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known stale-cache across processes problem, not b1."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "important",
+      "summary": "Cache is cleared after put_rules without a lock, so a concurrent load_rules can cache stale rules just after the clear; the clear also drops all tenants' entries (performance cost only).",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Race between put_rules and cache_clear is a plausible real defect in the changed code, though not in the key."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "Test ends with a second save_rules call and no assertion, no test calls price_quote twice (so the cache mutation bug passes), and the test leaves shared in-memory DB with globex's rule set to 12.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Notes tests fail to cover the cache mutation bug, which is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.017599899999999998
+}

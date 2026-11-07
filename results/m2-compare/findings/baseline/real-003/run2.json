@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "The Fish template loops over newline-split output, but format_completion now emits three newline-separated lines per completion (type, value, help). Each iteration therefore sees one line, so metadata indexes are unset or out of range and Fish completion breaks."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 434,
+      "line_end": 435,
+      "severity": "important",
+      "summary": "Newlines are escaped as a literal backslash-n, and nothing in the Fish script reverses this. Descriptions show literal \\n text and values containing newlines are altered."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 433,
+      "line_end": 433,
+      "severity": "important",
+      "summary": "The \"_\" sentinel for \"no help\" is overloaded. An option whose real help text is exactly \"_\" loses its description, and the template's `!= \"_\"` check at line 190 has the same problem."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 429,
+      "line_end": 429,
+      "severity": "minor",
+      "summary": "The `.. versionchanged:: 8.3` note should say 8.4, since CHANGES.rst lists this change as Unreleased after 8.3.3."
+    },
+    {
+      "file": "CHANGES.rst",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new CHANGES.rst entry has no :pr: reference."
+    }
+  ],
+  "extract_cost_usd": 0.019977799999999997
+}

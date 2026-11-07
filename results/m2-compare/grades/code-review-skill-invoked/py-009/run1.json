@@ -1,0 +1,45 @@
+{
+  "case": "py-009",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "`revoke` uses `list.remove`, which is O(n) and compares dataclasses by equality; this could be slow if session counts grow, so `_items` could be made a dict.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok3"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known O(n) list.remove cost in revoke."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new `revoke` and `purge_expired` methods are not thread-safe. If the scheduler runs `purge_job` on a separate thread while handlers call `revoke`, the list could be corrupted, and a lock would be needed.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known lack of locking/thread safety in the store."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0154099
+}

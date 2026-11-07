@@ -1,0 +1,45 @@
+{
+  "case": "ml-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "Lag and rolling features are not grouped by store_id (and rows may be unsorted or have missing dates), so values leak across stores and shift(7) may not mean same weekday last week; dropna only removes the first 7 rows of the whole frame.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies lag/rolling features not grouped by store_id, causing cross-store leakage, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "test_calendar_features passes by coincidence because dropping the first 7 rows shifts out.loc[0] to 2026-01-08, which is also a Thursday; also test_lag_features uses a single store so it cannot catch the cross-store leakage.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Notes the single-store test cannot catch the cross-store leakage, which counts as a test-coverage finding for the answer-key bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.016351900000000003
+}

@@ -3,8 +3,8 @@ import csv
 import shutil
 from pathlib import Path
 
-from reviewbench.cases import load_cases
-from reviewbench.label import label_sheet
+from reviewreplay.cases import load_cases
+from reviewreplay.label import label_sheet
 
 ROOT = Path(__file__).resolve().parent.parent
 SHEET = ROOT / "results" / "m1-pilot" / "labels.csv"

@@ -1,0 +1,85 @@
+{
+  "case": "ml-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Lag and rolling features (shift(1), shift(7), shift(1).rolling(7)) are computed over the whole frame rather than per store_id, so each store's first rows take lags from the previous store's last days, and dropna only removes the first 7 rows overall, leaving leaked values as training data.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Names the core defect: shifts/rolling over the whole frame rather than grouped per store, mixing stores."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "The code never sorts by (store_id, date) so shifts are positional and silently wrong if input is unsorted; missing dates also make lag7 refer to more than 7 days back.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Focuses on positional shifts without per-store sort; it's the same cause (not per store in date order), though framed around unsorted input and gaps."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "test_lag_features only uses a single store with sorted, contiguous dates, so neither the cross-store leakage nor the ordering bug is caught; a two-store test case is needed.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test coverage gap for the answer-key bug, always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "build_features now drops the first 7 rows, so callers expecting output length to equal input length will break; test_calendar_features passes only by coincidence because out.loc[0] is now 2026-01-08, also a Thursday.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Dropping first 7 rows changing output length is a real consequence (known dropna issue), not the cross-store lag bug itself."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.018369899999999998
+}

@@ -1,0 +1,45 @@
+{
+  "case": "py-007",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "billable_hours subtracts two datetimes sharing the same ZoneInfo, so Python uses wall-clock difference and ignores UTC offset, producing wrong durations across DST changes (undercharging on fall-back, overcharging on spring-forward).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies same-tzinfo wall-clock subtraction causing wrong duration across DST at invoice.py:19."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No test covers a session that spans a daylight-saving change; a test should be added.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Reports missing test coverage for the DST bug, which counts as valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0158039
+}

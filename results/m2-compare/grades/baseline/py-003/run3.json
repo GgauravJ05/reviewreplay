@@ -1,0 +1,25 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "orders/model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "If an Order is built with a pre-populated events list, __post_init__ still appends a second 'created' event, so latest_status would wrongly return 'created' for an order that had already moved on (not triggered by current diff).",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "The finding is self-described as not triggered by the current diff, concerns unchanged code at model.py with no new effect, and matches no answer-key bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.014199900000000001
+}

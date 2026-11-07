@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 25,
+      "line_end": 28,
+      "severity": "important",
+      "summary": "Now that read_rows returns a one-shot generator, the any() check at line 25 consumes rows up to and including the first high-severity row, so the loop at line 28 skips them. This drops the first high event from summary.high and undercounts total and by_actor, and it can wrongly report a quiet day."
+    }
+  ],
+  "extract_cost_usd": 0.0158378
+}

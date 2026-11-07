@@ -1,0 +1,67 @@
+{
+  "case": "ml-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "train.py",
+      "line_start": 15,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "build_features is called on the whole dataset before the train/test split, so scaling statistics include test rows and leak test data, inflating test AUC; fitted statistics are also never saved.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies build_features called before split so test stats leak into scaling."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Mean and std are recomputed on every call rather than fit once and reused, so single-row inputs get NaN std (all numeric features NaN) and batches are scaled with their own statistics, shifting predictions between training and inference.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes train/serve skew and single-row NaN std, which are known other problems, not the leakage bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "Zero-std (constant) columns produce 0/0 = NaN, which would make LogisticRegression.fit fail with 'Input contains NaN'; depends on the data, as no constant column was seen currently.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Zero-variance column NaN is a known other problem, not the leakage."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0162099
+}

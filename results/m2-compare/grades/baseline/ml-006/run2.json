@@ -1,0 +1,63 @@
+{
+  "case": "ml-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "Lag and rolling features are computed over the whole frame without grouping by store_id or sorting by date, so later stores' first rows take lags from the previous store and unsorted input yields wrong lags.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies lags computed across whole frame without grouping by store, mixing stores' values."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 6,
+      "line_end": 6,
+      "severity": "important",
+      "summary": "FEATURES now requires past sales, so build_features on a future-dated frame without sales yields all-NaN lag columns that dropna empties; even with history appended, sales_lag1 and sales_mean7 are only valid one day ahead (risk, not confirmed).",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative forecasting-time concern about future frames, not the grouping defect; labeled as unconfirmed risk."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 13,
+      "line_end": 13,
+      "severity": "important",
+      "summary": "test_calendar_features passes only by coincidence after the first 7 rows are dropped (2026-01-08 is also a Thursday in January), and the new lag test uses a single store so nothing covers the multi-store lag bug.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Notes tests fail to cover the multi-store lag bug, which counts as valid."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0171599
+}

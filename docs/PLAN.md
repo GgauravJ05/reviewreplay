@@ -1,8 +1,8 @@
-# ReviewBench — Design Plan
+# ReviewReplay — Design Plan
 
 Status: planning · Repo: private until launch · Written 2026-11-06
 
-ReviewBench measures whether an AI code reviewer actually helps. It runs a reviewer
+ReviewReplay measures whether an AI code reviewer actually helps. It runs a reviewer
 (Claude with no skill, Claude with a review skill, Claude Code's built-in `/code-review`, …)
 on code changes where the right answer is already known, then scores what the reviewer
 caught, what it got wrong, and what it cost.
@@ -121,12 +121,12 @@ can tell a decoy hit apart from an ordinary false alarm.
   Candidate sources: BugsInPy (Python), Defects4J (Java), plus hand-picked fixes. Check each source's
   license before including it.
 - **Implemented (M2):** real cases store only `repo`, `commit` (introducing) and `fix` in `case.json`;
-  the code is exported from git without history. `reviewbench mine` finds candidates by fix-message
+  the code is exported from git without history. `reviewreplay mine` finds candidates by fix-message
   references and blame. See [ADDING_A_CASE.md](ADDING_A_CASE.md#real-cases).
 - **Contamination:** real bugs from popular repos may be in the model's training data.
   Report **real** and **planted** scores separately, always.
 
-### 3.5 Quality gates for a case (enforced by `reviewbench check`)
+### 3.5 Quality gates for a case (enforced by `reviewreplay check`)
 
 - `change.patch` applies cleanly to `base/`.
 - Every `truth.json` line range exists in the post-change file.
@@ -264,7 +264,7 @@ Per subject, per track, per case kind:
 ## 6. Repository layout
 
 ```
-reviewbench/
+reviewreplay/
   README.md
   docs/
     PLAN.md                 # this file
@@ -276,8 +276,8 @@ reviewbench/
   prompts/
     extractor.md            # fixed extraction prompt
     judge.md                # fixed judge rubric
-  reviewbench/              # Python package
-    cli.py                  # `reviewbench check | run | grade | report`
+  reviewreplay/              # Python package
+    cli.py                  # `reviewreplay check | run | grade | report`
     cases.py                # load + validate cases
     workspace.py            # ① build isolated workspaces
     runner.py               # ② call the Claude CLI, capture outputs
@@ -298,10 +298,10 @@ Python 3.11+, standard library only (M1). `pytest` for tests; plots deferred.
 Commands:
 
 ```bash
-reviewbench check                                     # validate all cases
-reviewbench run --subjects baseline,code-review-skill --cases cases/python --runs 3
-reviewbench grade results/2026-11-20-a
-reviewbench report results/2026-11-20-a
+reviewreplay check                                     # validate all cases
+reviewreplay run --subjects baseline,code-review-skill --cases cases/python --runs 3
+reviewreplay grade results/2026-11-20-a
+reviewreplay report results/2026-11-20-a
 ```
 
 Runs resume: a run that stops halfway continues from the last finished review.
@@ -363,6 +363,6 @@ respond before anything is posted publicly.
 ## 11. Open decisions
 
 1. **Model for runs:** Sonnet (cheaper, more runs) vs Opus (stronger reviewer). Proposal: Sonnet for M1–M2, one Opus comparison later.
-2. **License for ReviewBench at launch:** MIT for code, CC BY 4.0 for cases.
+2. **License for ReviewReplay at launch:** MIT for code, CC BY 4.0 for cases.
 3. **Judge model:** same family as the reviewer (simpler) or different (less self-preference). Proposal: Claude for M1, measure agreement, revisit if κ is low.
 4. **Where `builtin-code-review` fits:** ~~M0 decides~~ M0 showed the built-in skills are present in every run (they ship with Claude Code). `builtin-code-review` is run as an **invoked** subject (`/code-review`); every other run logs whether it was triggered.

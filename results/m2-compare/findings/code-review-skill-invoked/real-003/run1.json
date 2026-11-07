@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "The Fish script still iterates one line per completion, but format_completion now emits three lines (type, value, help) per item. The script therefore errors or yields no candidates for every command."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 435,
+      "line_end": 435,
+      "severity": "important",
+      "summary": "format_completion replaces real newlines with a literal backslash-n in the value and help, and Fish never reverses this. Values containing newlines are inserted incorrectly, and descriptions show a literal \\n."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The test test_fish_multiline_help_complete only checks that \\n appears in the help line. It never runs the Fish script, so it passes despite the parsing bug."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The docstring says versionchanged:: 8.3, but CHANGES.rst lists the change under Unreleased, after 8.3.3, so the version number is probably wrong."
+    }
+  ],
+  "extract_cost_usd": 0.0197438
+}

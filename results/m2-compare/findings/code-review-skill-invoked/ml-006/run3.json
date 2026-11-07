@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "Lag features (shift(1), shift(7), rolling mean) are computed over the whole frame instead of per store, so interleaved rows make lags use another store's sales; should sort by [store_id, date] and use groupby(\"store_id\")."
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "dropna only removes the first 7 rows overall rather than each store's first week, leaving rows with lag values taken from other stores; per-store grouping is needed."
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "Tests don't catch the cross-store bug: test_calendar_features passes by coincidence with a misleading comment about 2026-01-01, and the lag test uses only one store; a two-store test is needed."
+    }
+  ],
+  "extract_cost_usd": 0.0172178
+}

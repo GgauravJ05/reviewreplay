@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use ReviewReplay, please cite it as below."
+title: "ReviewReplay: benchmark AI code reviewers on the bugs your repository actually shipped"
+type: software
+authors:
+  - given-names: Gaurav
+    family-names: Jadhav
+    alias: GgauravJ05
+repository-code: "https://github.com/GgauravJ05/reviewreplay"
+license: MIT
+version: 0.1.0
+date-released: 2026-11-07
+keywords:
+  - ai code review
+  - llm evaluation
+  - code review benchmark
+  - claude code
+  - szz
+  - regression bugs

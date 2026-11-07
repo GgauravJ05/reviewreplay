@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 697,
+      "line_end": 697,
+      "severity": "important",
+      "summary": "The fp32 upcast happens after original_sd is captured (line 649), so with cpu_ram_efficient_loading and bf16/fp16 weights rank 0 broadcasts low-precision tensors while other ranks allocate fp32 buffers; the dtype mismatch could hang NCCL or corrupt data."
+    },
+    {
+      "file": "tests/fsdp/test_fsdp.py",
+      "line_start": 474,
+      "line_end": 474,
+      "severity": "minor",
+      "summary": "The new tests use cpu_ram_efficient_loading=False and mock fully_shard, so they never reach fsdp2_load_full_state_dict and cannot catch the dtype mismatch."
+    }
+  ],
+  "extract_cost_usd": 0.0167978
+}

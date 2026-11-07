@@ -1,0 +1,45 @@
+{
+  "case": "ml-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "Lag and rolling features (shift(1), shift(7), rolling(7)) are computed over the whole frame without grouping by store_id, so they mix data across stores, and only the first 7 rows overall are dropped instead of the first week per store.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies ungrouped shift/rolling mixing stores, the same defect as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "test_lag_features uses a single-store frame, so it passes despite the ungrouped shift bug; it needs a multi-store frame in (date, store_id) order.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests fail to cover the answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0159879
+}

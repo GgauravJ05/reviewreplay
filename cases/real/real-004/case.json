@@ -1,0 +1,15 @@
+{
+  "id": "real-004",
+  "kind": "real",
+  "track": "ml",
+  "title": "[FSDP2] Cast model to uniform dtype before fully_shard (huggingface/accelerate#3985)",
+  "source": "https://github.com/huggingface/accelerate@92cc533ed77a07d73872ada977625b269c922c7c",
+  "license": "Apache-2.0",
+  "added": "2026-11-07",
+  "repo": "https://github.com/huggingface/accelerate",
+  "commit": "92cc533ed77a07d73872ada977625b269c922c7c",
+  "fix": "d1d2bba464de5c8fd4d967b6881323be043cb4e7",
+  "status": "ready",
+  "drafted_by": "claude-sonnet-5-5",
+  "issue": "https://github.com/huggingface/accelerate/pull/4021"
+}

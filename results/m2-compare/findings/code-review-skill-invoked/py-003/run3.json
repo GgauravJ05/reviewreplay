@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "orders/status.py",
+      "line_start": 16,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "log.exception followed by re-raise in notify_status can log the same failure twice if the caller also logs it; consider dropping the logging or keeping it only for the order id."
+    },
+    {
+      "file": "orders/status.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The change has no tests; a small test for notify_status with a fake Mailer should cover both success and failure paths."
+    }
+  ],
+  "extract_cost_usd": 0.0153878
+}

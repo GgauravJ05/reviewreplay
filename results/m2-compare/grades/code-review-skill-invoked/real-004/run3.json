@@ -1,0 +1,45 @@
+{
+  "case": "real-004",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 697,
+      "line_end": 697,
+      "severity": "blocking",
+      "summary": "The new fp32 upcast runs after original_sd = model.state_dict() (line 649), so original_sd keeps the old bf16/fp16 tensors. With cpu_ram_efficient_loading=True, rank 0 broadcasts bf16 while other ranks allocate fp32 buffers, so the dtypes mismatch and multi-GPU runs get garbage weights, a crash, or a hang.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the same defect: upcast after original_sd capture leaves bf16 tensors, causing broadcast dtype mismatch with cpu_ram_efficient_loading."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/fsdp/test_fsdp.py",
+      "line_start": 474,
+      "line_end": 474,
+      "severity": "important",
+      "summary": "All four new tests set cpu_ram_efficient_loading=False and mock fully_shard, checking only final dtypes. They miss the dtype mismatch between original_sd and the upcast model, so a test with cpu_ram_efficient_loading enabled, or one checking original_sd dtypes, is needed.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests fail to cover the answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.016423899999999998
+}

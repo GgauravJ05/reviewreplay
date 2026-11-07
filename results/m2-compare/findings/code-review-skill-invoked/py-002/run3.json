@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document with `self.repo.get(doc_id)` instead of `self._owned(user_id, doc_id)`, so there is no ownership check and any authenticated user can rename another user's document (IDOR)."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "Because `rename` bypasses `_owned`, the NotFound-for-foreign-documents behavior is lost, so ids can be probed: a missing id raises NotFound but a foreign id succeeds."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "In `rename`, validation runs before the ownership check; moving the `_owned` call first would keep error behavior consistent with the other methods."
+    }
+  ],
+  "extract_cost_usd": 0.016735800000000002
+}

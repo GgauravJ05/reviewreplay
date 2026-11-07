@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "Merging on customer_id without verifying one segment row per customer duplicates orders for customers in multiple segment rows, so the groupby sum double-counts revenue."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "Using how=\"inner\" silently drops orders whose customer has no segment row, so segment totals understate overall revenue without warning."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "amount_cents may contain NaN or non-integer types; sum() skips NaN and results can become floats."
+    }
+  ],
+  "extract_cost_usd": 0.016611800000000003
+}

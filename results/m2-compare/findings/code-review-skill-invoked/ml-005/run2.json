@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge uses how=\"inner\", so orders whose customer_id is missing from segments are silently dropped, understating total revenue."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "If segments has multiple rows per customer_id, the merge duplicates each order and double-counts revenue."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "groupby(\"segment\") drops NaN segments by default, so after a left merge without filling, those rows are excluded unless dropna=False is passed."
+    }
+  ],
+  "extract_cost_usd": 0.016391799999999998
+}

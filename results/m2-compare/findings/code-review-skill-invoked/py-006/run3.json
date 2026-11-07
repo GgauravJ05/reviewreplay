@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "pricing/store.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "load_rules is cached with lru_cache and returns a mutable list, so price_quote's in-place `rules += active_promos(now)` in engine.py:23 permanently appends promos to the shared cached list, causing stacked and expired promos to keep applying and wrong discounts (also visible in the listing endpoint)."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "cache_clear() only affects the current process, so multiple workers keep serving stale rules without expiry, and a load_rules call racing with save_rules can re-cache old rows after the clear; a TTL is suggested."
+    }
+  ],
+  "extract_cost_usd": 0.0165538
+}

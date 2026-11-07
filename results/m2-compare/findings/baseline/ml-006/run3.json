@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Lag and rolling features (shift(1), shift(7), shift(1).rolling(7)) are computed over the whole frame rather than per store_id, so each store's first rows take lags from the previous store's last days, and dropna only removes the first 7 rows overall, leaving leaked values as training data."
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "The code never sorts by (store_id, date) so shifts are positional and silently wrong if input is unsorted; missing dates also make lag7 refer to more than 7 days back."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "test_lag_features only uses a single store with sorted, contiguous dates, so neither the cross-store leakage nor the ordering bug is caught; a two-store test case is needed."
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "build_features now drops the first 7 rows, so callers expecting output length to equal input length will break; test_calendar_features passes only by coincidence because out.loc[0] is now 2026-01-08, also a Thursday."
+    }
+  ],
+  "extract_cost_usd": 0.0190518
+}

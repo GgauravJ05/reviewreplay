@@ -1,0 +1,103 @@
+{
+  "case": "real-003",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "The Fish template loops over newline-split output, but format_completion now emits three newline-separated lines per completion (type, value, help). Each iteration therefore sees one line, so metadata indexes are unset or out of range and Fish completion breaks.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes newline-separated fields being split per-line by the Fish loop, breaking metadata indexing."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 434,
+      "line_end": 435,
+      "severity": "important",
+      "summary": "Newlines are escaped as a literal backslash-n, and nothing in the Fish script reverses this. Descriptions show literal \\n text and values containing newlines are altered.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Escaped newline as literal \\n is never unescaped in fish script; plausible real defect distinct from the key bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 433,
+      "line_end": 433,
+      "severity": "important",
+      "summary": "The \"_\" sentinel for \"no help\" is overloaded. An option whose real help text is exactly \"_\" loses its description, and the template's `!= \"_\"` check at line 190 has the same problem.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "The '_' sentinel collides with real help text of '_'; real though minor edge-case defect."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 429,
+      "line_end": 429,
+      "severity": "minor",
+      "summary": "The `.. versionchanged:: 8.3` note should say 8.4, since CHANGES.rst lists this change as Unreleased after 8.3.3.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Documentation version note nit, not a behavioral defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "CHANGES.rst",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new CHANGES.rst entry has no :pr: reference.",
+      "index": 4,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Missing :pr: reference in changelog is style, not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0184759
+}

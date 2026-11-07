@@ -1,0 +1,47 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "`page = offset // limit` is 0-based but `paginate()` numbers pages from 1, so offset=0 raises ValueError and every other offset returns the previous page's items.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the 0-based vs 1-based page mismatch exactly."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Page-based maths cannot express arbitrary offsets (non-multiples of limit are rounded down), limit=0 causes ZeroDivisionError, and limit above MAX_PER_PAGE is computed uncapped but sliced capped, skipping or repeating items.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes known other problems (non-multiple offsets, limit=0, uncapped limit) not the off-by-one page bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0157899
+}

@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "page = offset // limit yields a 0-based page while paginate is 1-based, so offset < limit (including the default call) raises ValueError and every other offset returns the page one too early."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Converting offset to a page number rounds down to a page boundary, so offsets that aren't multiples of limit return the wrong items, causing duplicated or skipped items for the mobile app."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "limit is not validated: limit=0 raises ZeroDivisionError, negative limit gives a nonsensical page, and paginate's clamping of per_page to MAX_PER_PAGE makes the page calculation wrong for large limits."
+    }
+  ],
+  "extract_cost_usd": 0.017679800000000002
+}

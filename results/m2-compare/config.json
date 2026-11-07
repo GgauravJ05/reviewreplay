@@ -1,0 +1,45 @@
+{
+  "created": "2026-11-07T06:23:54+00:00",
+  "model": "claude-sonnet-5-5",
+  "cli_version": "2.1.319 (Claude Code)",
+  "runs": 3,
+  "auth": "keychain login",
+  "cases": [
+    "ml-001",
+    "ml-002",
+    "ml-003",
+    "ml-004",
+    "ml-005",
+    "ml-006",
+    "py-001",
+    "py-002",
+    "py-003",
+    "py-004",
+    "py-005",
+    "py-006",
+    "py-007",
+    "py-008",
+    "py-009",
+    "real-001",
+    "real-002",
+    "real-003"
+  ],
+  "subjects": [
+    {
+      "name": "baseline",
+      "skill": null,
+      "prompt": "Review the uncommitted changes in this repository. Report any bugs you find, with file and line.",
+      "credit": null
+    },
+    {
+      "name": "code-review-skill-invoked",
+      "skill": {
+        "name": "code-review-skill",
+        "repo": "https://github.com/awesome-skills/code-review-skill",
+        "commit": "4850184"
+      },
+      "prompt": "/code-review-skill Review the uncommitted changes in this repository. Report any bugs you find, with file and line.",
+      "credit": "awesome-skills/code-review-skill (MIT). Invoked explicitly with /code-review-skill."
+    }
+  ]
+}

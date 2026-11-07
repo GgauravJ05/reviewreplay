@@ -1,0 +1,27 @@
+{
+  "case": "ml-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "StratifiedKFold splits on visit rows, so the same patient can appear in both train and test folds, causing patient-level leakage that inflates PR-AUC; should use StratifiedGroupKFold grouped by patient ID.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: row-level StratifiedKFold leaks patients across folds; recommends StratifiedGroupKFold by patient."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0143139
+}

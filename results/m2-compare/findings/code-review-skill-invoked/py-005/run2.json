@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "blocking",
+      "summary": "page = offset // limit is zero-based but paginate is 1-based, so offset < limit (including default offset=0) raises ValueError and larger offsets return the wrong slice; should be offset // limit + 1."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "minor",
+      "summary": "limit=0 causes ZeroDivisionError instead of a clear ValueError, and negative limit yields a negative page that triggers paginate's ValueError; limit >= 1 should be validated."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Offsets that aren't a multiple of limit are rounded down to a page boundary (e.g. offset=30, limit=20 becomes 20), causing overlapping/duplicated items; page-based paginate can't express arbitrary offsets."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "limit above MAX_PER_PAGE is silently clamped by paginate while the page number is computed from the unclamped limit, so offsets no longer line up."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No tests exist for the new list_products_by_offset function; a test for offset=0 would have caught the bug."
+    }
+  ],
+  "extract_cost_usd": 0.0197398
+}

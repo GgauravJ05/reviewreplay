@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 199,
+      "line_end": 199,
+      "severity": "blocking",
+      "summary": "Path containment check uses startswith(base) without a path separator, so a member like ../out_evil/x resolving to a sibling directory such as /cache/out_evil/x passes and is written outside the output directory."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 262,
+      "line_end": 262,
+      "severity": "blocking",
+      "summary": "The rar helper has the same startswith-without-separator containment check, allowing sibling-directory path traversal."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 338,
+      "line_end": 338,
+      "severity": "blocking",
+      "summary": "The 7z helper has the same startswith-without-separator containment check, allowing sibling-directory path traversal (the existing tar helper has it too)."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 363,
+      "severity": "important",
+      "summary": "SevenZipExtractor.extract passes a possibly empty filtered targets list to archive.extract; depending on py7zr version an empty list may mean no filter and extract everything, including blocked members."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The badlink helper in the 7z safemembers is defined but never used, so link checking is not applied."
+    }
+  ],
+  "extract_cost_usd": 0.0187898
+}

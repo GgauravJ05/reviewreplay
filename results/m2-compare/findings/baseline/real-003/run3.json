@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 194,
+      "severity": "blocking",
+      "summary": "The Fish completion script breaks because format_completion now emits three newline-separated lines per item, but Fish splits command substitution on newlines and iterates single lines, so metadata parsing fails and completion is broken for every command."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 431,
+      "line_end": 435,
+      "severity": "minor",
+      "summary": "Escaping newlines as a literal \\n is lossy (indistinguishable from a literal backslash-n) and Fish does not unescape it, so users see a literal \\n in descriptions; replacing newlines with a space would be better."
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 190,
+      "line_end": 190,
+      "severity": "minor",
+      "summary": "The Fish script compares against \"_\" as the no-help sentinel, so a real help string that is exactly \"_\" is indistinguishable from no help."
+    }
+  ],
+  "extract_cost_usd": 0.0190618
+}

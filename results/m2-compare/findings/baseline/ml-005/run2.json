@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The inner join drops orders whose customer_id is missing from segments, so revenue per segment is understated with no indication of the missing orders; a left join with a fill value like \"unknown\" is suggested."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "If segments has duplicate rows for a customer_id, the merge duplicates that customer's orders and inflates the summed amount_cents; deduplicate first or use validate=\"many_to_one\"."
+    }
+  ],
+  "extract_cost_usd": 0.0158458
+}

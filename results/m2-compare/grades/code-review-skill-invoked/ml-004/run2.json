@@ -1,0 +1,79 @@
+{
+  "case": "ml-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 11,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError if customers has duplicate customer_id values, so customers must be deduplicated or the error caught.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Raising on duplicate keys is the intended behavior of validate; speculative and not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If region is a categorical dtype, fillna(\"unknown\") raises TypeError because \"unknown\" is not an existing category.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative dtype assumption with no evidence of categorical region."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "count skips null order_id values, so the orders count undercounts those rows while their revenue is still summed; size may be needed.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Plausible count-vs-size issue but depends on null order_ids, which is unverified."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The file has no tests; the \"unknown\" region case, an empty orders frame, and a customer with null region should be covered.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Missing tests is not a defect in the code behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0158999
+}

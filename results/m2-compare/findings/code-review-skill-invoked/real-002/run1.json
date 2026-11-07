@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 208,
+      "line_end": 208,
+      "severity": "blocking",
+      "summary": "The badpath check uses startswith(base) without a trailing separator, so a member like ../out_evil/x resolves to a sibling directory and bypasses the path traversal filter."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 261,
+      "line_end": 261,
+      "severity": "blocking",
+      "summary": "The rar filter copies the same startswith-without-separator badpath logic, allowing the same path traversal bypass."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 337,
+      "line_end": 337,
+      "severity": "blocking",
+      "summary": "The 7z filter copies the same startswith-without-separator badpath logic, allowing the same path traversal bypass."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 362,
+      "line_end": 362,
+      "severity": "important",
+      "summary": "If every 7z entry is blocked, targets is an empty list, and py7zr may treat an empty list as no filter, which would extract all the blocked entries."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 209,
+      "line_end": 209,
+      "severity": "important",
+      "summary": "Blocked members are only logged with logger.error and skipped, so extraction reports success and callers get a partial result with no exception."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 334,
+      "line_end": 334,
+      "severity": "minor",
+      "summary": "badlink in the 7z filter is dead code because its only call site is commented out, and its logic is wrong anyway because it checks os.path.basename(filename) as the link target."
+    }
+  ],
+  "extract_cost_usd": 0.0197478
+}

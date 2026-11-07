@@ -1,0 +1,65 @@
+{
+  "case": "py-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the list returned by the now-cached `load_rules` in place, so promos are appended on every quote, applied repeatedly, expired promos persist, and other callers (e.g. pricing/api.py:18) see the polluted list.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies in-place extend of cached list causing accumulating promos, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 13,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "The lru_cache is per process and `save_rules` only calls cache_clear() locally, so other workers/hosts serve stale rules until restart (no TTL); also cache_clear() wastefully clears all tenants' entries.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known stale-cache across processes problem, not the mutation bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 21,
+      "line_end": 21,
+      "severity": "minor",
+      "summary": "The last line of `test_save_invalidates_cache`, a dangling `save_rules(..., value=12)`, has no assertion and leaves state behind in the shared DB for other tests.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test hygiene nit about a dangling call; not a real defect in the changed behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.016711900000000002
+}

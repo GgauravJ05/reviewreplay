@@ -1,0 +1,65 @@
+{
+  "case": "ml-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "forecast/features.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "Lag features (shift(1), shift(7), rolling mean) are computed over the whole frame instead of per store, so interleaved rows make lags use another store's sales; should sort by [store_id, date] and use groupby(\"store_id\").",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies lags computed across whole frame mixing stores, needing per-store grouping."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "forecast/features.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "dropna only removes the first 7 rows overall rather than each store's first week, leaving rows with lag values taken from other stores; per-store grouping is needed.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known dropna-drops-first-7-rows-overall consequence of not grouping."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "Tests don't catch the cross-store bug: test_calendar_features passes by coincidence with a misleading comment about 2026-01-01, and the lag test uses only one store; a two-store test is needed.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test coverage gap for the answer-key bug, which is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0169719
+}

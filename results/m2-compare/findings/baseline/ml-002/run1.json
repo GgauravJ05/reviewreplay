@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "StratifiedKFold splits on visit rows, so the same patient can appear in both train and test folds, causing patient-level leakage that inflates PR-AUC; should use StratifiedGroupKFold grouped by patient ID."
+    }
+  ],
+  "extract_cost_usd": 0.0154138
+}

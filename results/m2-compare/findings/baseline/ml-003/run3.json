@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "`fit` returns only per-epoch validation accuracy and does not record training loss."
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "There are no tests for this file, and the reviewer only read the code without running it."
+    }
+  ],
+  "extract_cost_usd": 0.018243799999999998
+}

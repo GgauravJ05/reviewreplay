@@ -1,0 +1,67 @@
+{
+  "case": "ml-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "build_features standardizes over the whole dataset before train_test_split, so test-set statistics leak into training features and the reported test AUC is optimistic.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes whole-dataset standardization before split leaking test stats, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 15,
+      "severity": "blocking",
+      "summary": "Scaling statistics are not saved, so at inference build_features standardizes a single row or small batch against its own mean/std, giving NaN for single rows or differently scaled values, which corrupts production predictions (train/serve skew).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Unsaved scaling stats / train-serve skew is a known other problem, not the leakage bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "A zero-variance column (e.g. constant support_tickets) causes division by zero and fills the column with NaN, which makes LogisticRegression raise an error.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Zero-variance column producing NaN is a known other problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0161179
+}

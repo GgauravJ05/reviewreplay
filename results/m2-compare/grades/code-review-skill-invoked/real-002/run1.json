@@ -1,0 +1,125 @@
+{
+  "case": "real-002",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 208,
+      "line_end": 208,
+      "severity": "blocking",
+      "summary": "The badpath check uses startswith(base) without a trailing separator, so a member like ../out_evil/x resolves to a sibling directory and bypasses the path traversal filter.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same startswith-without-separator sibling directory bypass in zip check."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 261,
+      "line_end": 261,
+      "severity": "blocking",
+      "summary": "The rar filter copies the same startswith-without-separator badpath logic, allowing the same path traversal bypass.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same bug in rar filter."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 337,
+      "line_end": 337,
+      "severity": "blocking",
+      "summary": "The 7z filter copies the same startswith-without-separator badpath logic, allowing the same path traversal bypass.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same bug in 7z filter."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 362,
+      "line_end": 362,
+      "severity": "important",
+      "summary": "If every 7z entry is blocked, targets is an empty list, and py7zr may treat an empty list as no filter, which would extract all the blocked entries.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Plausible py7zr behavior with empty targets, but unverified from the information given."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 209,
+      "line_end": 209,
+      "severity": "important",
+      "summary": "Blocked members are only logged with logger.error and skipped, so extraction reports success and callers get a partial result with no exception.",
+      "index": 4,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches known problem: bad members skipped with only a log, giving partial extraction."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 334,
+      "line_end": 334,
+      "severity": "minor",
+      "summary": "badlink in the 7z filter is dead code because its only call site is commented out, and its logic is wrong anyway because it checks os.path.basename(filename) as the link target.",
+      "index": 5,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 5,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Dead-code and style complaint, not the prefix bug and no incorrect behavior; wrongly attributed to b1."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0193659
+}

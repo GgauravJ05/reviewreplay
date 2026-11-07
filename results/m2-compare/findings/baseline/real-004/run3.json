@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 697,
+      "line_end": 697,
+      "severity": "important",
+      "summary": "The state dict is captured at line 649 before the new fp32 upcast, so with cpu_ram_efficient_loading and mixed precision rank 0 broadcasts bf16/fp16 tensors while other ranks allocate fp32 receive buffers, which can hang, crash or corrupt weights."
+    },
+    {
+      "file": "tests/fsdp/test_fsdp.py",
+      "line_start": 474,
+      "line_end": 474,
+      "severity": "minor",
+      "summary": "The new tests mock fully_shard and set cpu_ram_efficient_loading=False, so they never exercise the broken dtype-mismatch broadcast path."
+    }
+  ],
+  "extract_cost_usd": 0.034414
+}

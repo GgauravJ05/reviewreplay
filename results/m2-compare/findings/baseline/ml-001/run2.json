@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "build_features standardizes over the whole dataset before train_test_split, so test-set statistics leak into training features and the reported test AUC is optimistic."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 15,
+      "severity": "blocking",
+      "summary": "Scaling statistics are not saved, so at inference build_features standardizes a single row or small batch against its own mean/std, giving NaN for single rows or differently scaled values, which corrupts production predictions (train/serve skew)."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "A zero-variance column (e.g. constant support_tickets) causes division by zero and fills the column with NaN, which makes LogisticRegression raise an error."
+    }
+  ],
+  "extract_cost_usd": 0.0168778
+}

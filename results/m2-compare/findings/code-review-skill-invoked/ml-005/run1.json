@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The inner merge on customer_id double-counts orders (overstating revenue_cents) if segments has multiple rows per customer."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The inner merge silently drops orders from customers with no row in segments, so segment totals won't sum to total revenue."
+    }
+  ],
+  "extract_cost_usd": 0.0150198
+}

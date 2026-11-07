@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the list returned by the now-cached `load_rules` in place, so promos are appended on every quote, applied repeatedly, expired promos persist, and other callers (e.g. pricing/api.py:18) see the polluted list."
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 13,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "The lru_cache is per process and `save_rules` only calls cache_clear() locally, so other workers/hosts serve stale rules until restart (no TTL); also cache_clear() wastefully clears all tenants' entries."
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 21,
+      "line_end": 21,
+      "severity": "minor",
+      "summary": "The last line of `test_save_invalidates_cache`, a dangling `save_rules(..., value=12)`, has no assertion and leaves state behind in the shared DB for other tests."
+    }
+  ],
+  "extract_cost_usd": 0.0186898
+}

@@ -1,0 +1,65 @@
+{
+  "case": "real-002",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 206,
+      "line_end": 206,
+      "severity": "blocking",
+      "summary": "The badpath prefix check uses startswith(base) without a trailing separator (also at lines 262, 337 and near 106 in the tar version), so archive members can escape into sibling directories like /tmp/out_evil, which weakens path-traversal protection.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies startswith(base) without trailing separator allowing sibling directory escape, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 340,
+      "line_end": 340,
+      "severity": "important",
+      "summary": "badlink in SevenZipExtractor.safemembers is defined but never called because the symlink branch is commented out (same in the zip version), leaving dead, misleading code and no symlink check of its own.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Dead badlink code claim is about a different issue than the prefix bug; cannot verify from given info, and it's not the b1 defect."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 92,
+      "line_end": 92,
+      "severity": "minor",
+      "summary": "The tar safemembers parameter is annotated as tarfile.TarFile but is actually an iterable of TarInfo, which is inconsistent with the other extractors and will trigger type-checker errors.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Type annotation nit is pure style and not a behavioral defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0172439
+}

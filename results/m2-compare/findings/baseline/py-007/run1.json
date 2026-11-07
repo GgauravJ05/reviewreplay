@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "billable_hours subtracts two datetimes sharing the same ZoneInfo, so Python ignores UTC offsets and uses wall-clock difference, producing wrong durations (overcharge or undercharge) for sessions spanning a DST change; convert both to UTC before subtracting."
+    }
+  ],
+  "extract_cost_usd": 0.0153838
+}

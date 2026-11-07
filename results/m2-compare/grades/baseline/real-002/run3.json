@@ -1,0 +1,107 @@
+{
+  "case": "real-002",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "blocking",
+      "summary": "badpath uses startswith(base) without a trailing separator, so a member like ../out_evil/x resolves to a sibling directory that still passes the check, letting zip, rar and 7z extractors (and the existing tar one) write outside the output dir.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the startswith without trailing separator sibling-directory bypass, the same defect."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Blocked malicious members are only logged via logger.error and skipped, so extraction reports success and callers cannot tell the archive was tampered with or files are missing (may match existing tar behavior).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known problem that bad members are skipped with only a log message."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "In SevenZipExtractor.extract, an empty targets list (all members rejected or empty archive) may be treated by py7zr as no filter, extracting everything including malicious entries; this is unverified and needs a guard.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Speculative py7zr empty-targets behavior, unverified."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "SevenZipExtractor.safemembers defines a badlink helper that is never used.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Unused helper is a style issue, not incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The zip, rar and 7z safemembers duplicate the same CVE docstring and helper functions, which could be shared in one helper.",
+      "index": 4,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Code duplication is a style concern, not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0185859
+}

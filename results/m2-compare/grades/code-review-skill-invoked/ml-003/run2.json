@@ -1,0 +1,47 @@
+{
+  "case": "ml-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 32,
+      "line_end": 35,
+      "severity": "minor",
+      "summary": "zero_grad runs after opt.step(), so the first batch uses any pre-existing gradients on the model; zeroing before loss.backward() would remove the dependence on prior state.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2",
+        "ok3"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Contradicts ok1: grads start as None and are cleared after each step, so zero_grad after step is correct and nothing pre-existing is used."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The change has no tests; a small test running one epoch on random data and checking loss drops and history has `epochs` entries is suggested.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "A missing-tests suggestion describes no real defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.015111900000000001
+}

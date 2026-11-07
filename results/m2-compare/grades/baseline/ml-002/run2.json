@@ -1,0 +1,47 @@
+{
+  "case": "ml-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "StratifiedKFold splits by row and ignores patient_id, so the same patient's visits land in both train and test folds, leaking repeated per-patient features and inflating PR-AUC; use StratifiedGroupKFold with groups=patient_id.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies row-level split leaking patients across folds and recommends StratifiedGroupKFold by patient_id."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "If folds exceeds the number of rows in the rarer class (or, after grouping, the number of positive-label patients), the splitter warns or raises, which is an unhandled edge case.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative edge case about fold count vs class size; not the grouping leakage defect and not a real demonstrated bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0153439
+}

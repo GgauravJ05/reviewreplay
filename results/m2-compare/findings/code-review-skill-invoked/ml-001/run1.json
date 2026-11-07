@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "train.py",
+      "line_start": 15,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "build_features is called on the whole dataset before the train/test split, so scaling statistics include test rows and leak test data, inflating test AUC; fitted statistics are also never saved."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Mean and std are recomputed on every call rather than fit once and reused, so single-row inputs get NaN std (all numeric features NaN) and batches are scaled with their own statistics, shifting predictions between training and inference."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "Zero-std (constant) columns produce 0/0 = NaN, which would make LogisticRegression.fit fail with 'Input contains NaN'; depends on the data, as no constant column was seen currently."
+    }
+  ],
+  "extract_cost_usd": 0.0171218
+}

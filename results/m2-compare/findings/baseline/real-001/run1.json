@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 124,
+      "severity": "blocking",
+      "summary": "The new `_NamedTextIOWrapper.__next__` override raises EOFError instead of StopIteration at end of input, so any `for line in stdin`-style iteration crashes with exit code 1 rather than finishing normally."
+    },
+    {
+      "file": "tests/test_chain.py",
+      "line_start": 166,
+      "line_end": 167,
+      "severity": "important",
+      "summary": "The `assert not result.exception` check was removed and replaced with `output.splitlines()[:-2] == expect`, which discards the last two lines and treats 'Aborted!' as normal; the pipeline tests should be given enough input and the original assertions restored."
+    },
+    {
+      "file": "tests/test_utils.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "`test_prompts_eof` only asserts `exit_code == 1`, so it would also pass on an unrelated crash; it should also assert that 'Aborted!' is in the output."
+    }
+  ],
+  "extract_cost_usd": 0.018331800000000002
+}

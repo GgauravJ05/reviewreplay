@@ -1,0 +1,51 @@
+{
+  "case": "py-009",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 34,
+      "line_end": 47,
+      "severity": "minor",
+      "summary": "Possible race between purge_job and request handlers if the scheduler runs in another thread: revoke's pop-then-remove can raise ValueError (500 on logout), and purge_expired can hit KeyError on del self._by_token if a revoke runs mid-loop; needs a threading.Lock or tolerant deletes.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2",
+        "ok3"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known lack of locking/concurrency race, which is a listed known problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 38,
+      "line_end": 46,
+      "severity": "minor",
+      "summary": "list.remove and del list[i] are O(n), so revoke is O(n) per call and purging many sessions is O(n\u00b2); an OrderedDict or dict keyed by token would avoid this.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2",
+        "ok3"
+      ],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known O(n) remove cost in revoke, a listed known problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0156859
+}

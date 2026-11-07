@@ -1,0 +1,83 @@
+{
+  "case": "py-006",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "pricing/engine.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "blocking",
+      "summary": "`rules += active_promos(now)` mutates the list cached by lru_cache in place, so promos accumulate across quotes (duplicate discounts, expired promos persisting, unbounded memory growth, and promos leaking into the /rules API).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies in-place += on the cached list causing promo accumulation, exactly b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "No test calls price_quote with the cache, so nothing covers the cache/engine interaction; a test calling price_quote twice with an active promo and checking the discount is stable is missing.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests fail to cover the answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_store.py",
+      "line_start": 20,
+      "line_end": 20,
+      "severity": "minor",
+      "summary": "The final save_rules(... value=12) restore step has no assertion and isn't in a finally/fixture, so a failure earlier leaves the shared db._RULES mutated.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test-hygiene nitpick, not a real defect in the changed behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "pricing/store.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "cache_clear() only clears the cache in the calling process, so with multiple workers other processes serve stale rules after save_rules (also clears all tenants' entries, a minor extra DB read cost).",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known multi-process stale cache problem, not b1."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0174859
+}

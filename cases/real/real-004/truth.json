@@ -1,0 +1,23 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "anchor": "# FSDP2 requires uniform orig_dtype among trainable params in each group.",
+      "span": 14,
+      "class": "stale-snapshot-dtype",
+      "severity": "blocking",
+      "summary": "The upcast to fp32 is now done after `original_sd = model.state_dict()` was captured earlier in fsdp2_prepare_model. original_sd therefore holds bf16/fp16 tensors while the sharded params are fp32.",
+      "trigger": "Use mixed_precision != \"no\" with cpu_ram_efficient_loading=True on a model with bf16/fp16 trainable params. In fsdp2_load_full_state_dict, rank 0 broadcasts a bf16/fp16 tensor from original_sd. Other ranks allocate fp32 buffers, so the element sizes differ and dist.broadcast deadlocks, hanging training.",
+      "also": [
+        {
+          "file": "src/accelerate/utils/fsdp_utils.py",
+          "anchor": "original_sd = model.state_dict()",
+          "span": 1
+        }
+      ]
+    }
+  ],
+  "known_ok": [],
+  "related_valid": []
+}

@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 11,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError if customers has duplicate customer_id values, so customers must be deduplicated or the error caught."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If region is a categorical dtype, fillna(\"unknown\") raises TypeError because \"unknown\" is not an existing category."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "count skips null order_id values, so the orders count undercounts those rows while their revenue is still summed; size may be needed."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The file has no tests; the \"unknown\" region case, an empty orders frame, and a customer with null region should be covered."
+    }
+  ],
+  "extract_cost_usd": 0.0175158
+}

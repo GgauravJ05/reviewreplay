@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "unique_slug does not add the new slug to `taken`, so callers must do it themselves, and the docstring doesn't document this."
+    },
+    {
+      "file": "tests/test_slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests don't cover an empty title case (e.g. unique_slug(\"\", {\"untitled\"}) should return \"untitled-2\")."
+    }
+  ],
+  "extract_cost_usd": 0.0153078
+}

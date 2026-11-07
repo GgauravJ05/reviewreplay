@@ -1,0 +1,67 @@
+{
+  "case": "ml-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 12,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Standardization inside build_features computes mean/std over the full dataset before the train/test split, leaking test statistics into training features and making test AUC optimistic.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the same leakage of test statistics into scaling before the split."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 12,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Scaling parameters are not saved, so at inference build_features standardizes with the input batch's own statistics; a single row gives NaN std (all numeric features NaN) and small batches are scaled differently from training, producing wrong predictions.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known unsaved scaling stats / train-serve skew and single-row NaN issue, not the leakage."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 12,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "A constant column has std of 0, causing division by zero and NaN or inf feature values.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known zero-variance column problem producing NaN/inf."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0160639
+}

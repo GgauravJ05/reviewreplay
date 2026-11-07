@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` skips the ownership check (uses `repo.get` instead of `self._owned`) and never uses `user_id`, so any user can rename another user's document by id."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "important",
+      "summary": "Because `rename` bypasses `_owned`, it leaks which document ids exist: a nonexistent id raises a repo error while another user's id succeeds, whereas `_owned` would raise `NotFound` in both cases."
+    }
+  ],
+  "extract_cost_usd": 0.0153818
+}

@@ -1,0 +1,27 @@
+{
+  "case": "py-007",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "billable_hours subtracts two datetimes sharing the same ZoneInfo, so Python ignores UTC offsets and uses wall-clock difference, producing wrong durations (overcharge or undercharge) for sessions spanning a DST change; convert both to UTC before subtracting.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same cause: same-tzinfo aware datetimes subtract by wall clock, ignoring DST offset; fix by converting to UTC."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0151759
+}

@@ -1,0 +1,27 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "orders/status.py",
+      "line_start": 13,
+      "line_end": 13,
+      "severity": "note",
+      "summary": "If an Order's events list is replaced with an empty list after construction, `order.events[-1]` would raise IndexError, though nothing in the repo does this.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative hypothetical contradicting ok1, which says events always contain 'created' and are append-only, so IndexError cannot occur."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0140739
+}

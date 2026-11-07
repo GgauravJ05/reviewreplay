@@ -1,0 +1,47 @@
+{
+  "case": "ml-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The inner merge on customer_id double-counts orders (overstating revenue_cents) if segments has multiple rows per customer.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes join on customer_id duplicating orders when multiple segment rows per customer, overstating revenue."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The inner merge silently drops orders from customers with no row in segments, so segment totals won't sum to total revenue.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Inner join dropping orders without segment rows is a known other problem, not the duplication bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0151699
+}

@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "billable_hours subtracts two aware datetimes sharing the same ZoneInfo tzinfo, which ignores the UTC offset, so sessions spanning a DST transition are over- or under-billed by an hour (fix: compute the duration in UTC)."
+    },
+    {
+      "file": "billing/invoice.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Using ceil on a float could add a spurious billed hour for sub-second values on an exact hour boundary, though the reviewer considers it unlikely to matter."
+    },
+    {
+      "file": "billing/invoice.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "invoice_lines calls billable_hours twice per session (directly and inside session_charge_cents), which is redundant but harmless."
+    }
+  ],
+  "extract_cost_usd": 0.0177778
+}

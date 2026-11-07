@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 697,
+      "line_end": 697,
+      "severity": "important",
+      "summary": "The fp32 upcast happens after original_sd = model.state_dict() is captured (line 649), so with cpu_ram_efficient_loading and mixed precision rank 0 broadcasts bf16/fp16 tensors while other ranks allocate fp32 buffers, risking garbage weights, NCCL errors or hangs."
+    },
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 692,
+      "line_end": 692,
+      "severity": "important",
+      "summary": "Any Params4bit in the model causes the upcast to be skipped for the whole model, so QLoRA models with bf16 adapters and fp32 norms keep mixed dtypes, a regression from the old code that upcast regardless."
+    }
+  ],
+  "extract_cost_usd": 0.035034
+}

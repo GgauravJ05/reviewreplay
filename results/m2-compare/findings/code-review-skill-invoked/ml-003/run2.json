@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 32,
+      "line_end": 35,
+      "severity": "minor",
+      "summary": "zero_grad runs after opt.step(), so the first batch uses any pre-existing gradients on the model; zeroing before loss.backward() would remove the dependence on prior state."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The change has no tests; a small test running one epoch on random data and checking loss drops and history has `epochs` entries is suggested."
+    }
+  ],
+  "extract_cost_usd": 0.0156638
+}

@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "billable_hours subtracts two aware datetimes sharing the same ZoneInfo object, which ignores UTC offset and uses wall-clock difference, so sessions crossing a DST transition are over- or under-billed by an hour; compute the duration in UTC instead."
+    },
+    {
+      "file": "billing/invoice.py",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "minor",
+      "summary": "The new tests only use July dates with no DST change, so there is no test covering a session spanning a DST boundary (e.g. 2026-03-08 New York or 2026-10-25 Berlin)."
+    }
+  ],
+  "extract_cost_usd": 0.0170178
+}

@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "`revoke` uses `list.remove`, which is O(n) and compares dataclasses by equality; this could be slow if session counts grow, so `_items` could be made a dict."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new `revoke` and `purge_expired` methods are not thread-safe. If the scheduler runs `purge_job` on a separate thread while handlers call `revoke`, the list could be corrupted, and a lock would be needed."
+    }
+  ],
+  "extract_cost_usd": 0.017339800000000002
+}

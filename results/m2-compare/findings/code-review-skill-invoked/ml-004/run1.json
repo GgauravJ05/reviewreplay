@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If `region` is a pandas category dtype, `fillna(\"unknown\")` raises a TypeError because \"unknown\" is not an existing category."
+    },
+    {
+      "file": "report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "`count` on `order_id` skips null IDs, so the order count would be too low if any IDs are null; `size` would count every row."
+    },
+    {
+      "file": "report.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "`sort_values` is not stable by default, so regions with equal revenue may be ordered differently from run to run; use `kind=\"stable\"` or a secondary sort key."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The change has no tests; tests for the \"unknown\" region and for duplicate customers are missing."
+    }
+  ],
+  "extract_cost_usd": 0.0176838
+}

@@ -1,0 +1,79 @@
+{
+  "case": "ml-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "If orders already has a region column, the merge yields region_x/region_y and line 12 raises KeyError: 'region'.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative about unseen input columns; not a defect in the change itself."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "pandas merge matches null customer_id keys to each other, so orders with null IDs could join to customer rows with null IDs instead of being labeled unknown.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Pandas does match null keys, but whether null IDs occur is unknown without the code."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If customers['region'] is categorical, fillna('unknown') raises TypeError because 'unknown' is not an existing category.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative assumption that region is categorical."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "count on order_id skips null IDs, undercounting orders; size would count all rows.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Counting non-null order_id is speculative; null order IDs are unlikely and this is a minor style choice."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0158979
+}

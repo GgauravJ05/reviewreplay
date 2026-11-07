@@ -1,0 +1,65 @@
+{
+  "case": "real-003",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "The Fish script loops over $response, which Fish splits one element per line, so each iteration gets a single line instead of a type/value/help triple. $metadata[2] and $metadata[3] end up empty and the test on $metadata[3] errors, which breaks all completions.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the fish loop over $response splitting per line so each iteration sees one field, breaking completion; same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 434,
+      "line_end": 434,
+      "severity": "important",
+      "summary": "format_completion replaces real newlines with a literal backslash-n and the Fish script never converts them back. Descriptions show a literal \\n, and a value containing a newline completes as the two characters \\n.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Newline escaping claim is plausible but not verifiable from the given information and is not the answer-key bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "tests/test_shell_completion.py",
+      "line_start": 607,
+      "line_end": 607,
+      "severity": "important",
+      "summary": "The new test only checks the Python output and never runs Fish or inspects the generated script, so it passes while the Fish script is broken. Its loop also assumes every item is exactly three lines and only inspects the first --at match.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that the test fails to cover the fish script bug counts as valid by rule."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0169339
+}

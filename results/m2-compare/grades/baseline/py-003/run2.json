@@ -1,0 +1,25 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "orders/model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "When a caller passes its own events list to Order, __post_init__ appends an extra `created` event after the existing ones, so that event would show as the latest status. This is existing behavior in model.py that the change doesn't touch, and the reviewer says it isn't a bug.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Finding concerns untouched existing behavior in model.py and itself says it isn't a bug; no answer-key match."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0141599
+}

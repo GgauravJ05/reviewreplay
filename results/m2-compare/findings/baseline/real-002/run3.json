@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "blocking",
+      "summary": "badpath uses startswith(base) without a trailing separator, so a member like ../out_evil/x resolves to a sibling directory that still passes the check, letting zip, rar and 7z extractors (and the existing tar one) write outside the output dir."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Blocked malicious members are only logged via logger.error and skipped, so extraction reports success and callers cannot tell the archive was tampered with or files are missing (may match existing tar behavior)."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "In SevenZipExtractor.extract, an empty targets list (all members rejected or empty archive) may be treated by py7zr as no filter, extracting everything including malicious entries; this is unverified and needs a guard."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "SevenZipExtractor.safemembers defines a badlink helper that is never used."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The zip, rar and 7z safemembers duplicate the same CVE docstring and helper functions, which could be shared in one helper."
+    }
+  ],
+  "extract_cost_usd": 0.0206138
+}

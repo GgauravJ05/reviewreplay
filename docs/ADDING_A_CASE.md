@@ -80,8 +80,8 @@ silently breaks its key.
 ## 4. Check it
 
 ```bash
-python3 -m reviewbench make-patch cases/<track>/<id>
-python3 -m reviewbench check
+reviewreplay make-patch cases/<track>/<id>
+reviewreplay check
 ```
 
 Then **execute the case code** to prove the key: the bug's `trigger` must actually produce the wrong
@@ -92,7 +92,7 @@ Running code leaves caches (`__pycache__`, `.pytest_cache`); the tools ignore th
 
 A real case reviews a bug-introducing commit from a public repo, in the full project.
 
-1. Find candidates: `python3 -m reviewbench mine https://github.com/<owner>/<repo> [--since 2025-06-01]`.
+1. Find candidates: `reviewreplay mine https://github.com/<owner>/<repo> [--since 2025-06-01]`.
    Prefer rows marked `agree` (the fix message's reference and `git blame` point at the same commit)
    and ≤ 300 changed lines.
 2. Read the fix commit, its issue and the introducing diff. Keep it only if the fix clearly repairs a
@@ -101,8 +101,8 @@ A real case reviews a bug-introducing commit from a public repo, in the full pro
    PR, the merge commit), `fix`, and `issue` if any; `source` is `<repo url>@<commit>`; `license` is the
    repo's license (permissive only).
 4. Write `truth.json` against the code at `commit` (anchors are resolved in the exported tree under
-   `.cache/real/`). Use whole-function spans and list every copy of the bug in `also`. Put the fix's
+   `~/.cache/reviewreplay/real/`). Use whole-function spans and list every copy of the bug in `also`. Put the fix's
    own evidence (message, tests) in `trigger`, and anything else the reviewer may fairly report in
    `related_valid`.
-5. `python3 -m reviewbench check` exports the code and validates the case. We never run third-party
+5. `reviewreplay check` exports the code and validates the case. We never run third-party
    code, so say in NOTES.md what the evidence is.

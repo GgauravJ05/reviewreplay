@@ -1,0 +1,79 @@
+{
+  "case": "ml-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "fillna(\"unknown\") raises TypeError if customers[\"region\"] is categorical, since \"unknown\" isn't a listed category; cast to object first.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative about a categorical dtype that isn't shown to occur; no real defect established."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "Customers with a null region are also labeled \"unknown\", which contradicts the docstring saying \"unknown\" covers only customers missing from customers.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Depends on the docstring and code, which I can't see; it may be a real inconsistency but it's unverified."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "(\"order_id\", \"count\") skips null order_id values; use \"size\" if every row should be counted.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative; null order_id values are not shown to occur, and counting non-null ids is a reasonable reading."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "Sort uses the default non-stable quicksort, so regions with equal revenue may come out in varying order; pass kind=\"stable\".",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Tie ordering is a style or robustness nit, not incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0184479
+}

@@ -85,7 +85,7 @@ API-equivalent estimate; on a subscription it counts against usage limits, not m
 ## Re-running
 
 ```bash
-cd reviewbench
+cd reviewreplay
 python3 spikes/m0/probe.py --mode flags --skill none
 python3 spikes/m0/probe.py --mode flags --skill project --review
 python3 spikes/m0/probe.py --mode flags --skill project --review --invoke

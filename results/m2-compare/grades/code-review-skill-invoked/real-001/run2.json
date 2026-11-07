@@ -1,0 +1,81 @@
+{
+  "case": "real-001",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 119,
+      "severity": "important",
+      "summary": "The new `__next__` override raises EOFError instead of StopIteration, so iterating over stdin (e.g. `for line in sys.stdin` or a click.File on `-`) aborts at the last line; EOF handling should be in the prompt functions instead.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: __next__ raising EOFError breaks iteration over stdin/click.File, causing Abort."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_chain.py",
+      "line_start": 166,
+      "line_end": 166,
+      "severity": "important",
+      "summary": "A test was weakened by removing `assert not result.exception` and slicing output with `[:-2]` to drop \"Aborted!\", hiding the regression.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known loosened test_chain.py that hides the abort regression."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_termui.py",
+      "line_start": 245,
+      "line_end": 245,
+      "severity": "minor",
+      "summary": "Existing tests were edited to pass extra newlines of input because prompts with empty/no input now abort instead of taking defaults, a behavior change for CliRunner users needing a deliberate decision and changelog note (reviewer unsure it's a bug).",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Prompt behavior change from EOF handling is speculative; reviewer themselves unsure and it's not clearly a distinct defect."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "tests/test_termui.py",
+      "line_start": 454,
+      "line_end": 454,
+      "severity": "minor",
+      "summary": "Existing tests were edited to pass extra newlines of input because prompts with empty/no input now abort instead of taking defaults, a behavior change for CliRunner users needing a deliberate decision and changelog note (reviewer unsure it's a bug).",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Same speculative concern about edited tests and prompt behavior change, not clearly a distinct defect."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    }
+  ],
+  "judge_cost_usd": 0.0180599
+}

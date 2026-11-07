@@ -1,0 +1,143 @@
+{
+  "case": "real-002",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 206,
+      "line_end": 339,
+      "severity": "blocking",
+      "summary": "The badpath check uses startswith(base) without a trailing separator, so sibling directories like /tmp/out_evil pass and files can be written outside the output directory; the flaw is copied into the zip, rar and 7z paths.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes startswith without trailing separator allowing sibling directory, across zip/rar/7z."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 364,
+      "severity": "important",
+      "summary": "If all 7z members are filtered out or the archive is empty, targets is an empty list, and some py7zr versions treat that as no filter and extract everything, bypassing the check.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Speculative py7zr behavior with empty targets; cannot verify."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 363,
+      "severity": "important",
+      "summary": "7z filtering is done by member name rather than by member, so duplicate names or directory/file entries may be matched differently from how safemembers saw them, letting check and extraction disagree.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Speculative mismatch by name; unverifiable from given info."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 212,
+      "line_end": 344,
+      "severity": "important",
+      "summary": "Blocked members are skipped with only a logger.error and no exception, so a malicious archive appears to extract successfully with files silently missing.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches known issue that bad members are skipped with only a log."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 190,
+      "line_end": 319,
+      "severity": "important",
+      "summary": "list[...] annotations are evaluated at definition time and raise TypeError on Python 3.8 and older unless typing.List or a __future__ annotations import is used.",
+      "index": 4,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Python 3.8 annotation concern is unrelated to the key bug and likely not applicable to supported versions."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 335,
+      "line_end": 335,
+      "severity": "minor",
+      "summary": "Dead code: the 7z badlink helper is never called, the zip function has commented-out symlink code, and redir_type and redir_flags are unused in the rar code.",
+      "index": 5,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 5,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Dead code is style, not the sibling-prefix defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The zip and rar path checks are largely redundant because zipfile.extractall already sanitizes .. and absolute paths.",
+      "index": 6,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 6,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Redundancy claim is not a defect and misses the prefix bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0204759
+}

@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reviewreplay"
+version = "0.1.0"
+description = "Benchmark AI code reviewers (Claude Code, Codex, Gemini, your own prompts and skills) on the bugs your repository actually shipped."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Gaurav Jadhav" }]
+requires-python = ">=3.10"
+dependencies = []
+keywords = ["ai code review", "code review", "llm evaluation", "benchmark", "claude code",
+            "codex", "gemini", "ai agents", "developer tools", "szz", "regression testing"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: Software Development :: Testing",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Homepage = "https://github.com/GgauravJ05/reviewreplay"
+Issues = "https://github.com/GgauravJ05/reviewreplay/issues"
+
+[project.scripts]
+reviewreplay = "reviewreplay.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["reviewreplay*"]
+
+[tool.setuptools.package-data]
+reviewreplay = ["prompts/*.md", "subjects/*.json", "subjects/examples/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

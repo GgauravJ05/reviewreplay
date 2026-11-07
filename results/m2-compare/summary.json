@@ -1,0 +1,240 @@
+{
+  "subjects": {
+    "baseline": {
+      "caught": {
+        "mean": 0.9761904761904762,
+        "lo": 0.9285714285714286,
+        "hi": 1.0,
+        "n_cases": 14
+      },
+      "precision": {
+        "mean": 0.9063492063492063,
+        "lo": 0.8063492063492063,
+        "hi": 0.9801587301587301,
+        "n_cases": 14
+      },
+      "clean_pass": {
+        "mean": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n_cases": 5
+      },
+      "trapped": {
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_cases": 3
+      },
+      "reviews": 57,
+      "median_cost": 0.043815200000000006,
+      "median_seconds": 11.3,
+      "mean_findings": 2.6140350877192984
+    },
+    "code-review-skill-invoked": {
+      "caught": {
+        "mean": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n_cases": 14
+      },
+      "precision": {
+        "mean": 0.9456349206349206,
+        "lo": 0.8805555555555555,
+        "hi": 1.0,
+        "n_cases": 14
+      },
+      "clean_pass": {
+        "mean": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n_cases": 5
+      },
+      "trapped": {
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_cases": 3
+      },
+      "reviews": 57,
+      "median_cost": 0.0741077,
+      "median_seconds": 14.4,
+      "mean_findings": 2.508771929824561
+    }
+  },
+  "paired_vs_baseline": {
+    "code-review-skill-invoked": {
+      "caught": {
+        "diff": 0.02380952380952381,
+        "lo": 0.0,
+        "hi": 0.07142857142857142,
+        "n_cases": 14
+      },
+      "clean_pass": {
+        "diff": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_cases": 5
+      },
+      "precision": {
+        "diff": 0.03928571428571429,
+        "lo": -0.027777777777777783,
+        "hi": 0.10634920634920635,
+        "n_cases": 14
+      }
+    }
+  },
+  "per_case": {
+    "baseline": {
+      "ml-001": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "ml-002": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "ml-003": {
+        "clean_pass": 1.0,
+        "trapped": 0.0
+      },
+      "ml-004": {
+        "clean_pass": 1.0
+      },
+      "ml-005": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "ml-006": {
+        "caught": 1.0,
+        "precision": 0.7222222222222222
+      },
+      "py-001": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-002": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-003": {
+        "clean_pass": 1.0,
+        "trapped": 0.0
+      },
+      "py-004": {
+        "clean_pass": 1.0
+      },
+      "py-005": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-006": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-007": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-008": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-009": {
+        "clean_pass": 1.0,
+        "trapped": 0.0
+      },
+      "real-001": {
+        "caught": 1.0,
+        "precision": 0.8333333333333334
+      },
+      "real-002": {
+        "caught": 1.0,
+        "precision": 0.4666666666666666
+      },
+      "real-003": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "real-004": {
+        "caught": 0.6666666666666666,
+        "precision": 0.6666666666666666
+      }
+    },
+    "code-review-skill-invoked": {
+      "ml-001": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "ml-002": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "ml-003": {
+        "clean_pass": 1.0,
+        "trapped": 0.0
+      },
+      "ml-004": {
+        "clean_pass": 1.0
+      },
+      "ml-005": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "ml-006": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-001": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-002": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-003": {
+        "clean_pass": 1.0,
+        "trapped": 0.0
+      },
+      "py-004": {
+        "clean_pass": 1.0
+      },
+      "py-005": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-006": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-007": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-008": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "py-009": {
+        "clean_pass": 1.0,
+        "trapped": 0.0
+      },
+      "real-001": {
+        "caught": 1.0,
+        "precision": 1.0
+      },
+      "real-002": {
+        "caught": 1.0,
+        "precision": 0.6833333333333332
+      },
+      "real-003": {
+        "caught": 1.0,
+        "precision": 0.7222222222222222
+      },
+      "real-004": {
+        "caught": 1.0,
+        "precision": 0.8333333333333334
+      }
+    }
+  }
+}

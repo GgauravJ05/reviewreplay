@@ -1,0 +1,45 @@
+{
+  "case": "py-008",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 25,
+      "line_end": 28,
+      "severity": "blocking",
+      "summary": "read_rows now returns a one-shot generator, and summarize() iterates it twice (any(...) on line 25 consumes rows, then the for loop on line 28 sees only the remainder), producing wrong totals and missing high-severity events so a quiet summary is wrongly sent.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies the generator being iterated twice in summarize, with any() consuming rows so high-severity events go missing."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_reader.py",
+      "line_start": 22,
+      "line_end": 22,
+      "severity": "important",
+      "summary": "test_read_rows_is_lazy only checks the first row, never asserts the bad line raises on further iteration, leaves the generator unclosed, and no summarize() test with the lazy reader exists to catch the double-iteration bug.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A test coverage gap for the answer-key bug (and lazy error behavior) is always counted as valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0159899
+}

@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document with `self.repo.get(doc_id)` and skips the `self._owned(user_id, doc_id)` ownership check, so any authenticated user can rename another user's document (IDOR) and can also tell which document ids exist."
+    }
+  ],
+  "extract_cost_usd": 0.0161038
+}

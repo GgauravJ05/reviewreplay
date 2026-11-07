@@ -1,0 +1,85 @@
+{
+  "case": "real-003",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "Fish completion script breaks because the three-line completion output is already split per line by `set -l response (...)`, so `string split \\n` yields wrong items and `$metadata[2]`/`$metadata[3]` are empty, failing completion for every command.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the same newline-split mismatch breaking fish completion for every command."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 436,
+      "line_end": 436,
+      "severity": "important",
+      "summary": "The string `_` is used as a sentinel for 'no help', so an option whose real help text is `_` loses its description.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A help text of '_' being treated as no help is a real, if minor, sentinel ambiguity in the changed code."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 436,
+      "line_end": 436,
+      "severity": "important",
+      "summary": "Newlines in help text are replaced with a literal `\\n`, so Fish displays a visible backslash-n rather than a line break.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Replacing newlines in help with a literal \\n yields visible backslash-n; plausible real defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_shell_completion.py",
+      "line_start": 559,
+      "line_end": 559,
+      "severity": "important",
+      "summary": "New tests only check the Python output format and never execute the Fish script, so they pass despite the script being unable to parse the new format.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "This says the tests don't cover the answer-key bug, which counts as valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.017599899999999998
+}

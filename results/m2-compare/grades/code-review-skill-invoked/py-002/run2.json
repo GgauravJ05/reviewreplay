@@ -1,0 +1,27 @@
+{
+  "case": "py-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document with `self.repo.get(doc_id)` and skips the `self._owned(user_id, doc_id)` ownership check, so any authenticated user can rename another user's document (IDOR) and can also tell which document ids exist.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: rename uses repo.get without the _owned ownership check, allowing renaming others' documents and id enumeration."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.014207899999999999
+}

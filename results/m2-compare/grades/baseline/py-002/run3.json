@@ -1,0 +1,27 @@
+{
+  "case": "py-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document with `self.repo.get(doc_id)` without an ownership check (unlike `read`, `update_body` and `delete`, which use `self._owned`), so any user can rename another user's document and probe which ids exist because no `NotFound` is raised.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: rename uses repo.get instead of _owned, allowing cross-user rename and id probing."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0141759
+}

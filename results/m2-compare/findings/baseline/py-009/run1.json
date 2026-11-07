@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 36,
+      "line_end": 36,
+      "severity": "minor",
+      "summary": "revoke uses list.remove, which scans the list, so each logout is O(n) in the number of live sessions."
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 44,
+      "line_end": 44,
+      "severity": "minor",
+      "summary": "purge_expired deletes list items one at a time, shifting the tail each time, so a purge can cost O(n\u00b7k); rebuilding the list in one pass would be O(n)."
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The store has no locking, so if purge_job runs in a scheduler thread, concurrent revoke and purge_expired calls could race, e.g. a KeyError on del self._by_token[session.token]."
+    }
+  ],
+  "extract_cost_usd": 0.0175338
+}

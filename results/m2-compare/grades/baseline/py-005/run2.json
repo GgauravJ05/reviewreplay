@@ -1,0 +1,87 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "`page = offset // limit` is 0-based while `paginate` is 1-based, so the default offset=0 gives page 0 and raises ValueError, and other offsets return the wrong page; fix is `+ 1`.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies 0-based vs 1-based page mismatch causing ValueError at offset 0 and wrong pages."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Offsets that aren't multiples of `limit` are rounded down to a page boundary (e.g. offset=25, limit=20 starts at 20), causing duplicated or misplaced items.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Known problem: non-multiple offsets rounded down to page boundary."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "`paginate` silently clamps `limit` to [1, MAX_PER_PAGE], so if limit exceeds MAX_PER_PAGE the computed page and the real page size disagree.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Known problem: page computed from unclamped limit disagrees with clamped per_page."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "`offset // limit` raises ZeroDivisionError when limit == 0 and gives a wrong page for negative limit, because the division happens before paginate clamps; limit >= 1 should be validated.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Known problem: limit=0 ZeroDivisionError and negative limits unvalidated."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.017679900000000002
+}

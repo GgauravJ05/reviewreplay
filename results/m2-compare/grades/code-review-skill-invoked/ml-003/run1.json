@@ -1,0 +1,61 @@
+{
+  "case": "ml-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new file is untracked (uncommitted) and has no tests.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Untracked file and missing tests are not a code defect causing incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "fit() returns only validation accuracy per epoch and does not return or log training loss.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Not returning or logging training loss is a design preference, not incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "evaluate() assumes labels are class indices rather than one-hot vectors.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Assuming class-index labels is consistent with CrossEntropyLoss usage and is not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.015597900000000001
+}

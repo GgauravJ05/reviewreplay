@@ -1,0 +1,54 @@
+{
+  "findings": [
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 206,
+      "line_end": 339,
+      "severity": "blocking",
+      "summary": "The badpath check uses startswith(base) without a trailing separator, so sibling directories like /tmp/out_evil pass and files can be written outside the output directory; the flaw is copied into the zip, rar and 7z paths."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 364,
+      "severity": "important",
+      "summary": "If all 7z members are filtered out or the archive is empty, targets is an empty list, and some py7zr versions treat that as no filter and extract everything, bypassing the check."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 363,
+      "line_end": 363,
+      "severity": "important",
+      "summary": "7z filtering is done by member name rather than by member, so duplicate names or directory/file entries may be matched differently from how safemembers saw them, letting check and extraction disagree."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 212,
+      "line_end": 344,
+      "severity": "important",
+      "summary": "Blocked members are skipped with only a logger.error and no exception, so a malicious archive appears to extract successfully with files silently missing."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 190,
+      "line_end": 319,
+      "severity": "important",
+      "summary": "list[...] annotations are evaluated at definition time and raise TypeError on Python 3.8 and older unless typing.List or a __future__ annotations import is used."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 335,
+      "line_end": 335,
+      "severity": "minor",
+      "summary": "Dead code: the 7z badlink helper is never called, the zip function has commented-out symlink code, and redir_type and redir_flags are unused in the rar code."
+    },
+    {
+      "file": "src/datasets/utils/extract.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The zip and rar path checks are largely redundant because zipfile.extractall already sanitizes .. and absolute paths."
+    }
+  ],
+  "extract_cost_usd": 0.0224458
+}

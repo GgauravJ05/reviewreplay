@@ -1,0 +1,45 @@
+{
+  "case": "py-008",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 25,
+      "line_end": 25,
+      "severity": "important",
+      "summary": "read_rows now returns a one-shot generator but summarize() iterates it twice, so the second loop skips rows consumed by any() (total, by_actor, high omit rows up to the first high event), and can drop a real high-severity alert so render() wrongly prints 'No high-severity audit events today.'",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies generator iterated twice in summarize, any() consuming rows and dropping the first high-severity event."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No test covers summarize() with a high-severity row, which is why the generator-reuse bug was not caught.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A finding that tests fail to cover an answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0157119
+}

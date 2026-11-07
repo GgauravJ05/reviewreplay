@@ -1,0 +1,66 @@
+{
+  "case": "py-009",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 36,
+      "line_end": 36,
+      "severity": "minor",
+      "summary": "revoke uses list.remove, which scans the list, so each logout is O(n) in the number of live sessions.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok3"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches known problem: O(n) list.remove in revoke."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 44,
+      "line_end": 44,
+      "severity": "minor",
+      "summary": "purge_expired deletes list items one at a time, shifting the tail each time, so a purge can cost O(n\u00b7k); rebuilding the list in one pass would be O(n).",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2"
+      ],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Deleting items one at a time costing O(n\u00b7k) is a real but minor performance concern, though not a correctness bug; it is a legitimate efficiency observation and doesn't contradict the key's correctness note."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The store has no locking, so if purge_job runs in a scheduler thread, concurrent revoke and purge_expired calls could race, e.g. a KeyError on del self._by_token[session.token].",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches known problem: store has no locking and could race under threads."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.016621900000000002
+}

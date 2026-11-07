@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The default argument `device: torch.device = torch.device(\"cpu\")` is evaluated once at import time (reviewer says it is harmless because the default is immutable)."
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "`fit` leaves the model in eval mode when it returns, which could surprise a caller that expects train mode afterwards."
+    }
+  ],
+  "extract_cost_usd": 0.0159438
+}

@@ -1,0 +1,67 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "page = offset // limit yields a 0-based page while paginate is 1-based, so offset < limit (including the default call) raises ValueError and every other offset returns the page one too early.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies 0-based vs 1-based page mismatch, ValueError at offset<limit and off-by-one page."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Converting offset to a page number rounds down to a page boundary, so offsets that aren't multiples of limit return the wrong items, causing duplicated or skipped items for the mobile app.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Non-multiple offsets rounding down is a known other problem, distinct from the off-by-one bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "limit is not validated: limit=0 raises ZeroDivisionError, negative limit gives a nonsensical page, and paginate's clamping of per_page to MAX_PER_PAGE makes the page calculation wrong for large limits.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known unvalidated limit and clamping issues."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0167159
+}

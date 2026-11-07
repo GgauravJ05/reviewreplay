@@ -1,0 +1,45 @@
+{
+  "case": "real-004",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/accelerate/utils/fsdp_utils.py",
+      "line_start": 690,
+      "line_end": 702,
+      "severity": "blocking",
+      "summary": "The fp32 upcast runs after original_sd = model.state_dict() is captured, so with cpu_ram_efficient_loading rank 0 broadcasts bf16/fp16 tensors while other ranks allocate fp32 receive buffers, causing mismatched dtypes in dist.broadcast (garbage weights, NCCL error or hang).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: upcast after original_sd capture causes dtype mismatch in rank-0 broadcast with cpu_ram_efficient_loading."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/fsdp/test_fsdp.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new tests all set cpu_ram_efficient_loading = False, so the broadcast dtype-mismatch path is not covered and the bug would go undetected.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A finding that tests fail to cover the answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.034258
+}

@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "Free-shipping check compares cart.subtotal_cents() (cents) against FREE_SHIPPING_THRESHOLD (50 whole dollars), so orders of 50 cents or more ship free instead of the intended $50."
+    },
+    {
+      "file": "tests/test_checkout.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "Tests only cover an empty cart and a $120 order, so they pass despite the bug; there are no tests for a cart below or exactly at the free-shipping threshold."
+    }
+  ],
+  "extract_cost_usd": 0.0161878
+}

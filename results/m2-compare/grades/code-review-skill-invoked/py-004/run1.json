@@ -1,0 +1,43 @@
+{
+  "case": "py-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "unique_slug does not add the new slug to `taken`, so callers must do it themselves, and the docstring doesn't document this.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Not a defect in behavior; a documentation/design nitpick with no incorrect behavior shown."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests don't cover an empty title case (e.g. unique_slug(\"\", {\"untitled\"}) should return \"untitled-2\").",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Missing test coverage for an edge case isn't a real defect, and no answer-key bug exists to cover."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.014455899999999999
+}

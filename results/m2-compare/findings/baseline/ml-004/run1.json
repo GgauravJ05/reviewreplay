@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "If orders already has a region column, the merge yields region_x/region_y and line 12 raises KeyError: 'region'."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "pandas merge matches null customer_id keys to each other, so orders with null IDs could join to customer rows with null IDs instead of being labeled unknown."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If customers['region'] is categorical, fillna('unknown') raises TypeError because 'unknown' is not an existing category."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "count on order_id skips null IDs, undercounting orders; size would count all rows."
+    }
+  ],
+  "extract_cost_usd": 0.0171818
+}

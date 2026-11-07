@@ -4,9 +4,9 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-from reviewbench.cases import Spot, load_case, load_cases
-from reviewbench.grade import candidates, norm_path, overlaps
-from reviewbench.report import agreement, bootstrap, review_scores
+from reviewreplay.cases import Spot, load_case, load_cases
+from reviewreplay.grade import candidates, norm_path, overlaps
+from reviewreplay.report import agreement, bootstrap, review_scores
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -35,6 +35,15 @@ def test_overlap_requires_same_file_and_a_line():
 
 def test_overlap_accepts_suffix_paths_and_reversed_ranges():
     assert overlaps({"file": "checkout.py", "line_start": 13, "line_end": 12}, "shop/checkout.py", 12, 13)
+
+
+def test_lineless_finding_matches_bug_in_same_file_only_when_asked():
+    bug = spot("src/a.py", 40, 42)
+    f = {"file": "src/a.py", "line_start": 0, "line_end": 0}
+    assert candidates(f, [bug]) == []
+    assert candidates(f, [bug], no_line_same_file=True) == ["b1"]
+    assert candidates({"file": "src/b.py", "line_start": 0}, [bug], no_line_same_file=True) == []
+    assert candidates({"file": "src/a.py", "line_start": 90}, [bug], no_line_same_file=True) == []
 
 
 def test_candidates_use_alternate_locations():
@@ -111,7 +120,7 @@ def test_agreement_kappa(tmp_path):
 def _offline_case_dirs():
     """Planted/clean/decoy cases, plus real cases whose git export is already cached."""
     import json
-    from reviewbench.cases import REAL_CACHE, find_case_dirs
+    from reviewreplay.cases import REAL_CACHE, find_case_dirs
     for d in find_case_dirs(ROOT / "cases"):
         meta = json.loads((d / "case.json").read_text())
         if meta["kind"] != "real" or (REAL_CACHE / f"{meta['id']}@{meta['commit'][:12]}").exists():

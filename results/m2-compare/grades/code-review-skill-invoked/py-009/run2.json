@@ -1,0 +1,66 @@
+{
+  "case": "py-009",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "auth/store.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "`self._items.remove(session)` is O(n) on every logout, which could add up with many sessions.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok3"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known O(n) remove in revoke."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "auth/store.py",
+      "line_start": 43,
+      "line_end": 48,
+      "severity": "minor",
+      "summary": "`del self._items[i]` is O(n) per removal, so a large purge is O(n\u00b2); rebuilding the list in one pass or using an insertion-ordered dict keyed by token would be O(n).",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1",
+        "ok2"
+      ],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Quadratic deletion cost in purge is a real performance concern, though not an answer-key bug; the deletion logic itself is correct."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No tests cover `logout_handler` or `purge_job`; the reviewer calls them thin wrappers and low risk.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Missing tests for thin wrappers is not a defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0162739
+}

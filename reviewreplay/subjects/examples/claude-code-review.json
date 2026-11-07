@@ -1,0 +1,6 @@
+{
+  "name": "claude-code-review",
+  "skill": null,
+  "invoke_command": "/code-review",
+  "credit": "Claude Code built-in /code-review command."
+}

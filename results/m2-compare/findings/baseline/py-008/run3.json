@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "audit/report.py",
+      "line_start": 23,
+      "line_end": 28,
+      "severity": "blocking",
+      "summary": "summarize() iterates the one-shot generator returned by read_rows twice (any() pre-check then a for loop), so rows up to and including the first high-severity row are dropped, giving wrong total/by_actor/high values and a false 'No high-severity audit events' report."
+    },
+    {
+      "file": "audit/export.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Parse errors now surface mid-iteration rather than at the read_rows() call, so callers wrapping only the call in try/except would no longer catch them (reviewer found no such callers)."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "test_read_rows_is_lazy does not close the generator, leaving the file handle open until garbage collection (harmless in CPython)."
+    }
+  ],
+  "extract_cost_usd": 0.0184918
+}

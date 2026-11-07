@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 119,
+      "severity": "blocking",
+      "summary": "The new __next__ override on the sys.stdin class raises EOFError when input is exhausted, so ordinary iteration like for-loops, list(sys.stdin) and csv.reader(sys.stdin) crashes instead of ending."
+    },
+    {
+      "file": "src/click/testing.py",
+      "line_start": 351,
+      "line_end": 360,
+      "severity": "important",
+      "summary": "Prompts now raise EOFError (becoming Abort, exit code 1) when input runs out instead of returning an empty string so defaults apply; this behavior change forced test edits, and the test_chain.py edit hides the abort rather than fixing the test input."
+    }
+  ],
+  "extract_cost_usd": 0.017103800000000002
+}

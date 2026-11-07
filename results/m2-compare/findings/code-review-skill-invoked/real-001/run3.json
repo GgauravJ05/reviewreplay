@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/click/testing.py",
+      "line_start": 119,
+      "line_end": 119,
+      "severity": "important",
+      "summary": "The new `__next__` override raises EOFError instead of StopIteration, so commands iterating over sys.stdin, the stdin text stream, or a click.File('-') argument crash when input runs out instead of ending the loop; EOFError should be raised only in visible_input/hidden_input."
+    },
+    {
+      "file": "tests/test_chain.py",
+      "line_start": 166,
+      "line_end": 166,
+      "severity": "important",
+      "summary": "The pipeline test dropped the `not result.exception` assertion and slices off the last two output lines with `[:-2]`, so it now accepts a run that ends in an abort and would pass on real failures that add output lines."
+    }
+  ],
+  "extract_cost_usd": 0.0162338
+}

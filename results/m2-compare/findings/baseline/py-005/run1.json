@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "Page number is computed as `offset // limit`, which is 0-based while `paginate` expects 1-based pages; the first request (offset 0) raises ValueError and later pages return the wrong items (e.g. offset 20 returns items 0\u201319). The fix is `offset // limit + 1`."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Converting offset/limit to a page number with integer division breaks when they don't divide evenly (offset=10, limit=20 starts at the wrong item), limit=0 raises ZeroDivisionError, and a limit above MAX_PER_PAGE is clamped by `paginate`, so the page calculation and the slice disagree. Slicing directly with `PRODUCTS[offset:offset+limit]` after validating or clamping `limit` would avoid all three."
+    }
+  ],
+  "extract_cost_usd": 0.0171558
+}

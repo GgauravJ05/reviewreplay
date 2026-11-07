@@ -1,0 +1,83 @@
+{
+  "case": "real-003",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 183,
+      "line_end": 183,
+      "severity": "blocking",
+      "summary": "The Fish script still iterates one line per completion, but format_completion now emits three lines (type, value, help) per item. The script therefore errors or yields no candidates for every command.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Fish script iterates per line while three lines per item are emitted, breaking all completion."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/click/shell_completion.py",
+      "line_start": 435,
+      "line_end": 435,
+      "severity": "important",
+      "summary": "format_completion replaces real newlines with a literal backslash-n in the value and help, and Fish never reverses this. Values containing newlines are inserted incorrectly, and descriptions show a literal \\n.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Escaping newlines as literal \\n without reversal in fish is plausible but not confirmed, and it is not the key bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The test test_fish_multiline_help_complete only checks that \\n appears in the help line. It never runs the Fish script, so it passes despite the parsing bug.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test does not run the Fish script, so it misses the answer-key bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The docstring says versionchanged:: 8.3, but CHANGES.rst lists the change under Unreleased, after 8.3.3, so the version number is probably wrong.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Version-number docstring nit is not a behavioral defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.017453899999999998
+}

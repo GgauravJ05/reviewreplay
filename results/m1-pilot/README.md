@@ -65,7 +65,7 @@ matters only for low-severity noise counts.
 **Caveat — this is not a human check.** The second rater is the same model family as the judge, so
 shared blind spots wouldn't show up as disagreement. It also saw the answer-key changes made
 during this pilot. Treat κ = 0.93 as a consistency check. A human pass with
-`python3 -m reviewbench label results/m1-pilot/labels.csv` (`labels.csv` is still unlabelled) is
+`reviewreplay label results/m1-pilot/labels.csv` (`labels.csv` is still unlabelled) is
 still needed before any public claim.
 
 ## Changes for M2

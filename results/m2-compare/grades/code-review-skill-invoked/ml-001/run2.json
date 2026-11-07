@@ -1,0 +1,47 @@
+{
+  "case": "ml-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "blocking",
+      "summary": "Standardization computes mean/std over the passed DataFrame, leaking test-set statistics into training (build_features called before train_test_split) and producing NaN for single-row inference and inconsistent scaling for small batches; should use a StandardScaler/Pipeline fit on the training split only and saved with the model.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies test-set statistics leaking via build_features before the split, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "blocking",
+      "summary": "No guard for zero variance: a constant column has std 0, causing division to yield NaN/inf and LogisticRegression.fit to raise on non-finite input; use StandardScaler or replace zero std with 1.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Zero-variance column producing NaN/inf is a known other real problem, not the leakage bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0154779
+}
