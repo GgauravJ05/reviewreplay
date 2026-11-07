@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReviewReplay · Benchmark AI code reviewers on your own bugs</title>
+  <meta name="description" content="ReviewReplay replays the real bugs from your git history and scores AI code reviewers like Claude Code, Codex and Gemini CLI on recall, precision, false alarms and cost. Free, open source, runs locally.">
+  <meta name="keywords" content="AI code review, code review benchmark, LLM evaluation, Claude Code, Codex CLI, Gemini CLI, SZZ, false positives, developer tools">
+  <meta name="author" content="Gaurav Jadhav">
+  <link rel="canonical" href="https://ggauravj05.github.io/reviewreplay/">
+  <meta property="og:url" content="https://ggauravj05.github.io/reviewreplay/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ReviewReplay · Would your AI reviewer have caught the bugs you already shipped?">
+  <meta property="og:description" content="Benchmark AI code reviewers on the real bugs from your own repository. Recall, precision, false alarms and cost per review.">
+  <meta property="og:image" content="https://ggauravj05.github.io/reviewreplay/og.png">
+  <meta property="og:image:alt" content="ReviewReplay scorecard comparing two AI code reviewers on real bugs">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ReviewReplay">
+  <meta name="twitter:description" content="Benchmark AI code reviewers on the real bugs from your own repository.">
+  <meta name="twitter:image" content="https://ggauravj05.github.io/reviewreplay/og.png">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ReviewReplay",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "macOS, Linux, Windows",
+    "license": "https://opensource.org/licenses/MIT",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+    "author": {"@type": "Person", "name": "Gaurav Jadhav", "url": "https://github.com/GgauravJ05"},
+    "codeRepository": "https://github.com/GgauravJ05/reviewreplay",
+    "description": "Benchmark AI code reviewers on the real bugs from your own git history."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "Which reviewers does ReviewReplay support?", "acceptedAnswer": {"@type": "Answer", "text": "Claude Code with any model, Claude Code with a review skill or the built in /code-review command, Codex CLI, Gemini CLI, and any command line tool that prints a review."}},
+      {"@type": "Question", "name": "Where do the test cases come from?", "acceptedAnswer": {"@type": "Answer", "text": "From your own history. ReviewReplay finds fix commits, traces each one back to the commit that introduced the bug using the referenced pull request and git blame, and drafts an answer key you confirm."}},
+      {"@type": "Question", "name": "Can a reviewer cheat by reading the fix?", "acceptedAnswer": {"@type": "Answer", "text": "No. The project is exported at the parent commit with no git history, and the buggy change is applied as uncommitted edits, so the later fix is not reachable."}},
+      {"@type": "Question", "name": "Does it change my code or run my tests?", "acceptedAnswer": {"@type": "Answer", "text": "No. Reviewers run in a separate copy of the project with read only tools. Your working tree is never touched."}},
+      {"@type": "Question", "name": "How is a review scored?", "acceptedAnswer": {"@type": "Answer", "text": "Each review is split into findings, matched to the known bug by location, and an LLM judge labels each finding as the bug, another real problem, or a false alarm. Results come with 95% bootstrap intervals."}},
+      {"@type": "Question", "name": "What does a run cost?", "acceptedAnswer": {"@type": "Answer", "text": "ReviewReplay is free. You pay your reviewer provider as usual. In our comparison a Claude Code review of a real bug cost $0.064 on average, or $0.100 with a review skill."}},
+      {"@type": "Question", "name": "Do I need a dataset?", "acceptedAnswer": {"@type": "Answer", "text": "No. reviewreplay init builds draft cases from any git repository. A curated benchmark of planted, clean, decoy and real cases also ships with the tool."}},
+      {"@type": "Question", "name": "Is it open source?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. ReviewReplay is MIT licensed and needs only Python 3.10 and git."}}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link button-sm" href="#main">Skip to content</a>
+
+  <header class="nav-wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="nav-brand title-3" href="#top" aria-current="page">
+        <svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/></svg>
+        ReviewReplay
+      </a>
+      <ul class="nav-links">
+        <li><a class="title-4" href="#how">How it works</a></li>
+        <li><a class="title-4" href="#results">Results</a></li>
+        <li><a class="title-4" href="#faq">FAQ</a></li>
+        <li><a class="title-4" href="https://github.com/GgauravJ05/reviewreplay"><i class="ph ph-github-logo" aria-hidden="true"></i>GitHub</a></li>
+      </ul>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <span class="bar"></span><span class="bar"></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <ul>
+      <li><a class="heading-5" href="#how">How it works</a></li>
+      <li><a class="heading-5" href="#results">Results</a></li>
+      <li><a class="heading-5" href="#faq">FAQ</a></li>
+      <li><a class="heading-5" href="https://github.com/GgauravJ05/reviewreplay">GitHub</a></li>
+    </ul>
+  </div>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <p class="eyebrow caption-4"><span class="dot" aria-hidden="true"></span>Open source benchmark for AI code review</p>
+      <h1 class="heading-1 hero-title">Would your AI reviewer<br> have caught the bugs<br> you already shipped?</h1>
+      <p class="body-3 hero-sub">ReviewReplay replays real bug commits from your git history, asks each reviewer to review them in a read only copy of your project, and scores what it catches, what it gets wrong, and what it costs.</p>
+
+      <div class="cta-block">
+        <div class="install">
+          <code class="mono">pip install git+https://github.com/GgauravJ05/reviewreplay</code>
+          <button class="btn btn-primary button-md copy-btn" type="button" data-copy="pip install git+https://github.com/GgauravJ05/reviewreplay">
+            <i class="ph ph-copy" aria-hidden="true"></i><span>Copy install command</span>
+          </button>
+        </div>
+        <p class="copy-status caption-2" role="status" aria-live="polite"></p>
+      </div>
+
+      <p class="proof caption-2"><i class="ph ph-check-circle" aria-hidden="true"></i>Tested on 114 reviews across 19 cases, including real bugs from click, datasets and accelerate.</p>
+
+      <figure class="scorecard reveal" aria-label="Example scorecard">
+        <div class="scorecard-bar">
+          <span class="caption-4 mono">reviewreplay report results/m2-compare</span>
+        </div>
+        <div class="scorecard-body">
+          <p class="caption-3 scorecard-label">Real bugs in full repositories · 4 cases × 3 runs</p>
+          <div class="table-scroll">
+          <table class="score-table">
+            <thead>
+              <tr><th class="caption-4" scope="col">Metric</th><th class="caption-4" scope="col">Baseline</th><th class="caption-4" scope="col">With skill</th></tr>
+            </thead>
+            <tbody>
+              <tr><th class="body-6" scope="row">Bug found</th><td class="mono body-6">11 / 12</td><td class="mono body-4 good">12 / 12</td></tr>
+              <tr><th class="body-6" scope="row">Precision</th><td class="mono body-6">64%</td><td class="mono body-4 good">81%</td></tr>
+              <tr><th class="body-6" scope="row">Serious false alarms</th><td class="mono body-6">3</td><td class="mono body-4 good">0</td></tr>
+              <tr><th class="body-6" scope="row">Minor remarks per review</th><td class="mono body-6">1.6</td><td class="mono body-4 good">0.7</td></tr>
+              <tr><th class="body-6" scope="row">Mean cost per review</th><td class="mono body-4 good">$0.064</td><td class="mono body-6">$0.100</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+        <figcaption class="caption-5">Claude Code with and without <a href="https://github.com/awesome-skills/code-review-skill">code-review-skill</a>. Small sample: a direction, not a verdict.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Problem to solution -->
+    <section class="section reveal" id="why">
+      <div class="split">
+        <div>
+          <p class="caption-3 kicker">The problem</p>
+          <h2 class="heading-4">Teams adopt AI review on faith</h2>
+        </div>
+        <div class="stack">
+          <p class="body-3 muted">Public benchmarks grade reviewers on shared pull requests. That is useful, but it is not your code, your conventions or your kinds of bugs, and public code may already sit in the model's training data.</p>
+          <p class="body-3 muted">So every team ends up asking the same three questions with no way to answer them: which reviewer should we use, did our new prompt help, and what is all this noise costing us?</p>
+          <p class="body-2">ReviewReplay answers them with evidence from the one dataset that matters: the bugs your team has already fixed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="section reveal" aria-labelledby="benefits-title">
+      <p class="caption-3 kicker">What you get</p>
+      <h2 class="heading-4" id="benefits-title">Answers you can defend in a design review</h2>
+      <ul class="grid benefits">
+        <li class="card">
+          <i class="ph ph-git-branch icon" aria-hidden="true"></i>
+          <h3 class="title-2">Tested on your bugs</h3>
+          <p class="body-6 muted">Cases come from your own fix commits, traced back to the change that broke things. No public dataset, no leakage.</p>
+        </li>
+        <li class="card">
+          <i class="ph ph-target icon" aria-hidden="true"></i>
+          <h3 class="title-2">Precision, not just recall</h3>
+          <p class="body-6 muted">Strong models find most bugs. The real difference is how much of what they say is true. Every false alarm is counted.</p>
+        </li>
+        <li class="card">
+          <i class="ph ph-receipt icon" aria-hidden="true"></i>
+          <h3 class="title-2">Cost per review in dollars</h3>
+          <p class="body-6 muted">Time and spend come from each tool's own accounting, so you can price a reviewer before you roll it out.</p>
+        </li>
+        <li class="card">
+          <i class="ph ph-magnifying-glass icon" aria-hidden="true"></i>
+          <h3 class="title-2">Every number is auditable</h3>
+          <p class="body-6 muted">Each review, extracted finding and judge verdict is saved. Comparisons are paired by case with 95% intervals.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Tagline reveal -->
+    <section class="tagline-section" aria-label="Core idea">
+      <p class="heading-2 tagline" data-reveal-words>Stop choosing your code reviewer from a demo. Choose it from the bugs your team already fixed.</p>
+    </section>
+
+    <!-- How it works -->
+    <section class="section reveal" id="how" aria-labelledby="how-title">
+      <p class="caption-3 kicker">How it works</p>
+      <h2 class="heading-4" id="how-title">Three commands, one scorecard</h2>
+      <ol class="grid steps">
+        <li class="card">
+          <span class="step-num caption-3 mono">01</span>
+          <h3 class="title-2">Mine your history</h3>
+          <p class="body-6 muted">Finds fix commits, pairs each with the commit that introduced the bug using the referenced pull request and git blame, and drafts an answer key for you to confirm.</p>
+          <code class="mono caption-5 cmd">reviewreplay init</code>
+        </li>
+        <li class="card">
+          <span class="step-num caption-3 mono">02</span>
+          <h3 class="title-2">Replay every change</h3>
+          <p class="body-6 muted">Each buggy change is applied to a clean copy of the project with no history. Every reviewer runs read only, isolated, three times.</p>
+          <code class="mono caption-5 cmd">reviewreplay run</code>
+        </li>
+        <li class="card">
+          <span class="step-num caption-3 mono">03</span>
+          <h3 class="title-2">Read the scorecard</h3>
+          <p class="body-6 muted">Findings are matched to the known bug by location, then judged. You get recall, precision, false alarms and cost with confidence intervals.</p>
+          <code class="mono caption-5 cmd">reviewreplay report</code>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Proof -->
+    <section class="section reveal" id="results" aria-labelledby="results-title">
+      <p class="caption-3 kicker">Results so far</p>
+      <h2 class="heading-4" id="results-title">Finding the bug is easy now. Being right is not.</h2>
+      <div class="grid stats">
+        <div class="card">
+          <p class="heading-3 mono stat-value">100%</p>
+          <p class="body-6 muted">Recall on 15 planted bugs, including cross file cases. Small planted bugs no longer separate strong models.</p>
+        </div>
+        <div class="card">
+          <p class="heading-3 mono stat-value">56%</p>
+          <p class="body-6 muted">Precision on real bugs in full repositories in the first pilot. Many claims could not be verified.</p>
+        </div>
+        <div class="card">
+          <p class="heading-3 mono stat-value">3 → 0</p>
+          <p class="body-6 muted">Serious false alarms on real bugs once a review skill was added, at about 1.6× the cost.</p>
+        </div>
+      </div>
+      <p class="caption-2 muted note">Pilots used Claude Code with <span class="mono">claude-sonnet-5-5</span>. Methodology, raw reviews and grades are in the <a href="https://github.com/GgauravJ05/reviewreplay/tree/main/results">results folder</a>.</p>
+    </section>
+
+    <!-- Reviewers -->
+    <section class="section reveal" aria-labelledby="reviewers-title">
+      <p class="caption-3 kicker">Supported reviewers</p>
+      <h2 class="heading-4" id="reviewers-title">Bring any reviewer that prints a review</h2>
+      <ul class="chips">
+        <li class="chip body-5"><i class="ph ph-terminal-window" aria-hidden="true"></i>Claude Code</li>
+        <li class="chip body-5"><i class="ph ph-puzzle-piece" aria-hidden="true"></i>Claude Code with a skill</li>
+        <li class="chip body-5"><i class="ph ph-chat-centered-text" aria-hidden="true"></i>/code-review</li>
+        <li class="chip body-5"><i class="ph ph-terminal-window" aria-hidden="true"></i>Codex CLI</li>
+        <li class="chip body-5"><i class="ph ph-terminal-window" aria-hidden="true"></i>Gemini CLI</li>
+        <li class="chip body-5"><i class="ph ph-brackets-curly" aria-hidden="true"></i>Any command</li>
+      </ul>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section reveal" id="faq" aria-labelledby="faq-title">
+      <p class="caption-3 kicker">FAQ</p>
+      <h2 class="heading-4" id="faq-title">Questions developers ask first</h2>
+      <div class="faq">
+        <details>
+          <summary class="title-3">Which reviewers does ReviewReplay support?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p class="body-6 muted">Claude Code with any model, Claude Code with a review skill or the built in /code-review command, Codex CLI, Gemini CLI, and any command line tool that prints a review to stdout.</p>
+        </details>
+        <details>
+          <summary class="title-3">Where do the test cases come from?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p class="body-6 muted">From your own history. ReviewReplay finds fix commits, traces each one back to the commit that introduced the bug using the referenced pull request and git blame (the SZZ method), and drafts an answer key you confirm.</p>
+        </details>
+        <details>
+          <summary class="title-3">Can a reviewer cheat by reading the fix?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p class="body-6 muted">No. The project is exported at the parent commit with no git history, and the buggy change is applied as uncommitted edits, exactly what a reviewer sees in a pull request.</p>
+        </details>
+        <details>
+          <summary class="title-3">Does it change my code or run my tests?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p class="body-6 muted">No. Reviewers run in a separate copy of the project with read only tools. Your working tree is never touched.</p>
+        </details>
+        <details>
+          <summary class="title-3">How is a review scored?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p class="body-6 muted">Each review is split into findings, matched to the known bug by location, and an LLM judge labels each finding as the bug, another real problem, or a false alarm. Judge agreement is checked against independent labels with Cohen's kappa.</p>
+        </details>
+        <details>
+          <summary class="title-3">What does a run cost?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p class="body-6 muted">ReviewReplay itself is free. You pay your reviewer provider as usual. In our comparison a Claude Code review of a real bug cost $0.064 on average, or $0.100 with a review skill.</p>
+        </details>
+        <details>
+          <summary class="title-3">Do I need to build a dataset first?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p class="body-6 muted">No. <span class="mono">reviewreplay init</span> drafts cases from any git repository. A curated benchmark of planted, clean, decoy and real cases also ships with the tool for comparing on shared ground.</p>
+        </details>
+        <details>
+          <summary class="title-3">Is it open source?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p class="body-6 muted">Yes. ReviewReplay is MIT licensed and needs only Python 3.10 and git. No account and nothing to sign up for.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final reveal" aria-labelledby="final-title">
+      <h2 class="heading-3 final-title" id="final-title">Find out what your reviewer<br> really catches</h2>
+      <p class="body-3 muted final-sub">Free and MIT licensed. Runs on your machine. Reviewers stay read only.</p>
+      <div class="cta-block">
+        <div class="install">
+          <code class="mono">pip install git+https://github.com/GgauravJ05/reviewreplay</code>
+          <button class="btn btn-primary button-md copy-btn" type="button" data-copy="pip install git+https://github.com/GgauravJ05/reviewreplay">
+            <i class="ph ph-copy" aria-hidden="true"></i><span>Copy install command</span>
+          </button>
+        </div>
+        <p class="copy-status caption-2" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="caption-2 muted">Built by <a href="https://github.com/GgauravJ05">Gaurav Jadhav</a>. Thanks to the <a href="https://github.com/awesome-skills/code-review-skill">code-review-skill</a> maintainers.</p>
+      <ul class="footer-links caption-2">
+        <li><a href="https://github.com/GgauravJ05/reviewreplay/blob/main/LICENSE">License</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="https://github.com/GgauravJ05/reviewreplay/blob/main/CITATION.cff">Cite</a></li>
+        <li><a href="https://github.com/GgauravJ05/reviewreplay">GitHub</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
