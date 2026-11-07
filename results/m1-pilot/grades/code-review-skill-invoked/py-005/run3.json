@@ -1,0 +1,47 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "blocking",
+      "summary": "`page = offset // limit` is 0-based while `paginate()` numbers pages from 1, so offset 0 raises ValueError and every other offset returns the previous page (fix: add 1).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies the 0-based vs 1-based page mismatch causing ValueError at offset 0 and previous page otherwise."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "`limit` is not validated (zero causes ZeroDivisionError, negative gives wrong page), and page math can disagree with `paginate()`'s clamped per_page and snaps non-multiple offsets down, causing wrong windows, duplicates or gaps.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known limit validation, clamping and non-multiple offset problems, not the off-by-one page bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0159439
+}

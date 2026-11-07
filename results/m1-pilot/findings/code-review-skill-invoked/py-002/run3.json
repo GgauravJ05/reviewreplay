@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "rename() loads the document via self.repo.get(doc_id) instead of self._owned(user_id, doc_id), so no ownership check happens and any user can rename another user's document."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "important",
+      "summary": "Skipping _owned also bypasses the NotFound raised for other users' documents, letting callers distinguish which document ids exist (information leak)."
+    }
+  ],
+  "extract_cost_usd": 0.0150078
+}

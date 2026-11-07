@@ -1,0 +1,47 @@
+{
+  "case": "ml-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge doesn't verify that customer_id is unique in segments, so duplicate segment rows duplicate orders, inflate revenue, and can place revenue in multiple segments.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes duplicate segment rows per customer duplicating orders and inflating revenue across segments, which is the same join-fanout defect."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "Using how=\"inner\" silently drops orders whose customer has no segment row, so segment totals don't add up to total revenue and nothing flags the gap.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known inner-join-drops-unmatched-orders problem, not the duplication bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0153919
+}

@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "orders/model.py",
+      "line_start": 21,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "Order.__post_init__ always appends a fresh `created` event, so building an Order with existing events (e.g. rehydrating from storage) puts `created` last and makes latest_status report the wrong status; latent because nothing does this today."
+    }
+  ],
+  "extract_cost_usd": 0.016659800000000002
+}

@@ -1,0 +1,45 @@
+{
+  "case": "py-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "blocking",
+      "summary": "The free-shipping check compares subtotal_cents() (cents) against FREE_SHIPPING_THRESHOLD (50, whole dollars), so shipping is waived for nearly every order (any cart of 50 cents or more) instead of only for $50 or more.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same cents vs whole-dollar threshold mismatch causing free shipping for orders of 50 cents or more."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_checkout.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The only non-empty-cart test uses a $120 order that ships free regardless of units, so the unit bug goes undetected; tests are needed below the threshold and exactly at the threshold.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "A test coverage suggestion, not a defect in the changed code's behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.032973999999999996
+}

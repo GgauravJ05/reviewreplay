@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "unique_slug does not add its returned slug to `taken`, so callers must remember to do so themselves."
+    },
+    {
+      "file": "tests/test_slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No test covers a title that slugifies to `untitled` and then collides with an existing slug."
+    }
+  ],
+  "extract_cost_usd": 0.0151858
+}

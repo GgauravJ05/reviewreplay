@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "`page = offset // limit` is 0-based while `paginate` expects pages from 1, so offset=0 raises ValueError (first request fails) and offset=20,limit=20 returns items 0\u201319 instead of 20\u201339; adding +1 still breaks for offsets not a multiple of limit."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "`limit` is not validated: limit=0 raises ZeroDivisionError, negative limit gives wrong pages, and limit above MAX_PER_PAGE is clamped by `paginate` but the page number is computed from the unclamped limit, mapping offsets to wrong items."
+    }
+  ],
+  "extract_cost_usd": 0.0167118
+}

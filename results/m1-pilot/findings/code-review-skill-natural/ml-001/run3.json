@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "blocking",
+      "summary": "Standardization uses the mean/std of whatever dataframe is passed, causing data leakage (scaling before train_test_split inflates test AUC) and train/inference skew (single-row or small-batch inference is scaled with its own stats, giving NaN or wrong predictions)."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "blocking",
+      "summary": "Dividing by std yields NaN/inf for zero-variance (constant) columns or single-row inputs, which makes LogisticRegression.fit raise an error."
+    }
+  ],
+  "extract_cost_usd": 0.0165378
+}

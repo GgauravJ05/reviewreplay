@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Standardization uses mean/std from the whole DataFrame, and build_features runs before the train/test split, so test data leaks into training scaling and inflates test AUC; the statistics are also not saved, so inference on a single row gives NaN and batches are scaled differently from training."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "A zero-variance column has zero standard deviation, so the division yields NaN or inf and LogisticRegression.fit raises a ValueError."
+    }
+  ],
+  "extract_cost_usd": 0.033916
+}

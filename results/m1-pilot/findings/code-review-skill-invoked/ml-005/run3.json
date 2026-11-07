@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge doesn't verify that `segments` has one row per customer, so duplicate customer_id rows duplicate orders and inflate revenue."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "`how=\"inner\"` drops orders whose customer_id isn't in `segments`, so per-segment totals don't sum to total revenue and nothing flags the gap."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "If the merge is changed to a left join without filling missing segments, the `groupby` drops null-segment rows by default unless `dropna=False` is used."
+    }
+  ],
+  "extract_cost_usd": 0.0167338
+}

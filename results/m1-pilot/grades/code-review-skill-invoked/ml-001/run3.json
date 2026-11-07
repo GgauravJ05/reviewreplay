@@ -1,0 +1,67 @@
+{
+  "case": "ml-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "train.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "build_features is called on the whole dataset before the train/test split, so the mean and std include test rows, which leaks data and makes the test AUC optimistic.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes scaling on the full dataset before the split, leaking test stats."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "The mean and std are recomputed on every call and never saved, so inference on a single row or small batch is scaled differently from training, or gives NaN because the std of one row is NaN.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Unsaved stats causing train/serve skew is a known other problem, not the leakage bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "A constant column or a one-row batch gives std of 0 or NaN, so the division produces NaN or inf and LogisticRegression.fit raises a ValueError (the reviewer did not reproduce this).",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Zero-variance or single-row NaN/inf is a known other problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.016087900000000002
+}

@@ -1,0 +1,27 @@
+{
+  "case": "py-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` calls `self.repo.get(doc_id)` instead of `self._owned(user_id, doc_id)`, skipping the ownership check so any user can rename another user's document and callers can tell which ids exist.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies rename using repo.get instead of _owned, skipping ownership check, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0140659
+}

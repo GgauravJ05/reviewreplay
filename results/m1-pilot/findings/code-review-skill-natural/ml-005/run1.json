@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge doesn't require customer_id to be unique in segments, so customers with multiple segment rows have their orders joined multiple times and revenue is double-counted."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "Using how=\"inner\" silently drops orders from customers with no row in segments, so segment totals don't add up to total revenue with no warning."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "groupby drops rows where segment is NaN by default, which would omit revenue unless a left join with fill is used or dropna=False is passed."
+    }
+  ],
+  "extract_cost_usd": 0.0166058
+}

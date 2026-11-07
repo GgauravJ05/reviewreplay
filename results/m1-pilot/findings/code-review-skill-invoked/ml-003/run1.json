@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "evaluate leaves the model in eval mode on return; fit resets to train mode next epoch, but a separate evaluate call would leave the model in eval mode."
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "The device default torch.device(\"cpu\") is evaluated once at import, which the reviewer says is harmless because torch.device is immutable."
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "There are no tests for fit or evaluate."
+    }
+  ],
+  "extract_cost_usd": 0.0162858
+}

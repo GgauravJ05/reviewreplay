@@ -1,0 +1,87 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "`page = offset // limit` yields a 0-based page while `paginate` is 1-based, so offset=0 raises ValueError and every later offset returns the previous page; fix is `+ 1`.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the 0-based vs 1-based page mismatch exactly."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "`limit=0` causes ZeroDivisionError because there is no `limit >= 1` validation (though offset is validated).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "limit=0 ZeroDivisionError is a known other problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Offsets that aren't a multiple of `limit` are rounded down to a page boundary (e.g. offset=10, limit=20 returns items 1\u201320), returning wrong items for item-offset scrolling; slicing PRODUCTS directly would be more accurate.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Non-multiple offsets rounding down is a known other problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "When `limit` exceeds MAX_PER_PAGE, paginate clamps per_page but the page number is computed from the unclamped limit, so the wrong items are returned (e.g. limit=1000, offset=1000).",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Clamped per_page vs unclamped limit is a known other problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0173799
+}

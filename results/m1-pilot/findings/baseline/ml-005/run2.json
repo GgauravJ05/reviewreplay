@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "Merge doesn't verify customer_id is unique in segments, so duplicate segment rows duplicate orders and inflate revenue."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "how=\"inner\" silently drops orders from customers with no segment, so segment totals don't sum to total revenue."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "important",
+      "summary": "groupby drops rows with NaN segment by default, so orders with null segments are lost unless dropna=False or nulls are filled."
+    }
+  ],
+  "extract_cost_usd": 0.0163778
+}

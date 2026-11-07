@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "StratifiedKFold splits by visit row, so the same patient can appear in both train and test folds, leaking patient identity via repeated per-patient features and producing optimistic CV scores; should split by patient using StratifiedGroupKFold with groups=patient_id."
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 22,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "cross_validate prints its result in addition to returning scores; printing inside a library function is a side effect and should be moved to the caller."
+    }
+  ],
+  "extract_cost_usd": 0.0159078
+}

@@ -1,0 +1,25 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "orders/model.py",
+      "line_start": 24,
+      "line_end": 24,
+      "severity": "minor",
+      "summary": "Order.__post_init__ appends a 'created' event even when events are passed explicitly, so an order rebuilt from stored events gets a duplicate trailing 'created' event and latest_status wrongly returns 'created'; outside this change and only matters when rebuilding from storage.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "The finding itself says the code is outside this change and only matters in a storage-rebuild scenario, so it is not a real defect in the changed code. It also matches no answer-key bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0143619
+}

@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "shipping_cents compares a cents subtotal to FREE_SHIPPING_THRESHOLD, which is in whole dollars (50), so almost every non-empty cart gets free shipping instead of being charged the flat 799 cents."
+    },
+    {
+      "file": "tests/test_checkout.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests cover only an empty cart and a $120 cart, so they miss the threshold bug; there are no tests for a cart below the free-shipping threshold or exactly at it."
+    }
+  ],
+  "extract_cost_usd": 0.0165638
+}

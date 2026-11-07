@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "The free-shipping check compares cart.subtotal_cents() (cents) to FREE_SHIPPING_THRESHOLD (dollars, 50), so the threshold is effectively $0.50 and nearly all carts ship free."
+    },
+    {
+      "file": "tests/test_checkout.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests only cover an empty cart and a $120 cart, so they pass despite the bug; there is no test for a below-threshold cart (flat shipping) or a boundary test at exactly $50.00."
+    }
+  ],
+  "extract_cost_usd": 0.0166578
+}

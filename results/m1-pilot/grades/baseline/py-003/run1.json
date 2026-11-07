@@ -1,0 +1,25 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Order.__post_init__ appends a 'created' event after any pre-filled events list, so latest_status would report 'created' instead of the real latest event (outside the changed file).",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Concerns unchanged code outside the changed file, no answer-key bug matches, and it's speculative about pre-filled events."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0140499
+}

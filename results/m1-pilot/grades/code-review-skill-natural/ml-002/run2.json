@@ -1,0 +1,27 @@
+{
+  "case": "ml-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "StratifiedKFold splits at the visit level and ignores patient_id, so one patient's visits can fall in both train and test folds, leaking data and inflating the reported PR-AUC; use StratifiedGroupKFold/GroupKFold with groups=df[\"patient_id\"].",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: row-level StratifiedKFold lets a patient's visits span train and test; suggests grouping by patient_id."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0143579
+}

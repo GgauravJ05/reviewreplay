@@ -1,0 +1,65 @@
+{
+  "case": "py-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document via `self.repo.get(doc_id)` without the `_owned` ownership check and ignores `user_id`, so any authenticated user can rename another user's document.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: rename uses repo.get instead of _owned, allowing renaming others' documents."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "Because `rename` skips the ownership check, a nonexistent id raises `NotFound` while another user's id succeeds, leaking which document ids exist.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the id-existence leak, which is part of b1's stated consequence from the same missing ownership check."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The ownership check should run before title validation so a non-owner gets `NotFound` rather than a title `ValueError`.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Ordering of validation versus ownership is a speculative preference, not a demonstrated defect; no line anchor."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0159539
+}

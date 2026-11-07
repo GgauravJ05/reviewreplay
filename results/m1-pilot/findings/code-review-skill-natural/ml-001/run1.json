@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 12,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "build_features standardizes using the full dataset's mean/std before the train/test split (called at train.py:15, split at train.py:16), leaking test statistics into training features and making the reported test AUC optimistic."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 12,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Scaling parameters are not saved, so at inference build_features scales new data with that batch's own statistics; a single row yields NaN std and all-NaN features, and small batches get a different scale than training (train/serve skew)."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 12,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Constant (zero-variance) columns give std() of 0, so the division produces NaN or inf and LogisticRegression raises a ValueError."
+    }
+  ],
+  "extract_cost_usd": 0.0173098
+}

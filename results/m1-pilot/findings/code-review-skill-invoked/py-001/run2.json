@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "blocking",
+      "summary": "The free-shipping check compares cart.subtotal_cents() (cents) against FREE_SHIPPING_THRESHOLD (50, whole dollars), so shipping is waived for almost every non-empty cart, e.g. a $10.00 cart ships free instead of being charged $7.99."
+    },
+    {
+      "file": "shop/config.py",
+      "line_start": 6,
+      "line_end": 6,
+      "severity": "minor",
+      "summary": "FREE_SHIPPING_THRESHOLD is defined in whole dollars while the rest of the codebase uses integer cents, which causes the unit mismatch; the reviewer suggests renaming it to FREE_SHIPPING_THRESHOLD_CENTS = 5000."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "The new test uses a $120 order that passes under both correct and incorrect units, and no tests cover carts below the threshold, exactly at it, or one cent below it, so the bug goes undetected."
+    }
+  ],
+  "extract_cost_usd": 0.0177838
+}

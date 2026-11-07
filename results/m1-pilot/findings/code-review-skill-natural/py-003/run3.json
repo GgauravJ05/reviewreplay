@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "orders/status.py",
+      "line_start": 13,
+      "line_end": 13,
+      "severity": "note",
+      "summary": "Because Order.__post_init__ always appends a `created` event, an order rebuilt from a caller-supplied events list would make latest_status return \"created\". The reviewer says this comes from the model, not this change, and it matters only if orders are rehydrated that way."
+    }
+  ],
+  "extract_cost_usd": 0.0164938
+}

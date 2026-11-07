@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The inner merge on customer_id drops orders whose customer is not in segments, so segment totals omit those orders and don't sum to total revenue."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "If segments has multiple rows per customer_id, the merge duplicates that customer's orders and double counts revenue in segment totals."
+    }
+  ],
+  "extract_cost_usd": 0.015107800000000001
+}

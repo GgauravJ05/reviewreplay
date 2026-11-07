@@ -118,8 +118,8 @@ def _fmt_spots(spots: list[Spot], key: str) -> str:
     return "\n".join(rows)
 
 
-def grade_one(case: Case, findings_file: Path, out_file: Path, model: str) -> str:
-    if out_file.exists():
+def grade_one(case: Case, findings_file: Path, out_file: Path, model: str, force: bool = False) -> str:
+    if out_file.exists() and not force:
         return "cached"
     findings = json.loads(findings_file.read_text())["findings"]
     rows = []
@@ -134,6 +134,7 @@ def grade_one(case: Case, findings_file: Path, out_file: Path, model: str) -> st
             f"{r['summary']} (candidates: {r['candidates'] or '[]'})" for r in rows)
         prompt = (_prompt("judge.md").replace("{bugs}", _fmt_spots(case.bugs, "summary"))
                   .replace("{known_ok}", _fmt_spots(case.known_ok, "note"))
+                  .replace("{related}", "\n".join(f"- {r}" for r in case.related_valid) or "(none)")
                   .replace("{findings}", listing))
         with tempfile.TemporaryDirectory(prefix="rb-j-") as tmp:
             res = claude.run_json(prompt, JUDGE_SCHEMA, Path(tmp), model=model)
@@ -157,13 +158,14 @@ def grade_one(case: Case, findings_file: Path, out_file: Path, model: str) -> st
     return "ok"
 
 
-def grade_all(run_dir: Path, cases: dict[str, Case], model: str, workers: int) -> None:
+def grade_all(run_dir: Path, cases: dict[str, Case], model: str, workers: int,
+              force: bool = False) -> None:
     jobs = []
     for f in sorted((run_dir / "findings").rglob("run*.json")):
         rel = f.relative_to(run_dir / "findings")
         case_id = rel.parts[1]
         jobs.append((cases[case_id], f, run_dir / "grades" / rel))
-    _parallel(jobs, lambda j: grade_one(*j, model), workers, "grade")
+    _parallel(jobs, lambda j: grade_one(*j, model, force), workers, "grade")
 
 
 def _parallel(jobs, fn, workers: int, label: str) -> None:

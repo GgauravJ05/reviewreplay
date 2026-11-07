@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "StratifiedKFold splits by row and ignores patient_id, so the same patient's visits land in both train and test folds, leaking patient identity and inflating PR-AUC; should use a grouped split like StratifiedGroupKFold."
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 22,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "cross_validate prints as a side effect instead of returning the summary or using logging."
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "There are no tests for this file; a synthetic multi-visit patient test would catch the leakage regression."
+    }
+  ],
+  "extract_cost_usd": 0.017207800000000002
+}

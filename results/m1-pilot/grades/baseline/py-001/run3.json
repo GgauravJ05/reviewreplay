@@ -1,0 +1,27 @@
+{
+  "case": "py-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "Compares cart.subtotal_cents() (cents) against FREE_SHIPPING_THRESHOLD (50, whole dollars), so carts of 50 cents or more get free shipping and the $7.99 charge is almost never applied; the new tests only use a $120 cart and miss it.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same cents-vs-dollars unit mismatch against FREE_SHIPPING_THRESHOLD causing near-universal free shipping."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0144059
+}

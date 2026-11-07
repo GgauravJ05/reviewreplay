@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "rename() loads the document via self.repo.get(doc_id) rather than self._owned(user_id, doc_id), skipping the ownership check so any user can rename another user's document and no NotFound is raised."
+    }
+  ],
+  "extract_cost_usd": 0.0141958
+}

@@ -1,0 +1,63 @@
+{
+  "case": "ml-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "StratifiedKFold splits by row and ignores patient_id, so the same patient's visits land in both train and test folds, leaking patient identity and inflating PR-AUC; should use a grouped split like StratifiedGroupKFold.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: row-wise split leaks patients across folds; suggests StratifiedGroupKFold."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 22,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "cross_validate prints as a side effect instead of returning the summary or using logging.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Printing instead of returning is a style concern, not incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "There are no tests for this file; a synthetic multi-visit patient test would catch the leakage regression.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Missing-tests finding that concerns the answer-key leakage bug, which is always counted as valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0159079
+}

@@ -1,0 +1,79 @@
+{
+  "case": "ml-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 11,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError on duplicate customer_id, which is undocumented in the docstring and makes a dirty customer table fail the whole report instead of degrading to \"unknown\".",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Raising on duplicate keys is the intended purpose of validate; no real defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "fillna(\"unknown\") raises TypeError if region is a categorical dtype, because \"unknown\" is not a category.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative categorical dtype scenario with no evidence in the change."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "Customers with a null region are reported as \"unknown\", which mixes them with customers missing from the customers table. The docstring promises that label only for the missing ones.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Plausible semantic mismatch with docstring, but cannot verify the docstring or intent."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "(\"order_id\", \"count\") skips null order_id values, so orders can undercount rows. \"size\" should be used if the intent is the number of orders.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Count skipping nulls is a real pandas behavior, but order_id nulls are speculative and unverifiable."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    }
+  ],
+  "judge_cost_usd": 0.0162239
+}

@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Order.__post_init__ appends a 'created' event after any pre-filled events list, so latest_status would report 'created' instead of the real latest event (outside the changed file)."
+    }
+  ],
+  "extract_cost_usd": 0.0176198
+}

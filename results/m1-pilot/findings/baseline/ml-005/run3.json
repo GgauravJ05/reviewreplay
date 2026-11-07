@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge with segments can double-count revenue when a customer has multiple segment rows, and the inner join silently drops orders from customers with no segment, so total revenue is wrong."
+    }
+  ],
+  "extract_cost_usd": 0.0147058
+}

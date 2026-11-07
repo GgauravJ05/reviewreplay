@@ -1,0 +1,67 @@
+{
+  "case": "py-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` calls `self.repo.get(doc_id)` instead of `self._owned(user_id, doc_id)`, so the ownership check is skipped and any user can rename another user's document (authorization bypass / IDOR).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies rename using repo.get instead of _owned, allowing cross-user rename."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "important",
+      "summary": "Skipping `_owned` breaks its NotFound guarantee: a nonexistent id raises whatever `repo.get` raises, and another user's document is renamed successfully, so the error behavior differs and reveals which ids exist.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same root cause: skipping _owned, allowing rename of others' docs and leaking id existence."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "Title validation runs before the ownership check, so a non-owner gets a `ValueError` for a bad title before `NotFound`; the reviewer suggests moving the ownership check first for consistent error behavior.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Only about validation order/error precedence, a different and non-defect complaint; doesn't describe the missing ownership check."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0161899
+}

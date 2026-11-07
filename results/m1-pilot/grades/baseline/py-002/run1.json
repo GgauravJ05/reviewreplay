@@ -1,0 +1,47 @@
+{
+  "case": "py-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document via `self.repo.get(doc_id)` without calling `self._owned(user_id, doc_id)`, so any authenticated user can rename another user's document (authorization bypass/IDOR) and can probe which ids exist.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies rename using repo.get instead of _owned, allowing cross-user rename and id probing."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "The ownership check should occur before title validation so non-owners always get NotFound rather than an input-dependent ValueError.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Concerns ordering of validation vs ownership check, not the missing ownership check itself; speculative minor point and doesn't describe the core defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.015165900000000001
+}

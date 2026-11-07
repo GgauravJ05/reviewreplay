@@ -1,0 +1,25 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "Order.__post_init__ appends the `created` event after any pre-populated events, so latest_status would wrongly report `created` for an Order built with a pre-populated events list (nothing in the repo does this today, and it is outside the change).",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Finding concerns unchanged code and a hypothetical scenario that the finding itself says doesn't occur; no real defect in the change."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.031942
+}

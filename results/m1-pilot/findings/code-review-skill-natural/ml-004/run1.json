@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "fillna(\"unknown\") also relabels orders whose customer exists but has a null region, which is broader than the docstring says (only missing customers)."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 11,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError if customers has duplicate customer_id, so one bad customer row crashes the whole report."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "fillna(\"unknown\") raises TypeError if region is a categorical column without \"unknown\" as a category."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "count skips null order_id values, so orders is undercounted if order_id can be null; size would count all rows."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "sort_values on revenue_cents is not stable by default, so regions with tied revenue can appear in different order between runs."
+    }
+  ],
+  "extract_cost_usd": 0.0183738
+}

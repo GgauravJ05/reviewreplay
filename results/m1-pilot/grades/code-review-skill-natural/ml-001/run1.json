@@ -1,0 +1,67 @@
+{
+  "case": "ml-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 12,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "build_features standardizes using the full dataset's mean/std before the train/test split (called at train.py:15, split at train.py:16), leaking test statistics into training features and making the reported test AUC optimistic.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the same leakage of test statistics via scaling before the split."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 12,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Scaling parameters are not saved, so at inference build_features scales new data with that batch's own statistics; a single row yields NaN std and all-NaN features, and small batches get a different scale than training (train/serve skew).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known train/serve skew from unsaved scaling stats, not the leakage bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 12,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Constant (zero-variance) columns give std() of 0, so the division produces NaN or inf and LogisticRegression raises a ValueError.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known zero-variance NaN/inf problem, not the leakage bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0161759
+}

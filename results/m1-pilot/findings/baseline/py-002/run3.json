@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document via `self.repo.get(doc_id)` without an ownership check (`user_id` unused), letting any authenticated user rename another user's document (IDOR/authorization bypass)."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "Skipping the `_owned` check also skips the `NotFound` response for non-owned documents, so callers can learn which doc ids exist, violating the documented no-id-disclosure guarantee."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "`rename` validates the title before checking ownership, so a non-owner with an invalid title gets `ValueError` instead of `NotFound`; error ordering is inconsistent with other methods."
+    }
+  ],
+  "extract_cost_usd": 0.0169018
+}

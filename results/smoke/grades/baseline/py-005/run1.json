@@ -1,0 +1,87 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "page = offset // limit is 0-based while paginate expects 1-based pages, so offset=0 raises ValueError and later pages return the previous page's items.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Exactly the 0-based vs 1-based page mismatch."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Converting offset to a page number drops the remainder, so offsets that aren't multiples of limit return the wrong items (e.g., offset=10, limit=20 returns items 0\u201319 instead of 10\u201329).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Page-based conversion drops remainder for non-multiple offsets; a real separate defect (though it relies on page semantics)."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "limit is not validated: limit=0 raises ZeroDivisionError and a negative limit yields a bad page number.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "limit=0 causes ZeroDivisionError in the changed code; real unvalidated input defect."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "offset // limit uses the unclamped limit while paginate clamps per_page to MAX_PER_PAGE, so results misalign when limit exceeds MAX_PER_PAGE.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Unclamped limit used for division while paginate clamps per_page causes misalignment; plausible real defect."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.034904000000000004
+}

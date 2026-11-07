@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge doesn't verify that customer_id is unique in segments, so duplicate segment rows duplicate orders, inflate revenue, and can place revenue in multiple segments."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "Using how=\"inner\" silently drops orders whose customer has no segment row, so segment totals don't add up to total revenue and nothing flags the gap."
+    }
+  ],
+  "extract_cost_usd": 0.0156738
+}

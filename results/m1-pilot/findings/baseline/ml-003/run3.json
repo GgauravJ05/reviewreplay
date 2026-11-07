@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "If labels aren't long tensors, CrossEntropyLoss will raise an error; this depends on the dataset, which isn't in the diff."
+    }
+  ],
+  "extract_cost_usd": 0.0148278
+}

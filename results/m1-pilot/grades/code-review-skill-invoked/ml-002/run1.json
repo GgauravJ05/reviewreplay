@@ -1,0 +1,47 @@
+{
+  "case": "ml-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "StratifiedKFold splits by visit rather than by patient, so the same patient can appear in both train and test folds, leaking repeated per-patient features and inflating the PR-AUC reported at line 22; should use StratifiedGroupKFold(shuffle=True, random_state=seed) grouped by patient_id.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies row-level split leaking patients across folds and recommends grouping by patient_id."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "minor",
+      "summary": "cv.split(X, y) is called without groups; if a group-aware splitter is adopted, groups=df[\"patient_id\"] must be passed or it will error or not group.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Conditional note about passing groups if a different splitter is adopted; not a distinct real defect in the current code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0152879
+}

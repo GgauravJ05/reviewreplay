@@ -1,0 +1,25 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Order.__post_init__ appends a 'created' event even when events=[...] is passed to the constructor, so rebuilding an order from stored events adds a duplicate 'created' at the end and latest_status would wrongly report 'created'; this is in model.py, untouched by the change, and only matters if orders are rebuilt that way.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Concerns untouched model.py code, self-described as only conditionally relevant, and isn't an answer-key bug or a defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0143059
+}

@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "`offset // limit` yields a 0-based page number while `paginate` is 1-based, so the default call (0, 20) raises ValueError and offset 20 returns items 0\u201319 instead of 20\u201339."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Converting offset to a page number cannot represent offsets that don't align with `limit` (e.g. offset=10, limit=20 starts at item 0), and limit=0 raises ZeroDivisionError."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "A `limit` above MAX_PER_PAGE is clamped inside `paginate` but the page number is computed with the unclamped value, so items are skipped or repeated."
+    }
+  ],
+  "extract_cost_usd": 0.0172318
+}

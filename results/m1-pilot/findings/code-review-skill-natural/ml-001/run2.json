@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "blocking",
+      "summary": "build_features standardizes using whole-DataFrame mean/std before the train/test split (called at train.py:15-16), leaking test statistics into training features and invalidating the test AUC; at inference it also scales by the batch's own statistics (NaN for a single row) instead of training statistics."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "A constant (zero-variance) column makes std 0, so the division yields NaN/inf and LogisticRegression raises on NaN input."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "pandas DataFrame.std() uses ddof=1 whereas sklearn's StandardScaler uses ddof=0, so the scaling is inconsistent with sklearn's."
+    }
+  ],
+  "extract_cost_usd": 0.0178058
+}

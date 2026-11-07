@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "blocking",
+      "summary": "Standardization is computed on the full dataframe before the train/test split, leaking test-set statistics into training and making test AUC optimistic."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "blocking",
+      "summary": "Train/serve skew: scaling statistics are computed from the input batch and not persisted, so inference on a single row yields NaN (std is NaN) and on a batch uses different mean/std than training."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "A constant column has std of 0, causing division by zero (NaN/inf) that breaks fit."
+    }
+  ],
+  "extract_cost_usd": 0.035072
+}

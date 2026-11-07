@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "StratifiedKFold splits by visit, so the same patient can appear in both train and test folds, letting the model memorize repeated per-patient features and inflating PR-AUC; use StratifiedGroupKFold with groups=df[\"patient_id\"] (keeping patient_id out of FEATURES)."
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 22,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "The function both prints and returns scores, causing unwanted output for library callers."
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 22,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "np.std uses ddof=0, which slightly understates the spread across 5 folds."
+    }
+  ],
+  "extract_cost_usd": 0.0164898
+}

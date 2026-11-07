@@ -1,0 +1,47 @@
+{
+  "case": "ml-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "blocking",
+      "summary": "Standardization uses the mean/std of whatever dataframe is passed, causing data leakage (scaling before train_test_split inflates test AUC) and train/inference skew (single-row or small-batch inference is scaled with its own stats, giving NaN or wrong predictions).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Names leakage from scaling before the split, which inflates test AUC, the same defect as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "blocking",
+      "summary": "Dividing by std yields NaN/inf for zero-variance (constant) columns or single-row inputs, which makes LogisticRegression.fit raise an error.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Zero-variance and single-row NaN/inf is a known other problem, not the leakage bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0154059
+}

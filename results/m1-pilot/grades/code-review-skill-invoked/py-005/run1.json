@@ -1,0 +1,87 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "blocking",
+      "summary": "`page = offset // limit` is zero-based while `paginate` is one-based, so offsets 0 to limit-1 raise ValueError and larger offsets return the wrong page (fix: add 1).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies the 0-based vs 1-based page mismatch causing ValueError at offset 0 and wrong pages."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "Offsets that aren't multiples of `limit` are rounded down to a page start, so the returned items don't match the `offset` reported in the response (e.g. offset=30, limit=20 returns items 20\u201339).",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches known problem of non-multiple offsets being rounded down."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "`limit=0` causes a ZeroDivisionError in the page calculation.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches known problem of limit=0 ZeroDivisionError."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "`paginate` caps `per_page` at MAX_PER_PAGE but the page math uses the uncapped `limit`, so large limits cause items to be skipped or repeated.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches known problem of clamped per_page versus unclamped limit page math."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0173919
+}

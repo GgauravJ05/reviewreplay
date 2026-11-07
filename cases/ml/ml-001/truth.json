@@ -5,12 +5,22 @@
       "file": "model/features.py",
       "anchor": "out[cols] = (out[cols] - out[cols].mean()) / out[cols].std()",
       "span": 1,
-      "also": [{"file": "model/train.py", "anchor": "df = build_features(load(path))", "span": 2}],
+      "also": [
+        {
+          "file": "model/train.py",
+          "anchor": "df = build_features(load(path))",
+          "span": 2
+        }
+      ],
       "class": "data-leakage",
       "severity": "important",
       "summary": "Mean and std are computed on the whole dataset, and train.py calls build_features before the train/test split, so test-set statistics leak into training.",
       "trigger": "Test rows' values shift the mean/std used to scale the training rows; the reported test AUC is optimistic."
     }
   ],
-  "known_ok": []
+  "known_ok": [],
+  "related_valid": [
+    "The scaling statistics are not saved, so inference cannot apply the same transform (train/serve skew).",
+    "A zero-variance column (or a single-row input) makes std 0 or NaN, producing NaN/inf features."
+  ]
 }

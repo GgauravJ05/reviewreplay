@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "`(\"order_id\", \"count\")` skips null order_id values, so it isn't a true row count; \"size\" would be safer."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If `region` is a pandas category dtype, `fillna(\"unknown\")` raises a TypeError because \"unknown\" isn't an existing category."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No tests are included for the new module."
+    }
+  ],
+  "extract_cost_usd": 0.016145800000000002
+}

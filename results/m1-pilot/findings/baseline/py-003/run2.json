@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Order.__post_init__ appends a 'created' event even when events=[...] is passed to the constructor, so rebuilding an order from stored events adds a duplicate 'created' at the end and latest_status would wrongly report 'created'; this is in model.py, untouched by the change, and only matters if orders are rebuilt that way."
+    }
+  ],
+  "extract_cost_usd": 0.0150918
+}

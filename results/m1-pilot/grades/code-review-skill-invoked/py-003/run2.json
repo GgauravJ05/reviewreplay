@@ -1,0 +1,27 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "orders/status.py",
+      "line_start": 18,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "notify_status logs the exception and re-raises it, so a caller that also logs the error will produce duplicate log entries.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok2"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Log-and-reraise is the intentional design per ok2; duplicate logging is speculative style, not a real defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0139719
+}

@@ -1,0 +1,79 @@
+{
+  "case": "ml-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError on duplicate customer_id rows in customers, crashing the report instead of degrading gracefully, and the docstring doesn't mention this.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Raising on duplicate keys is intended validate behavior; speculative and not a defect in the change."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "count on order_id skips null IDs, so those orders add to revenue but not to the orders count if order_id can be null.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative conditional on null order_ids; no evidence it is a real defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "pandas matches NaN keys in a merge, so orders with null customer_id take the region of a customers row with null customer_id instead of falling into \"unknown\".",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Pandas does match NaN keys in merges, so null customer_id orders can pick up a null-key customer's region; real though edge case."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "sort_values isn't stable by default, so regions with equal revenue may be ordered non-deterministically; use kind=\"stable\" or a secondary sort key.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Tie ordering nondeterminism is a minor speculative concern, not an incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0163819
+}

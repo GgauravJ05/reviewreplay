@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The default argument `device=torch.device(\"cpu\")` is evaluated once at function definition time; the reviewer says it is harmless because the object is immutable."
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "`evaluate` leaves the model in eval mode, which could cause unexpected behavior if it is called on its own outside `fit`."
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The file has no tests; the reviewer suggests adding a smoke test that fits a few steps on random data."
+    }
+  ],
+  "extract_cost_usd": 0.0166978
+}

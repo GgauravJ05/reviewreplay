@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "Using count on order_id skips null IDs, so the orders tally would be undercounted if order_id can be null; size() would count rows instead."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If customers[\"region\"] is a categorical dtype, fillna(\"unknown\") raises a TypeError because \"unknown\" is not an existing category."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "A null or empty region for an existing customer is labelled \"unknown\", the same as a missing customer, which conflates two different cases."
+    }
+  ],
+  "extract_cost_usd": 0.016863799999999998
+}

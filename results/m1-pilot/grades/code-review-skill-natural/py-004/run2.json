@@ -1,0 +1,25 @@
+{
+  "case": "py-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 15,
+      "line_end": 23,
+      "severity": "note",
+      "summary": "unique_slug does not add the returned slug to `taken`, so callers must do it themselves or two calls with the same title return the same slug (reviewer says this is not a bug).",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "The finding itself says it is not a bug, and it describes design behavior rather than a real defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0135519
+}

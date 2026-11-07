@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "train.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "build_features is called on the whole dataset before the train/test split, so the mean and std include test rows, which leaks data and makes the test AUC optimistic."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "The mean and std are recomputed on every call and never saved, so inference on a single row or small batch is scaled differently from training, or gives NaN because the std of one row is NaN."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "A constant column or a one-row batch gives std of 0 or NaN, so the division produces NaN or inf and LogisticRegression.fit raises a ValueError (the reviewer did not reproduce this)."
+    }
+  ],
+  "extract_cost_usd": 0.0164278
+}

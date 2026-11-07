@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "`page = offset // limit` is 0-based but `paginate` is 1-based, so offset < limit raises ValueError (including the first page) and every later page returns the previous page's items; fix with `+ 1` or direct slicing."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 13,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Offsets that are not a multiple of `limit` are rounded down by the page-based computation, so item-offset scrolling (mobile app) sees duplicated or skipped items; slice by offset instead."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 13,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "`limit` is not validated: limit=0 raises ZeroDivisionError and negative limits give nonsense pages."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 13,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "The page is computed from the uncapped `limit` while `paginate` caps `per_page` at MAX_PER_PAGE, so a limit above the cap returns the wrong window (e.g. offset=200, limit=200 with cap 100); clamp limit before computing position."
+    }
+  ],
+  "extract_cost_usd": 0.0188598
+}

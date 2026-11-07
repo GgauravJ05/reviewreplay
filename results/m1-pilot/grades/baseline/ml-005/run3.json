@@ -1,0 +1,27 @@
+{
+  "case": "ml-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge with segments can double-count revenue when a customer has multiple segment rows, and the inner join silently drops orders from customers with no segment, so total revenue is wrong.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies duplicate revenue from joining on customer with multiple segment rows, matching b1 (also mentions inner join drop, a known issue)."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.014487900000000001
+}

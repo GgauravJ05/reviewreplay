@@ -1,0 +1,67 @@
+{
+  "case": "ml-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge doesn't verify that `segments` has one row per customer, so duplicate customer_id rows duplicate orders and inflate revenue.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes duplicate customer_id rows in segments duplicating orders and inflating revenue, which is the key bug (monthly rows per customer)."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "`how=\"inner\"` drops orders whose customer_id isn't in `segments`, so per-segment totals don't sum to total revenue and nothing flags the gap.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Inner join dropping unmatched orders is a known other problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "If the merge is changed to a left join without filling missing segments, the `groupby` drops null-segment rows by default unless `dropna=False` is used.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known groupby NaN-dropping issue."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.016125900000000002
+}

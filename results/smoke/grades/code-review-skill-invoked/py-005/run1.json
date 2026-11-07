@@ -1,0 +1,87 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "`page = offset // limit` yields a 0-based page while `paginate` expects 1-based pages, so the default call (offset 0) raises ValueError and offset=20 returns items 0\u201319 instead of 20\u201339; it needs `+ 1`.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies 0-based vs 1-based page mismatch causing ValueError at offset 0 and wrong page otherwise."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Offsets that aren't a multiple of `limit` (e.g. offset=10, limit=20) get truncated by integer division, returning the wrong items and causing duplicated or skipped items.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Non-multiple offsets truncated by integer division is a real distinct defect, though not the key's off-by-one."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "`limit=0` raises ZeroDivisionError because `limit` is not validated.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "limit=0 causing ZeroDivisionError is a real unvalidated edge case, distinct from the key bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "A `limit` above `MAX_PER_PAGE` is clamped inside `paginate`, so the computed page number no longer matches the items returned.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Clamping of limit in paginate makes the computed page mismatch returned items; a real distinct issue."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0169379
+}

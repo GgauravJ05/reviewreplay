@@ -1,0 +1,67 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "blocking",
+      "summary": "Page is computed 0-based (offset // limit) but paginate is 1-based, so offset=0 raises ValueError and every other offset returns the page one too early.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies 0-based vs 1-based page mismatch causing ValueError at offset 0 and off-by-one page."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Integer division discards the remainder, so offsets that aren't multiples of limit return the wrong items (e.g. offset=10, limit=20 equals offset=0), causing duplicated or skipped items for the mobile app.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Non-multiple offsets rounded down is a known other problem, not the 0/1-based bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "limit isn't validated or clamped: limit=0 raises ZeroDivisionError, negative limit gives nonsense pages, and limit above MAX_PER_PAGE makes the computed page offset mismatch the clamped page size used by paginate.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Covers known limit validation and unclamped-limit problems, not the b1 off-by-one."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0168519
+}

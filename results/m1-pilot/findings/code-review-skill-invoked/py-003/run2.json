@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "orders/status.py",
+      "line_start": 18,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "notify_status logs the exception and re-raises it, so a caller that also logs the error will produce duplicate log entries."
+    }
+  ],
+  "extract_cost_usd": 0.0143378
+}

@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 11,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError if customers has duplicate customer_id, crashing the report, and the docstring doesn't document this."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "fillna(\"unknown\") conflates customers missing from the customers table with customers whose region is null, though the docstring only promises this for missing customers."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "If region is a category dtype, fillna(\"unknown\") raises TypeError unless \"unknown\" is already a category."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "(\"order_id\", \"count\") skips null order_id values and undercounts orders; \"size\" would count all rows."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No tests in the repo cover this file."
+    }
+  ],
+  "extract_cost_usd": 0.0176778
+}

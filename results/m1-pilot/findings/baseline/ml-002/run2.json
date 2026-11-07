@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "StratifiedKFold splits by visit and ignores patient_id, so one patient's visits land in both train and test folds, leaking repeated per-patient features and inflating the reported PR-AUC; use StratifiedGroupKFold with groups=df[\"patient_id\"]."
+    }
+  ],
+  "extract_cost_usd": 0.015367800000000001
+}

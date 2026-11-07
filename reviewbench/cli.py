@@ -53,6 +53,8 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--model", default=claude.DEFAULT_MODEL)
         p.add_argument("--workers", type=int, default=4)
         p.add_argument("--cases")
+        if name == "grade":
+            p.add_argument("--force", action="store_true", help="re-grade even if grades exist")
 
     p = sub.add_parser("report")
     p.add_argument("run_dir")
@@ -94,7 +96,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if a.cmd == "grade":
         cases = {c.id: c for c in _cases(a.cases)}
-        grade_all(Path(a.run_dir), cases, a.model, a.workers)
+        grade_all(Path(a.run_dir), cases, a.model, a.workers, force=a.force)
         return 0
 
     if a.cmd == "report":

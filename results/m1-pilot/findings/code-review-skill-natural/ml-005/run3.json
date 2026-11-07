@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The merge uses how=\"inner\", so orders whose customer_id is missing from segments are silently dropped, making total revenue across segments lower than actual revenue."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "If segments has multiple rows per customer_id, the merge duplicates orders and their revenue is double-counted; there is no deduplication or validate=\"many_to_one\" guard."
+    }
+  ],
+  "extract_cost_usd": 0.0156158
+}

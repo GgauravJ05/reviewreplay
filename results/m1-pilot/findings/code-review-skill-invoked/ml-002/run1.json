@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "StratifiedKFold splits by visit rather than by patient, so the same patient can appear in both train and test folds, leaking repeated per-patient features and inflating the PR-AUC reported at line 22; should use StratifiedGroupKFold(shuffle=True, random_state=seed) grouped by patient_id."
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "minor",
+      "summary": "cv.split(X, y) is called without groups; if a group-aware splitter is adopted, groups=df[\"patient_id\"] must be passed or it will error or not group."
+    }
+  ],
+  "extract_cost_usd": 0.016315800000000002
+}

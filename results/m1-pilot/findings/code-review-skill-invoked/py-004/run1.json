@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "unique_slug does not add its result to `taken`, so callers must do so themselves or repeated calls with the same title return the same slug; the docstring doesn't document this contract."
+    },
+    {
+      "file": "tests/test_slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests do not cover an empty or all-punctuation title (becoming `untitled-2`), or a `taken` set containing `hello-2` while `hello` is free (the reviewer says both currently work)."
+    }
+  ],
+  "extract_cost_usd": 0.0155958
+}

@@ -1,0 +1,25 @@
+{
+  "case": "py-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "unique_slug does not add its result to `taken`, so callers must do so themselves or the next call returns the same slug.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "It is a design note about caller responsibility, not a demonstrated defect, and the answer key lists no bugs."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0135399
+}

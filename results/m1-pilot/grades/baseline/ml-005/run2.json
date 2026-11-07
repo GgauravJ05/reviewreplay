@@ -1,0 +1,67 @@
+{
+  "case": "ml-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "Merge doesn't verify customer_id is unique in segments, so duplicate segment rows duplicate orders and inflate revenue.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Duplicate segment rows per customer duplicating orders and inflating revenue is the same join-fanout defect, though it doesn't mention month."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "how=\"inner\" silently drops orders from customers with no segment, so segment totals don't sum to total revenue.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known inner-join dropping issue."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "important",
+      "summary": "groupby drops rows with NaN segment by default, so orders with null segments are lost unless dropna=False or nulls are filled.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known groupby NaN-dropping issue."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0159539
+}

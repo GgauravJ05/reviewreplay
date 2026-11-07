@@ -1,0 +1,63 @@
+{
+  "case": "ml-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "StratifiedKFold splits at the visit level, so the same patient appears in both train and test folds, causing leakage and inflated held-out PR-AUC; should split by patient using StratifiedGroupKFold or GroupKFold.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same patient-level leakage from row-level folds; suggests grouped splitting."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 22,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "cross_validate prints its result in addition to returning scores, making it awkward to reuse as a library function.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Printing in a function is a style concern, not incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No check that folds is no larger than the number of positive examples (or positive groups); StratifiedKFold only warns, and average_precision_score can be meaningless for a fold with no positives.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative edge-case robustness concern, not a real defect in the change; StratifiedKFold already warns."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0159439
+}

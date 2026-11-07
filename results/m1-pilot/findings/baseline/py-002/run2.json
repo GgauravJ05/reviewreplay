@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document via `self.repo.get(doc_id)` without the `_owned` ownership check, so any user can rename and read another user's document (authorization bypass / IDOR)."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "important",
+      "summary": "Because `rename` bypasses `_owned`, it leaks document existence: nonexistent ids raise the repo's not-found error while other users' documents succeed, letting callers enumerate valid ids."
+    }
+  ],
+  "extract_cost_usd": 0.0158838
+}

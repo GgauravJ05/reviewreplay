@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "If segments has multiple rows per customer_id, the inner merge duplicates each of that customer's orders and inflates revenue totals."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "The inner merge silently drops orders whose customer_id is missing from segments, making total revenue too low without any warning."
+    }
+  ],
+  "extract_cost_usd": 0.0150638
+}

@@ -1,0 +1,67 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "`offset // limit` yields a 0-based page number while `paginate` is 1-based, so the default call (0, 20) raises ValueError and offset 20 returns items 0\u201319 instead of 20\u201339.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the 0-based vs 1-based page mismatch causing ValueError at offset 0 and previous page at offset 20."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "Converting offset to a page number cannot represent offsets that don't align with `limit` (e.g. offset=10, limit=20 starts at item 0), and limit=0 raises ZeroDivisionError.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes known problems: unaligned offsets rounded down and limit=0 ZeroDivisionError, not the off-by-one bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "A `limit` above MAX_PER_PAGE is clamped inside `paginate` but the page number is computed with the unclamped value, so items are skipped or repeated.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known clamped per_page vs unclamped limit problem."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0168539
+}

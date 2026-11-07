@@ -1,0 +1,25 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "orders/model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Order.__post_init__ appends a 'created' event even when the caller passes events=[...], so a reconstructed order gets an extra trailing 'created' event and latest_status would return 'created' instead of the real latest status.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "The finding concerns model.py's __post_init__, which isn't in the answer key or visible here, so I can't confirm the defect and it matches no key bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    }
+  ],
+  "judge_cost_usd": 0.0142239
+}

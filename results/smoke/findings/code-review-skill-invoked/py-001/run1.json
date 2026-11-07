@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "shipping_cents compares a cents subtotal against FREE_SHIPPING_THRESHOLD defined as 50 dollars, so the free-shipping cutoff is effectively 50 cents and carts like $5.00 ship free instead of paying $7.99."
+    },
+    {
+      "file": "tests/test_checkout.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new tests only cover an empty cart and a $120 order, so they miss the unit mismatch; no tests cover carts just under and just over the $50 threshold."
+    }
+  ],
+  "extract_cost_usd": 0.015819800000000002
+}

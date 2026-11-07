@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 11,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError if customers has duplicate customer_id values, and the docstring doesn't mention this; the reviewer suggests dropping duplicates first if tolerance is wanted."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "fillna(\"unknown\") raises TypeError when region is a categorical dtype because \"unknown\" isn't an existing category."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "Matched customers with a null region are also relabelled \"unknown\", which differs from the docstring saying only unmatched orders get that label."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "count on order_id skips null IDs, so rows with null order_id are not counted; size would count every row."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "Sorting by revenue with the default sort isn't stable, so regions with equal revenue come out in arbitrary order; use kind=\"stable\" or a secondary key."
+    }
+  ],
+  "extract_cost_usd": 0.018909799999999997
+}

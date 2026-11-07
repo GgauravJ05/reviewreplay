@@ -1,0 +1,65 @@
+{
+  "case": "py-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "blocking",
+      "summary": "The free-shipping check compares cart.subtotal_cents() (cents) against FREE_SHIPPING_THRESHOLD (50, whole dollars), so shipping is waived for almost every non-empty cart, e.g. a $10.00 cart ships free instead of being charged $7.99.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies the cents vs whole-dollar threshold mismatch causing free shipping almost always."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "shop/config.py",
+      "line_start": 6,
+      "line_end": 6,
+      "severity": "minor",
+      "summary": "FREE_SHIPPING_THRESHOLD is defined in whole dollars while the rest of the codebase uses integer cents, which causes the unit mismatch; the reviewer suggests renaming it to FREE_SHIPPING_THRESHOLD_CENTS = 5000.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Points to the config threshold in dollars versus cents as the cause of the same bug."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "The new test uses a $120 order that passes under both correct and incorrect units, and no tests cover carts below the threshold, exactly at it, or one cent below it, so the bug goes undetected.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests fail to cover an answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0162659
+}

@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "build_features standardizes using mean/std of the whole DataFrame, and train.py calls it before train_test_split, leaking test statistics into training and making test AUC optimistic."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Mean and std are recomputed from whatever DataFrame is passed at inference, so a single row gives NaN std (all features NaN) and small batches are standardized against themselves, making predictions batch-dependent; fitted statistics are not persisted."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "Constant (zero-variance) columns give std 0, so the division yields NaN/inf, which will make LogisticRegression raise."
+    }
+  ],
+  "extract_cost_usd": 0.035282
+}

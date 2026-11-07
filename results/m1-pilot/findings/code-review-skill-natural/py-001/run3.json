@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "The free-shipping check compares a subtotal in cents against FREE_SHIPPING_THRESHOLD, which is 50 whole dollars, so carts of 50 cents or more ship free instead of only those of $50 or more."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "The new tests cover only an empty cart and a $120 cart, which ship free either way, so they miss the unit mismatch. A test with a cart just under $50 expecting the $7.99 charge is missing."
+    }
+  ],
+  "extract_cost_usd": 0.015733800000000003
+}

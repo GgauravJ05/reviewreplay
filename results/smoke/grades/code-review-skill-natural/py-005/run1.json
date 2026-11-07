@@ -1,0 +1,67 @@
+{
+  "case": "py-005",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "page = offset // limit is 0-based while paginate is 1-based, so the default offset=0 raises ValueError and other offsets return the previous page's items; it should be offset // limit + 1.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies 0-based vs 1-based page mismatch causing ValueError at offset 0 and previous page otherwise."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Offsets that aren't multiples of limit are rounded down to a page boundary, returning wrong/duplicated items for the mobile app's item-offset scrolling; slice directly or restrict offsets.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Non-multiple offsets being rounded down is a real separate defect of the page-based approach, distinct from the off-by-one."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 13,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "limit isn't validated or clamped: limit=0 causes ZeroDivisionError, negative limit gives nonsensical pages, and limit > MAX_PER_PAGE makes page math disagree with the clamped slice size, skipping or repeating items.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Unvalidated limit (zero division, exceeding max clamp) is a real distinct issue, not the off-by-one."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0162019
+}

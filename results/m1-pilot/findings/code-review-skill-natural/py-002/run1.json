@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` calls `self.repo.get(doc_id)` instead of `self._owned(user_id, doc_id)`, so the ownership check is skipped and any user can rename another user's document (authorization bypass / IDOR)."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "important",
+      "summary": "Skipping `_owned` breaks its NotFound guarantee: a nonexistent id raises whatever `repo.get` raises, and another user's document is renamed successfully, so the error behavior differs and reveals which ids exist."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "Title validation runs before the ownership check, so a non-owner gets a `ValueError` for a bad title before `NotFound`; the reviewer suggests moving the ownership check first for consistent error behavior."
+    }
+  ],
+  "extract_cost_usd": 0.017283800000000002
+}

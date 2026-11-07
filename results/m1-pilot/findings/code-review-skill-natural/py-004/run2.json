@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 15,
+      "line_end": 23,
+      "severity": "note",
+      "summary": "unique_slug does not add the returned slug to `taken`, so callers must do it themselves or two calls with the same title return the same slug (reviewer says this is not a bug)."
+    }
+  ],
+  "extract_cost_usd": 0.0165538
+}

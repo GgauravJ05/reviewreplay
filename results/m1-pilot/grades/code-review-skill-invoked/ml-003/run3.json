@@ -1,0 +1,25 @@
+{
+  "case": "ml-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "The file has no tests, no LR scheduler and no gradient clipping; the reviewer says to add these only if needed.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "It is a generic suggestion to add tests, a scheduler and clipping, not a concrete defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0141519
+}

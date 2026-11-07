@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 39,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document via `self.repo.get(doc_id)` without the `self._owned(user_id, doc_id)` ownership check, so any authenticated user can rename another user's document and can enumerate which document ids exist."
+    }
+  ],
+  "extract_cost_usd": 0.032952
+}

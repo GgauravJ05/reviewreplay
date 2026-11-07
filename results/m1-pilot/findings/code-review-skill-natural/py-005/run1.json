@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "Page number is computed 0-based (offset // limit) while paginate is 1-based, so the default call and offsets smaller than limit raise ValueError, and other offsets return the previous page's items."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Floor division discards the remainder, so offsets that aren't a multiple of limit (e.g. offset=30, limit=20) return items starting at the wrong position."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 17,
+      "line_end": 17,
+      "severity": "important",
+      "summary": "Invalid or oversized limit isn't handled: limit=0 raises ZeroDivisionError, negative limit gives a bad page, and limit above MAX_PER_PAGE makes the page calculation disagree with paginate's capped page size, skipping items."
+    }
+  ],
+  "extract_cost_usd": 0.0185578
+}

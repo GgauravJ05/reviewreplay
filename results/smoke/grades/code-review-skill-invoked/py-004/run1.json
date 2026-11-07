@@ -1,0 +1,25 @@
+{
+  "case": "py-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "tests/test_slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests don't cover `untitled` collisions or titles like \"Hello 2\" whose slug already ends in a numeric suffix; the reviewer says neither is a bug, but both would be cheap to add.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "It is a test-coverage suggestion, and the finding itself says there is no bug, so it describes no defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.013307900000000001
+}

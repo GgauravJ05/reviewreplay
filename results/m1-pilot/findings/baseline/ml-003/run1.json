@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "fit() leaves the model in eval mode after training because evaluate() is the last call each epoch."
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "The default argument device=torch.device(\"cpu\") is evaluated once at function definition, which the reviewer says is harmless since the object is never mutated."
+    }
+  ],
+  "extract_cost_usd": 0.0169358
+}

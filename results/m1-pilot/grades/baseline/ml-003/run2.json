@@ -1,0 +1,25 @@
+{
+  "case": "ml-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "note",
+      "summary": "The default argument device=torch.device(\"cpu\") is evaluated once at definition time, but the reviewer says this is harmless because torch.device objects are immutable.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "The finding itself says the default is harmless; an immutable torch.device default is not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0141219
+}

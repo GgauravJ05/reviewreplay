@@ -1,0 +1,27 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "orders/status.py",
+      "line_start": 13,
+      "line_end": 13,
+      "severity": "note",
+      "summary": "Because Order.__post_init__ always appends a `created` event, an order rebuilt from a caller-supplied events list would make latest_status return \"created\". The reviewer says this comes from the model, not this change, and it matters only if orders are rehydrated that way.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [
+        "ok1"
+      ],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative note about unchanged model code, not a defect in this change; it is also tied to the line the answer key marks as correct (latest_status line 13)."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.014249900000000001
+}

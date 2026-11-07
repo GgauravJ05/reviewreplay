@@ -52,6 +52,8 @@ class Case:
     meta: dict
     bugs: list[Spot] = field(default_factory=list)
     known_ok: list[Spot] = field(default_factory=list)
+    # other real problems in the change that a reviewer may fairly report (graded valid_other)
+    related_valid: list[str] = field(default_factory=list)
 
     @property
     def has_bug(self) -> bool:
@@ -103,7 +105,8 @@ def load_case(case_dir: Path) -> Case:
     if meta["kind"] == "decoy" and not ok:
         raise CaseError("decoy case needs at least one known_ok spot")
     return Case(id=meta["id"], kind=meta["kind"], track=meta["track"], title=meta["title"],
-                path=case_dir, meta=meta, bugs=bugs, known_ok=ok)
+                path=case_dir, meta=meta, bugs=bugs, known_ok=ok,
+                related_valid=list(truth.get("related_valid", [])))
 
 
 def find_case_dirs(root: Path) -> list[Path]:

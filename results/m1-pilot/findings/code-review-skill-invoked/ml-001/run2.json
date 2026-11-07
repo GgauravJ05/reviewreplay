@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "build_features standardizes using the mean/std of the DataFrame it receives, so test-set statistics leak into training (optimistic AUC) and scaling at prediction time depends on the batch, giving the same customer different features across batches."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "The standardization division has no guard for zero or NaN std (constant column or single row), producing NaN features that make LogisticRegression raise a ValueError in fit and predict_proba."
+    }
+  ],
+  "extract_cost_usd": 0.0157418
+}

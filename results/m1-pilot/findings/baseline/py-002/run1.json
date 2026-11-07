@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document via `self.repo.get(doc_id)` without calling `self._owned(user_id, doc_id)`, so any authenticated user can rename another user's document (authorization bypass/IDOR) and can probe which ids exist."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "The ownership check should occur before title validation so non-owners always get NotFound rather than an input-dependent ValueError."
+    }
+  ],
+  "extract_cost_usd": 0.015605800000000001
+}

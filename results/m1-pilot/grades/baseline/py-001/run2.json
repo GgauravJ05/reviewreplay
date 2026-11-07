@@ -1,0 +1,27 @@
+{
+  "case": "py-001",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "blocking",
+      "summary": "The free-shipping check compares cart.subtotal_cents() (cents) to FREE_SHIPPING_THRESHOLD (whole dollars, 50), so any cart of 50 cents or more ships free and the $7.99 shipping is effectively never charged.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same cents vs whole-dollar threshold unit mismatch causing nearly all orders to ship free."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0142559
+}

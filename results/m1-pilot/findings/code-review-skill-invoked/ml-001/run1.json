@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Standardization in build_features computes mean/std from the passed DataFrame, and train.py:15 calls it on the full dataset before train_test_split, leaking test data into training scaling and making test AUC optimistic."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Train/inference mismatch: at inference scaling is computed from the batch itself, so a single row gives NaN std and small batches are scaled differently from training; should use a StandardScaler fit on the training split (e.g. in a Pipeline) and reused at predict time."
+    },
+    {
+      "file": "model/features.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "Constant columns have zero standard deviation, so division yields NaN and LogisticRegression.fit may raise a ValueError (unverified, plausible)."
+    }
+  ],
+  "extract_cost_usd": 0.0169558
+}

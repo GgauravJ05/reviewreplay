@@ -18,5 +18,10 @@
       "trigger": "list_products_by_offset(0) raises 'page starts at 1'; list_products_by_offset(20) returns product-1..product-20 instead of product-21..product-40."
     }
   ],
-  "known_ok": []
+  "known_ok": [],
+  "related_valid": [
+    "limit is not validated: limit=0 raises ZeroDivisionError and negative limits give nonsense pages.",
+    "Offsets that are not a multiple of limit are rounded down to a page boundary.",
+    "paginate() clamps per_page to MAX_PER_PAGE but the page number is computed from the unclamped limit, so limits above 100 return the wrong slice."
+  ]
 }

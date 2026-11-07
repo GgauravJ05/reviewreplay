@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "orders/model.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Order.__post_init__ appends a 'created' event even when the caller passes events=[...], so a reconstructed order gets an extra trailing 'created' event and latest_status would return 'created' instead of the real latest status."
+    }
+  ],
+  "extract_cost_usd": 0.0148798
+}

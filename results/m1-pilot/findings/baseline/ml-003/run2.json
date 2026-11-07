@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 23,
+      "line_end": 23,
+      "severity": "note",
+      "summary": "The default argument device=torch.device(\"cpu\") is evaluated once at definition time, but the reviewer says this is harmless because torch.device objects are immutable."
+    }
+  ],
+  "extract_cost_usd": 0.0160498
+}

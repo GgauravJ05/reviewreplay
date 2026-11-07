@@ -310,7 +310,7 @@ Runs resume: a run that stops halfway continues from the last finished review.
 | # | Milestone | Scope | Done when |
 |---|---|---|---|
 | **M0** | Isolation spike | Prove a `--bare` run sees *only* the intended skill (probe prompt: "list every skill and command you can use"); measure the cost of one review | Probe output saved for each subject; cost per review known |
-| **M1** | Pilot | 10 cases (Python + ML; planted, clean, decoy) × 2 subjects (baseline, code-review-skill) × 3 runs = 60 reviews. Full pipeline end to end. **Every grade hand-labeled.** | First summary table; judge agreement κ measured; extractor checked |
+| **M1** | Pilot | 10 cases (Python + ML; planted, clean, decoy) × 2 subjects (baseline, code-review-skill) × 3 runs = 60 reviews. Full pipeline end to end. **Every grade hand-labeled.** | First summary table; judge agreement κ measured; extractor checked. **Status 2026-11-07:** 90 reviews run (3 subjects incl. natural/invoked), all at ceiling; skill self-triggered 0/30; grader fixed; hand labels pending — see [results/m1-pilot/README.md](../results/m1-pilot/README.md) |
 | **M2** | First real result | 40 cases × 5 subjects × 3 runs = 600 reviews | Results posted on code-review-skill#32; PR #34 / #37 effects measured; METHOD.md written |
 | **M3** | Real bugs | 10–20 real (SZZ) cases; real vs planted reported separately | Contamination comparison in the report |
 | **M4** | Launch | Make repo public, ADDING_A_SUBJECT.md, results page | Public repo + launch post |

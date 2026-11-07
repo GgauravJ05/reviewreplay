@@ -1,0 +1,43 @@
+{
+  "case": "ml-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "fit() leaves the model in eval mode after training because evaluate() is the last call each epoch.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Model left in eval mode after fit() is plausible but a minor behavior; train() is called per epoch, and I can't verify the code or whether it's a defect."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "net/train.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "The default argument device=torch.device(\"cpu\") is evaluated once at function definition, which the reviewer says is harmless since the object is never mutated.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Finding itself says it is harmless; no incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.015049900000000001
+}

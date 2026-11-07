@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "blocking",
+      "summary": "`page = offset // limit` is 0-based while `paginate()` numbers pages from 1, so offset 0 raises ValueError and every other offset returns the previous page (fix: add 1)."
+    },
+    {
+      "file": "api/products.py",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "`limit` is not validated (zero causes ZeroDivisionError, negative gives wrong page), and page math can disagree with `paginate()`'s clamped per_page and snaps non-multiple offsets down, causing wrong windows, duplicates or gaps."
+    }
+  ],
+  "extract_cost_usd": 0.0167138
+}

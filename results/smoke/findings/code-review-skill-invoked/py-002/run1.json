@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "`rename` fetches the document with `self.repo.get(doc_id)` instead of `self._owned(user_id, doc_id)`, so there is no ownership check and any authenticated user can rename another user's document (IDOR)."
+    },
+    {
+      "file": "docs/service.py",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "blocking",
+      "summary": "Because `rename` skips `_owned`, a missing id raises `NotFound` while another user's id succeeds, so callers can tell which document ids exist, which the API is supposed to hide."
+    }
+  ],
+  "extract_cost_usd": 0.0157418
+}

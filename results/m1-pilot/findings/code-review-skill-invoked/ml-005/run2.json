@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "Duplicate customer_id rows in segments cause the merge to duplicate orders, so amount_cents is summed multiple times and per-segment revenue is overstated."
+    },
+    {
+      "file": "sales/segments.py",
+      "line_start": 9,
+      "line_end": 10,
+      "severity": "important",
+      "summary": "how=\"inner\" in the merge silently drops orders from customers missing in segments, and groupby drops null segments by default, so segment totals don't add up to total revenue."
+    }
+  ],
+  "extract_cost_usd": 0.0159778
+}

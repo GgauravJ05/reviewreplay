@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "shop/checkout.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "Compares cart.subtotal_cents() (cents) against FREE_SHIPPING_THRESHOLD (50, whole dollars), so carts of 50 cents or more get free shipping and the $7.99 charge is almost never applied; the new tests only use a $120 cart and miss it."
+    }
+  ],
+  "extract_cost_usd": 0.014687799999999999
+}

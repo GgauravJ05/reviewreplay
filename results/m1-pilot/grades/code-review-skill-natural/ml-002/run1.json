@@ -1,0 +1,45 @@
+{
+  "case": "ml-002",
+  "kind": "planted",
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 17,
+      "severity": "blocking",
+      "summary": "StratifiedKFold splits by visit row, so the same patient can appear in both train and test folds, leaking patient identity via repeated per-patient features and producing optimistic CV scores; should split by patient using StratifiedGroupKFold with groups=patient_id.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: row-level StratifiedKFold lets patients span train/test; fix is group split by patient_id."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 22,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "cross_validate prints its result in addition to returning scores; printing inside a library function is a side effect and should be moved to the caller.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Printing in a function is a style concern, not a real incorrect-behavior defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0151619
+}

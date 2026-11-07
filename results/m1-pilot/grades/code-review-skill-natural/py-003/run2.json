@@ -1,0 +1,25 @@
+{
+  "case": "py-003",
+  "kind": "decoy",
+  "findings": [
+    {
+      "file": "orders/model.py",
+      "line_start": 21,
+      "line_end": 22,
+      "severity": "minor",
+      "summary": "Order.__post_init__ always appends a fresh `created` event, so building an Order with existing events (e.g. rehydrating from storage) puts `created` last and makes latest_status report the wrong status; latent because nothing does this today.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "The finding is speculative and admits no code path triggers it today. It also conflicts with the key's note that model.py guarantees a 'created' event on every Order."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0158999
+}

@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "tests/test_slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests don't cover `untitled` collisions or titles like \"Hello 2\" whose slug already ends in a numeric suffix; the reviewer says neither is a bug, but both would be cheap to add."
+    }
+  ],
+  "extract_cost_usd": 0.0159318
+}

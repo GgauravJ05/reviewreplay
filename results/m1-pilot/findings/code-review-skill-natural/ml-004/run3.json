@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 11,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError on duplicate customer_id, which is undocumented in the docstring and makes a dirty customer table fail the whole report instead of degrading to \"unknown\"."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "fillna(\"unknown\") raises TypeError if region is a categorical dtype, because \"unknown\" is not a category."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 12,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "Customers with a null region are reported as \"unknown\", which mixes them with customers missing from the customers table. The docstring promises that label only for the missing ones."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "(\"order_id\", \"count\") skips null order_id values, so orders can undercount rows. \"size\" should be used if the intent is the number of orders."
+    }
+  ],
+  "extract_cost_usd": 0.0176378
+}

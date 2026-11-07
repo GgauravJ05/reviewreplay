@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "text/slug.py",
+      "line_start": 15,
+      "line_end": 23,
+      "severity": "minor",
+      "summary": "unique_slug does not add the returned slug to `taken`, so callers must do it themselves, and the docstring does not mention this."
+    }
+  ],
+  "extract_cost_usd": 0.0172478
+}

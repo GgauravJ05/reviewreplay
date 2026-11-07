@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "validate=\"many_to_one\" raises MergeError on duplicate customer_id rows in customers, crashing the report instead of degrading gracefully, and the docstring doesn't mention this."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "minor",
+      "summary": "count on order_id skips null IDs, so those orders add to revenue but not to the orders count if order_id can be null."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "minor",
+      "summary": "pandas matches NaN keys in a merge, so orders with null customer_id take the region of a customers row with null customer_id instead of falling into \"unknown\"."
+    },
+    {
+      "file": "sales/report.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "sort_values isn't stable by default, so regions with equal revenue may be ordered non-deterministically; use kind=\"stable\" or a secondary sort key."
+    }
+  ],
+  "extract_cost_usd": 0.0175438
+}

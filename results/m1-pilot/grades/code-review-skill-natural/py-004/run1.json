@@ -1,0 +1,25 @@
+{
+  "case": "py-004",
+  "kind": "clean",
+  "findings": [
+    {
+      "file": "tests/test_slug.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Test coverage is thin: the \"untitled\" fallback through unique_slug is untested (e.g. unique_slug(\"!!!\", {\"untitled\"}) should give \"untitled-2\").",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "It only says test coverage is thin and describes no incorrect behavior in the changed code, and the answer key has no bugs."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0136739
+}

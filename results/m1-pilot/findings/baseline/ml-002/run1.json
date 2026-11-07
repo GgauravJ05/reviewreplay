@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "clinic/evaluate.py",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "Cross-validation with StratifiedKFold splits by visit rather than by patient, so one patient's visits can fall in both train and test folds, leaking patient-level features and inflating the reported PR-AUC; it should use StratifiedGroupKFold with patient_id as groups."
+    }
+  ],
+  "extract_cost_usd": 0.03286
+}
