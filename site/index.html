@@ -1,312 +1,498 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-type="software" data-radius="sharp" data-ground="sage" data-buttons="arrow" data-motion>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ReviewReplay · Benchmark AI code reviewers on your own bugs</title>
-  <meta name="description" content="ReviewReplay replays the real bugs from your git history and scores AI code reviewers like Claude Code, Codex and Gemini CLI on recall, precision, false alarms and cost. Free, open source, runs locally.">
-  <meta name="keywords" content="AI code review, code review benchmark, LLM evaluation, Claude Code, Codex CLI, Gemini CLI, SZZ, false positives, developer tools">
-  <meta name="author" content="Gaurav Jadhav">
-  <link rel="canonical" href="https://ggauravj05.github.io/reviewreplay/">
-  <meta property="og:url" content="https://ggauravj05.github.io/reviewreplay/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="ReviewReplay · Would your AI reviewer have caught the bugs you already shipped?">
-  <meta property="og:description" content="Benchmark AI code reviewers on the real bugs from your own repository. Recall, precision, false alarms and cost per review.">
-  <meta property="og:image" content="https://ggauravj05.github.io/reviewreplay/og.png">
-  <meta property="og:image:alt" content="ReviewReplay scorecard comparing two AI code reviewers on real bugs">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ReviewReplay">
-  <meta name="twitter:description" content="Benchmark AI code reviewers on the real bugs from your own repository.">
-  <meta name="twitter:image" content="https://ggauravj05.github.io/reviewreplay/og.png">
-  <meta name="theme-color" content="#000000">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
-  <link rel="stylesheet" href="styles.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "ReviewReplay",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "macOS, Linux, Windows",
-    "license": "https://opensource.org/licenses/MIT",
-    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
-    "author": {"@type": "Person", "name": "Gaurav Jadhav", "url": "https://github.com/GgauravJ05"},
-    "codeRepository": "https://github.com/GgauravJ05/reviewreplay",
-    "description": "Benchmark AI code reviewers on the real bugs from your own git history."
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ReviewReplay: a benchmark for AI code reviewers, built from your git history</title>
+<meta name="description" content="Replays the bugs your team already fixed and scores Claude Code, Codex CLI, Gemini CLI or any reviewer on recall, precision, false alarms and cost per review.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ReviewReplay: a benchmark for AI code reviewers, built from your git history">
+<meta property="og:description" content="Would your AI reviewer have caught the bugs you already shipped? Free, MIT, runs on your machine.">
+<meta property="og:image" content="https://ggauravj05.github.io/reviewreplay/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="author" content="Gaurav Jadhav">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#161c1a">
+<!-- <link rel="canonical" href="https://ggauravj05.github.io/reviewreplay/"> once the repository is public and Pages is on -->
+<meta name="site-kind" content="software">
+<meta name="page-type" content="software">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/backgrounds/backgrounds.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<link rel="stylesheet" href="assets/icons/icon.css">
+<style>
+:root {
+  --p-bg: #161c1a; --p-surface: #1f2725; --p-ink: #e3e2da; --p-muted: #8e948d;
+  --p-accent: #9fc7b8; --p-accent-ink: #161c1a; --p-action: #9fc7b8; --p-action-ink: #161c1a;
+  --p-inv-bg: #e3e2da; --p-inv-surface: #d3d2cb; --p-inv-ink: #161c1a; --p-inv-muted: #555a55;
+  --p-inv-accent: #161c1a; --p-inv-accent-ink: #e3e2da; --p-inv-action: #161c1a; --p-inv-action-ink: #e3e2da;
+  --font-display: "Instrument Sans", system-ui, sans-serif;
+  --font-text: "Instrument Sans", system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 500;
+  --display-tracking: -0.028em;
+  --display-tracking-xl: -0.036em;
+  --display-stretch: 96%;
+  --ly-scale: 1.04;
+}
+</style>
+<link rel="stylesheet" href="assets/ui/base.css">
+<link rel="stylesheet" href="assets/ui/diff-review/fragment.css">
+<link rel="stylesheet" href="assets/ui/window/fragment.css">
+<link rel="stylesheet" href="assets/ui/terminal-run/fragment.css">
+<link rel="stylesheet" href="assets/ui/doc/fragment.css">
+<link rel="stylesheet" href="assets/ui/integrations/fragment.css">
+<link rel="stylesheet" href="assets/ui/checklist/fragment.css">
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script src="assets/backgrounds/backgrounds.js"></script>
+<script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+<link rel="modulepreload" href="assets/moments/moments.js">
+<link rel="modulepreload" href="assets/moments/lib.js">
+<link rel="modulepreload" href="assets/moments/liquid-type/moment.js">
+<style>
+  /* hero: the verdict card over the diff's lower-left corner (inside the visual) */
+  .hero__art > .ly-piece--note { left: var(--s-6); bottom: var(--s-6); width: 300px; z-index: 2; }
+  .rr-card { background: #fbfbf8; color: #1d2320; border-radius: 12px; padding: 14px 16px; font: 400 14px/1.4 var(--font-text); box-shadow: 0 0 0 1px rgb(0 0 0 / .08), 0 18px 40px -20px rgb(0 0 0 / .55); }
+  .rr-card__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
+  .rr-card h3 { margin: 0; font: 500 14px/1.3 var(--font-text); }
+  .rr-chip { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 9px; border-radius: 99px; font-size: 13px; font-weight: 500; background: #e3efe9; color: #1f5c46; }
+  .rr-chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .rr-line { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 13px; color: #3b423e; border-top: 1px solid rgb(0 0 0 / .07); }
+  .rr-line i { width: 18px; height: 18px; border-radius: 50%; flex: none; display: grid; place-items: center; background: #e3efe9; color: #1f5c46; font-style: normal; font-size: 12px; font-weight: 600; }
+  .rr-line i.warn { background: #f6ecdc; color: #855a12; }
+  .rr-line b { font-weight: 500; color: #151a17; }
+  .hero__proof { font-size: var(--t-small); color: var(--ink); }
+  .hero__art .loop-pause:focus-visible, .frame--lit .loop-pause:focus-visible, .panel .loop-pause:focus-visible { outline-color: #262d24; }
+  .hero__art .ui-diff { --fit-max: 520px; }
+  .ly-piece--main > .ui-panel { width: calc(100% - var(--ly-cut-room)); }
+  @media (max-width: 1023px) { .hero__art > .ly-piece--note { left: var(--s-4); bottom: var(--s-4); width: 270px; } }
+
+  /* app-frame (sections-library.md, app-frame: the whole recipe) */
+  .app.ui { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); margin-top: var(--s-7); background: var(--u-bg); border: 1px solid var(--u-border); border-radius: var(--u-r); box-shadow: var(--u-shadow); }
+  .app > .app__pane { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+  .app > .app__pane + .app__pane { border-left: 1px solid var(--u-line); }
+  .app > .app__pane > .ui-panel { width: 100%; border: 0; border-radius: 0; box-shadow: none; }
+  .app > .app__pane::after { content: ""; position: absolute; inset: auto 0 0 0; height: 64px; background: linear-gradient(transparent, var(--u-bg)); pointer-events: none; }
+  @media (min-width: 1024px) and (max-width: 1279px) { .app.ui { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); } }
+  @media (max-width: 1023px) {
+    .app.ui { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+    .app > .app__pane--list { max-height: 252px; }
+    .app > .app__pane--list::after { display: none; }
+    .app .ui-win__side { display: none; }
+    .app .ui-win__body { grid-template-columns: minmax(0, 1fr); }
+    .app > .app__pane + .app__pane { border-left: 0; border-top: 1px solid var(--u-line); }
   }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type": "Question", "name": "Which reviewers does ReviewReplay support?", "acceptedAnswer": {"@type": "Answer", "text": "Claude Code with any model, Claude Code with a review skill or the built in /code-review command, Codex CLI, Gemini CLI, and any command line tool that prints a review."}},
-      {"@type": "Question", "name": "Where do the test cases come from?", "acceptedAnswer": {"@type": "Answer", "text": "From your own history. ReviewReplay finds fix commits, traces each one back to the commit that introduced the bug using the referenced pull request and git blame, and drafts an answer key you confirm."}},
-      {"@type": "Question", "name": "Can a reviewer cheat by reading the fix?", "acceptedAnswer": {"@type": "Answer", "text": "No. The project is exported at the parent commit with no git history, and the buggy change is applied as uncommitted edits, so the later fix is not reachable."}},
-      {"@type": "Question", "name": "Does it change my code or run my tests?", "acceptedAnswer": {"@type": "Answer", "text": "No. Reviewers run in a separate copy of the project with read only tools. Your working tree is never touched."}},
-      {"@type": "Question", "name": "How is a review scored?", "acceptedAnswer": {"@type": "Answer", "text": "Each review is split into findings, matched to the known bug by location, and an LLM judge labels each finding as the bug, another real problem, or a false alarm. Results come with 95% bootstrap intervals."}},
-      {"@type": "Question", "name": "What does a run cost?", "acceptedAnswer": {"@type": "Answer", "text": "ReviewReplay is free. You pay your reviewer provider as usual. In our comparison a Claude Code review of a real bug cost $0.064 on average, or $0.100 with a review skill."}},
-      {"@type": "Question", "name": "Do I need a dataset?", "acceptedAnswer": {"@type": "Answer", "text": "No. reviewreplay init builds draft cases from any git repository. A curated benchmark of planted, clean, decoy and real cases also ships with the tool."}},
-      {"@type": "Question", "name": "Is it open source?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. ReviewReplay is MIT licensed and needs only Python 3.10 and git."}}
-    ]
+  @media (max-width: 639px) {
+    .app.ui { grid-template-rows: minmax(0, 1fr); }
+    .app > .app__pane--list { display: none; }
+    .app > .app__pane + .app__pane { border-top: 0; }
   }
-  </script>
+
+  /* the three steps share one panel height */
+  #faq > .wrap { justify-content: center; }
+  #start .panel { --p-h: 336px; }
+  @media (max-width: 1023px) { #start .panel { --p-h: max(240px, calc((200svh - 960px) / 3)); } }
+  @media (max-width: 639px) { #grading .frame--split { --ratio: 80%; } }
+  @media (max-width: 359px) { .nav:not(.is-open) .nav__actions { display: none; } .nav:not(.is-open) .nav__toggle { margin-left: auto; } }
+  /* scorecard (inside the visual): results read as kept, not struck out */
+  #start .ui-check.is-done .ui-check__label { color: var(--u-ink); }
+  #start .ui-check.is-done .ui-check__label::after { transform: scaleX(0); }
+  .rr-stats { margin-top: var(--s-5); }
+  .rr-pip { overflow-wrap: anywhere; font-size: .92em; }
+  @media (min-width: 1024px) { #grading .frame--split { --ratio: 108%; } #start .grid > .card { grid-column: span 4; } }
+  @media (max-width: 1023px) { #start { --h: 2; } }
+  @media (max-width: 1279px) {
+    .rr-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: var(--s-9); }
+    .rr-stats .t-stat { font-size: min(var(--t-h2), 44px); }
+  }
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .rr-stats { row-gap: var(--s-10); margin-top: var(--s-10); }
+    .rr-stats .t-stat { font-size: var(--t-h2); }
+  }
+</style>
 </head>
 <body>
-  <a class="skip-link button-sm" href="#main">Skip to content</a>
+<!-- type: software (developer tool: a benchmark CLI for AI code reviewers)
+     deal: hero collage (dealt triptych; the client asked for a live review diff beside the headline, so the
+     collage hero, which holds the product window, takes its place), palette green-black-bone, type instrument,
+     nav nav-centre, close close-type, footer footer-statement, rhythm space, buttons arrow, mark stack,
+     effect grain-gradient in the hero frame (sage lit palette), grounds none
+     moments: liquid-type on the statement section #idea -->
 
-  <header class="nav-wrap">
-    <nav class="nav" aria-label="Primary">
-      <a class="nav-brand title-3" href="#top" aria-current="page">
-        <svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/></svg>
-        ReviewReplay
-      </a>
-      <ul class="nav-links">
-        <li><a class="title-4" href="#how">How it works</a></li>
-        <li><a class="title-4" href="#results">Results</a></li>
-        <li><a class="title-4" href="#faq">FAQ</a></li>
-        <li><a class="title-4" href="https://github.com/GgauravJ05/reviewreplay"><i class="ph ph-github-logo" aria-hidden="true"></i>GitHub</a></li>
-      </ul>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
-        <span class="bar"></span><span class="bar"></span>
-      </button>
-    </nav>
-  </header>
-
-  <div class="mobile-menu" id="mobile-menu" hidden>
-    <ul>
-      <li><a class="heading-5" href="#how">How it works</a></li>
-      <li><a class="heading-5" href="#results">Results</a></li>
-      <li><a class="heading-5" href="#faq">FAQ</a></li>
-      <li><a class="heading-5" href="https://github.com/GgauravJ05/reviewreplay">GitHub</a></li>
-    </ul>
-  </div>
-
-  <main id="main">
-    <!-- Hero -->
-    <section class="hero" id="top">
-      <p class="eyebrow caption-4"><span class="dot" aria-hidden="true"></span>Open source benchmark for AI code review</p>
-      <h1 class="heading-1 hero-title">Would your AI reviewer<br> have caught the bugs<br> you already shipped?</h1>
-      <p class="body-3 hero-sub">ReviewReplay replays real bug commits from your git history, asks each reviewer to review them in a read only copy of your project, and scores what it catches, what it gets wrong, and what it costs.</p>
-
-      <div class="cta-block">
-        <div class="install">
-          <code class="mono">pip install git+https://github.com/GgauravJ05/reviewreplay</code>
-          <button class="btn btn-primary button-md copy-btn" type="button" data-copy="pip install git+https://github.com/GgauravJ05/reviewreplay">
-            <i class="ph ph-copy" aria-hidden="true"></i><span>Copy install command</span>
-          </button>
-        </div>
-        <p class="copy-status caption-2" role="status" aria-live="polite"></p>
-      </div>
-
-      <p class="proof caption-2"><i class="ph ph-check-circle" aria-hidden="true"></i>Tested on 114 reviews across 19 cases, including real bugs from click, datasets and accelerate.</p>
-
-      <figure class="scorecard reveal" aria-label="Example scorecard">
-        <div class="scorecard-bar">
-          <span class="caption-4 mono">reviewreplay report results/m2-compare</span>
-        </div>
-        <div class="scorecard-body">
-          <p class="caption-3 scorecard-label">Real bugs in full repositories · 4 cases × 3 runs</p>
-          <div class="table-scroll">
-          <table class="score-table">
-            <thead>
-              <tr><th class="caption-4" scope="col">Metric</th><th class="caption-4" scope="col">Baseline</th><th class="caption-4" scope="col">With skill</th></tr>
-            </thead>
-            <tbody>
-              <tr><th class="body-6" scope="row">Bug found</th><td class="mono body-6">11 / 12</td><td class="mono body-4 good">12 / 12</td></tr>
-              <tr><th class="body-6" scope="row">Precision</th><td class="mono body-6">64%</td><td class="mono body-4 good">81%</td></tr>
-              <tr><th class="body-6" scope="row">Serious false alarms</th><td class="mono body-6">3</td><td class="mono body-4 good">0</td></tr>
-              <tr><th class="body-6" scope="row">Minor remarks per review</th><td class="mono body-6">1.6</td><td class="mono body-4 good">0.7</td></tr>
-              <tr><th class="body-6" scope="row">Mean cost per review</th><td class="mono body-4 good">$0.064</td><td class="mono body-6">$0.100</td></tr>
-            </tbody>
-          </table>
+<header class="nav nav--centre">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="#top"><span class="mark" data-mark="stack" aria-hidden="true"></span>ReviewReplay</a>
+    <nav class="nav__links" aria-label="Main">
+      <div class="nav__item">
+        <a class="nav__link" href="#reviews">Product <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav__menu">
+          <div class="wrap grid">
+            <div class="menu-col span-3">
+              <p class="t-label">Benchmark</p>
+              <a href="#reviews">Graded reviews<span>Every finding against the fix</span></a>
+              <a href="#grading">Grading<span>Location gate, then a judge</span></a>
+            </div>
+            <div class="menu-col span-3">
+              <p class="t-label">Use it</p>
+              <a href="#start">Three steps<span>Mine, replay, read the scorecard</span></a>
+              <a href="#faq">Questions<span>Reviewers, cost, leakage</span></a>
+            </div>
           </div>
         </div>
-        <figcaption class="caption-5">Claude Code with and without <a href="https://github.com/awesome-skills/code-review-skill">code-review-skill</a>. Small sample: a direction, not a verdict.</figcaption>
-      </figure>
-    </section>
-
-    <!-- Problem to solution -->
-    <section class="section reveal" id="why">
-      <div class="split">
-        <div>
-          <p class="caption-3 kicker">The problem</p>
-          <h2 class="heading-4">Teams adopt AI review on faith</h2>
-        </div>
-        <div class="stack">
-          <p class="body-3 muted">Public benchmarks grade reviewers on shared pull requests. That is useful, but it is not your code, your conventions or your kinds of bugs, and public code may already sit in the model's training data.</p>
-          <p class="body-3 muted">So every team ends up asking the same three questions with no way to answer them: which reviewer should we use, did our new prompt help, and what is all this noise costing us?</p>
-          <p class="body-2">ReviewReplay answers them with evidence from the one dataset that matters: the bugs your team has already fixed.</p>
-        </div>
       </div>
-    </section>
-
-    <!-- Benefits -->
-    <section class="section reveal" aria-labelledby="benefits-title">
-      <p class="caption-3 kicker">What you get</p>
-      <h2 class="heading-4" id="benefits-title">Answers you can defend in a design review</h2>
-      <ul class="grid benefits">
-        <li class="card">
-          <i class="ph ph-git-branch icon" aria-hidden="true"></i>
-          <h3 class="title-2">Tested on your bugs</h3>
-          <p class="body-6 muted">Cases come from your own fix commits, traced back to the change that broke things. No public dataset, no leakage.</p>
-        </li>
-        <li class="card">
-          <i class="ph ph-target icon" aria-hidden="true"></i>
-          <h3 class="title-2">Precision, not just recall</h3>
-          <p class="body-6 muted">Strong models find most bugs. The real difference is how much of what they say is true. Every false alarm is counted.</p>
-        </li>
-        <li class="card">
-          <i class="ph ph-receipt icon" aria-hidden="true"></i>
-          <h3 class="title-2">Cost per review in dollars</h3>
-          <p class="body-6 muted">Time and spend come from each tool's own accounting, so you can price a reviewer before you roll it out.</p>
-        </li>
-        <li class="card">
-          <i class="ph ph-magnifying-glass icon" aria-hidden="true"></i>
-          <h3 class="title-2">Every number is auditable</h3>
-          <p class="body-6 muted">Each review, extracted finding and judge verdict is saved. Comparisons are paired by case with 95% intervals.</p>
-        </li>
-      </ul>
-    </section>
-
-    <!-- Tagline reveal -->
-    <section class="tagline-section" aria-label="Core idea">
-      <p class="heading-2 tagline" data-reveal-words>Stop choosing your code reviewer from a demo. Choose it from the bugs your team already fixed.</p>
-    </section>
-
-    <!-- How it works -->
-    <section class="section reveal" id="how" aria-labelledby="how-title">
-      <p class="caption-3 kicker">How it works</p>
-      <h2 class="heading-4" id="how-title">Three commands, one scorecard</h2>
-      <ol class="grid steps">
-        <li class="card">
-          <span class="step-num caption-3 mono">01</span>
-          <h3 class="title-2">Mine your history</h3>
-          <p class="body-6 muted">Finds fix commits, pairs each with the commit that introduced the bug using the referenced pull request and git blame, and drafts an answer key for you to confirm.</p>
-          <code class="mono caption-5 cmd">reviewreplay init</code>
-        </li>
-        <li class="card">
-          <span class="step-num caption-3 mono">02</span>
-          <h3 class="title-2">Replay every change</h3>
-          <p class="body-6 muted">Each buggy change is applied to a clean copy of the project with no history. Every reviewer runs read only, isolated, three times.</p>
-          <code class="mono caption-5 cmd">reviewreplay run</code>
-        </li>
-        <li class="card">
-          <span class="step-num caption-3 mono">03</span>
-          <h3 class="title-2">Read the scorecard</h3>
-          <p class="body-6 muted">Findings are matched to the known bug by location, then judged. You get recall, precision, false alarms and cost with confidence intervals.</p>
-          <code class="mono caption-5 cmd">reviewreplay report</code>
-        </li>
-      </ol>
-    </section>
-
-    <!-- Proof -->
-    <section class="section reveal" id="results" aria-labelledby="results-title">
-      <p class="caption-3 kicker">Results so far</p>
-      <h2 class="heading-4" id="results-title">Finding the bug is easy now. Being right is not.</h2>
-      <div class="grid stats">
-        <div class="card">
-          <p class="heading-3 mono stat-value">100%</p>
-          <p class="body-6 muted">Recall on 15 planted bugs, including cross file cases. Small planted bugs no longer separate strong models.</p>
-        </div>
-        <div class="card">
-          <p class="heading-3 mono stat-value">56%</p>
-          <p class="body-6 muted">Precision on real bugs in full repositories in the first pilot. Many claims could not be verified.</p>
-        </div>
-        <div class="card">
-          <p class="heading-3 mono stat-value">3 → 0</p>
-          <p class="body-6 muted">Serious false alarms on real bugs once a review skill was added, at about 1.6× the cost.</p>
-        </div>
-      </div>
-      <p class="caption-2 muted note">Pilots used Claude Code with <span class="mono">claude-sonnet-5-5</span>. Methodology, raw reviews and grades are in the <a href="https://github.com/GgauravJ05/reviewreplay/tree/main/results">results folder</a>.</p>
-    </section>
-
-    <!-- Reviewers -->
-    <section class="section reveal" aria-labelledby="reviewers-title">
-      <p class="caption-3 kicker">Supported reviewers</p>
-      <h2 class="heading-4" id="reviewers-title">Bring any reviewer that prints a review</h2>
-      <ul class="chips">
-        <li class="chip body-5"><i class="ph ph-terminal-window" aria-hidden="true"></i>Claude Code</li>
-        <li class="chip body-5"><i class="ph ph-puzzle-piece" aria-hidden="true"></i>Claude Code with a skill</li>
-        <li class="chip body-5"><i class="ph ph-chat-centered-text" aria-hidden="true"></i>/code-review</li>
-        <li class="chip body-5"><i class="ph ph-terminal-window" aria-hidden="true"></i>Codex CLI</li>
-        <li class="chip body-5"><i class="ph ph-terminal-window" aria-hidden="true"></i>Gemini CLI</li>
-        <li class="chip body-5"><i class="ph ph-brackets-curly" aria-hidden="true"></i>Any command</li>
-      </ul>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section reveal" id="faq" aria-labelledby="faq-title">
-      <p class="caption-3 kicker">FAQ</p>
-      <h2 class="heading-4" id="faq-title">Questions developers ask first</h2>
-      <div class="faq">
-        <details>
-          <summary class="title-3">Which reviewers does ReviewReplay support?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p class="body-6 muted">Claude Code with any model, Claude Code with a review skill or the built in /code-review command, Codex CLI, Gemini CLI, and any command line tool that prints a review to stdout.</p>
-        </details>
-        <details>
-          <summary class="title-3">Where do the test cases come from?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p class="body-6 muted">From your own history. ReviewReplay finds fix commits, traces each one back to the commit that introduced the bug using the referenced pull request and git blame (the SZZ method), and drafts an answer key you confirm.</p>
-        </details>
-        <details>
-          <summary class="title-3">Can a reviewer cheat by reading the fix?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p class="body-6 muted">No. The project is exported at the parent commit with no git history, and the buggy change is applied as uncommitted edits, exactly what a reviewer sees in a pull request.</p>
-        </details>
-        <details>
-          <summary class="title-3">Does it change my code or run my tests?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p class="body-6 muted">No. Reviewers run in a separate copy of the project with read only tools. Your working tree is never touched.</p>
-        </details>
-        <details>
-          <summary class="title-3">How is a review scored?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p class="body-6 muted">Each review is split into findings, matched to the known bug by location, and an LLM judge labels each finding as the bug, another real problem, or a false alarm. Judge agreement is checked against independent labels with Cohen's kappa.</p>
-        </details>
-        <details>
-          <summary class="title-3">What does a run cost?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p class="body-6 muted">ReviewReplay itself is free. You pay your reviewer provider as usual. In our comparison a Claude Code review of a real bug cost $0.064 on average, or $0.100 with a review skill.</p>
-        </details>
-        <details>
-          <summary class="title-3">Do I need to build a dataset first?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p class="body-6 muted">No. <span class="mono">reviewreplay init</span> drafts cases from any git repository. A curated benchmark of planted, clean, decoy and real cases also ships with the tool for comparing on shared ground.</p>
-        </details>
-        <details>
-          <summary class="title-3">Is it open source?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p class="body-6 muted">Yes. ReviewReplay is MIT licensed and needs only Python 3.10 and git. No account and nothing to sign up for.</p>
-        </details>
-      </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section class="final reveal" aria-labelledby="final-title">
-      <h2 class="heading-3 final-title" id="final-title">Find out what your reviewer<br> really catches</h2>
-      <p class="body-3 muted final-sub">Free and MIT licensed. Runs on your machine. Reviewers stay read only.</p>
-      <div class="cta-block">
-        <div class="install">
-          <code class="mono">pip install git+https://github.com/GgauravJ05/reviewreplay</code>
-          <button class="btn btn-primary button-md copy-btn" type="button" data-copy="pip install git+https://github.com/GgauravJ05/reviewreplay">
-            <i class="ph ph-copy" aria-hidden="true"></i><span>Copy install command</span>
-          </button>
-        </div>
-        <p class="copy-status caption-2" role="status" aria-live="polite"></p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-      <p class="caption-2 muted">Built by <a href="https://github.com/GgauravJ05">Gaurav Jadhav</a>. Thanks to the <a href="https://github.com/awesome-skills/code-review-skill">code-review-skill</a> maintainers.</p>
-      <ul class="footer-links caption-2">
-        <li><a href="https://github.com/GgauravJ05/reviewreplay/blob/main/LICENSE">License</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="https://github.com/GgauravJ05/reviewreplay/blob/main/CITATION.cff">Cite</a></li>
-        <li><a href="https://github.com/GgauravJ05/reviewreplay">GitHub</a></li>
-      </ul>
+      <div class="nav__item"><a class="nav__link" href="#grading">Grading</a></div>
+      <div class="nav__item"><a class="nav__link" href="#start">Setup</a></div>
+      <div class="nav__item"><a class="nav__link" href="#faq">Questions</a></div>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--primary" href="#start">Get the CLI</a>
     </div>
-  </footer>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
 
-  <script src="main.js" defer></script>
+<main id="top">
+  <section class="hero hero--collage" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text grid hero__grid">
+      <div class="hero__text span-5">
+        <h1 id="hero-h">AI code review benchmark from your git history</h1>
+        <p class="hero__lead">ReviewReplay replays bugs your team already fixed as fresh changes, runs each AI reviewer on them read-only, and scores what it caught, flagged wrongly and cost.</p>
+        <div class="btn-row"><a class="btn btn--primary" href="#start">Get the CLI<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#reviews">See the results</a></div>
+        <p class="hero__proof">Tested on 114 reviews of 19 cases, with real bugs from click, datasets and accelerate.</p>
+      </div>
+      <div class="hero__art span-6 start-7" data-fx="grain-gradient" data-fx-seed="11" data-fx-palette='{"bg":"#cdd6c6","surface":"#dce3d6","ink":"#262d24","accent":"#6c8e63"}' data-fx-params='{"grainMotion":0}' role="img" aria-label="A real bug from pallets/click: fish shell completion fields joined with newlines, with Claude Code's review comment on the line and the graded verdict: caught">
+        <div class="ly-piece ly-piece--main" aria-hidden="true">
+          <div class="ui ui-panel ui-diff" data-ui="diff-review" data-ui-loop>
+            <div class="ui-diff__head">
+              <svg class="ui-icon ui-diff__fold" viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 6.25 3.5 3.5 3.5-3.5"/></svg>
+              <span class="ui-diff__tool" aria-hidden="true"><img data-icon="python" src="assets/icons/python.svg" alt=""></span>
+              <span class="ui-diff__repo">pallets/click</span><i class="ui-diff__slash" aria-hidden="true">/</i>
+              <span class="ui-diff__path"><span class="ui-diff__dir">src/click/</span><b>shell_completion.py</b></span>
+              <span class="ui-spacer"></span>
+              <span class="ui-diff__stat"><b class="is-add"><span class="ui-diff__was">+4</span><span class="ui-diff__now">+5</span></b><b class="is-del"><span class="ui-diff__was">&minus;2</span><span class="ui-diff__now">&minus;3</span></b><span class="ui-diff__bar" aria-hidden="true"><i class="is-add"></i><i class="is-add"></i><i class="is-add"></i><i class="is-del"></i><i class="is-del"></i></span></span>
+            </div>
+            <div class="ui-diff__hunk"><span>@@ -417,8 +421,10 @@</span> <em class="ui-diff__sig">class FishComplete(ShellComplete):</em></div>
+            <div class="ui-diff__lines">
+              <div class="ui-diff__ln"><i>417</i><i>421</i><span class="ui-diff__code" data-i="2"><span class="ui-diff__ind">        </span><span class="k">return</span> args, incomplete</span></div>
+              <div class="ui-diff__ln"><i>418</i><i>422</i><span class="ui-diff__code" data-i="0"></span></div>
+              <div class="ui-diff__ln"><i>419</i><i>423</i><span class="ui-diff__code" data-i="1"><span class="ui-diff__ind">    </span><span class="k">def</span> <span class="f">format_completion</span>(self, item):</span></div>
+              <div class="ui-diff__ln is-del"><i>420</i><i></i><span class="ui-diff__code" data-i="2"><span class="ui-diff__ind">        </span><span class="k">if</span> item.help:</span></div>
+              <div class="ui-diff__ln is-del"><i>421</i><i></i><span class="ui-diff__code" data-i="3"><span class="ui-diff__ind">            </span><span class="k">return</span> <span class="s">f"{item.type},{item.value}\t{item.help}"</span></span></div>
+              <div class="ui-diff__ln is-add"><i></i><i>424</i><span class="ui-diff__code" data-i="2"><span class="ui-diff__ind">        </span>help_ = item.help <span class="k">or</span> <span class="s">"_"</span></span></div>
+              <div class="ui-diff__ln is-add"><i></i><i>425</i><span class="ui-diff__code" data-i="2"><span class="ui-diff__ind">        </span>value = item.value.<span class="f">replace</span>(<span class="s">"\n"</span>, <span class="s">r"\n"</span>)</span></div>
+              <div class="ui-diff__ln is-add"><i></i><i>426</i><span class="ui-diff__code" data-i="2"><span class="ui-diff__ind">        </span>help_escaped = help_.<span class="f">replace</span>(<span class="s">"\n"</span>, <span class="s">r"\n"</span>)</span></div>
+              <div class="ui-diff__ln is-target" data-diff-target><i></i><i>427</i><span class="ui-diff__code" data-i="2"><span class="ui-diff__ind">        </span><span class="k">return</span> <span class="s">f"{item.type}<mark class="ui-diff__w">\n</mark>{value}<mark class="ui-diff__w">\n</mark>{help_escaped}"</span></span></div>
+              <div class="ui-diff__sug" data-diff-sug><div class="ui-diff__ln is-add"><i></i><i>427</i><span class="ui-diff__code" data-i="2"><span class="ui-diff__ind">        </span><span class="k">return</span> <span class="s">f"{item.type}<mark class="ui-diff__w">,</mark>{item.value}<mark class="ui-diff__w">\t</mark>{help_}"</span></span></div></div>
+              <div class="ui-diff__thread">
+                <div class="ui-diff__by">
+                  <span class="ui-avatar" data-tone="4">CC</span>
+                  <span class="ui-diff__name">Claude Code</span>
+                  <span class="ui-diff__time">run 2</span>
+                  <span class="ui-spacer"></span>
+                  <span class="ui-diff__act" data-diff-act>
+                    <button class="ui-btn ui-btn--sm ui-diff__apply" type="button" tabindex="-1" data-diff-apply><span class="ui-diff__lbl">Apply suggestion</span><i class="ui-diff__spin" aria-hidden="true"></i></button>
+                    <span class="ui-chip ui-diff__done"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 8.4 2.6 2.6L12 5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Applied</span>
+                  </span>
+                </div>
+                <div class="ui-diff__msg">Fish splits <code>$response</code> on newlines, so each field arrives as its own completion.</div>
+              </div>
+              <div class="ui-diff__ln"><i>422</i><i>428</i><span class="ui-diff__code" data-i="0"></span></div>
+              <div class="ui-diff__ln"><i>423</i><i>429</i><span class="ui-diff__code" data-i="0"></span></div>
+              <div class="ui-diff__ln"><i>424</i><i>430</i><span class="ui-diff__code" data-i="0">ShellCompleteType = t.<span class="f">TypeVar</span>(<span class="s">"ShellCompleteType"</span>)</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="ly-piece ly-piece--note rr-card" aria-hidden="true" data-ly-steps="700">
+          <div class="rr-card__row"><h3>Graded: real-003, run 2</h3><span class="rr-chip" data-step data-step-at="4">Caught</span></div>
+          <div class="rr-line" data-step><i>&#10003;</i><span><b>Same bug</b> as the upstream fix</span></div>
+          <div class="rr-line" data-step><i>&#10003;</i><span><b>2 other</b> real problems</span></div>
+          <div class="rr-line" data-step><i class="warn">!</i><span><b>2 minor</b> false alarms</span></div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section" id="reviews" aria-labelledby="reviews-h">
+    <div class="wrap">
+      <div class="grid">
+        <h2 class="span-5" id="reviews-h">Every review, graded against the real fix</h2>
+        <p class="span-6 start-7">Each row is one review of a real bug. ReviewReplay keeps the raw review, the findings it extracted and the judge's verdict, then prints the scorecard. <a class="link" href="#grading">See grading</a></p>
+      </div>
+      <div class="ui app fill" role="img" aria-label="ReviewReplay's results: a list of graded reviews of four real bugs beside the report, 23 of 24 caught" data-ui-pause-host>
+        <div class="app__pane app__pane--list">
+          <div class="ui ui-panel ui-win" data-ui="window" data-open="Queued" data-work="Grading" data-done="Caught">
+            <div class="ui-win__bar">
+              <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="ui-win__crumb">ReviewReplay <i>/</i> <b>m2-compare</b></span>
+              <span class="ui-spacer"></span>
+              <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph">Search</span><span class="ui-kbd">/</span></span>
+            </div>
+            <div class="ui-win__body">
+              <nav class="ui-win__side" aria-hidden="true">
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>All<em>114</em></span>
+                <span class="ui-win__nav is-on"><span class="ui-win__hash">#</span>Real<em>24</em></span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Planted<em>90</em></span>
+                <span class="ui-win__label">Reviewers</span>
+                <span class="ui-win__nav">Baseline</span>
+                <span class="ui-win__nav">With skill</span>
+              </nav>
+              <div class="ui-win__main">
+                <div class="ui-win__cols" aria-hidden="true"><span>Reviewer</span><span>Case</span><span>Result</span><span>Run</span></div>
+                <ul class="ui-win__rows">
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-004 · accelerate FSDP2 dtype</span><span class="ui-win__st is-you" data-st>Missed</span><span class="ui-win__age">2</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-004 · accelerate FSDP2 dtype</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">2</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-003 · click fish completion</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">2</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-003 · click fish completion</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">2</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-002 · datasets bad path</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-002 · datasets bad path</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-001 · click CliRunner EOF</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">3</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-001 · click CliRunner EOF</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">3</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-004 · accelerate FSDP2 dtype</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-004 · accelerate FSDP2 dtype</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="app__pane app__pane--open" data-ui-loop>
+          <div class="ui ui-panel ui-term" data-ui="terminal-run">
+            <div class="ui-term__head">
+              <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="ui-term__title">reviewreplay</span>
+              <span class="ui-meta">zsh</span>
+              <span class="ui-spacer"></span>
+              <span class="ui-chip ui-chip--plain ui-term__branch"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="3.5" r="1.5"/><circle cx="5" cy="12.5" r="1.5"/><circle cx="11" cy="5.5" r="1.5"/><path d="M5 5v6M11 7c0 2.6-6 1.8-6 4"/></svg>main</span>
+            </div>
+            <div class="ui-term__screen" data-term-screen>
+              <div class="ui-term__track" data-term-track>
+                <div class="ui-term__ln ui-term__cmd"><span class="ui-term__cwd">~/<span class="ui-term__up">projects/</span>click</span><span class="ui-term__sig">$</span><span class="ui-term__typed" data-term-cmd>reviewreplay report results/m2-compare</span></div>
+                <div class="ui-term__ln ui-term__meter" data-term-out data-term-meter><span class="ui-term__bar" style="--p:1"><i></i></span><span class="ui-term__count" data-term-count>4 of 4 real cases</span></div>
+                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-001 click CliRunner</span><span class="ui-term__n">6 of 6</span><span class="ui-term__t">caught</span></div>
+                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-002 datasets path</span><span class="ui-term__n">6 of 6</span><span class="ui-term__t">caught</span></div>
+                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-003 click fish</span><span class="ui-term__n">6 of 6</span><span class="ui-term__t">caught</span></div>
+                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-004 accelerate FSDP2</span><span class="ui-term__n">5 of 6</span><span class="ui-term__t">caught</span></div>
+                <div class="ui-term__ln ui-term__gap" data-term-out aria-hidden="true"></div>
+                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">Baseline</span><span class="ui-term__val">11 of 12, precision 64%</span><span class="ui-term__dim">$0.064</span></div>
+                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">With skill</span><span class="ui-term__val">12 of 12, precision 81%</span><span class="ui-term__dim">$0.100</span></div>
+                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">Serious</span><span class="ui-term__val">3 and 0 false alarms</span><span class="ui-term__dim"></span></div>
+                <div class="ui-term__ln ui-term__done" data-term-out data-term-done><span class="ui-term__ok"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.3 2.4 2.4 4.6-5"/></svg></span><b>Done</b><span class="ui-term__dim">24 reviews graded</span></div>
+                <div class="ui-term__ln ui-term__cmd" data-term-next><span class="ui-term__cwd">~/<span class="ui-term__up">projects/</span>click</span><span class="ui-term__sig">$</span><span class="ui-term__typed"></span><i class="ui-term__caret" aria-hidden="true"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="grading" aria-labelledby="grading-h">
+    <div class="wrap">
+      <div class="grid">
+        <div class="span-5 stack-5">
+          <h2 id="grading-h">ReviewReplay grades every finding, not only the bug</h2>
+          <p class="t-lead">Each review is split into findings. A finding must land within three lines of the known bug, then an LLM judge calls it the same bug, another real problem or a false alarm.</p>
+          <ul class="stack-3">
+            <li>Judge checked against a second rater, kappa 0.93</li>
+            <li>95% bootstrap intervals, paired by case</li>
+            <li>Every review and verdict kept for audit</li>
+          </ul>
+          <a class="link" href="#faq">Read the questions</a>
+        </div>
+        <div class="frame frame--split frame--lit span-6 start-7" data-visual>
+          <div class="stage stage--fade-b">
+            <div class="at-rise to-edge" style="--w: 460px; --ay: 56px">
+              <div class="ui ui-doc" data-ui="doc" role="img" aria-label="The judge's verdicts on one Claude Code review of real-003: one finding matches the known bug">
+                <article class="ui-doc__page">
+                  <div class="ui-doc__label">Review of real-003, run 2</div>
+                  <div class="ui-doc__title">Findings</div>
+                  <div class="ui-doc__text">Line 183: <mark class="ui-doc__mark is-on">fields split on newlines</mark> in the fish script, so each one arrives as its own completion.</div>
+                  <div class="ui-doc__text">Line 434: <mark class="ui-doc__mark" data-kind="Another real problem" data-msg="Escaped newlines are never turned back in the fish script." data-where="Judge verdict, finding 2">literal \n</mark> is written and never restored.</div>
+                  <div class="ui-doc__text">Line 429: the <mark class="ui-doc__mark" data-kind="False alarm" data-msg="A version note, not a defect in the change." data-where="Judge verdict, finding 4">version note</mark> should say 8.4.</div>
+                  <div class="ui-doc__text">CHANGES.rst: the new entry has no pull request reference.</div>
+                </article>
+                <aside class="ui-doc__note ui-panel is-on" aria-live="polite">
+                  <div class="ui-doc__kind"><span class="ui-doc__dot"></span><span data-doc-kind>Same bug</span></div>
+                  <div class="ui-doc__msg" data-doc-msg>Matches b1: the fields collide with fish's line split.</div>
+                  <div class="ui-doc__where" data-doc-where>Judge verdict, finding 1</div>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="idea" aria-labelledby="idea-h">
+    <div class="wrap">
+      <div class="section-head" data-moment="liquid-type">
+        <h2 class="mo-lt__type t-statement" id="idea-h">Recall is solved. Precision is not.</h2>
+        <p class="t-lead">On 24 reviews of real bugs, Claude Code found the bug 23 times.</p>
+      </div>
+      <dl class="stats rr-stats">
+        <div><dt class="muted">Bugs found with the skill</dt><dd class="t-stat">12 of 12</dd></div>
+        <div><dt class="muted">Serious false alarms, skill vs none</dt><dd class="t-stat">0 vs 3</dd></div>
+        <div><dt class="muted">Precision, skill vs none</dt><dd class="t-stat">81% vs 64%</dd></div>
+        <div><dt class="muted">Cost of the skill per review</dt><dd class="t-stat">1.6x</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="grid grid--top">
+        <div class="span-5 stack-4">
+          <h2 id="faq-h">Questions</h2>
+          <a class="link" href="#start">See the 3 steps</a>
+        </div>
+        <div class="faq span-6 start-7">
+          <div class="faq__item"><h3>Which reviewers can it test?</h3><p>Claude Code with any model or skill, Codex CLI, Gemini CLI, or any command that prints a review.</p></div>
+          <div class="faq__item"><h3>Can a reviewer read the fix?</h3><p>No. The project is exported without git history, with the bug as uncommitted edits.</p></div>
+          <div class="faq__item"><h3>Will a benchmark run edit my code?</h3><p>No. Reviews run in a separate copy, with read-only tools.</p></div>
+          <div class="faq__item"><h3>What does a benchmark run cost?</h3><p>The tool is free. Our reviewer cost $0.064 a review, $0.100 with a skill.</p></div>
+          <div class="faq__item"><h3>How sure are the benchmark numbers?</h3><p>Not very yet. Four real cases give wide intervals: read them as a direction.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="start" aria-labelledby="start-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="start-h">Run it on your repository in 3 steps</h2>
+        <p>Install with <code class="rr-pip">pip install git+https://github.com/GgauravJ05/reviewreplay</code></p>
+      </div>
+      <div class="grid">
+        <article class="card card--row span-4 m-nolift">
+          <span class="step-num">1</span>
+          <h3>Mine your fixed bugs</h3>
+          <p><code>reviewreplay init</code> traces each fix commit to the change that broke it and drafts an answer key.</p>
+          <div class="panel panel--flush" data-ui-pause-host>
+            <div class="stage"><div class="at-rise fit" style="--fit-max: 440px; --ax: max(24px, 50% - 220px); --ay: 40px" data-ui-loop>
+              <div class="ui ui-panel ui-term" data-ui="terminal-run">
+                <div class="ui-term__head">
+                  <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <span class="ui-term__title">click</span>
+                  <span class="ui-meta">zsh</span>
+                  <span class="ui-spacer"></span>
+                </div>
+                <div class="ui-term__screen" data-term-screen>
+                  <div class="ui-term__track" data-term-track>
+                    <div class="ui-term__ln ui-term__cmd"><span class="ui-term__cwd">~/click</span><span class="ui-term__sig">$</span><span class="ui-term__typed" data-term-cmd>reviewreplay init</span></div>
+                    <div class="ui-term__ln ui-term__meter" data-term-out data-term-meter><span class="ui-term__bar" style="--p:1"><i></i></span><span class="ui-term__count" data-term-count>2 of 2 drafted</span></div>
+                    <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">fix 93c6966e</span><span class="ui-term__n">262bdf02</span><span class="ui-term__t">ok</span></div>
+                    <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">fix b7e5fd4c</span><span class="ui-term__n">19fd4d6e</span><span class="ui-term__t">ok</span></div>
+                    <div class="ui-term__ln ui-term__done" data-term-out data-term-done><span class="ui-term__ok"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.3 2.4 2.4 4.6-5"/></svg></span><b>Done</b><span class="ui-term__dim">2 draft cases</span></div>
+                    <div class="ui-term__ln ui-term__cmd" data-term-next><span class="ui-term__cwd">~/click</span><span class="ui-term__sig">$</span><span class="ui-term__typed"></span><i class="ui-term__caret" aria-hidden="true"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div></div>
+          </div>
+        </article>
+        <article class="card card--row span-4 m-nolift">
+          <span class="step-num">2</span>
+          <h3>Replay to every reviewer</h3>
+          <p>Each change lands in a clean copy with no git history. Reviewers run read-only, three times each.</p>
+          <div class="panel panel--flush">
+            <div class="stage stage--fade-b"><div class="at-right" style="--ax: 32px; --ay: 40px">
+              <div class="ui ui-panel ui-apps" data-ui="integrations">
+                <div class="ui-head">
+                  <div class="ui-title">Reviewers</div>
+                  <span class="ui-spacer"></span>
+                  <div class="ui-meta" data-apps-count>3 ready</div>
+                </div>
+                <ul class="ui-apps__list">
+                  <li class="ui-app is-on">
+                    <span class="ui-logo ui-logo--sm"><img data-icon="claude-code" src="assets/icons/claude-code.svg" alt=""></span>
+                    <span class="ui-app__text"><span class="ui-app__name">Claude Code</span><span class="ui-app__sub">Built in, any model or skill</span></span>
+                    <span class="ui-app__state"><span class="ui-chip ui-app__on">Ready</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button" tabindex="-1"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Add</span></button></span>
+                  </li>
+                  <li class="ui-app is-on">
+                    <span class="ui-logo ui-logo--sm"><img data-icon="openai" src="assets/icons/openai.svg" alt=""></span>
+                    <span class="ui-app__text"><span class="ui-app__name">Codex CLI</span><span class="ui-app__sub">Read-only sandbox</span></span>
+                    <span class="ui-app__state"><span class="ui-chip ui-app__on">Ready</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button" tabindex="-1"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Add</span></button></span>
+                  </li>
+                  <li class="ui-app" data-apps-target>
+                    <span class="ui-logo ui-logo--sm"><img data-icon="gemini" src="assets/icons/gemini.svg" alt=""></span>
+                    <span class="ui-app__text"><span class="ui-app__name">Gemini CLI</span><span class="ui-app__sub">One prompt per change</span></span>
+                    <span class="ui-app__state"><span class="ui-chip ui-app__on">Ready</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button" tabindex="-1"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Add</span></button></span>
+                  </li>
+                  <li class="ui-app is-on">
+                    <span class="ui-logo ui-logo--sm"><img data-icon="terminal" src="assets/icons/terminal.svg" alt=""></span>
+                    <span class="ui-app__text"><span class="ui-app__name">Any CLI</span><span class="ui-app__sub">Prints a review to stdout</span></span>
+                    <span class="ui-app__state"><span class="ui-chip ui-app__on">Ready</span><button class="ui-btn ui-btn--ghost ui-btn--sm ui-app__connect" type="button" tabindex="-1"><span class="ui-spin ui-app__spin" aria-hidden="true"></span><span>Add</span></button></span>
+                  </li>
+                </ul>
+              </div>
+            </div></div>
+          </div>
+        </article>
+        <article class="card card--row span-4 m-nolift">
+          <span class="step-num">3</span>
+          <h3>Read the scorecard</h3>
+          <p>Recall, precision, false alarms and cost per review, each with a 95% interval.</p>
+          <div class="panel panel--flush">
+            <div class="stage"><div class="at-rise fit" style="--fit-max: 340px; --ax: max(24px, 50% - 170px); --ay: 40px">
+              <div class="ui ui-panel ui-checks" data-ui="checklist">
+                <div class="ui-checks__head">
+                  <div class="ui-title">Real bugs, with skill</div>
+                  <span class="ui-spacer"></span>
+                  <div class="ui-meta" data-checks-count>4 of 4</div>
+                </div>
+                <div class="ui-checks__bar"><i data-checks-bar style="--k:1"></i></div>
+                <ul class="ui-checks__list">
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Bug found in 12 of 12</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Precision 81%</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">No serious false alarms</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">$0.100 per review</span></li>
+                </ul>
+              </div>
+            </div></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer closing footer--statement g2m" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head">
+        <h2 id="close-h">Test your reviewer on your own bugs</h2>
+        <p>Free and MIT licensed. Needs Python 3.10 and git.</p>
+      </div>
+      <a class="btn btn--primary btn--xl btn--wide" href="#start">Get the CLI<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="#top"><span class="mark" data-mark="stack" aria-hidden="true"></span>ReviewReplay</a>
+          <p class="footer__lede">A benchmark for AI code reviewers, by Gaurav Jadhav.</p>
+        </div>
+        <div class="span-2 start-5 footer__col"><h3>Product</h3><ul><li><a href="#reviews">Results</a></li><li><a href="#grading">Grading</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Use it</h3><ul><li><a href="#start">Setup</a></li><li><a href="#faq">Questions</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Project</h3><ul><li><a href="https://github.com/GgauravJ05/reviewreplay">GitHub</a></li><li><a href="https://github.com/awesome-skills/code-review-skill">code-review-skill</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Legal</h3><ul><li><a href="privacy.html">Privacy</a></li><li><a href="https://github.com/GgauravJ05/reviewreplay/blob/main/LICENSE">MIT licence</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 Gaurav Jadhav. Product names and logos are trademarks of their owners.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
 </body>
 </html>

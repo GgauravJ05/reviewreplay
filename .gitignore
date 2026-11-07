@@ -16,3 +16,7 @@ build/
 *.egg-info/
 dist/
 .claude/
+
+# landing page build tools
+site/.taste-skill/
+site/shots/

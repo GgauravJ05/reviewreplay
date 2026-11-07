@@ -1,27 +1,56 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-type="software" data-radius="sharp" data-buttons="arrow">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Page not found · ReviewReplay</title>
-  <meta name="description" content="This page does not exist.">
-  <meta name="robots" content="noindex">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found at ReviewReplay</title>
+<meta name="description" content="This ReviewReplay page does not exist.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#161c1a">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<style>
+:root {
+  --p-bg: #161c1a; --p-surface: #1f2725; --p-ink: #e3e2da; --p-muted: #8e948d;
+  --p-accent: #9fc7b8; --p-accent-ink: #161c1a; --p-action: #9fc7b8; --p-action-ink: #161c1a;
+  --p-inv-bg: #e3e2da; --p-inv-surface: #d3d2cb; --p-inv-ink: #161c1a; --p-inv-muted: #555a55;
+  --p-inv-accent: #161c1a; --p-inv-accent-ink: #e3e2da; --p-inv-action: #161c1a; --p-inv-action-ink: #e3e2da;
+  --font-display: "Instrument Sans", system-ui, sans-serif;
+  --font-text: "Instrument Sans", system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 500;
+  --display-tracking: -0.028em;
+  --display-tracking-xl: -0.036em;
+  --display-stretch: 96%;
+  --ly-scale: 1.04;
+}
+</style>
+<style>
+  .doc { padding: calc(var(--nav) + var(--s-9)) 0 var(--s-9); min-height: 100svh; box-sizing: border-box; }
+  .doc .stack-5 { max-width: 640px; }
+</style>
 </head>
 <body>
-  <a class="skip-link button-sm" href="#main">Skip to content</a>
-  <main id="main" class="simple">
-    <a class="nav-brand title-3 back" href="index.html">← ReviewReplay</a>
-    <section class="hero">
-      <p class="eyebrow caption-4 mono">404</p>
-      <h1 class="heading-2 hero-title">This page did not replay</h1>
-      <p class="body-3 hero-sub">The link may be old or mistyped. The benchmark is still where you left it.</p>
-      <div class="cta-block"><a class="btn btn-primary button-md" href="index.html">Back to the home page</a></div>
-    </section>
-  </main>
+<header class="nav nav--centre">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="nav__logo" href="index.html"><span class="mark" data-mark="stack" aria-hidden="true"></span>ReviewReplay</a>
+    <div class="nav__actions" style="margin-left:auto"><a class="btn btn--primary" href="index.html#start">Get the CLI</a></div>
+  </div>
+</header>
+<main id="main" class="doc">
+  <div class="wrap"><div class="stack-5">
+    <p class="t-label">404</p>
+    <h1>This page did not replay</h1>
+    <p>The link may be old or mistyped. The benchmark is still where you left it.</p>
+    <div class="btn-row"><a class="btn btn--primary" href="index.html">See the home page</a></div>
+  </div></div>
+</main>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
 </body>
 </html>

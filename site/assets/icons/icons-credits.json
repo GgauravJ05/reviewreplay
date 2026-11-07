@@ -1,0 +1,62 @@
+[
+  {
+    "file": "claude-code.svg",
+    "icon": "logos:claude-code",
+    "name": "Claude Code",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://claude.com/product/claude-code"
+  },
+  {
+    "file": "gemini.svg",
+    "icon": "logos:google-gemini-icon",
+    "name": "Gemini",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://deepmind.google/technologies/gemini/"
+  },
+  {
+    "file": "openai.svg",
+    "icon": "logos:openai-icon",
+    "name": "OpenAI",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://openai.com/"
+  },
+  {
+    "file": "python.svg",
+    "icon": "logos:python",
+    "name": "Python",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://www.python.org/"
+  },
+  {
+    "file": "terminal.svg",
+    "icon": "logos:terminal",
+    "name": "Terminal",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://en.wikipedia.org/wiki/Terminal_emulator"
+  }
+]
