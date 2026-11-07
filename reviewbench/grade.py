@@ -174,6 +174,10 @@ def _parallel(jobs, fn, workers: int, label: str) -> None:
             name = "/".join(Path(j[-1]).parts[-3:])
             try:
                 status = fut.result()
+            except claude.AccountError as e:
+                print(f"STOPPING {label}: account problem ({e}); re-run to resume.", flush=True)
+                pool.shutdown(cancel_futures=True)
+                raise SystemExit(3)
             except Exception as e:
                 status = f"ERROR {e}"
             print(f"[{label} {n}/{len(jobs)}] {name}: {status}", flush=True)

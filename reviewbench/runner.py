@@ -47,6 +47,7 @@ def run_all(cases: list[Case], subjects: list[Subject], runs: int, out: Path, *,
         cfg.write_text(json.dumps({
             "created": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "model": model, "cli_version": claude.cli_version(), "runs": runs,
+            "auth": claude.auth_mode(),
             "cases": [c.id for c in cases],
             "subjects": [{"name": s.name, "skill": s.skill, "prompt": s.prompt, "credit": s.credit}
                          for s in subjects],
@@ -62,6 +63,11 @@ def run_all(cases: list[Case], subjects: list[Subject], runs: int, out: Path, *,
             done += 1
             try:
                 rec = fut.result()
+            except claude.AccountError as e:
+                print(f"STOPPING: account problem ({e}). Nothing more will run; re-run to resume.",
+                      flush=True)
+                pool.shutdown(cancel_futures=True)
+                raise SystemExit(3)
             except Exception as e:  # keep going; a failed review is retried on the next run
                 print(f"[{done}/{len(jobs)}] {sname} {cid} run{k}: ERROR {e}", flush=True)
                 continue

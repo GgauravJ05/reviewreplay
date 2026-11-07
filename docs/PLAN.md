@@ -67,6 +67,8 @@ It started from an open question on
 
 ### 3.3 Case format
 
+> **Implemented (M1):** metadata is `case.json` (not YAML: the package has no dependencies), cases keep an `after/` copy, and answer-key locations are anchors + spans. The current format is in [ADDING_A_CASE.md](ADDING_A_CASE.md); the sketch below is the original proposal.
+
 ```
 cases/python/py-007/
   case.yaml        # metadata
@@ -267,7 +269,7 @@ reviewbench/
     ADDING_A_CASE.md        # (M1) how to write and check a case
     ADDING_A_SUBJECT.md     # (M2)
   cases/<track>/<id>/       # see §3.3
-  subjects/<name>.yaml      # see §4
+  subjects/<name>.json      # see §4 (JSON, implemented in M1)
   prompts/
     extractor.md            # fixed extraction prompt
     judge.md                # fixed judge rubric
@@ -288,8 +290,7 @@ reviewbench/
   pyproject.toml
 ```
 
-Python 3.11+, standard tooling (`pyproject.toml`, `pytest`). Few dependencies: `pyyaml`,
-`jsonschema`, `numpy`, `matplotlib`.
+Python 3.11+, standard library only (M1). `pytest` for tests; plots deferred.
 
 Commands:
 

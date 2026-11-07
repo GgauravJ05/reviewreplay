@@ -19,9 +19,35 @@ DEFAULT_MODEL = os.environ.get("RB_MODEL", "claude-sonnet-5-5")
 ISOLATION = ["--setting-sources", "project", "--strict-mcp-config", "--no-session-persistence"]
 
 
+TOKEN_VAR = "REVIEWBENCH_OAUTH_TOKEN"   # from `claude setup-token`; set in your own shell
+FATAL_MARKERS = ("hit your session limit", "hit your usage limit", "Failed to authenticate",
+                 "OAuth session expired", "Invalid API key", "rate_limit")
+
+
+class AccountError(RuntimeError):
+    """Usage limit or login problem: retrying now won't help, so stop the whole run."""
+
+
 def clean_env() -> dict[str, str]:
-    return {k: v for k, v in os.environ.items()
-            if not k.startswith(("CLAUDE", "ANTHROPIC_", "MCP_"))}
+    env = {k: v for k, v in os.environ.items()
+           if not k.startswith(("CLAUDE", "ANTHROPIC_", "MCP_"))}
+    # A long-lived token keeps test runs independent of the desktop app's login, which
+    # refreshes (and invalidates) the shared keychain login. Never logged or written to disk.
+    token = os.environ.get(TOKEN_VAR)
+    if token:
+        env["CLAUDE_CODE_OAUTH_TOKEN"] = token
+    env.pop(TOKEN_VAR, None)
+    return env
+
+
+def auth_mode() -> str:
+    return "setup-token" if os.environ.get(TOKEN_VAR) else "keychain login"
+
+
+def check_fatal(text: str) -> None:
+    for marker in FATAL_MARKERS:
+        if marker.lower() in (text or "").lower():
+            raise AccountError(text.strip()[:200])
 
 
 def cli_version() -> str:
@@ -61,6 +87,8 @@ def run_stream(prompt: str, cwd: Path, *, model: str = DEFAULT_MODEL, extra: lis
                     tool_calls.append({"name": block.get("name"), "input": _short(inp)})
                     if block.get("name") == "Skill":
                         skills.append(str(inp.get("skill", "?")))
+    if not result or result.get("is_error"):
+        check_fatal(str(result.get("result", "")) + "\n" + stderr)
     return {
         "exit_code": code, "seconds": seconds,
         "is_error": result.get("is_error", True) if result else True,
@@ -87,7 +115,10 @@ def run_json(prompt: str, schema: dict, cwd: Path, *, model: str = DEFAULT_MODEL
             payload = json.loads(proc.stdout)
         except json.JSONDecodeError:
             last = proc.stdout[-500:] + proc.stderr[-500:]
+            check_fatal(last)
             continue
+        if payload.get("is_error"):
+            check_fatal(str(payload.get("result", "")))
         out = payload.get("structured_output")
         if isinstance(out, dict):
             return {"data": out, "cost_usd": payload.get("total_cost_usd")}
