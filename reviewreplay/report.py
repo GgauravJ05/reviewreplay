@@ -37,14 +37,18 @@ def bootstrap(values: list[float], seed: int = 0) -> tuple[float | None, float |
     return _mean(vals), means[int(0.025 * BOOT)], means[int(0.975 * BOOT) - 1]
 
 
-def review_scores(grade: dict, raw: dict, case: Case, subject_skill: str | None) -> dict:
+def review_scores(grade: dict, raw: dict, case: Case, subject_skill: str | None,
+                  drop_contested: bool = False) -> dict:
+    n_contested = sum(1 for f in grade["findings"] if f.get("contested"))
+    if drop_contested:
+        grade = {**grade, "findings": [f for f in grade["findings"] if not f.get("contested")]}
     serious = [f for f in grade["findings"] if f["severity"] in SERIOUS]
     s: dict = {"cost": raw.get("cost_usd"), "seconds": raw.get("seconds"),
                "n_findings": len(grade["findings"]), "n_serious": len(serious),
                "n_good": sum(1 for f in serious if f["label"] in {"hit", "valid_other"}),
                "n_false_alarm": sum(1 for f in serious if f["label"] == "false_alarm"),
                "n_unsure": sum(1 for f in serious if f["label"] == "unsure"),
-               "n_minor": len(grade["findings"]) - len(serious)}
+               "n_minor": len(grade["findings"]) - len(serious), "n_contested": n_contested}
     if subject_skill:
         s["skill_used"] = subject_skill in raw.get("skills_invoked", [])
     if case.has_bug:
@@ -62,7 +66,8 @@ def review_scores(grade: dict, raw: dict, case: Case, subject_skill: str | None)
     return s
 
 
-def collect(run_dir: Path, cases: dict[str, Case]) -> dict[str, dict[str, list[dict]]]:
+def collect(run_dir: Path, cases: dict[str, Case], drop_contested: bool = False
+            ) -> dict[str, dict[str, list[dict]]]:
     """subject → case → [per-run scores]"""
     cfg = json.loads((run_dir / "config.json").read_text())
     skill_of = {s["name"]: (s["skill"] or {}).get("name") if not s["prompt"].startswith("/") else None
@@ -73,7 +78,7 @@ def collect(run_dir: Path, cases: dict[str, Case]) -> dict[str, dict[str, list[d
         subject, case_id = rel.parts[0], rel.parts[1]
         raw = json.loads((run_dir / "raw" / rel).read_text())
         out[subject][case_id].append(review_scores(json.loads(g.read_text()), raw, cases[case_id],
-                                                   skill_of.get(subject)))
+                                                   skill_of.get(subject), drop_contested))
     return out
 
 
@@ -207,16 +212,22 @@ def write_label_sheet(run_dir: Path) -> Path:
     return out
 
 
+def cohen_kappa(pairs: list[tuple[str, str]]) -> tuple[float, float]:
+    """Observed agreement and Cohen's kappa for two raters' labels."""
+    n = len(pairs)
+    po = sum(a == b for a, b in pairs) / n
+    labels = {x for p in pairs for x in p}
+    pe = sum((sum(a == l for a, _ in pairs) / n) * (sum(b == l for _, b in pairs) / n) for l in labels)
+    return po, ((po - pe) / (1 - pe) if pe < 1 else 1.0)
+
+
 def agreement(sheet: Path) -> dict:
     rows = [r for r in csv.DictReader(sheet.open()) if r["human_label"].strip()]
     if not rows:
         return {"labelled": 0}
     pairs = [(r["auto_label"], r["human_label"].strip()) for r in rows]
     n = len(pairs)
-    po = sum(a == h for a, h in pairs) / n
-    labels = {x for p in pairs for x in p}
-    pe = sum((sum(a == l for a, _ in pairs) / n) * (sum(h == l for _, h in pairs) / n) for l in labels)
-    kappa = (po - pe) / (1 - pe) if pe < 1 else 1.0
+    po, kappa = cohen_kappa(pairs)
     confusion: dict = defaultdict(int)
     for a, h in pairs:
         confusion[f"{a} → {h}"] += 1

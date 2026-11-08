@@ -22,15 +22,16 @@ from collections import defaultdict
 from pathlib import Path
 
 from .cases import Case
-from .report import BOOT, bootstrap, collect, per_case
+from .grade import tally
+from .report import BOOT, bootstrap, cohen_kappa, collect, per_case
 
 
-def merge_runs(run_dirs: list[Path], cases: dict[str, Case], kind: str | None = None
-               ) -> dict[str, dict[str, list[dict]]]:
+def merge_runs(run_dirs: list[Path], cases: dict[str, Case], kind: str | None = None,
+               drop_contested: bool = False) -> dict[str, dict[str, list[dict]]]:
     """subject → case → [per-run scores], pooled across run folders."""
     out: dict = defaultdict(lambda: defaultdict(list))
     for d in run_dirs:
-        for subject, per in collect(d, cases).items():
+        for subject, per in collect(d, cases, drop_contested).items():
             for cid, runs in per.items():
                 if kind and cases[cid].kind != kind:
                     continue
@@ -94,16 +95,50 @@ def subject_row(scores: dict[str, list[dict]]) -> dict:
                       "serious": sum(r.get("n_serious", 0) for r in runs)},
         "false_alarms": sum(r.get("n_false_alarm", 0) for r in runs),
         "unsure": sum(r.get("n_unsure", 0) for r in runs),
+        "contested": sum(r.get("n_contested", 0) for r in runs),
         "minor_per_review": statistics.mean(r.get("n_minor", 0) for r in runs) if runs else None,
         "mean_cost": statistics.mean(costs) if costs else None,
         "median_cost": statistics.median(costs) if costs else None,
     }
 
 
+def judge_agreement(run_dirs: list[Path], cases: dict[str, Case], kind: str | None = None) -> dict | None:
+    """How much the judge votes agree, over findings graded more than once."""
+    findings = []
+    for d in run_dirs:
+        for g in sorted((d / "grades").rglob("run*.json")):
+            data = json.loads(g.read_text())
+            if kind and cases[data["case"]].kind != kind:
+                continue
+            findings += [f for f in data["findings"] if len(f.get("votes", [])) > 1]
+    if not findings:
+        return None
+    out = {"findings": len(findings), "votes_per_finding": statistics.mean(len(f["votes"]) for f in findings),
+           "unanimous": sum(len({v["label"] for v in f["votes"]}) == 1 for f in findings),
+           "contested": sum(bool(f.get("contested")) for f in findings)}
+    models = []
+    for f in findings:
+        for v in f["votes"]:
+            if v["model"] not in models:
+                models.append(v["model"])
+    if len(models) > 1:
+        pairs = []
+        for f in findings:
+            a = [v["label"] for v in f["votes"] if v["model"] == models[0]]
+            b = [v["label"] for v in f["votes"] if v["model"] == models[1]]
+            if a and b:
+                pairs.append((tally(a)[0], tally(b)[0]))
+        if pairs:
+            po, k = cohen_kappa(pairs)
+            out["between_models"] = {"models": models[:2], "findings": len(pairs), "agreement": po, "kappa": k}
+    return out
+
+
 def build_comparison(run_dirs: list[Path], cases: dict[str, Case], kind: str | None = None,
-                     baseline: str = "baseline") -> dict:
-    data = merge_runs(run_dirs, cases, kind)
-    out: dict = {"runs": [d.name for d in run_dirs], "kind": kind, "subjects": {}, "paired": {}}
+                     baseline: str = "baseline", drop_contested: bool = False) -> dict:
+    data = merge_runs(run_dirs, cases, kind, drop_contested)
+    out: dict = {"runs": [d.name for d in run_dirs], "kind": kind, "drop_contested": drop_contested,
+                 "subjects": {}, "paired": {}, "judges": judge_agreement(run_dirs, cases, kind)}
     for subject, scores in sorted(data.items()):
         out["subjects"][subject] = subject_row(scores)
     if baseline in data:
@@ -129,10 +164,11 @@ def _pct(v):
 
 def format_comparison(c: dict) -> str:
     kind = f" · {c['kind']} cases only" if c["kind"] else ""
+    kind += " · contested findings left out" if c.get("drop_contested") else ""
     lines = [f"# ReviewReplay comparison — {', '.join(c['runs'])}{kind}", "",
              "| Subject | Cases | Reviews | Bug found | Recall | Precision (serious) | "
-             "Serious false alarms | Unsure | Minor / review | Mean cost | Median cost |",
-             "|---|---|---|---|---|---|---|---|---|---|---|"]
+             "Serious false alarms | Unsure | Contested | Minor / review | Mean cost | Median cost |",
+             "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for name, r in c["subjects"].items():
         rec, pr = r["recall"], r["precision"]
         rec_s = "—" if rec["mean"] is None else f"{_pct(rec['mean'])} [{_pct(rec['lo'])}–{_pct(rec['hi'])}]"
@@ -143,7 +179,8 @@ def format_comparison(c: dict) -> str:
         mean_c = "—" if r["mean_cost"] is None else f"${r['mean_cost']:.3f}"
         med_c = "—" if r["median_cost"] is None else f"${r['median_cost']:.3f}"
         lines.append(f"| {name} | {r['cases']} | {r['reviews']} | {found} | {rec_s} | {pr_s} | "
-                     f"{r['false_alarms']} | {r['unsure']} | {minor} | {mean_c} | {med_c} |")
+                     f"{r['false_alarms']} | {r['unsure']} | {r.get('contested', 0)} | {minor} | "
+                     f"{mean_c} | {med_c} |")
     if c["paired"]:
         lines += ["", "## Paired difference vs. baseline", "",
                   "Bootstrapped over the cases both subjects share. An interval that includes 0 "
@@ -159,12 +196,22 @@ def format_comparison(c: dict) -> str:
         for name, comp in sorted(c["paired"].items()):
             n = max((v["n_cases"] for v in comp.values()), default=0)
             lines.append(f"| {name} | {d(comp.get('recall'))} | {d(comp.get('precision'))} | {n} |")
+    j = c.get("judges")
+    if j:
+        lines += ["", "## Judge agreement", "",
+                  f"{j['findings']} findings graded {j['votes_per_finding']:.1f} times on average: "
+                  f"{j['unanimous']} unanimous, {j['contested']} contested (no label with a strict majority)."]
+        bm = j.get("between_models")
+        if bm:
+            lines.append(f"Between `{bm['models'][0]}` and `{bm['models'][1]}` on {bm['findings']} findings: "
+                         f"{100 * bm['agreement']:.0f}% agreement, Cohen's kappa {bm['kappa']:.2f}.")
     return "\n".join(lines) + "\n"
 
 
 def write_comparison(run_dirs: list[Path], cases: dict[str, Case], out: Path | None,
-                     kind: str | None = None, baseline: str = "baseline") -> str:
-    c = build_comparison(run_dirs, cases, kind, baseline)
+                     kind: str | None = None, baseline: str = "baseline",
+                     drop_contested: bool = False) -> str:
+    c = build_comparison(run_dirs, cases, kind, baseline, drop_contested)
     text = format_comparison(c)
     if out:
         out.write_text(text)
