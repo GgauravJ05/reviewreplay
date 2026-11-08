@@ -42,6 +42,7 @@ Nine projects: click, datasets, accelerate, werkzeug, attrs, rich, jsonschema, b
 | Minor remarks per review | 1.2 | 1.1 | |
 | Mean cost per review | $0.065 | $0.097 | about **1.5×** |
 
+Reproduce this table with `reviewreplay compare results/m2-compare results/m2-real-more --kind real`.
 The m2-compare rows reproduce exactly from its grade files (16/25 and 25/31), so the two runs add up
 on the same definitions. "Serious" means a finding the reviewer rated blocking or important.
 Precision counts hits and other real problems over all serious findings, `unsure` included.

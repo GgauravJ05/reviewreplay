@@ -122,6 +122,7 @@ ML code) for comparing reviewers on shared ground:
 reviewreplay check                    # validate cases
 reviewreplay run --out results/mine --subjects baseline --runs 3
 reviewreplay extract results/mine && reviewreplay grade results/mine && reviewreplay report results/mine
+reviewreplay compare results/m2-compare results/m2-real-more --kind real   # pool runs, paired vs baseline
 ```
 
 Adding cases: [docs/ADDING_A_CASE.md](docs/ADDING_A_CASE.md). Design and methodology:

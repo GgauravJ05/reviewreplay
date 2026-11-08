@@ -40,7 +40,11 @@ def bootstrap(values: list[float], seed: int = 0) -> tuple[float | None, float |
 def review_scores(grade: dict, raw: dict, case: Case, subject_skill: str | None) -> dict:
     serious = [f for f in grade["findings"] if f["severity"] in SERIOUS]
     s: dict = {"cost": raw.get("cost_usd"), "seconds": raw.get("seconds"),
-               "n_findings": len(grade["findings"]), "n_serious": len(serious)}
+               "n_findings": len(grade["findings"]), "n_serious": len(serious),
+               "n_good": sum(1 for f in serious if f["label"] in {"hit", "valid_other"}),
+               "n_false_alarm": sum(1 for f in serious if f["label"] == "false_alarm"),
+               "n_unsure": sum(1 for f in serious if f["label"] == "unsure"),
+               "n_minor": len(grade["findings"]) - len(serious)}
     if subject_skill:
         s["skill_used"] = subject_skill in raw.get("skills_invoked", [])
     if case.has_bug:
