@@ -88,6 +88,8 @@
     .app > .app__pane + .app__pane { border-left: 0; border-top: 1px solid var(--u-line); }
   }
   @media (max-width: 639px) {
+    #reviews .ui-term__cwd { display: none; }
+    #reviews .ui-term__track { font-size: 12px; }
     .app.ui { grid-template-rows: minmax(0, 1fr); }
     .app > .app__pane--list { display: none; }
     .app > .app__pane + .app__pane { border-top: 0; }
@@ -177,7 +179,7 @@
         <p class="hero__lead">ReviewReplay replays bugs your team already fixed as fresh changes, runs each AI reviewer on them read-only, and scores what it caught, flagged wrongly and cost.</p>
         <div class="btn-row"><a class="btn btn--primary" href="#start">Get the CLI<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#reviews">See the results</a></div>
         <div class="rr-install"><span class="rr-install__sig" aria-hidden="true">$</span><code class="rr-install__cmd">pip install <span class="rr-install__url">git+https://<wbr>github.com/<wbr>GgauravJ05/<wbr>reviewreplay</span></code><button class="btn btn--secondary rr-install__copy" type="button" data-copy="pip install git+https://github.com/GgauravJ05/reviewreplay" aria-label="Copy the install command"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="1.8"/><path d="M10.5 5V3.8A1.3 1.3 0 0 0 9.2 2.5H3.8a1.3 1.3 0 0 0-1.3 1.3v5.4a1.3 1.3 0 0 0 1.3 1.3H5"/></svg><span data-copy-label>Copy</span></button></div>
-        <p class="hero__proof">Tested on 114 reviews of 19 cases, with real bugs from click, datasets and accelerate.</p>
+        <p class="hero__proof">Tested on 12 real bugs from 9 projects, including click, black, werkzeug and peft: 162 reviews in all.</p>
       </div>
       <div class="hero__art span-6 start-7" data-fx="grain-gradient" data-fx-seed="11" data-fx-palette='{"bg":"#cdd6c6","surface":"#dce3d6","ink":"#262d24","accent":"#6c8e63"}' data-fx-params='{"grainMotion":0}' role="img" aria-label="A real bug from pallets/click: fish shell completion fields joined with newlines, with Claude Code's review comment on the line and the graded verdict: caught">
         <div class="ly-piece ly-piece--main" aria-hidden="true">
@@ -237,20 +239,20 @@
         <h2 class="span-5" id="reviews-h">Every review, graded against the real fix</h2>
         <p class="span-6 start-7">Each row is one review of a real bug. ReviewReplay keeps the raw review, the findings it extracted and the judge's verdict, then prints the scorecard. <a class="link" href="#grading">See grading</a></p>
       </div>
-      <div class="ui app fill" role="img" aria-label="ReviewReplay's results: a list of graded reviews of four real bugs beside the report, 23 of 24 caught" data-ui-pause-host>
+      <div class="ui app fill" role="img" aria-label="ReviewReplay's results for eight more real bugs: graded reviews beside the report, 29 of 48 caught, two bugs missed in every run" data-ui-pause-host>
         <div class="app__pane app__pane--list">
           <div class="ui ui-panel ui-win" data-ui="window" data-open="Queued" data-work="Grading" data-done="Caught">
             <div class="ui-win__bar">
               <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="ui-win__crumb">ReviewReplay <i>/</i> <b>m2-compare</b></span>
+              <span class="ui-win__crumb">ReviewReplay <i>/</i> <b>m2-real-more</b></span>
               <span class="ui-spacer"></span>
               <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph">Search</span><span class="ui-kbd">/</span></span>
             </div>
             <div class="ui-win__body">
               <nav class="ui-win__side" aria-hidden="true">
-                <span class="ui-win__nav"><span class="ui-win__hash">#</span>All<em>114</em></span>
-                <span class="ui-win__nav is-on"><span class="ui-win__hash">#</span>Real<em>24</em></span>
-                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Planted<em>90</em></span>
+                <span class="ui-win__nav is-on"><span class="ui-win__hash">#</span>All<em>48</em></span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Caught<em>29</em></span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Missed<em>19</em></span>
                 <span class="ui-win__label">Reviewers</span>
                 <span class="ui-win__nav">Baseline</span>
                 <span class="ui-win__nav">With skill</span>
@@ -258,16 +260,16 @@
               <div class="ui-win__main">
                 <div class="ui-win__cols" aria-hidden="true"><span>Reviewer</span><span>Case</span><span>Result</span><span>Run</span></div>
                 <ul class="ui-win__rows">
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-004 · accelerate FSDP2 dtype</span><span class="ui-win__st is-you" data-st>Missed</span><span class="ui-win__age">2</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-004 · accelerate FSDP2 dtype</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">2</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-003 · click fish completion</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">2</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-003 · click fish completion</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">2</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-002 · datasets bad path</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-002 · datasets bad path</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-001 · click CliRunner EOF</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">3</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-001 · click CliRunner EOF</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">3</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-004 · accelerate FSDP2 dtype</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-004 · accelerate FSDP2 dtype</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-012 · peft LoRA conv</span><span class="ui-win__st is-you" data-st>Missed</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-012 · peft LoRA conv</span><span class="ui-win__st is-you" data-st>Missed</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-011 · black f-string</span><span class="ui-win__st is-you" data-st>Missed</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-011 · black f-string</span><span class="ui-win__st is-you" data-st>Missed</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-005 · werkzeug multipart</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-005 · werkzeug multipart</span><span class="ui-win__st is-you" data-st>Missed</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-005 · werkzeug multipart</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">3</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-009 · jsonschema refs</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">SK</span><span class="ui-win__who">With skill</span><span class="ui-win__sub">real-009 · jsonschema refs</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">BL</span><span class="ui-win__who">Baseline</span><span class="ui-win__sub">real-010 · black stubs</span><span class="ui-win__st is-done" data-st>Caught</span><span class="ui-win__age">1</span></li>
                 </ul>
               </div>
             </div>
@@ -284,18 +286,18 @@
             </div>
             <div class="ui-term__screen" data-term-screen>
               <div class="ui-term__track" data-term-track>
-                <div class="ui-term__ln ui-term__cmd"><span class="ui-term__cwd">~/<span class="ui-term__up">projects/</span>click</span><span class="ui-term__sig">$</span><span class="ui-term__typed" data-term-cmd>reviewreplay report results/m2-compare</span></div>
-                <div class="ui-term__ln ui-term__meter" data-term-out data-term-meter><span class="ui-term__bar" style="--p:1"><i></i></span><span class="ui-term__count" data-term-count>4 of 4 real cases</span></div>
-                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-001 click CliRunner</span><span class="ui-term__n">6 of 6</span><span class="ui-term__t">caught</span></div>
-                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-002 datasets path</span><span class="ui-term__n">6 of 6</span><span class="ui-term__t">caught</span></div>
-                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-003 click fish</span><span class="ui-term__n">6 of 6</span><span class="ui-term__t">caught</span></div>
-                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-004 accelerate FSDP2</span><span class="ui-term__n">5 of 6</span><span class="ui-term__t">caught</span></div>
+                <div class="ui-term__ln ui-term__cmd"><span class="ui-term__cwd">~/<span class="ui-term__up">projects/</span>reviewreplay</span><span class="ui-term__sig">$</span><span class="ui-term__typed" data-term-cmd>reviewreplay report results/m2-real-more</span></div>
+                <div class="ui-term__ln ui-term__meter" data-term-out data-term-meter><span class="ui-term__bar" style="--p:1"><i></i></span><span class="ui-term__count" data-term-count>8 of 8 real cases</span></div>
+                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-005 werkzeug multipart</span><span class="ui-term__n">2 of 6</span><span class="ui-term__t">caught</span></div>
+                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-006 attrs order</span><span class="ui-term__n">4 of 6</span><span class="ui-term__t">caught</span></div>
+                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-011 black f-string</span><span class="ui-term__n">0 of 6</span><span class="ui-term__t">missed</span></div>
+                <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">real-012 peft LoRA conv</span><span class="ui-term__n">0 of 6</span><span class="ui-term__t">missed</span></div>
                 <div class="ui-term__ln ui-term__gap" data-term-out aria-hidden="true"></div>
-                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">Baseline</span><span class="ui-term__val">11 of 12, precision 64%</span><span class="ui-term__dim">$0.064</span></div>
-                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">With skill</span><span class="ui-term__val">12 of 12, precision 81%</span><span class="ui-term__dim">$0.100</span></div>
-                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">Serious</span><span class="ui-term__val">3 and 0 false alarms</span><span class="ui-term__dim"></span></div>
-                <div class="ui-term__ln ui-term__done" data-term-out data-term-done><span class="ui-term__ok"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.3 2.4 2.4 4.6-5"/></svg></span><b>Done</b><span class="ui-term__dim">24 reviews graded</span></div>
-                <div class="ui-term__ln ui-term__cmd" data-term-next><span class="ui-term__cwd">~/<span class="ui-term__up">projects/</span>click</span><span class="ui-term__sig">$</span><span class="ui-term__typed"></span><i class="ui-term__caret" aria-hidden="true"></i></div>
+                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">Baseline</span><span class="ui-term__val">15 of 24, precision 52%</span><span class="ui-term__dim">$0.066</span></div>
+                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">With skill</span><span class="ui-term__val">14 of 24, precision 60%</span><span class="ui-term__dim">$0.096</span></div>
+                <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">Serious</span><span class="ui-term__val">4 and 4 false alarms</span><span class="ui-term__dim"></span></div>
+                <div class="ui-term__ln ui-term__done" data-term-out data-term-done><span class="ui-term__ok"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.3 2.4 2.4 4.6-5"/></svg></span><b>Done</b><span class="ui-term__dim">48 reviews graded</span></div>
+                <div class="ui-term__ln ui-term__cmd" data-term-next><span class="ui-term__cwd">~/<span class="ui-term__up">projects/</span>reviewreplay</span><span class="ui-term__sig">$</span><span class="ui-term__typed"></span><i class="ui-term__caret" aria-hidden="true"></i></div>
               </div>
             </div>
           </div>
@@ -345,14 +347,14 @@
   <section class="section" id="idea" aria-labelledby="idea-h">
     <div class="wrap">
       <div class="section-head" data-moment="liquid-type">
-        <h2 class="mo-lt__type t-statement" id="idea-h">Recall is solved. Precision is not.</h2>
-        <p class="t-lead">On 24 reviews of real bugs, Claude Code found the bug 23 times.</p>
+        <h2 class="mo-lt__type t-statement" id="idea-h">Real bugs still slip past AI review.</h2>
+        <p class="t-lead">On 12 real bugs, Claude Code found the bug in 26 of 36 reviews, with or without a review skill. Two bugs were missed in every run.</p>
       </div>
       <dl class="stats rr-stats">
-        <div><dt class="muted">Bugs found with the skill</dt><dd class="t-stat">12 of 12</dd></div>
-        <div><dt class="muted">Serious false alarms, skill vs none</dt><dd class="t-stat">0 vs 3</dd></div>
-        <div><dt class="muted">Precision, skill vs none</dt><dd class="t-stat">81% vs 64%</dd></div>
-        <div><dt class="muted">Cost of the skill per review</dt><dd class="t-stat">1.6x</dd></div>
+        <div><dt class="muted">Bugs found, with or without the skill</dt><dd class="t-stat">26 of 36</dd></div>
+        <div><dt class="muted">Serious false alarms, skill vs none</dt><dd class="t-stat">4 vs 7</dd></div>
+        <div><dt class="muted">Precision, skill vs none</dt><dd class="t-stat">71% vs 57%</dd></div>
+        <div><dt class="muted">Cost of the skill per review</dt><dd class="t-stat">1.5x</dd></div>
       </dl>
     </div>
   </section>
@@ -369,7 +371,7 @@
           <div class="faq__item"><h3>Can a reviewer read the fix?</h3><p>No. The project is exported without git history, with the bug as uncommitted edits.</p></div>
           <div class="faq__item"><h3>Will a benchmark run edit my code?</h3><p>No. Reviews run in a separate copy, with read-only tools.</p></div>
           <div class="faq__item"><h3>What does a benchmark run cost?</h3><p>The tool is free. Our reviewer cost $0.064 a review, $0.100 with a skill.</p></div>
-          <div class="faq__item"><h3>How sure are the benchmark numbers?</h3><p>Not very yet. Four real cases give wide intervals: read them as a direction.</p></div>
+          <div class="faq__item"><h3>How sure are the benchmark numbers?</h3><p>Not very yet. Twelve real bugs still give wide intervals, and the judge is not yet checked against people.</p></div>
         </div>
       </div>
     </div>
@@ -454,16 +456,16 @@
             <div class="stage"><div class="at-rise fit" style="--fit-max: 340px; --ax: max(24px, 50% - 170px); --ay: 40px">
               <div class="ui ui-panel ui-checks" data-ui="checklist">
                 <div class="ui-checks__head">
-                  <div class="ui-title">Real bugs, with skill</div>
+                  <div class="ui-title">12 real bugs, with skill</div>
                   <span class="ui-spacer"></span>
                   <div class="ui-meta" data-checks-count>4 of 4</div>
                 </div>
                 <div class="ui-checks__bar"><i data-checks-bar style="--k:1"></i></div>
                 <ul class="ui-checks__list">
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Bug found in 12 of 12</span></li>
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Precision 81%</span></li>
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">No serious false alarms</span></li>
-                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">$0.100 per review</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Bug found in 26 of 36</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Precision 71%</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">4 serious false alarms</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">$0.097 per review</span></li>
                 </ul>
               </div>
             </div></div>

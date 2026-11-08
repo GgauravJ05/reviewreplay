@@ -18,9 +18,8 @@ pallets/click, rewound to the commit that caused it and replayed to Claude Code.
 ![No dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![Status: alpha](https://img.shields.io/badge/status-alpha-orange)
 
-> **v0.1, built in public.** The method and the tool work; the results are early (4 graded real
-> bugs so far, 8 more being graded, judge agreement checked against a second model, not yet a
-> person). Read the numbers as a direction. Progress, new cases and corrections land here as they
+> **v0.1, built in public.** The method and the tool work; the results are early (12 graded real
+> bugs from 9 projects, judge agreement checked against a second model, not yet a person). Read the numbers as a direction. Progress, new cases and corrections land here as they
 > happen, and [contributions are welcome](CONTRIBUTING.md).
 
 ```bash
@@ -89,14 +88,21 @@ Early pilots with Claude Code (`claude-sonnet-5-5`) as the reviewer:
 | Harder cross-file bugs | 5 | 100% | 100% | Still at the ceiling |
 | Real bugs, full repositories | 3 | ~100% | 56% | **The difference is precision**: many claims can't be verified |
 
-**Baseline vs a review skill** (19 cases, 114 reviews): on 4 real bugs in full repositories, Claude
-Code with [code-review-skill](https://github.com/awesome-skills/code-review-skill) found the bug
-12/12 times vs 11/12, with 81% vs 64% precision, **zero serious false alarms vs 3**, and half the
-minor noise — at 1.6× the cost. Small sample; a direction, not a verdict
-([details](results/m2-compare/README.md)).
+**Baseline vs a review skill on 12 real bugs** (162 reviews in all; 36 per reviewer on real bugs
+from click, datasets, accelerate, werkzeug, attrs, rich, jsonschema, black and peft):
 
-So "does it find the bug?" is no longer the interesting question for strong models. **How much
-of what it says is right, and at what cost** is. Details: [results/](results/).
+| Real bugs | Claude Code | With [code-review-skill](https://github.com/awesome-skills/code-review-skill) |
+|---|---|---|
+| Bug found | 26 / 36 | 26 / 36 |
+| Precision (serious findings) | 57% | **71%** (paired +14 pts [0, +24]) |
+| Serious false alarms | 7 | **4** |
+| Mean cost per review | $0.065 | $0.097 (about 1.5×) |
+
+**Recall isn't solved.** On the first 4 real bugs Claude Code found the bug 23 times in 24; across
+12 it found it 26 times in 36, and two bugs (a Black f-string tokenizer state and a PEFT LoRA conv
+that drops `dilation`) were missed in every run, with or without the skill. The skill's reviews
+were more often right, at about 1.5× the cost, but that interval just touches zero. Details:
+[first 4 bugs](results/m2-compare/README.md), [8 more](results/m2-real-more/README.md).
 
 ## Supported reviewers
 
