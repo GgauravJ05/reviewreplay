@@ -100,13 +100,21 @@ def run_stream(prompt: str, cwd: Path, *, model: str = DEFAULT_MODEL, extra: lis
     }
 
 
+READ_TOOLS = "Read,Grep,Glob"
+
+
 def run_json(prompt: str, schema: dict, cwd: Path, *, model: str = DEFAULT_MODEL,
-             timeout: int = 300, retries: int = 2) -> dict:
-    """Run a no-tools prompt that must return JSON matching `schema`."""
+             timeout: int = 300, retries: int = 2, read_files: bool = False,
+             max_turns: int = 30) -> dict:
+    """Run a prompt that must return JSON matching `schema`. With no tools by default; with
+    `read_files`, only Read/Grep/Glob inside `cwd` (never Bash, edits or the web)."""
+    if read_files:
+        tools = ["--allowedTools", READ_TOOLS, "--max-turns", str(max_turns),
+                 "--disallowedTools", "Bash,Edit,Write,WebFetch,WebSearch,Agent,NotebookEdit"]
+    else:
+        tools = ["--disallowedTools", "Bash,Read,Edit,Write,Grep,Glob,WebFetch,WebSearch,Agent,NotebookEdit"]
     cmd = ["claude", "-p", prompt, "--output-format", "json", "--model", model, *ISOLATION,
-           "--disable-slash-commands",
-           "--disallowedTools", "Bash,Read,Edit,Write,Grep,Glob,WebFetch,WebSearch,Agent,NotebookEdit",
-           "--json-schema", json.dumps(schema)]
+           "--disable-slash-commands", *tools, "--json-schema", json.dumps(schema)]
     last = ""
     for _ in range(retries + 1):
         proc = subprocess.run(cmd, cwd=cwd, env=clean_env(), capture_output=True, text=True,
