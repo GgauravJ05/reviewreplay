@@ -1,0 +1,63 @@
+{
+  "case": "real-005",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 218,
+      "line_end": 218,
+      "severity": "important",
+      "summary": "When no boundary is in the buffer yet, last_newline() returns index 0 (the leading CRLF), which is never deleted, so with chunked input the CRLF can leak into the field value.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Describes last_newline returning index 0 with leading CRLF, related to b1 but candidates empty, so cannot map; the claimed leak is a different symptom."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 251,
+      "line_end": 251,
+      "severity": "important",
+      "summary": "LINE_BREAK_RE.match(data) is used without a None check, so if the buffer doesn't start with a line break, .end() raises AttributeError instead of a clean ValueError.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Complains about missing None check on match, unrelated to the last_newline/find shortcut defect in b1."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 294,
+      "line_end": 294,
+      "severity": "important",
+      "summary": "The encoder writes the CRLF between headers and body only when the first Data event is non-empty, so if the decoder emits an empty first Data(b\"\", more_data=True), the CRLF is lost on re-encode.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Encoder empty-first-Data CRLF issue is unrelated to the answer-key bug and speculative."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0171499
+}

@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 934,
+      "line_end": 934,
+      "severity": "important",
+      "summary": "__getstate__/__setstate__ now use dicts, so unpickling an old tuple-format pickle either raises TypeError or silently restores nothing; it should check isinstance(state, tuple) and use the old zip path."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 750,
+      "line_end": 750,
+      "severity": "important",
+      "summary": "No test loads an old tuple-format pickle, so the backward-compatibility bug would pass the suite."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 750,
+      "line_end": 750,
+      "severity": "minor",
+      "summary": "Tests add a shared module-level class A and parametrize over a single class, which has no effect."
+    }
+  ],
+  "extract_cost_usd": 0.0164818
+}

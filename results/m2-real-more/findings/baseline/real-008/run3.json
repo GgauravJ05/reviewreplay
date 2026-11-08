@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "rich/panel.py",
+      "line_start": 204,
+      "line_end": 253,
+      "severity": "important",
+      "summary": "Title and subtitle are styled with partial_border_style (border_style only), dropping the panel's `style` (e.g. background), so the title/subtitle text shows as a gap in the panel background while surrounding padding and corners use the combined style."
+    }
+  ],
+  "extract_cost_usd": 0.0151958
+}

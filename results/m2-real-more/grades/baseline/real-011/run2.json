@@ -1,0 +1,25 @@
+{
+  "case": "real-011",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "CHANGES.md",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The CHANGES.md entry cites #4332; the reviewer asks to verify this is the correct PR number before merging.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Asks to verify a changelog PR number; unrelated to the tokenizer state bug and not a real defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0144639
+}

@@ -1,0 +1,61 @@
+{
+  "case": "real-012",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1065,
+      "line_end": 1065,
+      "severity": "important",
+      "summary": "The 1x1 shortcut in get_delta_weight only checks the first two spatial dims and uses 2D-only squeezes, so Conv3d with a (1,1,1) kernel yields a wrong-shaped tensor or error during merge, and a (3,1,1) kernel wrongly takes the 1x1 path.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Claims a Conv3d 1x1 shortcut bug in get_delta_weight; plausible but not the dilation/padding_mode bug and can't verify from the given information."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/peft/tuners/ia3/layer.py",
+      "line_start": 325,
+      "line_end": 325,
+      "severity": "minor",
+      "summary": "The Conv3d error message wrongly says \"Conv2d layer kernel must have 5 dimensions\" instead of Conv3d.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A wrong error message naming Conv2d for Conv3d is a real, though minor, defect in the changed code, and it is not the key bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1135,
+      "line_end": 1135,
+      "severity": "important",
+      "summary": "conv_fn is set after super().__init__() (which calls update_layer), so init paths like PiSSA, OLoRA or LoftQ that call get_delta_weight or merge code early may raise AttributeError; the kernel-dimension validation also runs only after the layers are built.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Ordering of conv_fn assignment versus update_layer could be a real problem, but it can't be verified and it is not the key bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    }
+  ],
+  "judge_cost_usd": 0.0173479
+}

@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "CHANGES.md",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The CHANGES.md entry says \"Fix regression\" but the code change looks like a general fix for nested f-strings in format specs, so the wording may be inaccurate."
+    }
+  ],
+  "extract_cost_usd": 0.0153918
+}

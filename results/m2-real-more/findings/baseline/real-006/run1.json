@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The expected Attribute(...) repr string in the new test is brittle and will break if Attribute.__repr__ changes."
+    },
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Many existing assertions were flipped to `expected == actual` and `import pytest` was added, which is unrelated churn that makes the diff noisier; consider dropping it or splitting it into a separate commit."
+    },
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 452,
+      "line_end": 467,
+      "severity": "note",
+      "summary": "If a field_transformer hook returns a one-shot iterator such as a generator, the order check consumes it and the later alias comprehension sees nothing, leaving the class with no fields. This is not a regression, and the docs expect a list, so no action is suggested."
+    }
+  ],
+  "extract_cost_usd": 0.0189258
+}

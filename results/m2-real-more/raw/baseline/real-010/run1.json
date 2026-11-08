@@ -1,0 +1,73 @@
+{
+  "exit_code": 0,
+  "seconds": 20.2,
+  "is_error": false,
+  "answer": "**Bug: a regression in non-stub formatting, at `src/black/lines.py:601`.**\n\nThe diff changes `previous_defs` from a list of depths (`int`) to a list of `Line` objects. The non-pyi branch still tests `self.previous_defs[-1]` as a truth value. That test used to mean \"the previous def was indented\", because a depth of 0 is falsy. A non-empty `Line` is always truthy, so the check no longer does that.\n\nThe check sits inside `not depth and ...`, so it now passes for every top-level def or class. The effect is that `before` becomes 1 instead of 2 when a top-level def or class is followed by a top-level line that ends in `:` and doesn't start with `with`, `try`, `for`, `while`, `if` or `match`. An example is `async with ...:`. This changes default (non-preview) output.\n\n**Fix:** use `self.previous_defs[-1].depth` on line 601 to keep the old semantics.\n\nI read the diff and the surrounding code but didn't run the tests.\n\n**Smaller point:** the new test uses `preview=True` and passes only for `.pyi` input. It doesn't check that default mode is unchanged. A default-mode test for the case above would have caught the bug.",
+  "cost_usd": 0.0551957,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 9069,
+    "cache_read_input_tokens": 61737,
+    "output_tokens": 1273,
+    "output_tokens_details": {
+      "thinking_tokens": 554
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9069,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 928,
+        "cache_read_input_tokens": 18517,
+        "cache_creation_input_tokens": 604,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 604
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "num_turns": 4,
+  "tool_calls": [
+    {
+      "name": "Bash",
+      "input": {
+        "command": "git diff; cat tests/data/miscellaneous/nested_class_stub.pyi"
+      }
+    },
+    {
+      "name": "Bash",
+      "input": {
+        "command": "grep -n \"previous_defs\\|def is_stub_class\\|def is_class\" -A6 src/black/lines.py | head -120"
+      }
+    },
+    {
+      "name": "Read",
+      "input": {
+        "file_path": "/private/var/folders/qs/wx52v8ys7333n3zvbmxtypf00000gn/T/rb-p51jvz6b/ws/src/black/lines.py",
+        "offset": 594,
+        "limit": 30
+      }
+    }
+  ],
+  "skills_invoked": [],
+  "stderr_tail": "",
+  "subject": "baseline",
+  "case": "real-010",
+  "run": 1,
+  "model": "claude-sonnet-5-5",
+  "prompt": "Review the uncommitted changes in this repository. Report any bugs you find, with file and line.",
+  "skill": null,
+  "when": "2026-11-07T15:45:04+00:00"
+}

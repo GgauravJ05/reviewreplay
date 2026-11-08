@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 461,
+      "line_end": 461,
+      "severity": "minor",
+      "summary": "A field_transformer returning a generator or other one-shot iterable gets exhausted by the order check at line 461, so the later alias comprehension at line 472 sees nothing and the class silently ends up with no fields; the result should be materialised with list() right after the transformer call."
+    }
+  ],
+  "extract_cost_usd": 0.0155758
+}

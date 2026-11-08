@@ -1,0 +1,61 @@
+{
+  "case": "real-012",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1065,
+      "line_end": 1065,
+      "severity": "blocking",
+      "summary": "The 1x1-kernel shortcut in get_delta_weight checks only two spatial dims (weight.size()[2:4] == (1,1)), so Conv3d kernels (1,1,1) or (1,1,k) wrongly take the shortcut, causing shape errors or wrong deltas on merge(); it should check all spatial dims.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Plausible Conv3d shortcut issue in get_delta_weight, but it can't be verified and it isn't the dilation/padding_mode bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/peft/tuners/ia3/layer.py",
+      "line_start": 326,
+      "line_end": 326,
+      "severity": "minor",
+      "summary": "The Conv3d kernel-dimension error message wrongly says 'Conv2d layer kernel must have 5 dimensions' instead of Conv3d.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "This is only a wrong error message string, a cosmetic issue, and it sits in the IA3 layer, outside the answer-key bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1139,
+      "line_end": 1139,
+      "severity": "minor",
+      "summary": "conv_fn is set in the subclass __init__ after super().__init__() has run update_layer, so any init path calling get_delta_weight (e.g. loftq, pissa, olora) would raise AttributeError; making it a class attribute would remove the risk.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "The conv_fn ordering risk is speculative, and it's unclear whether any init path actually calls get_delta_weight."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    }
+  ],
+  "judge_cost_usd": 0.017283899999999998
+}

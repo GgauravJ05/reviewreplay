@@ -1,0 +1,103 @@
+{
+  "exit_code": 0,
+  "seconds": 21.3,
+  "is_error": false,
+  "answer": "I found two bugs in the uncommitted multipart parser changes, both in `src/werkzeug/sansio/multipart.py`. I only read the diff and the surrounding code. I didn't run any tests.\n\n1. **Crash at line 251 (`_parse_data`).** The new `DATA_START` state calls `LINE_BREAK_RE.match(data)` and then `.end()` on the result. After the header block, the `PART` state now deletes only up to the first CRLF of the blank line. If a chunk ends right after the headers, the buffer is empty or holds just a lone `\\r`. `match()` then returns `None`, and the call raises `AttributeError`. It should return `NEED_DATA` until the line break has arrived.\n\n2. **Leading CRLF leaks into the data (line 214, the `DATA_START` branch).** When `DATA_START` finds no boundary in the buffer, it sets `del_index = last_newline()`. If the buffer starts `\\r\\nabcdef` with no later newline, that is 0, so the leading CRLF stays in the buffer. The state still moves to `DATA`, which no longer strips the leading line break, so the next data event begins with `\\r\\n`. A field value is corrupted whenever the first body chunk has no further newline. The same happens when the headers and the body arrive in separate chunks.\n\nThe new `test_empty_field` test passes the whole body in one `receive_data` call, so it doesn't cover either case. A chunked test would show both bugs.",
+  "cost_usd": 0.10528560000000001,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 18543,
+    "cache_read_input_tokens": 82076,
+    "output_tokens": 2289,
+    "output_tokens_details": {
+      "thinking_tokens": 676
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 18543,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 485,
+        "cache_read_input_tokens": 27197,
+        "cache_creation_input_tokens": 1398,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1398
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "num_turns": 5,
+  "tool_calls": [
+    {
+      "name": "Bash",
+      "input": {
+        "command": "git diff"
+      }
+    },
+    {
+      "name": "Grep",
+      "input": {
+        "pattern": "LINE_BREAK_RE|BLANK_LINE_RE|def last_newline|boundary_re =|SEARCH_EXTRA",
+        "path": "/private/var/folders/qs/wx52v8ys7333n3zvbmxtypf00000gn/T/rb-zazgbfy2/ws/src/werkzeug/sansio/multipart.py",
+        "output_mode": "content"
+      }
+    },
+    {
+      "name": "Read",
+      "input": {
+        "file_path": "/private/var/folders/qs/wx52v8ys7333n3zvbmxtypf00000gn/T/rb-zazgbfy2/ws/src/werkzeug/sansio/multipart.py",
+        "offset": 100,
+        "limit": 150
+      }
+    },
+    {
+      "name": "ReportFindings",
+      "input": {
+        "findings": [
+          {
+            "file": "src/werkzeug/sansio/multipart.py",
+            "line": 251,
+            "category": "correctness",
+            "short_summary": "LINE_BREAK_RE.match can return None in DATA_START",
+            "summary": "`_parse_data(start=True)` casts the result of `LINE_BREAK_RE.match(data)` to `Match` and calls `.end()`, but the buffer may not yet hold the line break that follows the headers.",
+            "failure_scenario": "PART now deletes the buffer only up to the first CRLF of the blank line. If a network chunk ends exactly after the header block (the buffer is empty or holds only a lone `\\r`), DATA_START runs on that buffer. `match()` returns None and `.end()` raises AttributeError. The parser should return NEED_DATA until the line break is available, unless the input is complete."
+          },
+          {
+            "file": "src/werkzeug/sansio/multipart.py",
+            "line": 214,
+            "category": "correctness",
+            "short_summary": "Leading CRLF leaks into data when DATA_START has no boundary",
+            "summary": "When DATA_START finds no boundary, it sets `del_index = last_newline()`. That can be 0 or can point before the leading line break, so the leading CRLF is not consumed. The state still moves to DATA, which calls `_parse_data(start=False)`, so the CRLF is no longer stripped.",
+            "failure_scenario": "The headers are followed by `\\r\\nabcdef`, with no later newline and no boundary yet. `last_newline()` returns 0, DATA_START emits `Data(b'', more_data=True)` and deletes nothing, and the state becomes DATA. The next chunk then yields data that starts with `\\r\\n`, such as `b'\\r\\nabcdef...'`. The field value is corrupted whenever the first body chunk contains no further newline. The same happens whenever the headers and the start of the body arrive in separate chunks. The leading line break must be removed before moving to DATA."
+          }
+        ],
+        "level": "medium"
+      }
+    }
+  ],
+  "skills_invoked": [],
+  "stderr_tail": "",
+  "subject": "code-review-skill-invoked",
+  "case": "real-005",
+  "run": 1,
+  "model": "claude-sonnet-5-5",
+  "prompt": "/code-review-skill Review the uncommitted changes in this repository. Report any bugs you find, with file and line.",
+  "skill": {
+    "name": "code-review-skill",
+    "repo": "https://github.com/awesome-skills/code-review-skill",
+    "commit": "4850184"
+  },
+  "when": "2026-11-07T15:45:30+00:00"
+}

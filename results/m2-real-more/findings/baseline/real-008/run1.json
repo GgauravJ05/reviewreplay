@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "rich/panel.py",
+      "line_start": 204,
+      "line_end": 253,
+      "severity": "important",
+      "summary": "Title and subtitle are now stylized with only partial_border_style, dropping the panel's style, which may leave a background gap in the title/subtitle row (e.g. style='white on blue') while borders and padding keep it."
+    },
+    {
+      "file": "rich/panel.py",
+      "line_start": 204,
+      "line_end": 253,
+      "severity": "minor",
+      "summary": "The title/subtitle style change has no accompanying test setting both style and border_style and checking the title's rendered segments, so the regression is not ruled out."
+    }
+  ],
+  "extract_cost_usd": 0.0158178
+}

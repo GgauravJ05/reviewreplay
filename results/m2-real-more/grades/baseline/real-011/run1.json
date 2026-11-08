@@ -1,0 +1,25 @@
+{
+  "case": "real-011",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "CHANGES.md",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The CHANGES.md entry says \"Fix regression\" but the code change looks like a general fix for nested f-strings in format specs, so the wording may be inaccurate.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "This is a changelog wording nitpick with no candidates. It doesn't describe the continued-string STATE_IN_BRACES defect or any real code defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.014665899999999999
+}

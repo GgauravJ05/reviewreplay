@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 934,
+      "line_end": 936,
+      "severity": "important",
+      "summary": "__setstate__ assumes dict state, so old tuple-style pickles either raise TypeError or silently load with no attributes set; a tuple backward-compat branch is needed."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Module-level class A and single-case @pytest.mark.parametrize('cls', [A]) decorators are pointless; A could be used directly."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "NEW_A is an all-caps class name that linters may flag, and mock.patch(f'{__name__}.A', NEW_A) relies on pickle's lookup by name without a explanatory comment."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests cover attribute added/removed but not loading an old tuple-format pickle."
+    }
+  ],
+  "extract_cost_usd": 0.0184898
+}

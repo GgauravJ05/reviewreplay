@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/black/lines.py",
+      "line_start": 601,
+      "line_end": 601,
+      "severity": "blocking",
+      "summary": "previous_defs now holds Line objects, so the truthiness check on self.previous_defs[-1] is always true and no longer means the previous def was indented. For top-level defs or classes followed by a top-level line ending in ':' (such as async with), 'before' becomes 1 instead of 2, which changes default non-preview output. The fix is to use self.previous_defs[-1].depth."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new test uses preview=True and only covers .pyi input. It has no default-mode test showing that output is unchanged, so it would not catch the regression."
+    }
+  ],
+  "extract_cost_usd": 0.0164298
+}

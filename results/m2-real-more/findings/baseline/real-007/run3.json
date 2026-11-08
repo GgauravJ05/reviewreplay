@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 934,
+      "line_end": 936,
+      "severity": "blocking",
+      "summary": "slots_setstate assumes dict state, so old tuple-format pickles from earlier attrs versions silently skip all attributes (or raise TypeError) with no tuple fallback."
+    },
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 925,
+      "line_end": 925,
+      "severity": "important",
+      "summary": "For a slotted cache_hash=True class with no attributes, the empty (falsy) dict state means __setstate__ is not called, so _hash_cache_field is never reset to None (reviewer is unsure and asks to verify)."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "New unpickle tests only cover dict-to-dict loading and none load an old tuple-format pickle, so the backward-compat bug would go unnoticed."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "@pytest.mark.parametrize(\"cls\", [A]) is pointless since it only ever passes the single module-level A."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "A module-level class named A risks name collisions with other names in the test file."
+    }
+  ],
+  "extract_cost_usd": 0.0197698
+}

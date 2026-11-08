@@ -1,0 +1,63 @@
+{
+  "case": "real-012",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1065,
+      "line_end": 1065,
+      "severity": "blocking",
+      "summary": "In _ConvNd.get_delta_weight the 1x1 shortcut only checks the first two kernel dims (size()[2:4] == (1, 1)), so Conv3d kernels like (1,1,k) or (1,1,1) wrongly take the 1x1 branch, producing wrongly shaped deltas and causing merge to fail.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Plausible issue with size()[2:4] check for Conv3d, but unverifiable and not the dilation/padding_mode bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/peft/tuners/ia3/layer.py",
+      "line_start": 325,
+      "line_end": 325,
+      "severity": "minor",
+      "summary": "The Conv3d error message incorrectly says \"Conv2d layer kernel must have 5 dimensions\" instead of Conv3d.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Error message typo in ia3 file may be real but is unrelated to answer key and likely unchanged code."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "conv_fn is set in Conv2d/Conv3d subclasses after super().__init__(), so if update_layer ever calls get_delta_weight during init it would raise AttributeError; the reviewer found no such path but suggests setting it earlier.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative init-order concern with no actual path; unrelated to dilation/padding_mode bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0170219
+}

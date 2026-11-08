@@ -1,0 +1,27 @@
+{
+  "case": "real-008",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "rich/panel.py",
+      "line_start": 204,
+      "line_end": 253,
+      "severity": "important",
+      "summary": "Title and subtitle stylize_before now receive only border_style instead of style + border_style, so the panel-level style (background/foreground) no longer reaches the title/subtitle text, leaving a visible gap in the title bar.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: title/subtitle get only border style, dropping the panel style (background) at the same lines."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.014291900000000001
+}

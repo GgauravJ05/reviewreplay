@@ -1,0 +1,75 @@
+{
+  "exit_code": 0,
+  "seconds": 30.3,
+  "is_error": false,
+  "answer": "I found two bugs in the uncommitted changes, both in `src/werkzeug/sansio/multipart.py`. I couldn't run anything because `markupsafe` isn't installed, so both come from reading the code.\n\n1. **Leading CRLF leaks into the data when the body arrives in chunks** (`_parse_data`, about lines 248\u2013268).\n   - `DATA_START` skips the leading line break by slicing `data[data_start:data_end]`. But when no boundary has been found yet, `data_end` and `del_index` both come from `last_newline()`. That index can be smaller than `data_start`.\n   - Example: the buffer is `b\"\\r\\nabc\"` after the headers, with no later newline yet. `last_newline()` returns 0, so the slice is empty and `del_index` is 0. The state then moves to `DATA`, but the leading `\\r\\n` is still in the buffer and is never removed.\n   - When the rest arrives (`\\r\\n--foo--`), the `DATA` branch passes `start=False` and returns `b\"\\r\\nabc\"`. The field value is corrupted, which is a regression for any split request body.\n   - Fix: always consume the leading line break in `DATA_START`, for example `del_index = max(del_index, data_start)`. Or delete the line break from the buffer first, then parse with `data_start = 0`.\n\n2. **`DATA_START` always emits a `Data` event** (about lines 214\u2013219).\n   - Unlike the `DATA` branch, it has no `if data or not more_data` guard. A partial chunk produces `Data(b\"\", more_data=True)`, which the old code never did.\n   - Consumers that treat each `Data` as a chunk, such as `MultipartEncoder` on round trip and the form parser, see spurious empty events. It's low severity.\n\n3. **Minor:** `cast(Match[bytes], match).end()` hides a possible `None`. If `LINE_BREAK_RE.match` ever fails, it raises `AttributeError` instead of a clear error. Today the blank-line match makes that unlikely, but an explicit check is safer.\n\nThe new test `test_empty_field` feeds the whole body in one `receive_data` call, so it doesn't cover bug 1. A test that splits the input mid-field, for example right after the headers or after `\\r\\nabc`, would catch it.",
+  "cost_usd": 0.1043587,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 17626,
+    "cache_read_input_tokens": 80587,
+    "output_tokens": 2578,
+    "output_tokens_details": {
+      "thinking_tokens": 1356
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 17626,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 1145,
+        "cache_read_input_tokens": 25711,
+        "cache_creation_input_tokens": 1967,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1967
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "num_turns": 4,
+  "tool_calls": [
+    {
+      "name": "Bash",
+      "input": {
+        "command": "git diff"
+      }
+    },
+    {
+      "name": "Bash",
+      "input": {
+        "command": "sed -n 1,60p src/werkzeug/sansio/multipart.py; sed -n 95,175p src/werkzeug/sansio/multipart.py"
+      }
+    },
+    {
+      "name": "Bash",
+      "input": {
+        "command": "cd src && python3 -c \"\nfrom werkzeug.sansio.multipart import *\nd=MultipartDecoder(b'foo')\nd.receive_data(b'--foo\\r\\nContent-Disposition: form-data; name=\\\"a\\\"\\r\\n\\r\\nabc\\r\\ndef')\nev=[]\nfor _ in range("
+      }
+    }
+  ],
+  "skills_invoked": [],
+  "stderr_tail": "",
+  "subject": "code-review-skill-invoked",
+  "case": "real-005",
+  "run": 2,
+  "model": "claude-sonnet-5-5",
+  "prompt": "/code-review-skill Review the uncommitted changes in this repository. Report any bugs you find, with file and line.",
+  "skill": {
+    "name": "code-review-skill",
+    "repo": "https://github.com/awesome-skills/code-review-skill",
+    "commit": "4850184"
+  },
+  "when": "2026-11-07T15:47:50+00:00"
+}

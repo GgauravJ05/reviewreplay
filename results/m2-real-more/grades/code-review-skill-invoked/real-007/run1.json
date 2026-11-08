@@ -1,0 +1,81 @@
+{
+  "case": "real-007",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 934,
+      "line_end": 936,
+      "severity": "important",
+      "summary": "__setstate__ assumes dict state, so old tuple-style pickles either raise TypeError or silently load with no attributes set; a tuple backward-compat branch is needed.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies that __setstate__ assumes dict state, breaking old tuple pickles with no attributes set."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Module-level class A and single-case @pytest.mark.parametrize('cls', [A]) decorators are pointless; A could be used directly.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Pure test style complaint."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "NEW_A is an all-caps class name that linters may flag, and mock.patch(f'{__name__}.A', NEW_A) relies on pickle's lookup by name without a explanatory comment.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Style/naming nit, not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Tests cover attribute added/removed but not loading an old tuple-format pickle.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Tests fail to cover the answer-key tuple pickle bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0167459
+}

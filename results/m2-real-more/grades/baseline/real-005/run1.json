@@ -1,0 +1,47 @@
+{
+  "case": "real-005",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 249,
+      "line_end": 267,
+      "severity": "important",
+      "summary": "In the DATA_START path, when the body arrives in chunks with no boundary yet, last_newline() can point at the leading line break, so data_end/del_index don't strip it and the next DATA call emits the body with a stray leading \\r\\n.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies that last_newline() in DATA_START cuts at the leading CRLF (index 0..2) with no boundary, the same cause as b1, though it describes the symptom as a stray leading newline rather than stalling."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 249,
+      "line_end": 267,
+      "severity": "minor",
+      "summary": "cast(Match[bytes], match).end() in the start=True branch would raise AttributeError if the buffer doesn't begin with a line break, though the header-end change at lines 177-181 should prevent this.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative AttributeError that the finding itself says is prevented elsewhere; unrelated to the answer-key defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.034608
+}

@@ -1,0 +1,63 @@
+{
+  "case": "real-006",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The expected Attribute(...) repr string in the new test is brittle and will break if Attribute.__repr__ changes.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test brittleness complaint is style, not a real defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Many existing assertions were flipped to `expected == actual` and `import pytest` was added, which is unrelated churn that makes the diff noisier; consider dropping it or splitting it into a separate commit.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Diff churn is a style complaint, not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 452,
+      "line_end": 467,
+      "severity": "note",
+      "summary": "If a field_transformer hook returns a one-shot iterator such as a generator, the order check consumes it and the later alias comprehension sees nothing, leaving the class with no fields. This is not a regression, and the docs expect a list, so no action is suggested.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the generator being consumed by the order check leaving no fields, the same cause as b1, though it wrongly calls it not a regression."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0160919
+}

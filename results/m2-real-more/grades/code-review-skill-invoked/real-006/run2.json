@@ -1,0 +1,27 @@
+{
+  "case": "real-006",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 461,
+      "line_end": 461,
+      "severity": "minor",
+      "summary": "A field_transformer returning a generator or other one-shot iterable gets exhausted by the order check at line 461, so the later alias comprehension at line 472 sees nothing and the class silently ends up with no fields; the result should be materialised with list() right after the transformer call.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the same defect: a generator returned by field_transformer is consumed by the order check, leaving later steps with no fields; the fix of materializing the result matches."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0145539
+}

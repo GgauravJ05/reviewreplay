@@ -1,0 +1,63 @@
+{
+  "case": "real-005",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 251,
+      "line_end": 251,
+      "severity": "blocking",
+      "summary": "In the DATA_START state, LINE_BREAK_RE.match(data) can return None when a chunk ends right after the headers (empty buffer or lone \\r), so calling .end() raises AttributeError instead of returning NEED_DATA.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Claims a None-match AttributeError at line 251, which differs from the last_newline cut-at-0 slowness defect; can't verify it's real."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 214,
+      "line_end": 214,
+      "severity": "important",
+      "summary": "When DATA_START finds no boundary, del_index = last_newline() can be 0, leaving the leading CRLF in the buffer while the state moves to DATA, which no longer strips it, so the first data event starts with \\r\\n and corrupts the field value.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies that last_newline() over the whole buffer in DATA_START cuts at the leading CRLF (index 0), the same root cause as b1, though it describes the effect as corruption rather than slow parsing."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new test_empty_field test passes the whole body in one receive_data call, so it does not cover chunked input and misses both bugs.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A finding that the tests don't cover an answer-key bug is always counted as valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0174079
+}

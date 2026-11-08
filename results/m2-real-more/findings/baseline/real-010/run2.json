@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/black/lines.py",
+      "line_start": 601,
+      "line_end": 601,
+      "severity": "important",
+      "summary": "After previous_defs changed to hold Line objects, the check `self.previous_defs[-1]` is always truthy (Line.__bool__ is true when it has leaves), so a depth-0 def followed by a dependent clause like `else:` or `except:` wrongly gets 1 blank line instead of 2; it should use `self.previous_defs[-1].depth`."
+    },
+    {
+      "file": "tests/data/miscellaneous/nested_class_stub.pyi",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Test coverage gap: the test only covers a nested class with a body and a stub class followed by an attribute, and does not exercise a stub class (`class X: ...`) followed by a method or attribute at a deeper depth."
+    }
+  ],
+  "extract_cost_usd": 0.0173858
+}

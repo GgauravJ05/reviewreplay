@@ -1,0 +1,43 @@
+{
+  "case": "real-011",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "tests/test_format.py",
+      "line_start": 77,
+      "line_end": 77,
+      "severity": "note",
+      "summary": "test_simple_format[pep_701] fails with ASTSafetyError both with and without the changes, because Python 3.13's parser rejects a multi-line f-string on line 77, so the new test cases are not actually verified.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test environment failure that occurs with and without the change; not a defect in the changed code and unrelated to b1."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_black.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "Eight tests fail with an uvloop DeprecationWarning, and the reviewer did not check whether they also fail without the changes.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Unrelated uvloop warning test failures, not shown to be caused by the change."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.015451900000000001
+}

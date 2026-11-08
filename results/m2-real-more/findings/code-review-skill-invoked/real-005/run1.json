@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 251,
+      "line_end": 251,
+      "severity": "blocking",
+      "summary": "In the DATA_START state, LINE_BREAK_RE.match(data) can return None when a chunk ends right after the headers (empty buffer or lone \\r), so calling .end() raises AttributeError instead of returning NEED_DATA."
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 214,
+      "line_end": 214,
+      "severity": "important",
+      "summary": "When DATA_START finds no boundary, del_index = last_newline() can be 0, leaving the leading CRLF in the buffer while the state moves to DATA, which no longer strips it, so the first data event starts with \\r\\n and corrupts the field value."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new test_empty_field test passes the whole body in one receive_data call, so it does not cover chunked input and misses both bugs."
+    }
+  ],
+  "extract_cost_usd": 0.0176498
+}

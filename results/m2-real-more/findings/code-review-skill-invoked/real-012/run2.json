@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1065,
+      "line_end": 1065,
+      "severity": "important",
+      "summary": "get_delta_weight still assumes 4D Conv2d weights (size()[2:4]==(1,1), squeeze/unsqueeze on dims 2,3), so Conv3d with kernel size 1 yields wrong dimensions and merging fails or broadcasts wrongly, and kernels like (1,1,3) are mis-detected and lose real dimensions."
+    },
+    {
+      "file": "src/peft/tuners/ia3/layer.py",
+      "line_start": 326,
+      "line_end": 326,
+      "severity": "minor",
+      "summary": "The IA3 Conv3d check's error message says 'Conv2d layer kernel must have 5 dimensions' instead of 'Conv3d'."
+    },
+    {
+      "file": "src/peft/tuners/ia3/layer.py",
+      "line_start": 275,
+      "line_end": 275,
+      "severity": "important",
+      "summary": "Pre-existing bug: on unmerge the IA3 bias is multiplied by the scaling again instead of divided, so after merge/unmerge a non-feedforward conv with bias keeps a bias scaled by the square of the IA3 vector; loosened test tolerances likely hide this for Conv3d."
+    }
+  ],
+  "extract_cost_usd": 0.0186818
+}

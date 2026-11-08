@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1065,
+      "line_end": 1065,
+      "severity": "important",
+      "summary": "The 1x1 shortcut in get_delta_weight only checks the first two spatial dims and uses 2D-only squeezes, so Conv3d with a (1,1,1) kernel yields a wrong-shaped tensor or error during merge, and a (3,1,1) kernel wrongly takes the 1x1 path."
+    },
+    {
+      "file": "src/peft/tuners/ia3/layer.py",
+      "line_start": 325,
+      "line_end": 325,
+      "severity": "minor",
+      "summary": "The Conv3d error message wrongly says \"Conv2d layer kernel must have 5 dimensions\" instead of Conv3d."
+    },
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1135,
+      "line_end": 1135,
+      "severity": "important",
+      "summary": "conv_fn is set after super().__init__() (which calls update_layer), so init paths like PiSSA, OLoRA or LoftQ that call get_delta_weight or merge code early may raise AttributeError; the kernel-dimension validation also runs only after the layers are built."
+    }
+  ],
+  "extract_cost_usd": 0.018327799999999998
+}

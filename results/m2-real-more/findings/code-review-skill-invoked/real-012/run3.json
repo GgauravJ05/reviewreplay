@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1062,
+      "line_end": 1062,
+      "severity": "important",
+      "summary": "The 1x1 kernel shortcut in get_delta_weight checks only size()[2:4] and squeezes dims 3 and 2, which is wrong for 5D Conv3d weights (e.g. (1,1,k) or (1,1,1) kernels), causing wrong shapes or errors in merge/unmerge; it should check all spatial dims."
+    },
+    {
+      "file": "src/peft/tuners/lora/model.py",
+      "line_start": 748,
+      "line_end": 748,
+      "severity": "important",
+      "summary": "add_weighted_adapter with SVD combination only handles isinstance(target, Conv2d), so Conv3d 5D delta weights are not flattened, torch.linalg.svd fails, and the reshape back to lora_A/lora_B shapes is skipped."
+    },
+    {
+      "file": "src/peft/tuners/ia3/layer.py",
+      "line_start": 326,
+      "line_end": 326,
+      "severity": "minor",
+      "summary": "The Conv3d check's error message wrongly says \"Conv2d layer kernel must have 5 dimensions\" instead of Conv3d."
+    },
+    {
+      "file": "src/peft/tuners/ia3/model.py",
+      "line_start": 147,
+      "line_end": 147,
+      "severity": "minor",
+      "summary": "The unsupported-module error message still lists only Linear, Conv2d and Conv1D even though Conv3d is now supported."
+    }
+  ],
+  "extract_cost_usd": 0.0194838
+}

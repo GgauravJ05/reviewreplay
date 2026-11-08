@@ -1,0 +1,61 @@
+{
+  "case": "real-012",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1065,
+      "line_end": 1068,
+      "severity": "important",
+      "summary": "The 1x1 fast path in the shared _ConvNd.get_delta_weight is 2D-only: for Conv3d with kernel (1,1,1) it produces a 4D delta instead of 5D, and for kernel (1,1,k) it is wrongly taken and squeezes the wrong dimensions, so merging fails or broadcasts incorrectly.",
+      "index": 0,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Plausible 2D-only fast path issue in shared code, but can't verify from the given info; not the dilation/padding_mode bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/peft/tuners/lora/layer.py",
+      "line_start": 1139,
+      "line_end": 1151,
+      "severity": "important",
+      "summary": "self.conv_fn is set in the Conv2d/Conv3d subclass __init__ only after super().__init__() has already run update_layer, so anything in update_layer that reaches get_delta_weight or conv_fn (e.g. LoftQ/PiSSA init) raises AttributeError.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Plausible init-order issue but unverifiable; unrelated to the answer-key bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/peft/tuners/ia3/layer.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new Conv3d.__init__ error message wrongly says \"Conv2d layer kernel must have 5 dimensions\" instead of Conv3d.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "A wrong error message is a real but trivial defect; plausible in the changed code, not the key bug."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0170699
+}

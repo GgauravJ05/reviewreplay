@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 281,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "push_scope in __attrs_post_init__ also runs for every child validator created by descend/evolve and is never popped, so a subschema's $id can alter how a sibling's relative $ref resolves and the scope stack grows (reviewer says plausible, not reproduced)."
+    },
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 281,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "id_of(self.schema) is pushed without a None check; a custom id_of passed to create() may return None, in which case the push should be skipped."
+    },
+    {
+      "file": "jsonschema/tests/test_validators.py",
+      "line_start": 2397,
+      "line_end": 2397,
+      "severity": "minor",
+      "summary": "Three blank lines follow the new test instead of two, which will fail the E303/E305 lint check."
+    }
+  ],
+  "extract_cost_usd": 0.0166458
+}

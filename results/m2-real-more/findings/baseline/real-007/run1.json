@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 925,
+      "line_end": 936,
+      "severity": "important",
+      "summary": "The new __setstate__ expects a dict state and can't load pickles from the old tuple-based __getstate__, so old pickles silently load as half-initialized objects (or raise TypeError if a name matches a value); it should handle both tuple and dict formats."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 750,
+      "line_end": 750,
+      "severity": "minor",
+      "summary": "The new module-level test class `A` has a overly generic name in a shared test module, and `parametrize(\"cls\", [A])` is pointless with a single value."
+    }
+  ],
+  "extract_cost_usd": 0.0164318
+}

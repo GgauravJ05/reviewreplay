@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 281,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "__attrs_post_init__ pushes id_of(self.schema) unconditionally, so subschemas without $id push an empty/None scope that resets the resolver base and breaks relative $ref resolution; should push only when id is non-empty and not None."
+    },
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 281,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "Scopes pushed in __attrs_post_init__ are never popped (the only pop_scope at line 458 pairs with a different push), so a shared RefResolver accumulates stale scopes, growing memory and leaking scope into sibling subschema resolutions."
+    },
+    {
+      "file": "tests/test_validators.py",
+      "line_start": 2397,
+      "line_end": 2397,
+      "severity": "minor",
+      "summary": "Three blank lines before the next top-level def trigger flake8 E303."
+    },
+    {
+      "file": "tests/test_validators.py",
+      "line_start": 2397,
+      "line_end": 2397,
+      "severity": "minor",
+      "summary": "The new test only covers a top-level $id with $ref, so it would not catch the relative $ref bug in subschemas without $id."
+    }
+  ],
+  "extract_cost_usd": 0.0185038
+}

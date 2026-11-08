@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 281,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "push_scope(id_of(self.schema)) lacks a None check, so schemas without $id (or boolean schemas) push None, which can raise TypeError in urljoin or push a bad scope."
+    },
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 281,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "Scopes pushed in __attrs_post_init__ are never popped, so the shared resolver's _scopes_stack grows unbounded and relative $id scopes can leak to siblings, causing relative $ref to resolve against the wrong base URI."
+    },
+    {
+      "file": "jsonschema/tests/test_validators.py",
+      "line_start": 2397,
+      "line_end": 2397,
+      "severity": "minor",
+      "summary": "Three blank lines after the new test before `def sorted_errors` trigger flake8 E303."
+    }
+  ],
+  "extract_cost_usd": 0.0174538
+}

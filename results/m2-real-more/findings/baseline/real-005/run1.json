@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 249,
+      "line_end": 267,
+      "severity": "important",
+      "summary": "In the DATA_START path, when the body arrives in chunks with no boundary yet, last_newline() can point at the leading line break, so data_end/del_index don't strip it and the next DATA call emits the body with a stray leading \\r\\n."
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 249,
+      "line_end": 267,
+      "severity": "minor",
+      "summary": "cast(Match[bytes], match).end() in the start=True branch would raise AttributeError if the buffer doesn't begin with a line break, though the header-end change at lines 177-181 should prevent this."
+    }
+  ],
+  "extract_cost_usd": 0.0175798
+}

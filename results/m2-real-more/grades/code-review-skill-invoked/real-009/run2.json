@@ -1,0 +1,63 @@
+{
+  "case": "real-009",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 281,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "__attrs_post_init__ calls push_scope(id_of(self.schema)) without checking for None, so schemas without an id push None onto the resolver scope stack, breaking relative $ref resolution (resolution_scope becomes None) and causing the scope stack to grow without being popped.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies unconditional push_scope(id_of(schema)) pushing None, breaking relative ref resolution."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "jsonschema/tests/test_validators.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new test only covers a schema with an $id, so it misses the no-$id relative $ref regression; a test with no $id and a relative $ref through a RefResolver is needed.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Complaint is that tests fail to cover the answer-key bug, which counts as valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "jsonschema/tests/test_validators.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new test ends with extra blank lines (three before def sorted_errors), which a linter will likely flag.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Pure style complaint about blank lines."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0162859
+}

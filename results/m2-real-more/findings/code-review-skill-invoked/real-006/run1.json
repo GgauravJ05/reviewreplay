@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The failure test's expected message embeds the full Attribute repr (type='int', alias=None), so it will break if Attribute gains or renames a field."
+    },
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 461,
+      "line_end": 472,
+      "severity": "minor",
+      "summary": "attrs is now iterated twice (by the check and by the alias list comprehension), so a field transformer returning a one-shot iterator such as a generator would leave the alias step with an empty sequence."
+    },
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Many existing assertions were flipped to put the expected value first, which adds unrelated noise to the diff and has nothing to do with #1147; consider dropping those edits."
+    }
+  ],
+  "extract_cost_usd": 0.0175978
+}

@@ -1,0 +1,45 @@
+{
+  "case": "real-009",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 278,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "__attrs_post_init__ pushes the schema's id onto the legacy RefResolver scope stack on every validator construction (including evolve calls for each subschema) and never pops it, causing wrong base URIs for sibling $refs and unbounded growth of _scopes_stack.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Flags the unconditional scope push in __attrs_post_init__ at the same line, which corrupts the resolver's scope stack (the None-id case is the key-bug trigger), so it shares the cause."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "jsonschema/tests/test_validators.py",
+      "line_start": 2397,
+      "line_end": 2397,
+      "severity": "minor",
+      "summary": "Three blank lines before `def sorted_errors` violate PEP 8/flake8 E303 (max two).",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Pure style issue (extra blank lines)."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0156139
+}

@@ -1,0 +1,45 @@
+{
+  "case": "real-010",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/black/lines.py",
+      "line_start": 601,
+      "line_end": 601,
+      "severity": "important",
+      "summary": "After previous_defs changed to hold Line objects, the check `self.previous_defs[-1]` is always truthy (Line.__bool__ is true when it has leaves), so a depth-0 def followed by a dependent clause like `else:` or `except:` wrongly gets 1 blank line instead of 2; it should use `self.previous_defs[-1].depth`.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies the same truthy Line object check on previous_defs[-1] that should use .depth."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/data/miscellaneous/nested_class_stub.pyi",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Test coverage gap: the test only covers a nested class with a body and a stub class followed by an attribute, and does not exercise a stub class (`class X: ...`) followed by a method or attribute at a deeper depth.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Vague test coverage remark with no concrete defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0155419
+}

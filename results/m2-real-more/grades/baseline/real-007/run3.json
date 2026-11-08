@@ -1,0 +1,99 @@
+{
+  "case": "real-007",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 934,
+      "line_end": 936,
+      "severity": "blocking",
+      "summary": "slots_setstate assumes dict state, so old tuple-format pickles from earlier attrs versions silently skip all attributes (or raise TypeError) with no tuple fallback.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes old tuple-format pickles skipping attributes because __setstate__ assumes dict state."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 925,
+      "line_end": 925,
+      "severity": "important",
+      "summary": "For a slotted cache_hash=True class with no attributes, the empty (falsy) dict state means __setstate__ is not called, so _hash_cache_field is never reset to None (reviewer is unsure and asks to verify).",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Speculative, reviewer unsure; cannot verify empty-class behavior from given info."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "New unpickle tests only cover dict-to-dict loading and none load an old tuple-format pickle, so the backward-compat bug would go unnoticed.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Tests failing to cover the answer-key backward-compat bug counts as valid."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "@pytest.mark.parametrize(\"cls\", [A]) is pointless since it only ever passes the single module-level A.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Pure style nit about parametrize."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "A module-level class named A risks name collisions with other names in the test file.",
+      "index": 4,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative style concern, not a real defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0176919
+}

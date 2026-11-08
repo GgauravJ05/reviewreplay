@@ -1,0 +1,63 @@
+{
+  "case": "real-006",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 452,
+      "line_end": 475,
+      "severity": "important",
+      "summary": "The order check now runs after the field_transformer hook and consumes a one-shot iterable (generator/iterator) returned by the hook, so the later alias comprehension sees nothing and the class silently ends up with no attributes.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the one-shot iterable from field_transformer being consumed by the order check, leaving later steps with no attributes."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Many existing assertions were flipped to expected-value-first form, which is out of scope for the #1147 fix, adds diff noise, and may violate the repo's style conventions; the reviewer would revert it.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test style/diff noise complaint, not a defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The conflicting-defaults test hard-codes the full Attribute repr in the expected ValueError message, so it will break whenever Attribute gains or changes a field; asserting on a substring would be more robust.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test brittleness is a style concern, not incorrect behavior in the change."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.016149900000000002
+}

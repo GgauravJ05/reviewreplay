@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 925,
+      "line_end": 936,
+      "severity": "important",
+      "summary": "__getstate__ now returns a dict and __setstate__ assumes a dict, so pickles from the previous attrs version (tuple state) fail to load, either leaving all slots unset or raising TypeError."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No test covers loading a legacy tuple-state pickle, so the compatibility break is not caught."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Both new tests are parametrized with only [A], so the parametrization does nothing."
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new module-level class A can clash with other names in the test module."
+    }
+  ],
+  "extract_cost_usd": 0.017283800000000002
+}

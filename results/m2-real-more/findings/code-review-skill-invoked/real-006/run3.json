@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The exact-repr assertion in the conflicting-defaults test is brittle and will break whenever the Attribute field list changes."
+    },
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Many unrelated edits flip assertions to yoda order, and a stray blank line sits near test_hook_applied_modify_attrib, adding noisy churn that should be reverted unless style requires it."
+    }
+  ],
+  "extract_cost_usd": 0.0163718
+}

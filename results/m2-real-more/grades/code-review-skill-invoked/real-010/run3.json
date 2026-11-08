@@ -1,0 +1,27 @@
+{
+  "case": "real-010",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/black/lines.py",
+      "line_start": 601,
+      "line_end": 601,
+      "severity": "blocking",
+      "summary": "Since previous_defs now holds Line objects instead of depths, the condition `self.previous_defs[-1]` is always truthy, so it no longer filters on indentation; a top-level def followed by a depth-0 line like `else:` now gets 1 blank line instead of 2 in non-pyi mode, changing default output (fix: use `self.previous_defs[-1].depth`).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies that previous_defs[-1] is now a always-truthy Line object and needs .depth, same as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0146459
+}

@@ -1,0 +1,47 @@
+{
+  "case": "real-008",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "rich/panel.py",
+      "line_start": 204,
+      "line_end": 253,
+      "severity": "important",
+      "summary": "Title and subtitle are now stylized with only partial_border_style, dropping the panel's style, which may leave a background gap in the title/subtitle row (e.g. style='white on blue') while borders and padding keep it.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes title/subtitle styled with only border style, dropping panel style/background, same defect."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "rich/panel.py",
+      "line_start": 204,
+      "line_end": 253,
+      "severity": "minor",
+      "summary": "The title/subtitle style change has no accompanying test setting both style and border_style and checking the title's rendered segments, so the regression is not ruled out.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Missing-test finding for the answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.015113900000000001
+}

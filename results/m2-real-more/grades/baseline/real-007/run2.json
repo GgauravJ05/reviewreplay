@@ -1,0 +1,81 @@
+{
+  "case": "real-007",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 925,
+      "line_end": 936,
+      "severity": "important",
+      "summary": "__getstate__ now returns a dict and __setstate__ assumes a dict, so pickles from the previous attrs version (tuple state) fail to load, either leaving all slots unset or raising TypeError.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes old tuple-state pickles failing to load because __setstate__ assumes a dict, leaving slots unset."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No test covers loading a legacy tuple-state pickle, so the compatibility break is not caught.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Missing test for legacy tuple pickle covers the answer-key bug's absence of tests."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Both new tests are parametrized with only [A], so the parametrization does nothing.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test style nit, not a defect in changed behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new module-level class A can clash with other names in the test module.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative naming clash; pure style."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0167159
+}

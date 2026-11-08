@@ -1,0 +1,47 @@
+{
+  "case": "real-005",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 251,
+      "line_end": 252,
+      "severity": "important",
+      "summary": "`LINE_BREAK_RE.match(data)` in `_parse_data(start=True)` is used without a None check, so an empty buffer raises AttributeError and a lone `\\r` is taken as the whole line break, which makes the field data wrong when the body arrives in chunks.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Claims about a missing None check and lone \\r handling are a different complaint from the last_newline cut at index 0 in DATA_START; can't confirm it's real."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 251,
+      "line_end": 267,
+      "severity": "important",
+      "summary": "When no boundary is found yet, `del_index = last_newline()` can be smaller than `data_start`, so the leading line break is never deleted and is emitted as part of the field's data after the state moves to DATA.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes last_newline() cut falling before data_start (at the leading CRLF) when no boundary is found, the same cause as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0163339
+}

@@ -1,0 +1,45 @@
+{
+  "case": "real-007",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 925,
+      "line_end": 936,
+      "severity": "important",
+      "summary": "The new __setstate__ expects a dict state and can't load pickles from the old tuple-based __getstate__, so old pickles silently load as half-initialized objects (or raise TypeError if a name matches a value); it should handle both tuple and dict formats.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the same defect: new __setstate__ assumes dict state, so old tuple pickles load without attributes set."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 750,
+      "line_end": 750,
+      "severity": "minor",
+      "summary": "The new module-level test class `A` has a overly generic name in a shared test module, and `parametrize(\"cls\", [A])` is pointless with a single value.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Pure style complaint about test naming and parametrization, not a real defect."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.015413900000000001
+}

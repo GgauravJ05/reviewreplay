@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "src/black/lines.py",
+      "line_start": 601,
+      "line_end": 601,
+      "severity": "important",
+      "summary": "previous_defs now holds Line objects (always truthy) rather than int depths, so the non-pyi special case fires for top-level defs/classes ending in ':' and sets before=1 instead of 2; it should compare self.previous_defs[-1].depth."
+    }
+  ],
+  "extract_cost_usd": 0.0157138
+}

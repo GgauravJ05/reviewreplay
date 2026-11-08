@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 278,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "__attrs_post_init__ pushes a scope even when id_of(schema) returns None (no $id or boolean schema), putting None on the resolver scope stack, which can break or misdirect urljoin in resolve/resolving; needs a None guard."
+    },
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 278,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "The scope stack grows on every descend/evolve because pushed scopes are never popped (only _validate_reference pops), leaving stale base URIs so refs in sibling subschemas may resolve against the wrong base."
+    },
+    {
+      "file": "jsonschema/tests/test_validators.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new test only covers a single root-level $ref and does not exercise nested subschemas without $id; a test for that should be added."
+    },
+    {
+      "file": "jsonschema/tests/test_validators.py",
+      "line_start": 2397,
+      "line_end": 2398,
+      "severity": "minor",
+      "summary": "Three blank lines before def sorted_errors where two are expected, which flake8 reports as E303."
+    }
+  ],
+  "extract_cost_usd": 0.0183778
+}

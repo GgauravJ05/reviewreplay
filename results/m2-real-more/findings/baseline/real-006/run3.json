@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 452,
+      "line_end": 475,
+      "severity": "important",
+      "summary": "The order check now runs after the field_transformer hook and consumes a one-shot iterable (generator/iterator) returned by the hook, so the later alias comprehension sees nothing and the class silently ends up with no attributes."
+    },
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Many existing assertions were flipped to expected-value-first form, which is out of scope for the #1147 fix, adds diff noise, and may violate the repo's style conventions; the reviewer would revert it."
+    },
+    {
+      "file": "tests/test_hooks.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The conflicting-defaults test hard-codes the full Attribute repr in the expected ValueError message, so it will break whenever Attribute gains or changes a field; asserting on a substring would be more robust."
+    }
+  ],
+  "extract_cost_usd": 0.0177678
+}

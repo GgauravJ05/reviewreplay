@@ -1,0 +1,83 @@
+{
+  "case": "real-009",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 281,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "__attrs_post_init__ pushes id_of(self.schema) unconditionally, so subschemas without $id push an empty/None scope that resets the resolver base and breaks relative $ref resolution; should push only when id is non-empty and not None.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: unconditional push of id_of(schema) pushes empty/None scope, breaking ref resolution; fix is conditional push."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "jsonschema/validators.py",
+      "line_start": 281,
+      "line_end": 281,
+      "severity": "important",
+      "summary": "Scopes pushed in __attrs_post_init__ are never popped (the only pop_scope at line 458 pairs with a different push), so a shared RefResolver accumulates stale scopes, growing memory and leaking scope into sibling subschema resolutions.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Claims scopes are never popped; this is a different complaint and not the None-scope bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_validators.py",
+      "line_start": 2397,
+      "line_end": 2397,
+      "severity": "minor",
+      "summary": "Three blank lines before the next top-level def trigger flake8 E303.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Pure style (blank lines)."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "tests/test_validators.py",
+      "line_start": 2397,
+      "line_end": 2397,
+      "severity": "minor",
+      "summary": "The new test only covers a top-level $id with $ref, so it would not catch the relative $ref bug in subschemas without $id.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test coverage gap claim; tests failing to cover the bug counts as valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0171959
+}

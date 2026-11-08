@@ -1,0 +1,63 @@
+{
+  "case": "real-007",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/attr/_make.py",
+      "line_start": 934,
+      "line_end": 934,
+      "severity": "important",
+      "summary": "__getstate__/__setstate__ now use dicts, so unpickling an old tuple-format pickle either raises TypeError or silently restores nothing; it should check isinstance(state, tuple) and use the old zip path.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes old tuple-format pickles not being restored by the dict-assuming __setstate__, same defect as b1."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 750,
+      "line_end": 750,
+      "severity": "important",
+      "summary": "No test loads an old tuple-format pickle, so the backward-compatibility bug would pass the suite.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Reports missing test coverage for the answer-key bug, which counts as valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "tests/test_slots.py",
+      "line_start": 750,
+      "line_end": 750,
+      "severity": "minor",
+      "summary": "Tests add a shared module-level class A and parametrize over a single class, which has no effect.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "A test-style complaint about a shared class and single-item parametrization, not a defect in the changed code."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.0162199
+}

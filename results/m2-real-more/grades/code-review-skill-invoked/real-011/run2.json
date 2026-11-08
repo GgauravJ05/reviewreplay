@@ -1,0 +1,27 @@
+{
+  "case": "real-011",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/blib2to3/pgen2/tokenize.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The asserts in consume_lbrace, consume_rbrace and consume_colon could fire on malformed f-strings, raising AssertionError instead of a parse error; the reviewer did not test this.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative claim about asserts firing on malformed f-strings; doesn't describe the continued-string-in-braces state check bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    }
+  ],
+  "judge_cost_usd": 0.014689899999999999
+}

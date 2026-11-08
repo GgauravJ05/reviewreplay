@@ -1,0 +1,81 @@
+{
+  "case": "real-005",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 265,
+      "line_end": 265,
+      "severity": "important",
+      "summary": "In the new DATA_START state the leading line break is only stripped if a boundary is already buffered; with chunked input and no boundary, nothing is deleted and the state moves to DATA, so streamed contents get a spurious \\r\\n prefix.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Describes a spurious CRLF prefix when no boundary is buffered; this differs from the key's stall/slow cutoff at index 0..2, though it may be related."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 295,
+      "line_end": 295,
+      "severity": "important",
+      "summary": "The decoder can emit Data(b'', more_data=True) from DATA_START with chunked input, and the encoder moves to DATA without writing \\r\\n, so the next non-empty Data follows the headers without a blank line, producing a malformed body.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Encoder malformed output from empty Data event; plausible but unverifiable and not the key's defect."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 282,
+      "line_end": 282,
+      "severity": "important",
+      "summary": "After a Field or File event the encoder state is now DATA_START, but the set of states allowing a new part doesn't include it, so consecutive Field/File events without Data in between now raise, a regression.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Encoder state regression claim cannot be verified from given info; not the key bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new test_empty_field only covers the whole message in one buffer and does not exercise the chunked path behind findings 1 and 2.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test coverage gap finding about chunked path; the key bug is about chunked large bodies, so a coverage finding counts as valid."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0181539
+}

@@ -1,0 +1,83 @@
+{
+  "case": "real-005",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 248,
+      "line_end": 268,
+      "severity": "important",
+      "summary": "In _parse_data, when no boundary is found, data_end/del_index from last_newline() can be smaller than data_start, so DATA_START doesn't consume the leading CRLF and it leaks into the field data when the body arrives in chunks, corrupting the value.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes cut index at last_newline being too small in DATA_START, which is related, but claims CRLF leaks into data rather than stalling/slow parsing; arguably a real defect from the same cause but no candidate listed."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 214,
+      "line_end": 219,
+      "severity": "minor",
+      "summary": "DATA_START always emits a Data event without the 'if data or not more_data' guard, producing spurious empty Data(b'', more_data=True) events for partial chunks that consumers like MultipartEncoder and the form parser may not expect.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Empty Data events may be a real behavior change but cannot be verified; not the key bug."
+      },
+      "hit_bug": null,
+      "label": "unsure"
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "cast(Match[bytes], match).end() hides a possible None from LINE_BREAK_RE.match, which would raise AttributeError instead of a clear error; an explicit check is safer.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "A cast hiding a None is a style concern and does not describe the key bug."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new test test_empty_field feeds the whole body in one receive_data call and so doesn't cover the chunked-input leading CRLF bug; a test splitting mid-field is needed.",
+      "index": 3,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test coverage gap for the chunked-input bug is counted as valid by rule."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0182259
+}

@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 251,
+      "line_end": 252,
+      "severity": "important",
+      "summary": "`LINE_BREAK_RE.match(data)` in `_parse_data(start=True)` is used without a None check, so an empty buffer raises AttributeError and a lone `\\r` is taken as the whole line break, which makes the field data wrong when the body arrives in chunks."
+    },
+    {
+      "file": "src/werkzeug/sansio/multipart.py",
+      "line_start": 251,
+      "line_end": 267,
+      "severity": "important",
+      "summary": "When no boundary is found yet, `del_index = last_newline()` can be smaller than `data_start`, so the leading line break is never deleted and is emitted as part of the field's data after the state moves to DATA."
+    }
+  ],
+  "extract_cost_usd": 0.0180138
+}

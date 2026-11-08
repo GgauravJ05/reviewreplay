@@ -1,0 +1,27 @@
+{
+  "case": "real-008",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "rich/panel.py",
+      "line_start": 204,
+      "line_end": 253,
+      "severity": "important",
+      "summary": "Title and subtitle text are stylized with only partial_border_style (self.border_style) instead of the combined style + border_style, so they lose the panel's style (e.g., background color) while surrounding padding and border use the combined style, causing a visual mismatch.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: title/subtitle styled with only border style, losing the panel's style such as background."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    }
+  ],
+  "judge_cost_usd": 0.0143019
+}

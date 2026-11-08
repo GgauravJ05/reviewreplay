@@ -1,0 +1,63 @@
+{
+  "case": "real-010",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/black/lines.py",
+      "line_start": 601,
+      "line_end": 601,
+      "severity": "blocking",
+      "summary": "`self.previous_defs[-1]` now holds a `Line` object that is truthy whenever it has leaves, so the check passes for any previous def (including top-level) and consecutive top-level defs get one blank line instead of two in non-stub mode; it should use `.depth`.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies Line object always truthy in previous_defs[-1] check, needing .depth."
+      },
+      "hit_bug": "b1",
+      "label": "hit"
+    },
+    {
+      "file": "CHANGES.md",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The CHANGES.md entry is under the stable-style list although the feature is gated behind Preview; it belongs in the 'Preview style' section.",
+      "index": 1,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Changelog placement is not a code defect causing incorrect behavior."
+      },
+      "hit_bug": null,
+      "label": "false_alarm"
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "`test_nested_class_stub` covers only one case and nothing tests top-level code, so the regression would go undetected.",
+      "index": 2,
+      "candidates": [],
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Finding that tests fail to cover the answer-key bug is always valid_other."
+      },
+      "hit_bug": null,
+      "label": "valid_other"
+    }
+  ],
+  "judge_cost_usd": 0.0160779
+}
