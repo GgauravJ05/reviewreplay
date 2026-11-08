@@ -20,9 +20,9 @@
     },
     "code-review-skill-invoked": {
       "caught": {
-        "mean": 0.5833333333333334,
-        "lo": 0.2916666666666667,
-        "hi": 0.8333333333333334,
+        "mean": 0.625,
+        "lo": 0.3333333333333333,
+        "hi": 0.875,
         "n_cases": 8
       },
       "precision": {
@@ -40,9 +40,9 @@
   "paired_vs_baseline": {
     "code-review-skill-invoked": {
       "caught": {
-        "diff": -0.04166666666666667,
+        "diff": -6.938893903907228e-18,
         "lo": -0.125,
-        "hi": 0.0,
+        "hi": 0.125,
         "n_cases": 8
       },
       "precision": {
@@ -89,7 +89,7 @@
     },
     "code-review-skill-invoked": {
       "real-005": {
-        "caught": 0.3333333333333333,
+        "caught": 0.6666666666666666,
         "precision": 0.5
       },
       "real-006": {

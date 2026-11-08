@@ -7,7 +7,7 @@ Values are mean over cases (each case averaged over its runs) with a 95% bootstr
 | Subject | Reviews | Recall | Precision | Clean pass | Decoy trap | Skill used (natural) | Findings / review | Median est. cost | Median time |
 |---|---|---|---|---|---|---|---|---|---|
 | baseline | 24 | 62% [33%–92%] | 70% [41%–94%] | — | — | — | 2.3 | $0.059 | 19s |
-| code-review-skill-invoked | 24 | 58% [29%–83%] | 69% [44%–92%] | — | — | — | 2.4 | $0.083 | 23s |
+| code-review-skill-invoked | 24 | 62% [33%–88%] | 69% [44%–92%] | — | — | — | 2.4 | $0.083 | 23s |
 
 ## Paired difference vs. baseline
 
@@ -15,7 +15,7 @@ Positive = better than baseline for recall, clean pass and precision. An interva
 
 | Subject | Recall Δ | Clean pass Δ | Precision Δ |
 |---|---|---|---|
-| code-review-skill-invoked | -4 pts [-12, +0] | — | +5 pts [-6, +13] |
+| code-review-skill-invoked | -0 pts [-12, +12] | — | +5 pts [-6, +13] |
 
 ## Per case
 
@@ -29,7 +29,7 @@ Positive = better than baseline for recall, clean pass and precision. An interva
 | baseline | real-010 | real | 100% | — | — | — |
 | baseline | real-011 | real | 0% | — | — | — |
 | baseline | real-012 | real | 0% | — | — | — |
-| code-review-skill-invoked | real-005 | real | 33% | — | — | — |
+| code-review-skill-invoked | real-005 | real | 67% | — | — | — |
 | code-review-skill-invoked | real-006 | real | 67% | — | — | — |
 | code-review-skill-invoked | real-007 | real | 100% | — | — | — |
 | code-review-skill-invoked | real-008 | real | 67% | — | — | — |

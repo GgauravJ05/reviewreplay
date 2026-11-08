@@ -19,8 +19,40 @@
         "verdict": "matches_truth",
         "reason": "Identifies that __setstate__ assumes dict state, breaking old tuple pickles with no attributes set."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies that __setstate__ assumes dict state, breaking old tuple pickles with no attributes set."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies __setstate__ assuming dict state, breaking old tuple pickles."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies __setstate__ assuming dict state, breaking old tuple pickles."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes old tuple pickles failing under dict-assuming __setstate__, matching b1."
+        }
+      ],
       "hit_bug": "b1",
-      "label": "hit"
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "tests/test_slots.py",
@@ -37,8 +69,40 @@
         "verdict": "invalid",
         "reason": "Pure test style complaint."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Pure test style complaint."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test style nitpick, not a defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Pure test style complaint."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Pure test style complaint."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "tests/test_slots.py",
@@ -55,8 +119,40 @@
         "verdict": "invalid",
         "reason": "Style/naming nit, not a defect."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Style/naming nit, not a defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Naming/comment style only."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Naming/style nit, not a defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Naming/comment style, not a defect."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "tests/test_slots.py",
@@ -73,9 +169,163 @@
         "verdict": "valid_other",
         "reason": "Tests fail to cover the answer-key tuple pickle bug."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Tests fail to cover the answer-key tuple pickle bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Missing test coverage for the old tuple-format pickle, which is the answer-key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Tests lacking coverage of the answer-key tuple bug counts as valid per the rules."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Notes the tests don't cover the answer-key bug (old tuple pickles)."
+        }
+      ],
       "hit_bug": null,
-      "label": "valid_other"
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
     }
   ],
-  "judge_cost_usd": 0.0167459
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0167459,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies that __setstate__ assumes dict state, breaking old tuple pickles with no attributes set."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Pure test style complaint."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Style/naming nit, not a defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Tests fail to cover the answer-key tuple pickle bug."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0167379,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies __setstate__ assuming dict state, breaking old tuple pickles."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test style nitpick, not a defect."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Naming/comment style only."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Missing test coverage for the old tuple-format pickle, which is the answer-key bug."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0167479,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies __setstate__ assuming dict state, breaking old tuple pickles."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Pure test style complaint."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Naming/style nit, not a defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Tests lacking coverage of the answer-key tuple bug counts as valid per the rules."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0340518,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes old tuple pickles failing under dict-assuming __setstate__, matching b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Pure test style complaint."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Naming/comment style, not a defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Notes the tests don't cover the answer-key bug (old tuple pickles)."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0842835
 }

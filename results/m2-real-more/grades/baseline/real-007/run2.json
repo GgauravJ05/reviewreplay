@@ -19,8 +19,40 @@
         "verdict": "matches_truth",
         "reason": "Describes old tuple-state pickles failing to load because __setstate__ assumes a dict, leaving slots unset."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes old tuple-state pickles failing to load because __setstate__ assumes a dict, leaving slots unset."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes old tuple-state pickles failing to load because __setstate__ assumes dict, same as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes __setstate__ assuming dict so old tuple-state pickles fail to load, same as b1."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes how tuple-state pickles from older versions fail to load in __setstate__, leaving the slots unset."
+        }
+      ],
       "hit_bug": "b1",
-      "label": "hit"
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "tests/test_slots.py",
@@ -37,8 +69,40 @@
         "verdict": "valid_other",
         "reason": "Missing test for legacy tuple pickle covers the answer-key bug's absence of tests."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Missing test for legacy tuple pickle covers the answer-key bug's absence of tests."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Missing test for legacy tuple pickle coverage of the answer-key bug counts as valid."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Missing test for legacy tuple pickle, which covers the answer-key bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It points out that the tests do not cover the answer-key bug about loading legacy pickles."
+        }
+      ],
       "hit_bug": null,
-      "label": "valid_other"
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "tests/test_slots.py",
@@ -55,8 +119,40 @@
         "verdict": "invalid",
         "reason": "Test style nit, not a defect in changed behavior."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test style nit, not a defect in changed behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trivial test style complaint, not a behavioral defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Parametrization nitpick, not a behavioral defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a style complaint and does not describe a defect."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "tests/test_slots.py",
@@ -73,9 +169,163 @@
         "verdict": "invalid",
         "reason": "Speculative naming clash; pure style."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative naming clash; pure style."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Name clash speculation is pure style, not a real defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative style concern about naming, not a real defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a speculative style concern with no concrete incorrect behavior."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
     }
   ],
-  "judge_cost_usd": 0.0167159
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0167159,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes old tuple-state pickles failing to load because __setstate__ assumes a dict, leaving slots unset."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Missing test for legacy tuple pickle covers the answer-key bug's absence of tests."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test style nit, not a defect in changed behavior."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative naming clash; pure style."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0167479,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes old tuple-state pickles failing to load because __setstate__ assumes dict, same as b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Missing test for legacy tuple pickle coverage of the answer-key bug counts as valid."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trivial test style complaint, not a behavioral defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Name clash speculation is pure style, not a real defect."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0166959,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes __setstate__ assuming dict so old tuple-state pickles fail to load, same as b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Missing test for legacy tuple pickle, which covers the answer-key bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Parametrization nitpick, not a behavioral defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative style concern about naming, not a real defect."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0341198,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes how tuple-state pickles from older versions fail to load in __setstate__, leaving the slots unset."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It points out that the tests do not cover the answer-key bug about loading legacy pickles."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a style complaint and does not describe a defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a speculative style concern with no concrete incorrect behavior."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0842795
 }

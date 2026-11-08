@@ -17,8 +17,40 @@
         "verdict": "unsure",
         "reason": "Plausible Conv3d shortcut issue in get_delta_weight, but it can't be verified and it isn't the dilation/padding_mode bug."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Plausible Conv3d shortcut issue in get_delta_weight, but it can't be verified and it isn't the dilation/padding_mode bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Plausible Conv3d shortcut bug in get_delta_weight, but it is not the dilation/padding_mode bug and I can't verify it from the diff."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Possible real Conv3d shortcut bug in get_delta_weight, but can't verify from the given info; it's not the dilation/padding_mode bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "The check only looks at size()[2:4], so a Conv3d kernel like (1,1,k) wrongly takes the 2D squeeze shortcut and breaks merge; this is a real defect, but it is not the dilation/padding_mode bug."
+        }
+      ],
       "hit_bug": null,
-      "label": "unsure"
+      "label": "unsure",
+      "contested": false,
+      "agreement": 0.75
     },
     {
       "file": "src/peft/tuners/ia3/layer.py",
@@ -35,8 +67,40 @@
         "verdict": "invalid",
         "reason": "This is only a wrong error message string, a cosmetic issue, and it sits in the IA3 layer, outside the answer-key bug."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is only a wrong error message string, a cosmetic issue, and it sits in the IA3 layer, outside the answer-key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is only a wrong word in an error message, which is cosmetic and unrelated to the answer-key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "An error message typo is cosmetic and unrelated to the answer-key bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is only a typo in an error message and does not change behavior."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/peft/tuners/lora/layer.py",
@@ -53,9 +117,139 @@
         "verdict": "unsure",
         "reason": "The conv_fn ordering risk is speculative, and it's unclear whether any init path actually calls get_delta_weight."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The conv_fn ordering risk is speculative, and it's unclear whether any init path actually calls get_delta_weight."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "This is a speculative initialization-order risk and I can't confirm any init path actually calls get_delta_weight."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Speculative init-order risk; can't confirm without the code, and it doesn't match the answer-key bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a speculative risk: no concrete init path that reaches get_delta_weight before conv_fn is set is shown."
+        }
+      ],
       "hit_bug": null,
-      "label": "unsure"
+      "label": "unsure",
+      "contested": false,
+      "agreement": 0.75
     }
   ],
-  "judge_cost_usd": 0.017283899999999998
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.017283899999999998,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Plausible Conv3d shortcut issue in get_delta_weight, but it can't be verified and it isn't the dilation/padding_mode bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is only a wrong error message string, a cosmetic issue, and it sits in the IA3 layer, outside the answer-key bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The conv_fn ordering risk is speculative, and it's unclear whether any init path actually calls get_delta_weight."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0171719,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Plausible Conv3d shortcut bug in get_delta_weight, but it is not the dilation/padding_mode bug and I can't verify it from the diff."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is only a wrong word in an error message, which is cosmetic and unrelated to the answer-key bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "This is a speculative initialization-order risk and I can't confirm any init path actually calls get_delta_weight."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0170639,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Possible real Conv3d shortcut bug in get_delta_weight, but can't verify from the given info; it's not the dilation/padding_mode bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "An error message typo is cosmetic and unrelated to the answer-key bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Speculative init-order risk; can't confirm without the code, and it doesn't match the answer-key bug."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0495118,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "The check only looks at size()[2:4], so a Conv3d kernel like (1,1,k) wrongly takes the 2D squeeze shortcut and breaks merge; this is a real defect, but it is not the dilation/padding_mode bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is only a typo in an error message and does not change behavior."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a speculative risk: no concrete init path that reaches get_delta_weight before conv_fn is set is shown."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.1010315
 }

@@ -19,8 +19,40 @@
         "verdict": "matches_truth",
         "reason": "Identifies Line object always truthy in previous_defs[-1] check, needing .depth."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies Line object always truthy in previous_defs[-1] check, needing .depth."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies Line object always truthy in previous_defs[-1] check, should use .depth."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies that previous_defs[-1] is now a truthy Line object and should use .depth."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It points to the same cause: a Line object is always truthy, so the check should use `.depth`."
+        }
+      ],
       "hit_bug": "b1",
-      "label": "hit"
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "CHANGES.md",
@@ -37,8 +69,40 @@
         "verdict": "invalid",
         "reason": "Changelog placement is not a code defect causing incorrect behavior."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Changelog placement is not a code defect causing incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Changelog placement is not a code defect and is unverified."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Changelog placement is a style/documentation concern, not a code defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Where a changelog entry sits is a documentation issue, not a defect that causes incorrect behavior, and it can't be verified from what was given."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "",
@@ -55,9 +119,139 @@
         "verdict": "valid_other",
         "reason": "Finding that tests fail to cover the answer-key bug is always valid_other."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that tests fail to cover the answer-key bug is always valid_other."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Claims tests fail to cover the answer-key bug, which counts as valid."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that tests fail to cover the answer-key bug counts as valid_other."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It says the tests don't cover the answer-key regression in top-level code."
+        }
+      ],
       "hit_bug": null,
-      "label": "valid_other"
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
     }
   ],
-  "judge_cost_usd": 0.0160779
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0160779,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies Line object always truthy in previous_defs[-1] check, needing .depth."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Changelog placement is not a code defect causing incorrect behavior."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that tests fail to cover the answer-key bug is always valid_other."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0160299,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies Line object always truthy in previous_defs[-1] check, should use .depth."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Changelog placement is not a code defect and is unverified."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Claims tests fail to cover the answer-key bug, which counts as valid."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.016097900000000002,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies that previous_defs[-1] is now a truthy Line object and should use .depth."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Changelog placement is a style/documentation concern, not a code defect."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that tests fail to cover the answer-key bug counts as valid_other."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0357158,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It points to the same cause: a Line object is always truthy, so the check should use `.depth`."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Where a changelog entry sits is a documentation issue, not a defect that causes incorrect behavior, and it can't be verified from what was given."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It says the tests don't cover the answer-key regression in top-level code."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0839215
 }

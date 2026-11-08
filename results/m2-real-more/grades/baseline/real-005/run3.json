@@ -17,8 +17,40 @@
         "verdict": "unsure",
         "reason": "Describes last_newline returning index 0 with leading CRLF, related to b1 but candidates empty, so cannot map; the claimed leak is a different symptom."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Describes last_newline returning index 0 with leading CRLF, related to b1 but candidates empty, so cannot map; the claimed leak is a different symptom."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Related to last_newline returning index 0 from the leading CRLF, but claims CRLF leaks into value rather than stalling; no candidates so cannot match, and validity unclear."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Concerns the leading CRLF being the last_newline cut at index 0, related to the cause but claims CRLF leaks into the value rather than stalling; no candidates so not matched."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "It names the real cause (last_newline cutting at the leading CRLF), but it claims the CRLF leaks into the value instead of the actual stall, and with no candidates it can't be matched."
+        }
+      ],
       "hit_bug": null,
-      "label": "unsure"
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/werkzeug/sansio/multipart.py",
@@ -37,8 +69,40 @@
         "verdict": "invalid",
         "reason": "Complains about missing None check on match, unrelated to the last_newline/find shortcut defect in b1."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Complains about missing None check on match, unrelated to the last_newline/find shortcut defect in b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Complains about a missing None check on match, which is unrelated to the last_newline/find shortcut performance bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Claims a missing None check on match; does not describe the last_newline cut-at-index-0 slowdown, and is a different defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A missing None check is a different complaint from b1's stall at the last_newline cut, and nothing shows the buffer can be missing its leading line break here."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/werkzeug/sansio/multipart.py",
@@ -55,9 +119,139 @@
         "verdict": "invalid",
         "reason": "Encoder empty-first-Data CRLF issue is unrelated to the answer-key bug and speculative."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Encoder empty-first-Data CRLF issue is unrelated to the answer-key bug and speculative."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Encoder empty-first-Data CRLF concern is unrelated to the answer-key bug and speculative."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Encoder-side empty first Data concern is unrelated to the answer-key bug and cannot be verified."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a speculative encoder round-trip issue that doesn't match any known defect in the change."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 0.75
     }
   ],
-  "judge_cost_usd": 0.0171499
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0171499,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Describes last_newline returning index 0 with leading CRLF, related to b1 but candidates empty, so cannot map; the claimed leak is a different symptom."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Complains about missing None check on match, unrelated to the last_newline/find shortcut defect in b1."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Encoder empty-first-Data CRLF issue is unrelated to the answer-key bug and speculative."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0172299,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Related to last_newline returning index 0 from the leading CRLF, but claims CRLF leaks into value rather than stalling; no candidates so cannot match, and validity unclear."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Complains about a missing None check on match, which is unrelated to the last_newline/find shortcut performance bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Encoder empty-first-Data CRLF concern is unrelated to the answer-key bug and speculative."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0172799,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Concerns the leading CRLF being the last_newline cut at index 0, related to the cause but claims CRLF leaks into the value rather than stalling; no candidates so not matched."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Claims a missing None check on match; does not describe the last_newline cut-at-index-0 slowdown, and is a different defect."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Encoder-side empty first Data concern is unrelated to the answer-key bug and cannot be verified."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.045543799999999995,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "It names the real cause (last_newline cutting at the leading CRLF), but it claims the CRLF leaks into the value instead of the actual stall, and with no candidates it can't be matched."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A missing None check is a different complaint from b1's stall at the last_newline cut, and nothing shows the buffer can be missing its leading line break here."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a speculative encoder round-trip issue that doesn't match any known defect in the change."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0972035
 }

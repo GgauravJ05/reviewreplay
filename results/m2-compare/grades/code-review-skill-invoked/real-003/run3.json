@@ -19,8 +19,40 @@
         "verdict": "matches_truth",
         "reason": "Describes the fish loop over $response splitting per line so each iteration sees one field, breaking completion; same as b1."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the fish loop over $response splitting per line so each iteration sees one field, breaking completion; same as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: fish splits $response by line so per-item triple split fails."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: fish splits $response per line so the type/value/help fields arrive as separate entries and $metadata[2]/[3] are missing."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes fish splitting $response on newlines, so each type/value/help triple breaks apart and every completion fails."
+        }
+      ],
       "hit_bug": "b1",
-      "label": "hit"
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/click/shell_completion.py",
@@ -39,8 +71,40 @@
         "verdict": "unsure",
         "reason": "Newline escaping claim is plausible but not verifiable from the given information and is not the answer-key bug."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Newline escaping claim is plausible but not verifiable from the given information and is not the answer-key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Literal \\n escaping not confirmed from info; different from the key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Newline escaping as literal \\n may be real, but it isn't the answer-key bug and can't be verified from the information given."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "This is a different complaint about escaping newlines, and the information given doesn't show whether the fish script displays a literal \\n."
+        }
+      ],
       "hit_bug": null,
-      "label": "unsure"
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "tests/test_shell_completion.py",
@@ -57,9 +121,139 @@
         "verdict": "valid_other",
         "reason": "Finding that the test fails to cover the fish script bug counts as valid by rule."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that the test fails to cover the fish script bug counts as valid by rule."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test fails to cover the answer-key bug, which counts as valid_other."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It says the tests fail to cover the answer-key bug, which counts as valid_other."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It points out that the tests never cover the b1 regression in the generated fish script, which counts as valid."
+        }
+      ],
       "hit_bug": null,
-      "label": "valid_other"
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
     }
   ],
-  "judge_cost_usd": 0.0169339
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0169339,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the fish loop over $response splitting per line so each iteration sees one field, breaking completion; same as b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Newline escaping claim is plausible but not verifiable from the given information and is not the answer-key bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that the test fails to cover the fish script bug counts as valid by rule."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0166839,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: fish splits $response by line so per-item triple split fails."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Literal \\n escaping not confirmed from info; different from the key bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test fails to cover the answer-key bug, which counts as valid_other."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.017093900000000002,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: fish splits $response per line so the type/value/help fields arrive as separate entries and $metadata[2]/[3] are missing."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Newline escaping as literal \\n may be real, but it isn't the answer-key bug and can't be verified from the information given."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It says the tests fail to cover the answer-key bug, which counts as valid_other."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0389838,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes fish splitting $response on newlines, so each type/value/help triple breaks apart and every completion fails."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "This is a different complaint about escaping newlines, and the information given doesn't show whether the fish script displays a literal \\n."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It points out that the tests never cover the b1 regression in the generated fish script, which counts as valid."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.08969550000000001
 }
