@@ -7,6 +7,7 @@
   reviewreplay extract results/<id>
   reviewreplay grade   results/<id>
   reviewreplay report  results/<id>
+  reviewreplay compare results/<a> results/<b> [--kind real] [--out FILE.md]
   reviewreplay label   results/<id>/labels.csv
   reviewreplay mine    https://github.com/<owner>/<repo> [--since 2025-06-01]
   reviewreplay agreement results/<id>/labels.csv
@@ -20,6 +21,7 @@ from pathlib import Path
 
 from . import claude
 from .cases import check_case, find_case_dirs, load_cases, make_patch
+from .compare import write_comparison
 from .grade import extract_all, grade_all
 from .init import init
 from .label import label_sheet
@@ -78,6 +80,13 @@ def main(argv: list[str] | None = None) -> int:
 
     p = sub.add_parser("report")
     p.add_argument("run_dir")
+    p.add_argument("--cases")
+
+    p = sub.add_parser("compare", help="combine several runs into one table, paired vs a baseline")
+    p.add_argument("run_dirs", nargs="+")
+    p.add_argument("--kind", help="keep one case kind (real, planted, clean, decoy)")
+    p.add_argument("--baseline", default="baseline")
+    p.add_argument("--out", help="also write the table here (.md), with a .json beside it")
     p.add_argument("--cases")
 
     p = sub.add_parser("label", help="hand-label findings blind, one at a time")
@@ -146,6 +155,12 @@ def main(argv: list[str] | None = None) -> int:
     if a.cmd == "grade":
         cases = {c.id: c for c in _cases(a.cases)}
         grade_all(Path(a.run_dir), cases, a.model, a.workers, force=a.force)
+        return 0
+
+    if a.cmd == "compare":
+        cases = {c.id: c for c in _cases(a.cases)}
+        print(write_comparison([Path(d) for d in a.run_dirs], cases, Path(a.out) if a.out else None,
+                               kind=a.kind, baseline=a.baseline))
         return 0
 
     if a.cmd == "report":
