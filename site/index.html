@@ -67,7 +67,7 @@
   .rr-line i.warn { background: #f6ecdc; color: #855a12; }
   .rr-line b { font-weight: 500; color: #151a17; }
   .hero__proof { font-size: var(--t-small); color: var(--ink); }
-  .hero__art .loop-pause:focus-visible, .frame--lit .loop-pause:focus-visible, .panel .loop-pause:focus-visible { outline-color: #262d24; }
+  .hero__art .loop-pause:focus-visible, .panel .loop-pause:focus-visible { outline-color: #262d24; }
   .hero__art .ui-diff { --fit-max: 520px; }
   .ly-piece--main > .ui-panel { width: calc(100% - var(--ly-cut-room)); }
   @media (max-width: 1023px) { .hero__art > .ly-piece--note { left: var(--s-4); bottom: var(--s-4); width: 270px; } }
@@ -95,7 +95,7 @@
 
   /* the three steps share one panel height */
   #faq > .wrap { justify-content: center; }
-  #start .panel { --p-h: 336px; }
+  #start .panel { --p-h: 312px; }
   @media (max-width: 1023px) { #start .panel { --p-h: max(240px, calc((200svh - 960px) / 3)); } }
   @media (max-width: 639px) { #grading .frame--split { --ratio: 80%; } }
   @media (max-width: 359px) { .nav:not(.is-open) .nav__actions { display: none; } .nav:not(.is-open) .nav__toggle { margin-left: auto; } }
@@ -103,7 +103,17 @@
   #start .ui-check.is-done .ui-check__label { color: var(--u-ink); }
   #start .ui-check.is-done .ui-check__label::after { transform: scaleX(0); }
   .rr-stats { margin-top: var(--s-5); }
-  .rr-pip { overflow-wrap: anywhere; font-size: .92em; }
+  /* the install command: the page's main action, copied in one click */
+  .rr-install { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 560px; min-height: 48px; margin-top: var(--s-4); padding: 6px 6px 6px 16px; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--surface); font: 500 13.5px/20px var(--ui-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace); }
+  .rr-install--lg { max-width: none; min-height: 56px; margin-top: var(--s-6); padding-left: 20px; font-size: 15px; }
+  .rr-install__sig { flex: none; color: var(--accent, var(--muted)); user-select: none; }
+  .rr-install__cmd { flex: 1 1 auto; min-width: 0; padding: 4px 0; color: var(--ink); background: none; font: inherit; }
+  .rr-install__url { white-space: nowrap; }
+  .rr-install__copy { flex: none; gap: 6px; }
+  html[data-buttons="arrow"] .rr-install__copy::after { display: none; }
+  .rr-install__copy svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  #grading .frame--split { background: var(--ground-bg); border-color: transparent; }
+  @media (max-width: 639px) { .hero .rr-install { display: none; } .rr-install__copy span { display: none; } .rr-install, .rr-install--lg { font-size: 13px; } .rr-install__url { white-space: normal; } }
   @media (min-width: 1024px) { #grading .frame--split { --ratio: 108%; } #start .grid > .card { grid-column: span 4; } }
   @media (max-width: 1023px) { #start { --h: 2; } }
   @media (max-width: 1279px) {
@@ -166,6 +176,7 @@
         <h1 id="hero-h">AI code review benchmark from your git history</h1>
         <p class="hero__lead">ReviewReplay replays bugs your team already fixed as fresh changes, runs each AI reviewer on them read-only, and scores what it caught, flagged wrongly and cost.</p>
         <div class="btn-row"><a class="btn btn--primary" href="#start">Get the CLI<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#reviews">See the results</a></div>
+        <div class="rr-install"><span class="rr-install__sig" aria-hidden="true">$</span><code class="rr-install__cmd">pip install <span class="rr-install__url">git+https://<wbr>github.com/<wbr>GgauravJ05/<wbr>reviewreplay</span></code><button class="btn btn--secondary rr-install__copy" type="button" data-copy="pip install git+https://github.com/GgauravJ05/reviewreplay" aria-label="Copy the install command"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="1.8"/><path d="M10.5 5V3.8A1.3 1.3 0 0 0 9.2 2.5H3.8a1.3 1.3 0 0 0-1.3 1.3v5.4a1.3 1.3 0 0 0 1.3 1.3H5"/></svg><span data-copy-label>Copy</span></button></div>
         <p class="hero__proof">Tested on 114 reviews of 19 cases, with real bugs from click, datasets and accelerate.</p>
       </div>
       <div class="hero__art span-6 start-7" data-fx="grain-gradient" data-fx-seed="11" data-fx-palette='{"bg":"#cdd6c6","surface":"#dce3d6","ink":"#262d24","accent":"#6c8e63"}' data-fx-params='{"grainMotion":0}' role="img" aria-label="A real bug from pallets/click: fish shell completion fields joined with newlines, with Claude Code's review comment on the line and the graded verdict: caught">
@@ -306,7 +317,7 @@
           </ul>
           <a class="link" href="#faq">Read the questions</a>
         </div>
-        <div class="frame frame--split frame--lit span-6 start-7" data-visual>
+        <div class="frame frame--split span-6 start-7" data-visual>
           <div class="stage stage--fade-b">
             <div class="at-rise to-edge" style="--w: 460px; --ay: 56px">
               <div class="ui ui-doc" data-ui="doc" role="img" aria-label="The judge's verdicts on one Claude Code review of real-003: one finding matches the known bug">
@@ -367,15 +378,15 @@
     <div class="wrap">
       <div class="section-head">
         <h2 id="start-h">Run it on your repository in 3 steps</h2>
-        <p>Install with <code class="rr-pip">pip install git+https://github.com/GgauravJ05/reviewreplay</code></p>
       </div>
+      <div class="rr-install rr-install--lg"><span class="rr-install__sig" aria-hidden="true">$</span><code class="rr-install__cmd">pip install <span class="rr-install__url">git+https://<wbr>github.com/<wbr>GgauravJ05/<wbr>reviewreplay</span></code><button class="btn btn--secondary rr-install__copy" type="button" data-copy="pip install git+https://github.com/GgauravJ05/reviewreplay" aria-label="Copy the install command"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="1.8"/><path d="M10.5 5V3.8A1.3 1.3 0 0 0 9.2 2.5H3.8a1.3 1.3 0 0 0-1.3 1.3v5.4a1.3 1.3 0 0 0 1.3 1.3H5"/></svg><span data-copy-label>Copy</span></button></div>
       <div class="grid">
         <article class="card card--row span-4 m-nolift">
           <span class="step-num">1</span>
           <h3>Mine your fixed bugs</h3>
           <p><code>reviewreplay init</code> traces each fix commit to the change that broke it and drafts an answer key.</p>
-          <div class="panel panel--flush" data-ui-pause-host>
-            <div class="stage"><div class="at-rise fit" style="--fit-max: 440px; --ax: max(24px, 50% - 220px); --ay: 40px" data-ui-loop>
+          <div class="panel panel--flush">
+            <div class="stage"><div class="at-rise fit" style="--fit-max: 440px; --ax: max(24px, 50% - 220px); --ay: 40px">
               <div class="ui ui-panel ui-term" data-ui="terminal-run">
                 <div class="ui-term__head">
                   <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -387,8 +398,8 @@
                   <div class="ui-term__track" data-term-track>
                     <div class="ui-term__ln ui-term__cmd"><span class="ui-term__cwd">~/click</span><span class="ui-term__sig">$</span><span class="ui-term__typed" data-term-cmd>reviewreplay init</span></div>
                     <div class="ui-term__ln ui-term__meter" data-term-out data-term-meter><span class="ui-term__bar" style="--p:1"><i></i></span><span class="ui-term__count" data-term-count>2 of 2 drafted</span></div>
-                    <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">fix 93c6966e</span><span class="ui-term__n">262bdf02</span><span class="ui-term__t">ok</span></div>
-                    <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">fix b7e5fd4c</span><span class="ui-term__n">19fd4d6e</span><span class="ui-term__t">ok</span></div>
+                    <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">fix 93c6966e</span><span class="ui-term__n">from 262bdf02</span><span class="ui-term__t">ok</span></div>
+                    <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">fix b7e5fd4c</span><span class="ui-term__n">from 19fd4d6e</span><span class="ui-term__t">ok</span></div>
                     <div class="ui-term__ln ui-term__done" data-term-out data-term-done><span class="ui-term__ok"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.3 2.4 2.4 4.6-5"/></svg></span><b>Done</b><span class="ui-term__dim">2 draft cases</span></div>
                     <div class="ui-term__ln ui-term__cmd" data-term-next><span class="ui-term__cwd">~/click</span><span class="ui-term__sig">$</span><span class="ui-term__typed"></span><i class="ui-term__caret" aria-hidden="true"></i></div>
                   </div>
@@ -471,6 +482,7 @@
         <h2 id="close-h">Test your reviewer on your own bugs</h2>
         <p>Free and MIT licensed. Needs Python 3.10 and git.</p>
       </div>
+      <div class="rr-install rr-install--lg"><span class="rr-install__sig" aria-hidden="true">$</span><code class="rr-install__cmd">pip install <span class="rr-install__url">git+https://<wbr>github.com/<wbr>GgauravJ05/<wbr>reviewreplay</span></code><button class="btn btn--secondary rr-install__copy" type="button" data-copy="pip install git+https://github.com/GgauravJ05/reviewreplay" aria-label="Copy the install command"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="1.8"/><path d="M10.5 5V3.8A1.3 1.3 0 0 0 9.2 2.5H3.8a1.3 1.3 0 0 0-1.3 1.3v5.4a1.3 1.3 0 0 0 1.3 1.3H5"/></svg><span data-copy-label>Copy</span></button></div>
       <a class="btn btn--primary btn--xl btn--wide" href="#start">Get the CLI<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
     </div>
     <div class="closing__links">
@@ -494,5 +506,14 @@
 <script type="module" src="assets/system.js"></script>
 <script type="module" src="assets/motion/motion.js"></script>
 <script type="module" src="assets/layout/layout.js"></script>
+<script>
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-copy]'); if (!b) return;
+  const l = b.querySelector('[data-copy-label]');
+  try { await navigator.clipboard.writeText(b.dataset.copy); } catch { const r = document.createRange(); r.selectNodeContents(b.previousElementSibling); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); document.execCommand('copy'); }
+  b.classList.add('is-copied'); if (l) l.textContent = 'Copied';
+  clearTimeout(b._t); b._t = setTimeout(() => { b.classList.remove('is-copied'); if (l) l.textContent = 'Copy'; }, 1800);
+});
+</script>
 </body>
 </html>
