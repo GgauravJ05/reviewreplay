@@ -22,9 +22,9 @@ repository, replayed in the full project with no git history.
 | | Baseline | Skill |
 |---|---|---|
 | Bug found | 15 / 24 | 15 / 24 |
-| Precision (serious findings) | 52% (15/29) | 60% (15/25) |
-| False alarms (serious) | 4 | 3 |
-| Unverifiable claims (`unsure`) | 10 | 7 |
+| Precision (serious findings) | 72% (21/29) | 76% (19/25) |
+| False alarms (serious) | 7 | 6 |
+| Still unverifiable (`unsure`) | 1 | 0 |
 | Minor remarks per review | 1.1 | 1.3 |
 | Mean cost per review | $0.066 | $0.096 |
 
@@ -36,17 +36,18 @@ Nine projects: click, datasets, accelerate, werkzeug, attrs, rich, jsonschema, b
 | | Baseline | Skill | Paired difference (95% CI, bootstrap over cases) |
 |---|---|---|---|
 | Bug found | 26 / 36 (72%) | 27 / 36 (75%) | +3 pts [−6, +11] |
-| Precision (serious findings) | 56% (30/54) | **71%** (40/56) | **+16 pts [+4, +24]** |
-| False alarms (serious) | 7 | **3** | |
-| Unverifiable claims (`unsure`) | 17 | 13 | |
+| Precision (serious findings) | 72% (39/54) | **82%** (46/56) | **+10 pts [+1, +16]** |
+| False alarms (serious) | 13 | **10** | |
+| Still unverifiable (`unsure`) | 2 | 0 | |
 | Minor remarks per review | 1.2 | 1.1 | |
 | Mean cost per review | $0.065 | $0.097 | about **1.5×** |
 
 Reproduce this table with `reviewreplay compare results/m2-compare results/m2-real-more --kind real`.
 Every finding is graded by four judges (three `claude-sonnet-5-5` votes and one `claude-opus-5-5`)
-and takes the majority label; see [Four-judge re-grade](#four-judge-re-grade) for what changed. The
-first single-judge grading gave 26/36 found for both, 57% vs 71% precision, 7 vs 4 false alarms and
-+14 pts [0, +24]. "Serious" means a finding the reviewer rated blocking or important.
+and takes the majority label, and the serious claims the judges couldn't settle were then checked
+against the code; see [Four-judge re-grade](#four-judge-re-grade) and
+[Code checks](#code-checks-of-unsure-claims). Before the code checks: 56% vs 71% precision, 7 vs 3
+false alarms, +16 pts [+4, +24]. The first single-judge grading: 57% vs 71%, 7 vs 4, +14 pts [0, +24]. "Serious" means a finding the reviewer rated blocking or important.
 Precision counts hits and other real problems over all serious findings, `unsure` included.
 
 ## What changed
@@ -66,11 +67,12 @@ run**:
 The misses are genuine: the graded reviews never mention the defect. Werkzeug (real-005) was found
 in 1 of 3 baseline runs and 2 of 3 skill runs.
 
-**The skill's precision edge holds, but it's smaller than on the first 4 bugs.** On 12 bugs the
-skill's serious findings were right 71% of the time against 56%, with 3 serious false alarms against
-7. After the four-judge re-grade the paired interval is +16 pts [+4, +24], clear of zero, and it
-stays clear with contested findings left out (+17 pts [+1, +30]). On the 8 new cases alone the gap was 8
-points, and the "half the minor noise" seen on the first 4 bugs didn't repeat (1.1 vs 1.3).
+**The skill's precision edge holds, but it's smaller than it first looked.** Once the unverifiable
+claims are checked against the code, both reviewers are more often right than the judges alone
+showed: on 12 bugs the skill's serious findings were right 82% of the time against 72%, with 10
+serious false alarms against 13. The paired interval is +10 pts [+1, +16], just clear of zero; with
+contested findings left out it touches zero (+9 pts [0, +17]). On the 8 new cases alone the gap is 4
+points [−9, +13], and the "half the minor noise" seen on the first 4 bugs didn't repeat (1.1 vs 1.3).
 
 ## Four-judge re-grade
 
@@ -102,18 +104,49 @@ Reproduce with or without contested findings:
 | Bug found | 25 / 36 | 27 / 36 | +6 pts [−6, +17] |
 | Precision (serious) | 57% (29/51) | 74% (37/50) | +17 pts [+1, +30] |
 
+## Code checks of `unsure` claims
+
+The judges grade from text, so 30 serious claims stayed `unsure`, most about how a library or a
+distant part of the project behaves. `reviewreplay verify` gave each one to a read-only checker
+(`claude-sonnet-5-5` with Read, Grep and Glob only) holding the project after the change, the patch
+and, where the claim depends on a library, that library's Python source from the last PyPI release
+before the change. It must quote the code that decides the claim, and every quote is matched against
+the file in code; a verdict with no matching quote counts as `unsure`.
+
+| | Baseline | Skill |
+|---|---|---|
+| Checked | 17 | 13 |
+| Confirmed (now another real problem) | 9 | 6 |
+| Refuted (now a false alarm) | 6 | 7 |
+| Still `unsure` | 2 | 0 |
+
+All 30 verdicts had their quotes found in the files; none was downgraded. Cost: $1.38 in all, about
+$0.05 a claim. Examples:
+
+- **real-002 (py7zr):** five reviews claimed py7zr treats an empty `targets` list as "no filter".
+  With py7zr 1.1.0's source the checker refuted all five: only `targets is None` turns the filter off.
+- **real-012 (peft):** all six claims that the 1×1 shortcut in `get_delta_weight` is 2D-only were
+  confirmed.
+- **real-005 (werkzeug):** two skill claims that `LINE_BREAK_RE.match` can return `None` in
+  `DATA_START` were refuted: the blank line's second line break is always still in the buffer.
+
+Two stayed `unsure`, both because the deciding code wasn't available: real-004 needs torch's
+source (over the download cap) and real-007 needs the standard library's pickle machinery. Reproduce:
+`reviewreplay verify results/m2-real-more --kind real`, then `compare` as above;
+`compare --ignore-verify` shows the judges' labels alone.
+
 ## Grader caveats
 
 - **Model agreement isn't human agreement.** Sonnet and Opus agree at κ 0.74, below the 0.8 target
   set for hand labels, and both are Claude models. The verdicts are checked across models, not by
   people.
-- 17 baseline and 13 skill claims are `unsure` (library behaviour the judge can't check from the
-  repository). They count against precision until they're scored.
+- Each code check is one model call, not a vote, and no person has audited them; three refutes
+  were spot-checked against the source with Claude Code. A wrong refute turns a real problem into a
+  false alarm, so the checks carry less weight than the four-judge labels.
 - The earlier κ 0.93 was a separate check against a second model rater on the M1 pilot.
 
 ## Next
 
-1. Score `unsure` claims against library source (roadmap 1.3).
-2. A short yes/no review of the 12 contested findings, by a person or contributors.
-3. Test the skill's verify-before-reporting change (awesome-skills/code-review-skill#34), and
+1. A short yes/no review of the 12 contested findings, by a person or contributors.
+2. Test the skill's verify-before-reporting change (awesome-skills/code-review-skill#34), and
    Claude Code's `/code-review`, on the two cases nobody caught.

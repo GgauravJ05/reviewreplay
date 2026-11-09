@@ -94,15 +94,17 @@ from click, datasets, accelerate, werkzeug, attrs, rich, jsonschema, black and p
 | Real bugs | Claude Code | With [code-review-skill](https://github.com/awesome-skills/code-review-skill) |
 |---|---|---|
 | Bug found | 26 / 36 | 27 / 36 |
-| Precision (serious findings) | 56% | **71%** (paired +16 pts [+4, +24]) |
-| Serious false alarms | 7 | **3** |
+| Precision (serious findings) | 72% | **82%** (paired +10 pts [+1, +16]) |
+| Serious false alarms | 13 | **10** |
 | Mean cost per review | $0.065 | $0.097 (about 1.5×) |
 
 **Recall isn't solved.** On the first 4 real bugs Claude Code found the bug 23 times in 24; across
 12 it found it 26 or 27 times in 36, and two bugs (a Black f-string tokenizer state and a PEFT LoRA
 conv that drops `dilation`) were missed in every run, with or without the skill. **The skill's
-reviews were more often right**, at about 1.5× the cost, and that holds when every finding is
-graded by four judges (Sonnet ×3 and Opus; contested verdicts left out: +17 pts [+1, +30]). The
+reviews were more often right**, at about 1.5× the cost, but the lead is modest. Every finding is
+graded by four judges (Sonnet ×3 and Opus), and the 30 serious claims they couldn't settle were
+checked against the code, library source included. That moved both reviewers up and narrowed the
+gap from +16 pts to +10; with contested verdicts left out it touches zero (+9 pts [0, +17]). The
 grading is checked across models, not yet by people. Details:
 [first 4 bugs](results/m2-compare/README.md), [8 more](results/m2-real-more/README.md).
 
@@ -138,7 +140,7 @@ Adding cases: [docs/ADDING_A_CASE.md](docs/ADDING_A_CASE.md). Design and methodo
 - [x] Real bugs in full repositories; mining from fix commits
 - [x] `init`: build a benchmark from any repository's own history
 - [ ] GitHub Action: re-score your reviewer setup when its prompt or skill changes
-- [ ] Verify claims about third-party libraries (score "unsure" findings)
+- [x] Verify claims about third-party libraries (`reviewreplay verify` scores "unsure" findings)
 - [ ] Public leaderboard on the shared benchmark
 
 ## Author

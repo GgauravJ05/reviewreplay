@@ -1,0 +1,30 @@
+{
+  "case": "real-003",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "confirmed",
+      "reason": "format_completion replaces real newlines in value and help with a literal backslash-n. The Fish script only splits on newline and echoes $metadata[2] and $metadata[3] as they are. Nothing turns the two-character `\\n` back into a newline, so descriptions show literal `\\n` and values containing newlines are changed.",
+      "evidence": [
+        {
+          "file": "project/src/click/shell_completion.py",
+          "line": 434,
+          "quote": "value = item.value.replace(\"\\n\", r\"\\n\")"
+        },
+        {
+          "file": "project/src/click/shell_completion.py",
+          "line": 435,
+          "quote": "help_escaped = help_.replace(\"\\n\", r\"\\n\")"
+        },
+        {
+          "file": "project/src/click/shell_completion.py",
+          "line": 191,
+          "quote": "echo $metadata[2]\\t$metadata[3];"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.0455737
+    }
+  }
+}

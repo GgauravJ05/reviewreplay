@@ -1,0 +1,25 @@
+{
+  "case": "real-003",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "confirmed",
+      "reason": "format_completion replaces real newlines with a literal backslash-n in value and help. The Fish script only splits on newlines and runs a plain `echo` of the fields, with no unescape step (no `echo -e`, no string replace). So multiline help is shown with a literal \\n, and a value containing a newline is inserted with a literal \\n.",
+      "evidence": [
+        {
+          "file": "project/src/click/shell_completion.py",
+          "line": 435,
+          "quote": "help_escaped = help_.replace(\"\\n\", r\"\\n\")"
+        },
+        {
+          "file": "project/src/click/shell_completion.py",
+          "line": 191,
+          "quote": "echo $metadata[2]\\t$metadata[3];"
+        }
+      ],
+      "evidence_ok": 2,
+      "library": null,
+      "cost_usd": 0.0416789
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "case": "real-002",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "refuted",
+      "reason": "py7zr only treats `targets is None` as \"no filter\". An empty list is not None. It is converted to an empty set, so every file fails the `not in targets` check and is skipped. With recursive=False (the default), `any([])` is False and the result is the same. The extractor passes a list, so extracting everything when all members are blocked cannot happen.",
+      "evidence": [
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 591,
+          "quote": "if targets is not None:"
+        },
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 598,
+          "quote": "if f.filename not in targets:"
+        },
+        {
+          "file": "project/src/datasets/utils/extract.py",
+          "line": 364,
+          "quote": "archive.extract(output_path, targets=targets)"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": {
+        "name": "py7zr",
+        "version": "1.1.0"
+      },
+      "cost_usd": 0.0356591
+    }
+  }
+}

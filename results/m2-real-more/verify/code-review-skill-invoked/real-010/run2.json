@@ -1,0 +1,30 @@
+{
+  "case": "real-010",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "refuted",
+      "reason": "The branch is reached only inside the `while previous_defs[-1].depth >= depth` loop. So it runs only when the current line closes the nested class by dedenting to its depth or less. There, `before = 1` is the intended blank line after a non-stub nested class, as the changelog and the added test describe. The branch is guarded by the preview flag, `is_class` and `not is_stub_class`, so it doesn't fire for unrelated lines. Applying it whatever line follows is the feature, not a defect.",
+      "evidence": [
+        {
+          "file": "project/src/black/lines.py",
+          "line": 580,
+          "quote": "while self.previous_defs and self.previous_defs[-1].depth >= depth:"
+        },
+        {
+          "file": "project/src/black/lines.py",
+          "line": 588,
+          "quote": "and self.previous_defs[-1].is_class"
+        },
+        {
+          "file": "change.patch",
+          "line": 9,
+          "quote": "- For stubs, enforce one blank line after a nested class with a body other than just"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.0478747
+    }
+  }
+}

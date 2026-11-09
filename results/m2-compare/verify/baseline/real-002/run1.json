@@ -1,0 +1,30 @@
+{
+  "case": "real-002",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "confirmed",
+      "reason": "In SevenZipExtractor.safemembers, `badlink` is defined at line 339, but the only code that would call it is the commented-out `elif` at lines 350-351. The loop checks only `badpath`, so `badlink` is dead code and the function has no symlink check of its own. The comment says py7zr already validates symlinks, but nothing here confirms that. One part of the claim is wrong: the zip version does not define `badlink`. It only has the commented-out branch, so the dead-function part applies to the 7z version alone.",
+      "evidence": [
+        {
+          "file": "project/src/datasets/utils/extract.py",
+          "line": 339,
+          "quote": "def badlink(info: \"py7zr.FileInfo\", base: str) -> bool:"
+        },
+        {
+          "file": "project/src/datasets/utils/extract.py",
+          "line": 350,
+          "quote": "# elif finfo.is_symlink and badlink(finfo, base):"
+        },
+        {
+          "file": "project/src/datasets/utils/extract.py",
+          "line": 349,
+          "quote": "# py7zr already checks symlinks validity"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.06229639999999999
+    }
+  }
+}

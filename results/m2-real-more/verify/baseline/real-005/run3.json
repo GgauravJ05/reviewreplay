@@ -1,0 +1,35 @@
+{
+  "case": "real-005",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "In DATA_START with no boundary yet and no other newline in the buffer, last_newline() returns 0 (the leading CR). So del_index is 0 and nothing is deleted, but the state still moves to DATA. In the DATA state `_parse_data` uses data_start = 0, so the leading CRLF that DATA_START was meant to skip stays in the buffer. When the boundary arrives in a later chunk, data[0:match.start()] includes that CRLF. The cited line 218 is only `if more_data:`; the defect is in the code it triggers, at line 265.",
+      "evidence": [
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 265,
+          "quote": "data_end = del_index = self.last_newline()"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 254,
+          "quote": "data_start = 0"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 138,
+          "quote": "return min(last_nl, last_cr)"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 218,
+          "quote": "if more_data:"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": null,
+      "cost_usd": 0.0392735
+    }
+  }
+}
