@@ -1,0 +1,38 @@
+{
+  "case": "real-002",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "3": {
+      "verdict": "refuted",
+      "reason": "The extractor passes `targets`, which is always a list (possibly empty), never None. In py7zr 1.1.0, `extract` keeps an empty list as an empty list, and `_extract` turns it into an empty set. Only `targets is None` means no filter, so with an empty set every file fails `f.filename not in targets` and is skipped. An empty list therefore extracts nothing, not everything.",
+      "evidence": [
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 1023,
+          "quote": "if targets is not None:"
+        },
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 597,
+          "quote": "if targets is not None and recursive is False:"
+        },
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 598,
+          "quote": "if f.filename not in targets:"
+        },
+        {
+          "file": "project/src/datasets/utils/extract.py",
+          "line": 364,
+          "quote": "archive.extract(output_path, targets=targets)"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": {
+        "name": "py7zr",
+        "version": "1.1.0"
+      },
+      "cost_usd": 0.0481066
+    }
+  }
+}

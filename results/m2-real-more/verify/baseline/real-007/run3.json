@@ -1,0 +1,25 @@
+{
+  "case": "real-007",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "unsure",
+      "reason": "The generated getstate returns `{name: getattr(self, name) for name in state_attr_names}`, which is an empty dict for a class with no attributes. The setstate sets `_hash_cache_field` to None only when it is called. Whether the pickle or copy machinery skips `__setstate__` for a falsy state depends on stdlib code (copyreg/pickle) that is not in libs/, and I did not verify it here. The repo has no test covering this case.",
+      "evidence": [
+        {
+          "file": "project/src/attr/_make.py",
+          "line": 925,
+          "quote": "return {name: getattr(self, name) for name in state_attr_names}"
+        },
+        {
+          "file": "project/src/attr/_make.py",
+          "line": 943,
+          "quote": "__bound_setattr(_hash_cache_field, None)"
+        }
+      ],
+      "evidence_ok": 2,
+      "library": null,
+      "cost_usd": 0.0452074
+    }
+  }
+}

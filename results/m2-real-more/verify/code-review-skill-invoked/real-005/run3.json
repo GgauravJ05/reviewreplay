@@ -1,0 +1,30 @@
+{
+  "case": "real-005",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "refuted",
+      "reason": "DATA_START is entered only right after the PART state matched BLANK_LINE_RE. It deletes the buffer only up to the midpoint of that match, `(match.start() + match.end()) // 2`. The second line break (`\\r\\n`, `\\r` or `\\n`) therefore always stays at the start of the buffer. `LINE_BREAK_RE.match` always succeeds there, so the buffer is never empty. For `\\r\\n\\r\\n` the whole `\\r\\n` remains, so a lone `\\r` is never mistaken for the full break.",
+      "evidence": [
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 180,
+          "quote": "headers_end = (match.start() + match.end()) // 2"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 70,
+          "quote": "BLANK_LINE_RE = re.compile(b\"(?:\\r\\n\\r\\n|\\r\\r|\\n\\n)\", re.MULTILINE)"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 202,
+          "quote": "self.state = State.DATA_START"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.0438983
+    }
+  }
+}

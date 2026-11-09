@@ -1,0 +1,59 @@
+{
+  "case": "real-012",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "The shared `_ConvNd.get_delta_weight` checks `weight.size()[2:4] == (1, 1)`. For a Conv3d weight of shape (out, in, k1, k2, k3), that slice covers only (k1, k2), so kernels (1,1,1) and (1,1,k) both take the 2D fast path. The path then calls `squeeze(3).squeeze(2)` and `unsqueeze(2).unsqueeze(3)`, which are 2D-only. On 5D weights, `squeeze(3).squeeze(2)` leaves a 3D tensor, and the final result has the wrong rank, so the merge fails or is wrong.",
+      "evidence": [
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 1065,
+          "quote": "if self.get_base_layer().weight.size()[2:4] == (1, 1):"
+        },
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 1067,
+          "quote": "output_tensor = (weight_B.squeeze(3).squeeze(2) @ weight_A.squeeze(3).squeeze(2)).unsqueeze(2).unsqueeze("
+        },
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 1151,
+          "quote": "self.conv_fn = F.conv3d"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.032881499999999994
+    },
+    "1": {
+      "verdict": "refuted",
+      "reason": "The ordering is as claimed: conv_fn is set after super().__init__(), which calls update_layer. But nothing update_layer calls uses the layer's conv_fn or get_delta_weight. The loftq_init and pissa_init paths only touch weights directly. DoRA init uses its own conv_fn on DoraConv2dLayer/DoraConv3dLayer, and its update_layer uses torch.mm, so no AttributeError can occur.",
+      "evidence": [
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 1139,
+          "quote": "self.conv_fn = F.conv2d"
+        },
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 912,
+          "quote": "if init_lora_weights == \"loftq\":"
+        },
+        {
+          "file": "project/src/peft/tuners/lora/dora.py",
+          "line": 185,
+          "quote": "self.conv_fn = F.conv2d"
+        },
+        {
+          "file": "project/src/peft/tuners/lora/dora.py",
+          "line": 52,
+          "quote": "lora_weight = torch.mm(lora_B.flatten(start_dim=1), lora_A.flatten(start_dim=1))"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": null,
+      "cost_usd": 0.07408769999999999
+    }
+  }
+}

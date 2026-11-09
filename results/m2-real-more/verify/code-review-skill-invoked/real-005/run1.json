@@ -1,0 +1,59 @@
+{
+  "case": "real-005",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "refuted",
+      "reason": "The PART state removes only up to `headers_end = (match.start() + match.end()) // 2`. That leaves the second line break of the blank line (`\\r\\n`, `\\r` or `\\n`) at the start of the buffer. DATA_START is entered with that line break already in the buffer, and `next_event` consumes nothing before it runs again, so `LINE_BREAK_RE.match` always succeeds. DATA_START also cannot persist across calls: `_parse_data` sets the state to PART or EPILOGUE on a boundary match, and `next_event` sets it to DATA when `more_data` is true. The empty-buffer or lone-`\\r` case from the claim therefore cannot reach line 251.",
+      "evidence": [
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 180,
+          "quote": "headers_end = (match.start() + match.end()) // 2"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 202,
+          "quote": "self.state = State.DATA_START"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 218,
+          "quote": "if more_data:"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.048498
+    },
+    "1": {
+      "verdict": "confirmed",
+      "reason": "In DATA_START with no boundary match, _parse_data sets data_end = del_index = last_newline(). That is min(last \\n, last \\r), which is 0 when the buffer is the leading CRLF plus text with no later newline. The result is an empty Data event, nothing is deleted (the leading CRLF stays in the buffer), and the state moves to DATA. DATA calls _parse_data with start=False, so data_start is 0 and the CRLF is no longer stripped. Once more data arrives, the next emitted chunk begins with \\r\\n.",
+      "evidence": [
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 265,
+          "quote": "data_end = del_index = self.last_newline()"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 218,
+          "quote": "if more_data:"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 253,
+          "quote": "data_start = 0"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 138,
+          "quote": "return min(last_nl, last_cr)"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": null,
+      "cost_usd": 0.052815400000000005
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "case": "real-004",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "refuted",
+      "reason": "The new code does skip the upcast for the whole model when any Params4bit exists, and the new test asserts that on purpose. But the claimed regression is false. The old code only rebound the loop variable (`param = param.to(torch.float32)`), which never changed the model's parameters. So the old code never actually upcast anything, and QLoRA models had mixed dtypes before the change too.",
+      "evidence": [
+        {
+          "file": "project/src/accelerate/utils/fsdp_utils.py",
+          "line": 692,
+          "quote": "if accelerator.mixed_precision != \"no\" and not model_has_params4bit:"
+        },
+        {
+          "file": "change.patch",
+          "line": 40,
+          "quote": "-                param = param.to(torch.float32)"
+        },
+        {
+          "file": "project/src/accelerate/utils/fsdp_utils.py",
+          "line": 697,
+          "quote": "param.data = param.data.to(torch.float32)"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.0532082
+    }
+  }
+}
