@@ -1,0 +1,65 @@
+{
+  "case": "real-002",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "refuted",
+      "reason": "In py7zr 1.1.0, `extract` only treats `targets is None` as \"no filter\". An empty list is converted to an empty set, so every file fails the `not in targets` check and is skipped. Nothing is extracted when all members are filtered out. The only evidence for the claim is \"some py7zr versions\", and the vendored source doesn't show that.",
+      "evidence": [
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 591,
+          "quote": "if targets is not None:"
+        },
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 598,
+          "quote": "if f.filename not in targets:"
+        },
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 1023,
+          "quote": "if targets is not None:"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": {
+        "name": "py7zr",
+        "version": "1.1.0"
+      },
+      "cost_usd": 0.0437946
+    },
+    "2": {
+      "verdict": "refuted",
+      "reason": "safemembers decides only from `finfo.filename` (badpath), and extract passes those same names as targets. py7zr's default `recursive=False` keeps a file only if `f.filename` is exactly in the target set. Members with the same name get the same verdict, so the check and the extraction cannot disagree. Directory/file entries are also matched by name, with trailing slashes stripped. The one remaining difference is a name that differs only by a trailing slash, which the claim does not describe.",
+      "evidence": [
+        {
+          "file": "project/src/datasets/utils/extract.py",
+          "line": 363,
+          "quote": "targets = [finfo.filename for finfo in SevenZipExtractor.safemembers(archive.list(), output_path)]"
+        },
+        {
+          "file": "project/src/datasets/utils/extract.py",
+          "line": 347,
+          "quote": "if badpath(finfo.filename, base):"
+        },
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 598,
+          "quote": "if f.filename not in targets:"
+        },
+        {
+          "file": "libs/py7zr/py7zr/py7zr.py",
+          "line": 1014,
+          "quote": "recursive: bool | None = False,"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": {
+        "name": "py7zr",
+        "version": "1.1.0"
+      },
+      "cost_usd": 0.046690999999999996
+    }
+  }
+}

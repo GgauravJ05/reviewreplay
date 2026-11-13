@@ -1,0 +1,62 @@
+{
+  "case": "real-004",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "The new upcast loop runs before the `model.to(torch.device(\"meta\"))` step, so it works on real CPU tensors on every rank. The code comment says non-main ranks hold `torch.empty` CPU tensors, so `param.data.to(torch.float32)` allocates and writes a full fp32 copy there too. `original_sd = model.state_dict()` was taken earlier at line 649, so the old low-precision tensors stay referenced during the upcast. Before the change the upcast ran after the move to meta, where it allocated nothing. The claim's detail about rank 0 is slightly narrower than the code, because `original_sd` is built on all ranks. The memory spike itself is real.",
+      "evidence": [
+        {
+          "file": "project/src/accelerate/utils/fsdp_utils.py",
+          "line": 649,
+          "quote": "original_sd = model.state_dict()"
+        },
+        {
+          "file": "project/src/accelerate/utils/fsdp_utils.py",
+          "line": 697,
+          "quote": "param.data = param.data.to(torch.float32)"
+        },
+        {
+          "file": "project/src/accelerate/utils/fsdp_utils.py",
+          "line": 718,
+          "quote": "model = model.to(torch.device(\"meta\"))"
+        },
+        {
+          "file": "project/src/accelerate/utils/fsdp_utils.py",
+          "line": 707,
+          "quote": "If we kept the model on CPU (`cpu_ram_efficient_loading` has model be on CPU on all ranks, though non-main ranks only have `torch.empty`)"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": {
+        "name": "torch",
+        "version": null,
+        "note": "source not available"
+      },
+      "cost_usd": 0.0601793
+    },
+    "2": {
+      "verdict": "unsure",
+      "reason": "The code only upcasts params with requires_grad, so frozen non-fp32 params keep their dtype. The tests in the patch only use trainable params, so they don't cover a frozen case. Whether FSDP2 fails on mixed dtypes within a group is decided by torch's FSDPParamGroup, and libs/ is empty, so I can't confirm that. The code's own comment also says \"trainable params\", which suggests the author limited the scope on purpose.",
+      "evidence": [
+        {
+          "file": "project/src/accelerate/utils/fsdp_utils.py",
+          "line": 695,
+          "quote": "if param.requires_grad and param.dtype != torch.float32:"
+        },
+        {
+          "file": "project/src/accelerate/utils/fsdp_utils.py",
+          "line": 690,
+          "quote": "# FSDP2 requires uniform orig_dtype among trainable params in each group."
+        }
+      ],
+      "evidence_ok": 2,
+      "library": {
+        "name": "torch",
+        "version": null,
+        "note": "source not available"
+      },
+      "cost_usd": 0.051915
+    }
+  }
+}

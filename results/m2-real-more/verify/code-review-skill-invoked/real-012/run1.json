@@ -1,0 +1,30 @@
+{
+  "case": "real-012",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "The shared `_ConvNd.get_delta_weight` is used by Conv3d and tests only `weight.size()[2:4] == (1, 1)`, so a 3D kernel such as (1,1,1) or (1,1,k) takes the 2D shortcut. `lora_A` is built with the base layer's kernel size. After `squeeze(3).squeeze(2)`, a 5D weight keeps a trailing dimension, so the `@` operands become (out,r,1) and (r,in,k) or (r,in,1). Those shapes fail to multiply, or give a wrong delta, on merge.",
+      "evidence": [
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 1065,
+          "quote": "if self.get_base_layer().weight.size()[2:4] == (1, 1):"
+        },
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 1067,
+          "quote": "output_tensor = (weight_B.squeeze(3).squeeze(2) @ weight_A.squeeze(3).squeeze(2)).unsqueeze(2).unsqueeze("
+        },
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 905,
+          "quote": "self.lora_A[adapter_name] = conv_layer(self.in_features, r, kernel_size, stride, padding, bias=False)"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.043061100000000005
+    }
+  }
+}

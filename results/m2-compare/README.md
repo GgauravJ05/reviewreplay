@@ -10,6 +10,10 @@ explicitly (**skill**). Usage ≈ $6.70 for reviews, plus extraction and grading
 > [m2-real-more](../m2-real-more/README.md#four-judge-re-grade). On these 4 bugs the baseline's
 > precision is 60% (15/25) by majority vote; the skill's numbers are unchanged. The tables below are the
 > original single-judge grading.
+>
+> **Code-checked 2026-11-08:** the serious `unsure` claims on these 4 bugs were then checked against the
+> code ([m2-real-more](../m2-real-more/README.md#code-checks-of-unsure-claims)): precision is now 72%
+> (18/25) for the baseline and 87% (27/31) for the skill, with 6 and 4 serious false alarms.
 
 ## Headline
 

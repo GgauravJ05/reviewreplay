@@ -24,16 +24,17 @@ from pathlib import Path
 from .cases import Case
 from .grade import tally
 from .report import BOOT, bootstrap, cohen_kappa, collect, per_case
+from .verify import check_summary
 
 
 def merge_runs(run_dirs: list[Path], cases: dict[str, Case], kind: str | None = None,
-               drop_contested: bool = False) -> dict[str, dict[str, list[dict]]]:
+               drop_contested: bool = False, use_checks: bool = True) -> dict[str, dict[str, list[dict]]]:
     """subject → case → [per-run scores], pooled across run folders."""
     out: dict = defaultdict(lambda: defaultdict(list))
     for d in run_dirs:
-        for subject, per in collect(d, cases, drop_contested).items():
+        for subject, per in collect(d, cases, drop_contested, use_checks).items():
             for cid, runs in per.items():
-                if kind and cases[cid].kind != kind:
+                if kind and cases[cid].kind != kind:  # collect() skips cases not loaded
                     continue
                 out[subject][cid].extend(runs)
     return out
@@ -108,7 +109,7 @@ def judge_agreement(run_dirs: list[Path], cases: dict[str, Case], kind: str | No
     for d in run_dirs:
         for g in sorted((d / "grades").rglob("run*.json")):
             data = json.loads(g.read_text())
-            if kind and cases[data["case"]].kind != kind:
+            if data["case"] not in cases or (kind and cases[data["case"]].kind != kind):
                 continue
             findings += [f for f in data["findings"] if len(f.get("votes", [])) > 1]
     if not findings:
@@ -135,10 +136,13 @@ def judge_agreement(run_dirs: list[Path], cases: dict[str, Case], kind: str | No
 
 
 def build_comparison(run_dirs: list[Path], cases: dict[str, Case], kind: str | None = None,
-                     baseline: str = "baseline", drop_contested: bool = False) -> dict:
-    data = merge_runs(run_dirs, cases, kind, drop_contested)
+                     baseline: str = "baseline", drop_contested: bool = False,
+                     use_checks: bool = True) -> dict:
+    data = merge_runs(run_dirs, cases, kind, drop_contested, use_checks)
     out: dict = {"runs": [d.name for d in run_dirs], "kind": kind, "drop_contested": drop_contested,
-                 "subjects": {}, "paired": {}, "judges": judge_agreement(run_dirs, cases, kind)}
+                 "subjects": {}, "paired": {}, "judges": judge_agreement(run_dirs, cases, kind),
+                 "checks": check_summary(run_dirs, cases, kind) if use_checks else None,
+                 "use_checks": use_checks}
     for subject, scores in sorted(data.items()):
         out["subjects"][subject] = subject_row(scores)
     if baseline in data:
@@ -165,6 +169,7 @@ def _pct(v):
 def format_comparison(c: dict) -> str:
     kind = f" · {c['kind']} cases only" if c["kind"] else ""
     kind += " · contested findings left out" if c.get("drop_contested") else ""
+    kind += " · code checks ignored" if c.get("use_checks") is False else ""
     lines = [f"# ReviewReplay comparison — {', '.join(c['runs'])}{kind}", "",
              "| Subject | Cases | Reviews | Bug found | Recall | Precision (serious) | "
              "Serious false alarms | Unsure | Contested | Minor / review | Mean cost | Median cost |",
@@ -205,13 +210,21 @@ def format_comparison(c: dict) -> str:
         if bm:
             lines.append(f"Between `{bm['models'][0]}` and `{bm['models'][1]}` on {bm['findings']} findings: "
                          f"{100 * bm['agreement']:.0f}% agreement, Cohen's kappa {bm['kappa']:.2f}.")
+    ch = c.get("checks")
+    if ch and ch["checked"]:
+        lines += ["", "## Code checks of `unsure` findings", "",
+                  f"{ch['checked']} `unsure` findings checked against the code (`reviewreplay verify`): "
+                  f"{ch['confirmed']} confirmed (now another real problem), {ch['refuted']} refuted (now a "
+                  f"false alarm), {ch['unsure']} still unsure"
+                  + (f", {ch['downgraded']} of them because the quoted evidence wasn't in the files"
+                     if ch["downgraded"] else "") + ". Pass `--ignore-verify` for the judges' labels alone."]
     return "\n".join(lines) + "\n"
 
 
 def write_comparison(run_dirs: list[Path], cases: dict[str, Case], out: Path | None,
                      kind: str | None = None, baseline: str = "baseline",
-                     drop_contested: bool = False) -> str:
-    c = build_comparison(run_dirs, cases, kind, baseline, drop_contested)
+                     drop_contested: bool = False, use_checks: bool = True) -> str:
+    c = build_comparison(run_dirs, cases, kind, baseline, drop_contested, use_checks)
     text = format_comparison(c)
     if out:
         out.write_text(text)

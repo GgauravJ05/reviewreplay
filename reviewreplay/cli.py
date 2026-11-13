@@ -6,6 +6,7 @@
   reviewreplay run    --out results/<id> [--subjects a,b] [--cases DIR] [--runs 3]
   reviewreplay extract results/<id>
   reviewreplay grade   results/<id>
+  reviewreplay verify  results/<id>                check `unsure` findings against the code
   reviewreplay report  results/<id>
   reviewreplay compare results/<a> results/<b> [--kind real] [--out FILE.md]
   reviewreplay label   results/<id>/labels.csv
@@ -29,6 +30,7 @@ from .mine import as_dicts, mine, table
 from .report import agreement, write_label_sheet, write_report
 from .runner import run_all
 from .subjects import BUILTIN_SUBJECTS, load_subjects
+from .verify import MAX_LIB_MB, verify_all
 
 
 def _cases(path: str | None):
@@ -82,6 +84,18 @@ def main(argv: list[str] | None = None) -> int:
             p.add_argument("--second-judge", help="add votes from a different judge model")
             p.add_argument("--second-votes", type=int, default=1)
 
+    p = sub.add_parser("verify", help="check `unsure` findings against the code (read-only)")
+    p.add_argument("run_dir")
+    p.add_argument("--model", default=claude.DEFAULT_MODEL)
+    p.add_argument("--workers", type=int, default=2)
+    p.add_argument("--cases")
+    p.add_argument("--force", action="store_true", help="check again even if a result exists")
+    p.add_argument("--all-severities", action="store_true",
+                   help="also check minor findings (default: blocking and important only)")
+    p.add_argument("--kind", help="check one case kind only (real, planted, clean, decoy)")
+    p.add_argument("--max-lib-mb", type=int, default=MAX_LIB_MB,
+                   help="largest library download to fetch for a claim")
+
     p = sub.add_parser("report")
     p.add_argument("run_dir")
     p.add_argument("--cases")
@@ -92,6 +106,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--baseline", default="baseline")
     p.add_argument("--drop-contested", action="store_true",
                    help="leave out findings the judges split on")
+    p.add_argument("--ignore-verify", action="store_true",
+                   help="use the judges' labels only, without `verify` results")
     p.add_argument("--out", help="also write the table here (.md), with a .json beside it")
     p.add_argument("--cases")
 
@@ -164,10 +180,17 @@ def main(argv: list[str] | None = None) -> int:
         grade_all(Path(a.run_dir), cases, a.model, a.workers, force=a.force, judges=judges)
         return 0
 
+    if a.cmd == "verify":
+        cases = {c.id: c for c in _cases(a.cases)}
+        verify_all(Path(a.run_dir), cases, a.model, a.workers, force=a.force,
+                   all_severities=a.all_severities, limit_mb=a.max_lib_mb, kind=a.kind)
+        return 0
+
     if a.cmd == "compare":
         cases = {c.id: c for c in _cases(a.cases)}
         print(write_comparison([Path(d) for d in a.run_dirs], cases, Path(a.out) if a.out else None,
-                               kind=a.kind, baseline=a.baseline, drop_contested=a.drop_contested))
+                               kind=a.kind, baseline=a.baseline, drop_contested=a.drop_contested,
+                               use_checks=not a.ignore_verify))
         return 0
 
     if a.cmd == "report":

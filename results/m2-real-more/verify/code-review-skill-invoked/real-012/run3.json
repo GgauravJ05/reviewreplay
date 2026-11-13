@@ -1,0 +1,30 @@
+{
+  "case": "real-012",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "_ConvNd.get_delta_weight is shared by Conv2d and Conv3d, and its shortcut tests only `size()[2:4] == (1, 1)`. For a 5D Conv3d weight such as (o,i,1,1,1) or (o,i,1,1,k), the shortcut is taken and squeeze(3).squeeze(2) removes only two of the three spatial dims. The result is a 3D tensor, so the matmul gets mismatched shapes and raises or gives a wrong result.",
+      "evidence": [
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 1065,
+          "quote": "if self.get_base_layer().weight.size()[2:4] == (1, 1):"
+        },
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 1067,
+          "quote": "output_tensor = (weight_B.squeeze(3).squeeze(2) @ weight_A.squeeze(3).squeeze(2)).unsqueeze(2).unsqueeze("
+        },
+        {
+          "file": "project/src/peft/tuners/lora/layer.py",
+          "line": 1151,
+          "quote": "self.conv_fn = F.conv3d"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.0326992
+    }
+  }
+}

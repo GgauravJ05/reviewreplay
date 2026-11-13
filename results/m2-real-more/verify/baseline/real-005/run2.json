@@ -1,0 +1,88 @@
+{
+  "case": "real-005",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "In DATA_START the line break is dropped only from the returned slice (`data[data_start:data_end]`), and the buffer is trimmed by `del_index`. With no boundary buffered, `del_index = last_newline()`. That returns the index of the leading CR/LF itself, so it can be 0 and is less than `data_start`. The state still moves to DATA, so the leading \"\\r\\n\" stays in the buffer. When the boundary arrives, DATA uses `data_start = 0`, and the \"\\r\\n\" comes out as a prefix of the content. The claim's mechanism is slightly off, since it is the deletion that falls short rather than nothing being stripped. The outcome is the one claimed and the same fix would cure both.",
+      "evidence": [
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 265,
+          "quote": "data_end = del_index = self.last_newline()"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 252,
+          "quote": "data_start = cast(Match[bytes], match).end()"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 218,
+          "quote": "if more_data:"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 254,
+          "quote": "data_start = 0"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": null,
+      "cost_usd": 0.0455296
+    },
+    "1": {
+      "verdict": "refuted",
+      "reason": "The decoder can emit an empty Data(more_data=True) from DATA_START, for example when the buffer holds only a line break plus a partial line. In that case data_end comes from last_newline(), which is at or before the leading line break, so del_index is 0 and the line break is not consumed. The next DATA call uses data_start=0, so the following non-empty Data begins with the retained \"\\r\\n\". The encoder's omission of \"\\r\\n\" for the empty Data is therefore compensated for, and the re-encoded body is not missing its blank line.",
+      "evidence": [
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 265,
+          "quote": "data_end = del_index = self.last_newline()"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 254,
+          "quote": "data_start = 0"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 138,
+          "quote": "return min(last_nl, last_cr)"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 300,
+          "quote": "return event.data"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": null,
+      "cost_usd": 0.0505013
+    },
+    "2": {
+      "verdict": "confirmed",
+      "reason": "The encoder now sets state to DATA_START after a Field or File event. The guard that accepts a new Field or File only allows PREAMBLE, PART and DATA. Sending Field then Field (or File) with no Data event between them therefore reaches the ValueError branch. Before the change the state after a Field was DATA, so that sequence was accepted. The decoder always emits a Data event after a Field, so decoder-generated streams are unaffected. Hand-built event sequences are affected.",
+      "evidence": [
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 280,
+          "quote": "        elif isinstance(event, (Field, File)) and self.state in {"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 293,
+          "quote": "            self.state = State.DATA_START"
+        },
+        {
+          "file": "project/src/werkzeug/sansio/multipart.py",
+          "line": 307,
+          "quote": "            raise ValueError(f\"Cannot generate {event} in state: {self.state}\")"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.053880800000000006
+    }
+  }
+}

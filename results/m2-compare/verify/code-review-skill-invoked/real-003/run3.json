@@ -1,0 +1,25 @@
+{
+  "case": "real-003",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "confirmed",
+      "reason": "format_completion replaces real newlines in the value and help with a literal backslash-n. The Fish script only runs `echo $metadata[2]\\t$metadata[3]` and never converts the escapes back. Fish's `echo` without `-e` doesn't interpret backslash sequences, so descriptions show a literal `\\n`, and a value containing a newline completes as the two characters `\\n`. I haven't run Fish. I'm relying on the `echo` behaviour I know, since no Fish source is in `libs/`; nothing in the script contradicts it.",
+      "evidence": [
+        {
+          "file": "project/src/click/shell_completion.py",
+          "line": 434,
+          "quote": "value = item.value.replace(\"\\n\", r\"\\n\")"
+        },
+        {
+          "file": "project/src/click/shell_completion.py",
+          "line": 191,
+          "quote": "echo $metadata[2]\\t$metadata[3];"
+        }
+      ],
+      "evidence_ok": 2,
+      "library": null,
+      "cost_usd": 0.0351997
+    }
+  }
+}

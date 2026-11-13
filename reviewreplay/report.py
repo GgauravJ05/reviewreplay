@@ -19,6 +19,7 @@ from pathlib import Path
 
 from .cases import Case
 from .grade import SERIOUS
+from .verify import apply_checks, load_checks
 
 BOOT = 2000
 
@@ -66,9 +67,10 @@ def review_scores(grade: dict, raw: dict, case: Case, subject_skill: str | None,
     return s
 
 
-def collect(run_dir: Path, cases: dict[str, Case], drop_contested: bool = False
-            ) -> dict[str, dict[str, list[dict]]]:
-    """subject → case → [per-run scores]"""
+def collect(run_dir: Path, cases: dict[str, Case], drop_contested: bool = False,
+            use_checks: bool = True) -> dict[str, dict[str, list[dict]]]:
+    """subject → case → [per-run scores]; `verify` results relabel `unsure` findings unless
+    use_checks is False."""
     cfg = json.loads((run_dir / "config.json").read_text())
     skill_of = {s["name"]: (s["skill"] or {}).get("name") if not s["prompt"].startswith("/") else None
                 for s in cfg["subjects"]}
@@ -76,8 +78,13 @@ def collect(run_dir: Path, cases: dict[str, Case], drop_contested: bool = False
     for g in sorted((run_dir / "grades").rglob("run*.json")):
         rel = g.relative_to(run_dir / "grades")
         subject, case_id = rel.parts[0], rel.parts[1]
+        if case_id not in cases:
+            continue
         raw = json.loads((run_dir / "raw" / rel).read_text())
-        out[subject][case_id].append(review_scores(json.loads(g.read_text()), raw, cases[case_id],
+        grade = json.loads(g.read_text())
+        if use_checks:
+            grade = apply_checks(grade, load_checks(run_dir, rel))
+        out[subject][case_id].append(review_scores(grade, raw, cases[case_id],
                                                    skill_of.get(subject), drop_contested))
     return out
 
