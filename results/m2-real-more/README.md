@@ -21,10 +21,10 @@ repository, replayed in the full project with no git history.
 
 | | Baseline | Skill |
 |---|---|---|
-| Bug found | 15 / 24 | 14 / 24 |
+| Bug found | 15 / 24 | 15 / 24 |
 | Precision (serious findings) | 52% (15/29) | 60% (15/25) |
-| False alarms (serious) | 4 | 4 |
-| Unverifiable claims (`unsure`) | 10 | 6 |
+| False alarms (serious) | 4 | 3 |
+| Unverifiable claims (`unsure`) | 10 | 7 |
 | Minor remarks per review | 1.1 | 1.3 |
 | Mean cost per review | $0.066 | $0.096 |
 
@@ -35,22 +35,25 @@ Nine projects: click, datasets, accelerate, werkzeug, attrs, rich, jsonschema, b
 
 | | Baseline | Skill | Paired difference (95% CI, bootstrap over cases) |
 |---|---|---|---|
-| Bug found | 26 / 36 (72%) | 26 / 36 (72%) | 0 pts [−8, +8] |
-| Precision (serious findings) | 57% (31/54) | **71%** (40/56) | +14 pts [0, +24] |
-| False alarms (serious) | 7 | **4** | |
-| Unverifiable claims (`unsure`) | 16 | 12 | |
+| Bug found | 26 / 36 (72%) | 27 / 36 (75%) | +3 pts [−6, +11] |
+| Precision (serious findings) | 56% (30/54) | **71%** (40/56) | **+16 pts [+4, +24]** |
+| False alarms (serious) | 7 | **3** | |
+| Unverifiable claims (`unsure`) | 17 | 13 | |
 | Minor remarks per review | 1.2 | 1.1 | |
 | Mean cost per review | $0.065 | $0.097 | about **1.5×** |
 
 Reproduce this table with `reviewreplay compare results/m2-compare results/m2-real-more --kind real`.
-The m2-compare rows reproduce exactly from its grade files (16/25 and 25/31), so the two runs add up
-on the same definitions. "Serious" means a finding the reviewer rated blocking or important.
+Every finding is graded by four judges (three `claude-sonnet-5-5` votes and one `claude-opus-5-5`)
+and takes the majority label; see [Four-judge re-grade](#four-judge-re-grade) for what changed. The
+first single-judge grading gave 26/36 found for both, 57% vs 71% precision, 7 vs 4 false alarms and
++14 pts [0, +24]. "Serious" means a finding the reviewer rated blocking or important.
 Precision counts hits and other real problems over all serious findings, `unsure` included.
 
 ## What changed
 
 **Recall isn't solved.** With 4 real bugs, Claude Code found the bug 23 times in 24. With 12, it
-found it 26 times in 36 with or without the skill, and **both missed two bugs in every run**:
+found it 26 times in 36 without the skill and 27 with it, and **both missed two bugs in every
+run**:
 
 - **real-011 (black):** the new f-string state machine compares the state to
   `STATE_NOT_FSTRING`, so a continued string inside f-string braces (`STATE_IN_BRACES`) goes down
@@ -61,26 +64,56 @@ found it 26 times in 36 with or without the skill, and **both missed two bugs in
   1×1 shortcut, a wrong error message) but not this one.
 
 The misses are genuine: the graded reviews never mention the defect. Werkzeug (real-005) was found
-in only 1 of 3 runs by each reviewer.
+in 1 of 3 baseline runs and 2 of 3 skill runs.
 
-**The skill's precision edge holds, but it's smaller.** On 12 bugs the skill's serious findings
-were right 71% of the time against 57%, with 4 false alarms against 7. The paired interval just
-touches zero, so this is a lead to test, not a result. On the 8 new cases alone the gap was 8
+**The skill's precision edge holds, but it's smaller than on the first 4 bugs.** On 12 bugs the
+skill's serious findings were right 71% of the time against 56%, with 3 serious false alarms against
+7. After the four-judge re-grade the paired interval is +16 pts [+4, +24], clear of zero, and it
+stays clear with contested findings left out (+17 pts [+1, +30]). On the 8 new cases alone the gap was 8
 points, and the "half the minor noise" seen on the first 4 bugs didn't repeat (1.1 vs 1.3).
+
+## Four-judge re-grade
+
+A single judge call flip-flopped on one real-012 finding ("the Conv3d error message says Conv2d"),
+so every real-bug finding in m2-compare and m2-real-more was graded three more times: twice more
+by `claude-sonnet-5-5` and once by `claude-opus-5-5` (`grade --judges 3 --second-judge
+claude-opus-5-5`). Each finding takes the majority label; with no strict majority it's
+**contested**.
+
+| | |
+|---|---|
+| Findings graded 4 times | 195 |
+| All four votes agree | 150 (77%) |
+| The three Sonnet votes agree | 175 (90%) |
+| First single verdict = majority | 189 (97%) |
+| Contested (no strict majority) | 12 (3 baseline, 9 skill) |
+| Sonnet majority vs Opus | 81% agreement, Cohen's κ 0.74 |
+
+What moved: a skill review of werkzeug (real-005 run 2) is now a hit (three of four judges), a
+skill false alarm on real-005 became a contested `unsure`, and a baseline real-003 finding went
+from another real problem to `unsure`. The two Conv3d error-message findings settle as false alarms
+by majority (both were minor, so precision doesn't move).
+
+Reproduce with or without contested findings:
+`reviewreplay compare results/m2-compare results/m2-real-more --kind real [--drop-contested]`.
+
+| Without contested findings | Baseline | Skill | Paired difference |
+|---|---|---|---|
+| Bug found | 25 / 36 | 27 / 36 | +6 pts [−6, +17] |
+| Precision (serious) | 57% (29/51) | 74% (37/50) | +17 pts [+1, +30] |
 
 ## Grader caveats
 
-- **Judge inconsistency:** the same finding in real-012 ("the Conv3d error message says Conv2d")
-  was graded as another real problem in 3 reviews and a false alarm in 3. Precision moves by a few
-  points depending on which call is right. This is the strongest case yet for the human-label
-  sample.
-- 16 baseline and 12 skill claims are `unsure` (library behaviour the judge can't check from the
+- **Model agreement isn't human agreement.** Sonnet and Opus agree at κ 0.74, below the 0.8 target
+  set for hand labels, and both are Claude models. The verdicts are checked across models, not by
+  people.
+- 17 baseline and 13 skill claims are `unsure` (library behaviour the judge can't check from the
   repository). They count against precision until they're scored.
-- κ 0.93 is agreement with a second model rater, not with people.
+- The earlier κ 0.93 was a separate check against a second model rater on the M1 pilot.
 
 ## Next
 
-1. Human labels on a sample, starting with the inconsistent real-012 verdicts.
-2. Score `unsure` claims against library source.
+1. Score `unsure` claims against library source (roadmap 1.3).
+2. A short yes/no review of the 12 contested findings, by a person or contributors.
 3. Test the skill's verify-before-reporting change (awesome-skills/code-review-skill#34), and
    Claude Code's `/code-review`, on the two cases nobody caught.

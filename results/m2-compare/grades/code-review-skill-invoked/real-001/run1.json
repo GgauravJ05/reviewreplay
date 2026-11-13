@@ -19,8 +19,40 @@
         "verdict": "matches_truth",
         "reason": "Describes the __next__ override raising EOFError breaking ordinary stdin iteration, same as b1."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the __next__ override raising EOFError breaking ordinary stdin iteration, same as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes __next__ raising EOFError breaking ordinary stdin iteration, same defect as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: __next__ raising EOFError breaks ordinary iteration over stdin (e.g., click.File '-'), causing aborts."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It identifies the __next__ override that raises EOFError and breaks ordinary iteration over stdin, which is the defect described in b1."
+        }
+      ],
       "hit_bug": "b1",
-      "label": "hit"
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/click/testing.py",
@@ -37,9 +69,115 @@
         "verdict": "valid_other",
         "reason": "Concerns the test_chain.py loosening that hides the abort, a known other problem."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Concerns the test_chain.py loosening that hides the abort, a known other problem."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Notes the test_chain.py edit hiding the abort, a known other problem, and the prompt behavior change."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Mentions the test_chain.py edit hiding the abort, which is a known problem; the prompt EOF behavior itself is the intended upstream fix, but the test-hiding point is known."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Prompts raising EOFError is the intended change, but the finding correctly points out that the test_chain.py edit hides the abort, which is a known real problem."
+        }
+      ],
       "hit_bug": null,
-      "label": "valid_other"
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
     }
   ],
-  "judge_cost_usd": 0.0159459
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0159459,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the __next__ override raising EOFError breaking ordinary stdin iteration, same as b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Concerns the test_chain.py loosening that hides the abort, a known other problem."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0160179,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes __next__ raising EOFError breaking ordinary stdin iteration, same defect as b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Notes the test_chain.py edit hiding the abort, a known other problem, and the prompt behavior change."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0164059,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: __next__ raising EOFError breaks ordinary iteration over stdin (e.g., click.File '-'), causing aborts."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Mentions the test_chain.py edit hiding the abort, which is a known problem; the prompt EOF behavior itself is the intended upstream fix, but the test-hiding point is known."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0360038,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It identifies the __next__ override that raises EOFError and breaks ordinary iteration over stdin, which is the defect described in b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Prompts raising EOFError is the intended change, but the finding correctly points out that the test_chain.py edit hides the abort, which is a known real problem."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0843735
 }

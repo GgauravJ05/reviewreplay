@@ -19,8 +19,40 @@
         "verdict": "matches_truth",
         "reason": "Fish script iterates per line while three lines per item are emitted, breaking all completion."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Fish script iterates per line while three lines per item are emitted, breaking all completion."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the fish script iterating per line while the output now has multiple lines per item, breaking completion."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: fish script per-line iteration vs multi-line item output breaks all completion."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the same defect: the Fish script reads one line per completion, but each item is now split across three lines, so completion breaks."
+        }
+      ],
       "hit_bug": "b1",
-      "label": "hit"
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/click/shell_completion.py",
@@ -39,8 +71,40 @@
         "verdict": "unsure",
         "reason": "Escaping newlines as literal \\n without reversal in fish is plausible but not confirmed, and it is not the key bug."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Escaping newlines as literal \\n without reversal in fish is plausible but not confirmed, and it is not the key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Escaping newlines as literal \\n without reversal is a plausible separate issue but not verifiable and not the answer-key defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Escaping newlines as literal \\n without reversal is a different complaint from the line-splitting bug; plausible but unverifiable."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Escaping newlines on purpose is not the answer-key bug, and the finding does not show that it causes incorrect behavior."
+        }
+      ],
       "hit_bug": null,
-      "label": "unsure"
+      "label": "unsure",
+      "contested": false,
+      "agreement": 0.75
     },
     {
       "file": "",
@@ -57,8 +121,40 @@
         "verdict": "valid_other",
         "reason": "Test does not run the Fish script, so it misses the answer-key bug."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test does not run the Fish script, so it misses the answer-key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test does not run the fish script so it fails to cover the answer-key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test fails to cover the answer-key bug since it never runs the fish script."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Says the tests do not cover the answer-key bug: they never run the Fish script, so they pass despite the parsing break."
+        }
+      ],
       "hit_bug": null,
-      "label": "valid_other"
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "",
@@ -75,9 +171,163 @@
         "verdict": "invalid",
         "reason": "Version-number docstring nit is not a behavioral defect."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Version-number docstring nit is not a behavioral defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Version number speculation is not a functional defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative version number nit, not a behavioral defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A possibly wrong version number in a docstring is a documentation issue, not a behavior defect."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
     }
   ],
-  "judge_cost_usd": 0.017453899999999998
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.017453899999999998,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Fish script iterates per line while three lines per item are emitted, breaking all completion."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Escaping newlines as literal \\n without reversal in fish is plausible but not confirmed, and it is not the key bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test does not run the Fish script, so it misses the answer-key bug."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Version-number docstring nit is not a behavioral defect."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0174659,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the fish script iterating per line while the output now has multiple lines per item, breaking completion."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Escaping newlines as literal \\n without reversal is a plausible separate issue but not verifiable and not the answer-key defect."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test does not run the fish script so it fails to cover the answer-key bug."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Version number speculation is not a functional defect."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0175199,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: fish script per-line iteration vs multi-line item output breaks all completion."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Escaping newlines as literal \\n without reversal is a different complaint from the line-splitting bug; plausible but unverifiable."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test fails to cover the answer-key bug since it never runs the fish script."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative version number nit, not a behavioral defect."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0422958,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the same defect: the Fish script reads one line per completion, but each item is now split across three lines, so completion breaks."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Escaping newlines on purpose is not the answer-key bug, and the finding does not show that it causes incorrect behavior."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Says the tests do not cover the answer-key bug: they never run the Fish script, so they pass despite the parsing break."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A possibly wrong version number in a docstring is a documentation issue, not a behavior defect."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0947355
 }

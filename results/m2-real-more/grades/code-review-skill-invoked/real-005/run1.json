@@ -19,8 +19,40 @@
         "verdict": "unsure",
         "reason": "Claims a None-match AttributeError at line 251, which differs from the last_newline cut-at-0 slowness defect; can't verify it's real."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims a None-match AttributeError at line 251, which differs from the last_newline cut-at-0 slowness defect; can't verify it's real."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims a None-match AttributeError in DATA_START, which differs from the answer key's cut-at-last_newline stall; can't verify it's real."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims a None-match AttributeError in DATA_START, which is a different defect from the last_newline cut/slowness bug; can't verify it."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "This is a different complaint (AttributeError when the regex match is None), not the last_newline cut and stall in b1. I couldn't confirm from the information given whether the buffer can actually be empty at that point."
+        }
+      ],
       "hit_bug": null,
-      "label": "unsure"
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/werkzeug/sansio/multipart.py",
@@ -37,8 +69,40 @@
         "verdict": "matches_truth",
         "reason": "Identifies that last_newline() over the whole buffer in DATA_START cuts at the leading CRLF (index 0), the same root cause as b1, though it describes the effect as corruption rather than slow parsing."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies that last_newline() over the whole buffer in DATA_START cuts at the leading CRLF (index 0), the same root cause as b1, though it describes the effect as corruption rather than slow parsing."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Notes last_newline can be 0 in DATA_START, which is related to b1's cause, but claims data corruption rather than slow parsing and lists no candidates; can't verify."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Notes del_index can be 0 in DATA_START, which is related to the cut at last_newline, but it claims a different consequence (leading CRLF corrupting data) with no candidate id, so it can't be tied to b1."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It points to the same mechanism as b1: last_newline over the whole buffer returns 0 in DATA_START, so the parse goes wrong. Its candidates list is empty, so it can't be matched to b1, but the defect is real."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "unsure",
+      "contested": true,
+      "agreement": 0.5
     },
     {
       "file": "",
@@ -55,9 +119,139 @@
         "verdict": "valid_other",
         "reason": "A finding that the tests don't cover an answer-key bug is always counted as valid_other."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "A finding that the tests don't cover an answer-key bug is always counted as valid_other."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that the tests don't cover the chunked-input bug counts as a valid test-coverage finding."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that the test doesn't cover chunked input, which would miss the answer-key bug, is always valid_other."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "The finding says the tests don't exercise chunked input, so they miss the answer-key bug; per the rules that counts as valid_other."
+        }
+      ],
       "hit_bug": null,
-      "label": "valid_other"
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
     }
   ],
-  "judge_cost_usd": 0.0174079
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0174079,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims a None-match AttributeError at line 251, which differs from the last_newline cut-at-0 slowness defect; can't verify it's real."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies that last_newline() over the whole buffer in DATA_START cuts at the leading CRLF (index 0), the same root cause as b1, though it describes the effect as corruption rather than slow parsing."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "A finding that the tests don't cover an answer-key bug is always counted as valid_other."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0173279,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims a None-match AttributeError in DATA_START, which differs from the answer key's cut-at-last_newline stall; can't verify it's real."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Notes last_newline can be 0 in DATA_START, which is related to b1's cause, but claims data corruption rather than slow parsing and lists no candidates; can't verify."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that the tests don't cover the chunked-input bug counts as a valid test-coverage finding."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.017477899999999998,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims a None-match AttributeError in DATA_START, which is a different defect from the last_newline cut/slowness bug; can't verify it."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Notes del_index can be 0 in DATA_START, which is related to the cut at last_newline, but it claims a different consequence (leading CRLF corrupting data) with no candidate id, so it can't be tied to b1."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Finding that the test doesn't cover chunked input, which would miss the answer-key bug, is always valid_other."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0507238,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "This is a different complaint (AttributeError when the regex match is None), not the last_newline cut and stall in b1. I couldn't confirm from the information given whether the buffer can actually be empty at that point."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It points to the same mechanism as b1: last_newline over the whole buffer returns 0 in DATA_START, so the parse goes wrong. Its candidates list is empty, so it can't be matched to b1, but the defect is real."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "The finding says the tests don't exercise chunked input, so they miss the answer-key bug; per the rules that counts as valid_other."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.1029375
 }

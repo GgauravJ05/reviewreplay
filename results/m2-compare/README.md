@@ -6,6 +6,11 @@ Reviewers: Claude Code with no skill (**baseline**) and with
 [code-review-skill](https://github.com/awesome-skills/code-review-skill) at `4850184`, invoked
 explicitly (**skill**). Usage ≈ $6.70 for reviews, plus extraction and grading.
 
+> **Re-graded 2026-11-08:** the real-bug findings now carry four judge votes; see
+> [m2-real-more](../m2-real-more/README.md#four-judge-re-grade). On these 4 bugs the baseline's
+> precision is 60% (15/25) by majority vote; the skill's numbers are unchanged. The tables below are the
+> original single-judge grading.
+
 ## Headline
 
 | | Baseline | Skill | Difference (paired, 95% CI) |

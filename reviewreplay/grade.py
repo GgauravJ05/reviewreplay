@@ -8,6 +8,10 @@ Grading, two stages:
   2. judge (one structured call per review): decides whether each candidate is the *same defect*, and
      classifies everything else as valid_other / invalid / unsure.
 A finding counts as a hit only if both stages agree.
+
+Several judges (`grade --judges N --second-judge MODEL`): each judge run is kept in `judge_runs`, every
+finding gets its `votes`, the majority `label`, and `contested` when no label has a strict majority.
+A grade file from a single judge counts as the first vote, so adding judges only runs the new ones.
 """
 from __future__ import annotations
 
@@ -124,54 +128,121 @@ def _fmt_spots(spots: list[Spot], key: str) -> str:
     return "\n".join(rows)
 
 
-def grade_one(case: Case, findings_file: Path, out_file: Path, model: str, force: bool = False) -> str:
-    if out_file.exists() and not force:
-        return "cached"
-    findings = json.loads(findings_file.read_text())["findings"]
-    rows = []
-    for i, f in enumerate(findings):
-        rows.append({**f, "index": i, "candidates": candidates(f, case.bugs, no_line_same_file=True),
-                     "decoy_spot": candidates(f, case.known_ok)})
-    judged: dict[int, dict] = {}
-    judge_cost = 0.0
-    if rows:
-        listing = "\n".join(
-            f"- index={r['index']} [{r['severity']}] {r['file']}:{r['line_start']}-{r['line_end']}: "
-            f"{r['summary']} (candidates: {r['candidates'] or '[]'})" for r in rows)
-        prompt = (_prompt("judge.md").replace("{bugs}", _fmt_spots(case.bugs, "summary"))
-                  .replace("{known_ok}", _fmt_spots(case.known_ok, "note"))
-                  .replace("{related}", "\n".join(f"- {r}" for r in case.related_valid) or "(none)")
-                  .replace("{findings}", listing))
-        with tempfile.TemporaryDirectory(prefix="rb-j-") as tmp:
-            res = claude.run_json(prompt, JUDGE_SCHEMA, Path(tmp), model=model)
-        judge_cost = res["cost_usd"] or 0.0
-        judged = {g["index"]: g for g in res["data"]["grades"]}
-    for r in rows:
-        j = judged.get(r["index"], {"same_bug_as": None, "verdict": "unsure", "reason": "not graded"})
-        hit = j["same_bug_as"] if j["same_bug_as"] in r["candidates"] else None
-        if hit:
-            label = "hit"
-        elif j["verdict"] == "valid_other":
-            label = "valid_other"
-        elif j["verdict"] == "unsure":
-            label = "unsure"
+def label_for(row: dict, j: dict) -> str:
+    """One judge's verdict on one finding → hit / valid_other / unsure / false_alarm."""
+    if j.get("same_bug_as") and j["same_bug_as"] in row["candidates"]:
+        return "hit"
+    if j.get("verdict") == "valid_other":
+        return "valid_other"
+    if j.get("verdict") == "unsure":
+        return "unsure"
+    return "false_alarm"
+
+
+def tally(labels: list[str]) -> tuple[str, bool, float]:
+    """Majority label, contested flag and agreement share. A finding is contested when no label has
+    a strict majority; the first vote's label breaks the tie."""
+    counts: dict[str, int] = {}
+    for lab in labels:
+        counts[lab] = counts.get(lab, 0) + 1
+    top = max(counts.values())
+    winners = [lab for lab in labels if counts[lab] == top]      # in vote order
+    label = winners[0]
+    return label, top * 2 <= len(labels), top / len(labels)
+
+
+def wanted_judges(model: str, judges: int = 1, second_judge: str | None = None,
+                  second_votes: int = 1) -> list[str]:
+    return [model] * max(1, judges) + ([second_judge] * second_votes if second_judge else [])
+
+
+def _legacy_runs(old: dict, model: str) -> list[dict]:
+    """A grade file written before multi-judge: its one judge call becomes the first vote."""
+    if "judge_runs" in old:
+        return old["judge_runs"]
+    return [{"model": old.get("judge_model", model), "cost_usd": old.get("judge_cost_usd", 0.0),
+             "grades": {str(f["index"]): f["judge"] for f in old["findings"] if "judge" in f}}]
+
+
+def _missing(have: list[dict], want: list[str]) -> list[str]:
+    left = [r["model"] for r in have]
+    out = []
+    for m in want:
+        if m in left:
+            left.remove(m)
         else:
-            label = "false_alarm"
-        r.update({"judge": j, "hit_bug": hit, "label": label})
+            out.append(m)
+    return out
+
+
+def _judge_prompt(case: Case, rows: list[dict]) -> str:
+    listing = "\n".join(
+        f"- index={r['index']} [{r['severity']}] {r['file']}:{r['line_start']}-{r['line_end']}: "
+        f"{r['summary']} (candidates: {r['candidates'] or '[]'})" for r in rows)
+    return (_prompt("judge.md").replace("{bugs}", _fmt_spots(case.bugs, "summary"))
+            .replace("{known_ok}", _fmt_spots(case.known_ok, "note"))
+            .replace("{related}", "\n".join(f"- {r}" for r in case.related_valid) or "(none)")
+            .replace("{findings}", listing))
+
+
+def _call_judge(prompt: str, model: str) -> dict:
+    with tempfile.TemporaryDirectory(prefix="rb-j-") as tmp:
+        res = claude.run_json(prompt, JUDGE_SCHEMA, Path(tmp), model=model)
+    return {"model": model, "cost_usd": res["cost_usd"] or 0.0,
+            "grades": {str(g["index"]): g for g in res["data"]["grades"]}}
+
+
+def apply_votes(rows: list[dict], runs: list[dict]) -> None:
+    """Fill each finding's votes, label and contested flag from the judge runs."""
+    for r in rows:
+        votes = []
+        for run in runs:
+            j = run["grades"].get(str(r["index"]),
+                                  {"same_bug_as": None, "verdict": "unsure", "reason": "not graded"})
+            votes.append({"model": run["model"], "label": label_for(r, j), "same_bug_as": j.get("same_bug_as"),
+                          "verdict": j.get("verdict"), "reason": j.get("reason", "")})
+        label, contested, share = tally([v["label"] for v in votes])
+        first = runs[0]["grades"].get(str(r["index"]), {"same_bug_as": None, "verdict": "unsure",
+                                                        "reason": "not graded"})
+        hit = next((v["same_bug_as"] for v in votes if v["label"] == "hit"), None) if label == "hit" else None
+        r.update({"judge": first, "votes": votes, "hit_bug": hit, "label": label,
+                  "contested": contested, "agreement": share})
+
+
+def grade_one(case: Case, findings_file: Path, out_file: Path, model: str, force: bool = False,
+              judges: list[str] | None = None, call=_call_judge) -> str:
+    want = judges or [model]
+    findings = json.loads(findings_file.read_text())["findings"]
+    rows = [{**f, "index": i, "candidates": candidates(f, case.bugs, no_line_same_file=True),
+             "decoy_spot": candidates(f, case.known_ok)} for i, f in enumerate(findings)]
+    have: list[dict] = []
+    if out_file.exists() and not force:
+        have = _legacy_runs(json.loads(out_file.read_text()), model)
+    todo = _missing(have, want) if rows else []
+    if out_file.exists() and not force and not todo:
+        return "cached"
+    if todo:
+        prompt = _judge_prompt(case, rows)
+        have = have + [call(prompt, m) for m in todo]
+    if rows:
+        apply_votes(rows, have)
     out_file.parent.mkdir(parents=True, exist_ok=True)
     out_file.write_text(json.dumps({"case": case.id, "kind": case.kind, "findings": rows,
-                                    "judge_cost_usd": judge_cost}, indent=2))
-    return "ok"
+                                    "judge_runs": have,
+                                    "judge_cost_usd": sum(r["cost_usd"] for r in have)}, indent=2))
+    return f"ok ({len(todo)} new vote{'s' if len(todo) != 1 else ''})" if todo else "ok"
 
 
 def grade_all(run_dir: Path, cases: dict[str, Case], model: str, workers: int,
-              force: bool = False) -> None:
+              force: bool = False, judges: list[str] | None = None) -> None:
     jobs = []
     for f in sorted((run_dir / "findings").rglob("run*.json")):
         rel = f.relative_to(run_dir / "findings")
         case_id = rel.parts[1]
+        if case_id not in cases:            # `--cases cases/real` grades only the real cases
+            continue
         jobs.append((cases[case_id], f, run_dir / "grades" / rel))
-    _parallel(jobs, lambda j: grade_one(*j, model, force), workers, "grade")
+    _parallel(jobs, lambda j: grade_one(*j, model, force, judges), workers, "grade")
 
 
 def _parallel(jobs, fn, workers: int, label: str) -> None:

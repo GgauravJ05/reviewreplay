@@ -19,8 +19,40 @@
         "verdict": "matches_truth",
         "reason": "Same startswith-without-separator sibling directory bypass in zip check."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same startswith-without-separator sibling directory bypass in zip check."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same startswith-without-separator sibling directory bypass in zip check."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same startswith-without-separator sibling directory bypass in zip check."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the sibling-directory bypass from the startswith check with no separator in the zip filter."
+        }
+      ],
       "hit_bug": "b1",
-      "label": "hit"
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/datasets/utils/extract.py",
@@ -39,8 +71,40 @@
         "verdict": "matches_truth",
         "reason": "Same bug in rar filter."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same bug in rar filter."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same flaw in the rar filter."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect in rar filter."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same prefix-check bypass in the rar filter."
+        }
+      ],
       "hit_bug": "b1",
-      "label": "hit"
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/datasets/utils/extract.py",
@@ -59,8 +123,40 @@
         "verdict": "matches_truth",
         "reason": "Same bug in 7z filter."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same bug in 7z filter."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same flaw in the 7z filter."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect in 7z filter."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same prefix-check bypass in the 7z filter."
+        }
+      ],
       "hit_bug": "b1",
-      "label": "hit"
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/datasets/utils/extract.py",
@@ -77,8 +173,40 @@
         "verdict": "unsure",
         "reason": "Plausible py7zr behavior with empty targets, but unverified from the information given."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Plausible py7zr behavior with empty targets, but unverified from the information given."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Speculative about py7zr treating an empty targets list as no filter; plausible but unverified."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Speculative about py7zr empty-list behavior; plausible but unverified."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is speculative: py7zr treats only targets=None as no filter, so an empty list extracts nothing."
+        }
+      ],
       "hit_bug": null,
-      "label": "unsure"
+      "label": "unsure",
+      "contested": false,
+      "agreement": 0.75
     },
     {
       "file": "src/datasets/utils/extract.py",
@@ -97,8 +225,40 @@
         "verdict": "valid_other",
         "reason": "Matches known problem: bad members skipped with only a log, giving partial extraction."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known problem: bad members skipped with only a log, giving partial extraction."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known problem: bad members skipped with only a log, giving partial extraction."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known problem: blocked members only logged, partial extraction reported as success."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the already-known problem that bad members are skipped silently and partial extraction is reported as success."
+        }
+      ],
       "hit_bug": null,
-      "label": "valid_other"
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
     },
     {
       "file": "src/datasets/utils/extract.py",
@@ -117,9 +277,211 @@
         "verdict": "invalid",
         "reason": "Dead-code and style complaint, not the prefix bug and no incorrect behavior; wrongly attributed to b1."
       },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code and style complaint, not the prefix bug and no incorrect behavior; wrongly attributed to b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code/style claim about an unused function; not the sibling-prefix bug and no incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead code claim is not the answer-key bug and is a minor, non-behavioral issue."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "The badlink code is never called, so it has no effect on behavior; this is a dead-code comment."
+        }
+      ],
       "hit_bug": null,
-      "label": "false_alarm"
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
     }
   ],
-  "judge_cost_usd": 0.0193659
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0193659,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same startswith-without-separator sibling directory bypass in zip check."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same bug in rar filter."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same bug in 7z filter."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Plausible py7zr behavior with empty targets, but unverified from the information given."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known problem: bad members skipped with only a log, giving partial extraction."
+        },
+        "5": {
+          "index": 5,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code and style complaint, not the prefix bug and no incorrect behavior; wrongly attributed to b1."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0194159,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same startswith-without-separator sibling directory bypass in zip check."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same flaw in the rar filter."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same flaw in the 7z filter."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Speculative about py7zr treating an empty targets list as no filter; plausible but unverified."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known problem: bad members skipped with only a log, giving partial extraction."
+        },
+        "5": {
+          "index": 5,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code/style claim about an unused function; not the sibling-prefix bug and no incorrect behavior."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0192559,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same startswith-without-separator sibling directory bypass in zip check."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect in rar filter."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect in 7z filter."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Speculative about py7zr empty-list behavior; plausible but unverified."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known problem: blocked members only logged, partial extraction reported as success."
+        },
+        "5": {
+          "index": 5,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead code claim is not the answer-key bug and is a minor, non-behavioral issue."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0459118,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the sibling-directory bypass from the startswith check with no separator in the zip filter."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same prefix-check bypass in the rar filter."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same prefix-check bypass in the 7z filter."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is speculative: py7zr treats only targets=None as no filter, so an empty list extracts nothing."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the already-known problem that bad members are skipped silently and partial extraction is reported as success."
+        },
+        "5": {
+          "index": 5,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "The badlink code is never called, so it has no effect on behavior; this is a dead-code comment."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.1039495
 }

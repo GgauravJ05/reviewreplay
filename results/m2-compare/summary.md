@@ -1,4 +1,4 @@
-# ReviewBench results — `m2-compare`
+# ReviewReplay results — `m2-compare`
 
 Model `claude-sonnet-5-5` · 2.1.319 (Claude Code) · 3 runs per case · 18 cases
 
@@ -6,7 +6,7 @@ Values are mean over cases (each case averaged over its runs) with a 95% bootstr
 
 | Subject | Reviews | Recall | Precision | Clean pass | Decoy trap | Skill used (natural) | Findings / review | Median est. cost | Median time |
 |---|---|---|---|---|---|---|---|---|---|
-| baseline | 57 | 98% [93%–100%] | 91% [81%–98%] | 100% [100%–100%] | 0% [0%–0%] | — | 2.6 | $0.044 | 11s |
+| baseline | 57 | 98% [93%–100%] | 90% [80%–98%] | 100% [100%–100%] | 0% [0%–0%] | — | 2.6 | $0.044 | 11s |
 | code-review-skill-invoked | 57 | 100% [100%–100%] | 95% [88%–100%] | 100% [100%–100%] | 0% [0%–0%] | — | 2.5 | $0.074 | 14s |
 
 ## Paired difference vs. baseline
@@ -15,7 +15,7 @@ Positive = better than baseline for recall, clean pass and precision. An interva
 
 | Subject | Recall Δ | Clean pass Δ | Precision Δ |
 |---|---|---|---|
-| code-review-skill-invoked | +2 pts [+0, +7] | +0 pts [+0, +0] | +4 pts [-3, +11] |
+| code-review-skill-invoked | +2 pts [+0, +7] | +0 pts [+0, +0] | +5 pts [-0, +11] |
 
 ## Per case
 

@@ -22,7 +22,7 @@ from pathlib import Path
 from . import claude
 from .cases import check_case, find_case_dirs, load_cases, make_patch
 from .compare import write_comparison
-from .grade import extract_all, grade_all
+from .grade import extract_all, grade_all, wanted_judges
 from .init import init
 from .label import label_sheet
 from .mine import as_dicts, mine, table
@@ -77,6 +77,10 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--cases")
         if name == "grade":
             p.add_argument("--force", action="store_true", help="re-grade even if grades exist")
+            p.add_argument("--judges", type=int, default=1,
+                           help="judge votes per review with --model (existing grades count as one)")
+            p.add_argument("--second-judge", help="add votes from a different judge model")
+            p.add_argument("--second-votes", type=int, default=1)
 
     p = sub.add_parser("report")
     p.add_argument("run_dir")
@@ -86,6 +90,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("run_dirs", nargs="+")
     p.add_argument("--kind", help="keep one case kind (real, planted, clean, decoy)")
     p.add_argument("--baseline", default="baseline")
+    p.add_argument("--drop-contested", action="store_true",
+                   help="leave out findings the judges split on")
     p.add_argument("--out", help="also write the table here (.md), with a .json beside it")
     p.add_argument("--cases")
 
@@ -154,13 +160,14 @@ def main(argv: list[str] | None = None) -> int:
 
     if a.cmd == "grade":
         cases = {c.id: c for c in _cases(a.cases)}
-        grade_all(Path(a.run_dir), cases, a.model, a.workers, force=a.force)
+        judges = wanted_judges(a.model, a.judges, a.second_judge, a.second_votes)
+        grade_all(Path(a.run_dir), cases, a.model, a.workers, force=a.force, judges=judges)
         return 0
 
     if a.cmd == "compare":
         cases = {c.id: c for c in _cases(a.cases)}
         print(write_comparison([Path(d) for d in a.run_dirs], cases, Path(a.out) if a.out else None,
-                               kind=a.kind, baseline=a.baseline))
+                               kind=a.kind, baseline=a.baseline, drop_contested=a.drop_contested))
         return 0
 
     if a.cmd == "report":
