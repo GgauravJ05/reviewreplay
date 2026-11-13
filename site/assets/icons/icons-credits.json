@@ -58,5 +58,38 @@
     "url": "https://github.com/gilbarbara/logos",
     "trademark": true,
     "markUrl": "https://en.wikipedia.org/wiki/Terminal_emulator"
+  },
+  {
+    "file": "ui-box.svg",
+    "icon": "ui:box",
+    "name": "Box",
+    "kind": "line",
+    "source": "@iconify-json/lucide@1.2.100",
+    "author": "Lucide Contributors",
+    "licence": "ISC",
+    "url": "https://github.com/lucide-icons/lucide",
+    "trademark": false
+  },
+  {
+    "file": "ui-eye.svg",
+    "icon": "ui:eye",
+    "name": "Eye",
+    "kind": "line",
+    "source": "@iconify-json/lucide@1.2.100",
+    "author": "Lucide Contributors",
+    "licence": "ISC",
+    "url": "https://github.com/lucide-icons/lucide",
+    "trademark": false
+  },
+  {
+    "file": "ui-git-commit-horizontal.svg",
+    "icon": "ui:git-commit-horizontal",
+    "name": "Git Commit Horizontal",
+    "kind": "line",
+    "source": "@iconify-json/lucide@1.2.100",
+    "author": "Lucide Contributors",
+    "licence": "ISC",
+    "url": "https://github.com/lucide-icons/lucide",
+    "trademark": false
   }
 ]
