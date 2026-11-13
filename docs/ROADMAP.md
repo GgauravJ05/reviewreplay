@@ -1,5 +1,7 @@
 # v0.2 roadmap
 
+> Current checklist of what's left: [TODO.md](TODO.md).
+
 Where v0.1 stands (2026-11-08): 12 real bugs from 9 projects, 162 reviews, two reviewers (Claude
 Code with and without code-review-skill). Results: [m2-compare](../results/m2-compare/README.md),
 [m2-real-more](../results/m2-real-more/README.md).
