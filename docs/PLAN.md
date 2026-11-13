@@ -320,6 +320,9 @@ Runs resume: a run that stops halfway continues from the last finished review.
 
 Rough timeline: M0 2 days · M1 1 week · M2 1–2 weeks · M3 1 week · M4 a few days.
 
+**After v0.1:** M3 (12 real bugs) and M4 (public launch) are done. The prioritised next steps are in
+[ROADMAP.md](ROADMAP.md).
+
 **Before launch:** share results with the code-review-skill maintainers on #32 first, so they can
 respond before anything is posted publicly.
 
