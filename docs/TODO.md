@@ -3,6 +3,10 @@
 Start here when you come back to ReviewReplay. The *why* and the full plan are in
 [ROADMAP.md](ROADMAP.md); this file is the short, current checklist. Tick items off as they land.
 
+**Working with Claude:** each section has a task brief in [tasks/](tasks/README.md). Paste
+`Read CLAUDE.md and docs/tasks/<brief>.md, then do the task.` Project rules for every session are in
+[CLAUDE.md](../CLAUDE.md).
+
 Last updated: 2026-11-13.
 
 ## Where things stand
@@ -16,6 +20,8 @@ Last updated: 2026-11-13.
 
 ## 1. Land the open PRs (do this first)
 
+Brief: [01](tasks/01-land-open-prs.md)
+
 - [ ] **PR #5** (multi-judge grading): it has merge conflicts with `main`. Update it from `main`,
       fix the conflicts, then review and squash-merge.
 - [ ] **PR #7** (`reviewreplay verify`): stacked on #5. After #5 merges, change its base to `main`,
@@ -25,11 +31,15 @@ Last updated: 2026-11-13.
 
 ## 2. Fix the numbers already published
 
+Brief: [02](tasks/02-correct-published-numbers.md)
+
 - [ ] Post a short update on awesome-skills/code-review-skill#32 with the code-checked numbers
       (the comment there has the older ones).
 - [ ] LinkedIn: short repost with the corrected numbers (the live post has the older ones).
 
 ## 3. Roadmap Phase 1 — finish trustworthy grading
+
+Brief: [03](tasks/03-approximate-line-matching.md), [04](tasks/04-contested-findings.md)
 
 - [x] 1.1 `reviewreplay compare` (PR #3)
 - [ ] 1.2 Multi-judge grading — PR #5
@@ -40,6 +50,8 @@ Last updated: 2026-11-13.
       contested in a short "help label these" issue.
 
 ## 4. Roadmap Phase 2 — more real bugs (target: 20+ cases, 3+ languages)
+
+Brief: [05](tasks/05-mine-real-cases.md), [06](tasks/06-language-support.md), [07](tasks/07-run-and-grade.md)
 
 - [ ] Mine 8–10 more cases. Include **JS/TS and Go** from permissively licensed repos:
       `reviewreplay mine <repo-url> --since 2024-01-01 --limit 40 --json out.json`
@@ -57,6 +69,8 @@ so read every one.
 
 ## 5. Roadmap Phase 3 — more reviewers
 
+Brief: [08](tasks/08-more-reviewers.md), [09](tasks/09-skill-verify-step.md)
+
 - [ ] Install and log in to Codex CLI and Gemini CLI, then run one case each with
       `reviewreplay/subjects/examples/codex.json` and `gemini.json`.
 - [ ] Try Claude Code `/code-review` (`examples/claude-code-review.json`) on one case.
@@ -67,12 +81,16 @@ so read every one.
 
 ## 6. Roadmap Phase 4 — product
 
+Brief: [10](tasks/10-github-action.md), [11](tasks/11-quickstart.md)
+
 - [ ] GitHub Action: re-score a reviewer when its prompt or skill file changes and comment the
       scorecard on the PR. Example workflow, docs and a demo repo.
 - [ ] Five-minute quickstart: clear errors (no `claude`, not logged in, usage limit), a `--dry-run`
       cost estimate, and `init` → `run` → `report` tested on a fresh clone of a popular repo.
 
 ## 7. Release and community
+
+Brief: [12](tasks/12-release.md)
 
 - [ ] Social preview image: upload it in GitHub → Settings → General (there's no API for it).
 - [ ] 5–8 good-first-issues (add a case from X, a reviewer adapter, a language).
