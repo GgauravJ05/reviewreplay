@@ -7,27 +7,25 @@ Start here when you come back to ReviewReplay. The *why* and the full plan are i
 `Read CLAUDE.md and docs/tasks/<brief>.md, then do the task.` Project rules for every session are in
 [CLAUDE.md](../CLAUDE.md).
 
-Last updated: 2026-11-13.
+Last updated: 2026-11-14.
 
 ## Where things stand
 
 - Public repo, site live at https://ggauravj05.github.io/reviewreplay/, PR rules on `main`.
 - 12 real bugs from 9 projects (`cases/real/real-001` … `real-012`), 162 reviews in
   `results/m2-compare` and `results/m2-real-more`.
-- Latest numbers (code-checked, on branch `feat/verify-unsure`, not on `main` yet): precision
+- Latest numbers (code-checked, on `main`, README and site updated): precision
   **72% without vs 82% with code-review-skill**, paired +10 pts [+1, +16]; serious false alarms 13 vs 10.
   `real-011` (black) and `real-012` (peft) were missed in every run.
 
-## 1. Land the open PRs (do this first)
+## 1. Land the open PRs (done 2026-11-13)
 
 Brief: [01](tasks/01-land-open-prs.md)
 
-- [ ] **PR #5** (multi-judge grading): it has merge conflicts with `main`. Update it from `main`,
-      fix the conflicts, then review and squash-merge.
-- [ ] **PR #7** (`reviewreplay verify`): stacked on #5. After #5 merges, change its base to `main`,
-      update it, then merge it.
-- [ ] Close issues #4 and #6 once their PRs are in.
-- [ ] Check that the site and README show the 72% vs 82% numbers after the merge.
+- [x] **PR #5** (multi-judge grading): conflicts fixed, merged.
+- [x] **PR #7** (`reviewreplay verify`): merged, with the new site (#10, #11).
+- [x] Close issues #4 and #6 once their PRs are in.
+- [x] Check that the site and README show the 72% vs 82% numbers after the merge.
 
 ## 2. Fix the numbers already published
 
@@ -42,8 +40,8 @@ Brief: [02](tasks/02-correct-published-numbers.md)
 Brief: [03](tasks/03-approximate-line-matching.md), [04](tasks/04-contested-findings.md)
 
 - [x] 1.1 `reviewreplay compare` (PR #3)
-- [ ] 1.2 Multi-judge grading — PR #5
-- [ ] 1.3 `unsure` checker (`reviewreplay verify`) — PR #7
+- [x] 1.2 Multi-judge grading — PR #5
+- [x] 1.3 `unsure` checker (`reviewreplay verify`) — PR #7
 - [ ] 1.4 Approximate-line matching: a finding with the right file and bug, but lines slightly outside
       ±3 (real-002's "~212, ~265"), should reach the judge. Add tests.
 - [ ] Look at the real-012 finding the judge graded both ways; list any finding that is still
