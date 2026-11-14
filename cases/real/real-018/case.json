@@ -1,0 +1,19 @@
+{
+  "id": "real-018",
+  "kind": "real",
+  "track": "go",
+  "title": "feat: add CompletionFunc type to help with completions (#2220)",
+  "source": "https://github.com/spf13/cobra@6c3c1163c6df19860515103199e880122ba49e80",
+  "license": "Apache-2.0",
+  "added": "2026-11-14",
+  "repo": "https://github.com/spf13/cobra",
+  "commit": "6c3c1163c6df19860515103199e880122ba49e80",
+  "fix": "a97f9fd47b290016526c8af2dac0531fea5cd773",
+  "status": "ready",
+  "drafted_by": "hand",
+  "signals": {
+    "referenced": false,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/spf13/cobra/pull/2234"
+}
