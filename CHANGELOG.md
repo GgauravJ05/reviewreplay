@@ -3,7 +3,7 @@
 All notable changes to ReviewReplay. Numbers quoted here come from the committed runs in
 [`results/`](results/).
 
-## 0.2.0 (unreleased)
+## 0.2.0 (2026-11-14)
 
 ### Added
 
@@ -36,6 +36,9 @@ All notable changes to ReviewReplay. Numbers quoted here come from the committed
   2 stay open in issue #17.
 - `results/one-real-013`, `results/one-real-014` (#20): first JavaScript and Go smoke runs
   (1 run each, not yet in the headline).
+- `results/m3-js-go`: full runs on the 4 JavaScript and Go bugs (3 runs, four judges, code
+  checks). The skill's precision was 77% against 95% without it, paired −18 pts [−22, −12]; one
+  axios bug was missed in all 6 reviews.
 
 ### Fixed
 

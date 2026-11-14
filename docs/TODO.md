@@ -36,8 +36,8 @@ Brief: [02](tasks/02-correct-published-numbers.md). Drafts are in the git-ignore
 
 Brief: [07](tasks/07-run-and-grade.md). About $0.70.
 
-- [ ] real-013 to real-016: 3 runs, four judges, code checks, so they join the headline
-      (`results/one-real-013`, `one-real-014` hold only a 1-run smoke test).
+- [x] real-013 to real-016: 3 runs, four judges, code checks (`results/m3-js-go`). The skill's
+      precision was 77% vs 95% without it, the opposite of the Python result.
 
 ### 3. More real bugs (target: 20+ cases, 3+ languages)
 
@@ -48,7 +48,7 @@ Brief: [05](tasks/05-mine-real-cases.md), [06](tasks/06-language-support.md), [0
       skipped: its fixes are defensive guards away from the introducing change, or span large
       internal rewrites, so the answer key would be ambiguous.
       Read every candidate's fix and introducer; keep only behaviour bugs the introducer added.
-- [ ] **(you)** Run, grade and verify the new cases on your login.
+- [x] **(you)** Run, grade and verify the new cases on your login (real-015, real-016 in `results/m3-js-go`).
 
 Lessons: the miner's introducer is often wrong when message and blame disagree, and many fixes
 are hardening, refactors or older bugs. Expect 1 usable case per 5–10 candidates.
