@@ -1,0 +1,18 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "entry.go",
+      "anchor": "serialized, err := entry.Logger.Formatter.Format(entry)",
+      "span": 1,
+      "class": "concurrency",
+      "severity": "important",
+      "summary": "To fix a data race on Logger.Formatter, the change takes Logger.mu before calling Formatter.Format instead of only around the Out.Write. Format runs user code: a JSON formatter calls MarshalJSON (or String/Error) on field values. If that code logs through the same logger, the nested write() tries to take Logger.mu again, and because sync.Mutex is not reentrant the goroutine deadlocks, hanging the program.",
+      "trigger": "A field value whose MarshalJSON calls logrus.Info, logged with the JSON formatter: logrus.WithField(\"v\", v).Info(\"x\") never returns after this change. The fix (f42291d3, issues #1448 and #1440, 'fixes a deadlock introduced in commit 78f8389') snapshots the formatter under the lock and formats outside it."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "Holding Logger.mu during Format also serializes all formatting across goroutines, so a slow formatter now blocks every other log call (a throughput cost, not a correctness bug)."
+  ]
+}
