@@ -1,0 +1,22 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "context.go",
+      "anchor": "if err = os.Chmod(filepath.Dir(dst), perm[0]); err != nil {",
+      "span": 3,
+      "also": [
+        {"file": "context.go", "anchor": "if err = os.MkdirAll(filepath.Dir(dst), perm[0]); err != nil {", "span": 3}
+      ],
+      "class": "regression",
+      "severity": "blocking",
+      "summary": "SaveUploadedFile now calls os.Chmod on the destination directory every time, even when it already existed. Chmod on a directory the process does not own (e.g. /tmp) fails with 'operation not permitted', so uploads into such directories now return an error; on directories it does own, it silently changes their permissions to 0750 (or the given perm). Before this change only os.MkdirAll was called, which leaves existing directories alone.",
+      "trigger": "c.SaveUploadedFile(file, \"/tmp/upload.txt\") as a non-root user: os.Chmod(\"/tmp\", 0750) fails with EPERM and the upload errors (issue #4622). Saving into an existing user-owned dir with mode 0755 changes it to 0750. The fix (#4702) stats the directory before MkdirAll and only chmods a directory it just created; its test asserts a pre-existing directory's mode is unchanged."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "os.Chmod only applies the mode to the last directory; parent directories created by MkdirAll keep the umask-reduced mode, so the requested perm is not enforced on the whole path.",
+    "The variadic perm parameter silently ignores every value after the first."
+  ]
+}
