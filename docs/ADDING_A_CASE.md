@@ -31,6 +31,13 @@ cases/<track>/<id>/
 `<repo url>@<commit>` and credit it in NOTES.md), `clean` (no bug), `decoy` (no bug, but code
 that looks wrong).
 
+`track` is the language: `python`, `typescript`, `javascript`, `go`, `rust` or `java`. The miner
+counts these as code and skips each language's tests (`test_*.py`, `*_test.go`, `*.test.ts`,
+`*.spec.js`, `__tests__/`, `testdata/`, `src/test/`, `*Test.java`). It also skips vendored and
+built folders (`node_modules/`, `vendor/`, `dist/`, `build/`), `.d.ts` declarations and `.min.js`
+files. `reviewreplay verify` can fetch library source only for Python (from PyPI). In other
+languages, a claim about a dependency stays `unsure`.
+
 ## 2. The answer key
 
 Locations use an **anchor** (a substring that appears on exactly one line of the file in `after/`)
