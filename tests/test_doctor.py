@@ -78,3 +78,9 @@ def test_init_dry_run_with_no_candidates_suggests_wider_search(monkeypatch, caps
     assert cli.main(["init", ".", "--dry-run", "--since", "2025-01-01"]) == 1
     out = capsys.readouterr().out
     assert "no usable fix commits since 2025-01-01" in out and "--pattern" in out
+
+
+def test_short_runs_show_seconds_not_zero_minutes(tmp_path):
+    assert doctor.duration(0.25) == "15 s" and doctor.duration(6.4) == "6 min"
+    text = doctor.describe_run(["c1"], ["baseline", "skill"], 1, tmp_path, workers=3)
+    assert "about 15 s (up to 28 s)" in text and "0 min" not in text
