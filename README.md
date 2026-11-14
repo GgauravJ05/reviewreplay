@@ -129,6 +129,20 @@ gap from +16 pts to +10; with contested verdicts left out it touches zero (+9 pt
 grading is checked across models, not yet by people. Details:
 [first 4 bugs](results/m2-compare/README.md), [8 more](results/m2-real-more/README.md).
 
+**On 4 JavaScript and Go bugs the skill did worse** (axios ×2, gin, testify; 24 reviews, same
+grading):
+
+| JS and Go bugs | Claude Code | With code-review-skill |
+|---|---|---|
+| Bug found | 9 / 12 | 8 / 12 |
+| Precision (serious findings) | **95%** | 77% (paired −18 pts [−22, −12]) |
+| Serious false alarms | **2** | 7 |
+| Median cost per review | $0.054 | $0.075 |
+
+Its precision was lower on every one of the 4 cases, the opposite of the Python result. One axios
+bug (an `Error` subclass that made `message` non-enumerable) was missed in all 6 reviews. Four cases
+is a small sample. Details: [m3-js-go](results/m3-js-go/README.md).
+
 ## Supported reviewers
 
 | Reviewer | How |

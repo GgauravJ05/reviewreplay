@@ -1,0 +1,54 @@
+{
+  "case": "real-016",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "The old AxiosError.from copied the original error's own properties onto the new error with utils.toFlatObject. The new from builds a fresh AxiosError from only message and code, then sets cause and name. Nothing else is copied, so errno, syscall, address, port, hostname and custom fields are undefined on the result. They can still be read through err.cause, but not directly, which is what the claim says.",
+      "evidence": [
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 7,
+          "quote": "const axiosError = new AxiosError(error.message, code || error.code, config, request, response);"
+        },
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 8,
+          "quote": "axiosError.cause = error;"
+        },
+        {
+          "file": "change.patch",
+          "line": 187,
+          "quote": "-  utils.toFlatObject(error, axiosError, function filter(obj) {"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.0716848
+    },
+    "1": {
+      "verdict": "confirmed",
+      "reason": "AxiosError.from dereferences error.message, error.code and error.name with no null check, so from(undefined) throws a TypeError. fetch.js:257 shows the case is reachable, because it passes `err && err.code` and so treats a falsy caught value as possible. The TypeError would replace the real failure. The \"instead of 'Error'\" detail is imprecise, but the main defect is real.",
+      "evidence": [
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 7,
+          "quote": "const axiosError = new AxiosError(error.message, code || error.code, config, request, response);"
+        },
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 9,
+          "quote": "axiosError.name = error.name;"
+        },
+        {
+          "file": "project/lib/adapters/fetch.js",
+          "line": 257,
+          "quote": "throw AxiosError.from(err, err && err.code, config, request);"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.035066299999999995
+    }
+  }
+}

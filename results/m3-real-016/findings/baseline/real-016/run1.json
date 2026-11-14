@@ -1,0 +1,75 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 6,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "AxiosError.from no longer copies the source error's own properties (errno, syscall, address, port, hostname), only message, code and name."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 6,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "The new `code || error.code` drops a falsy-but-defined code that the old code preserved."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 6,
+      "line_end": 12,
+      "severity": "minor",
+      "summary": "The old default message of 'Error' when none was given is no longer applied."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 6,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "`cause` is now set by plain assignment, so it is enumerable. It appears in Object.keys, spreads and util.inspect output, and can add circular references."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 28,
+      "line_end": 28,
+      "severity": "important",
+      "summary": "isAxiosError is now an own enumerable instance property instead of a non-enumerable prototype property. This changes Object.keys, spreads and own-key equality checks."
+    },
+    {
+      "file": "lib/cancel/CanceledError.js",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "__CANCEL__ moved from the prototype to an own instance property, so code that checks Object.keys or copies errors may behave differently."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 33,
+      "line_end": 33,
+      "severity": "important",
+      "summary": "status is now undefined instead of null when the response has no status, which changes toJSON output."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The Error.captureStackTrace(this, this.constructor) call was removed, so stacks now carry extra AxiosError/CanceledError constructor frames."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new isNativeError tests use require('node:util/types') in what look like ESM spec files and silently pass in non-Node environments. Nothing tests the from() regressions."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "AxiosError.js uses 4-space indentation while the rest of lib uses 2 spaces."
+    }
+  ],
+  "extract_cost_usd": 0.024041800000000002
+}

@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 5,
+      "line_end": 132,
+      "severity": "important",
+      "summary": "The header injection check (assertValidHeaderValue) was removed, so CR/LF in header values is silently stripped instead of throwing. Callers lose the fail-fast signal, and existing tests that expect a throw will fail."
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "INVALID_HEADER_VALUE_CHARS_RE silently deletes all characters above 0xFF and DEL. Non-Latin text such as '\u65e5\u672c' or emoji is corrupted without any error, where Node would previously have thrown."
+    },
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "NO_PROXY now treats localhost, 127.0.0.1 and ::1 as equivalent, so listing one loopback form bypasses the proxy for the others. This departs from exact-match semantics, and the matching is asymmetric (::ffff:127.0.0.1 is not covered)."
+    }
+  ],
+  "extract_cost_usd": 0.0198218
+}

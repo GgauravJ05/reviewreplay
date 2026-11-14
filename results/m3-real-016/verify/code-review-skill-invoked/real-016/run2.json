@@ -1,0 +1,49 @@
+{
+  "case": "real-016",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "The old from() used utils.toFlatObject(error, axiosError, ...) to copy the original error's own properties onto the AxiosError. The new from() only builds a new AxiosError from the message and code, then sets cause and name. It copies no other fields, so errno, syscall, address and port are no longer on the top-level error. They can only be reached through err.cause.",
+      "evidence": [
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 7,
+          "quote": "const axiosError = new AxiosError(error.message, code || error.code, config, request, response);"
+        },
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 8,
+          "quote": "axiosError.cause = error;"
+        },
+        {
+          "file": "change.patch",
+          "line": 187,
+          "quote": "-  utils.toFlatObject(error, axiosError, function filter(obj) {"
+        }
+      ],
+      "evidence_ok": 3,
+      "library": null,
+      "cost_usd": 0.0381309
+    },
+    "1": {
+      "verdict": "confirmed",
+      "reason": "AxiosError.from dereferences `error.message` and `error.name` with no null check. fetch.js:257 passes `err` straight through and guards only `err.code`, so a null or undefined caught value reaches `from` and throws a TypeError. That TypeError replaces the original rejection. The trigger is rare, since it needs something to throw null or undefined, but the defect is real.",
+      "evidence": [
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 7,
+          "quote": "const axiosError = new AxiosError(error.message, code || error.code, config, request, response);"
+        },
+        {
+          "file": "project/lib/adapters/fetch.js",
+          "line": 257,
+          "quote": "throw AxiosError.from(err, err && err.code, config, request);"
+        }
+      ],
+      "evidence_ok": 2,
+      "library": null,
+      "cost_usd": 0.0351579
+    }
+  }
+}

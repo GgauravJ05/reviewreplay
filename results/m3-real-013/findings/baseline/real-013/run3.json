@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 129,
+      "line_end": 129,
+      "severity": "important",
+      "summary": "The CR/LF check that threw on newline in header values was removed, so values like 'a\\r\\nInjected: 1' are silently rewritten to 'aInjected: 1' instead of rejected, hiding the bug and breaking callers expecting the throw."
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "The new sanitizing regex silently strips all characters above 0xFF and control characters except tab, so non-Latin values like '\u65e5\u672c\u8a9e' or '\u041f\u0440\u0438\u0432\u0435\u0442' are emptied/truncated and 'a\\x00b' becomes 'ab' without warning."
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 42,
+      "line_end": 42,
+      "severity": "important",
+      "summary": "Every header value is now trimmed of leading/trailing spaces and tabs, whereas the old code only stripped trailing CR/LF, which goes beyond the scope of the change."
+    },
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "NO_PROXY now treats localhost, 127.0.0.1 and ::1 as equivalent, so NO_PROXY=localhost also bypasses the proxy for the other loopback addresses, breaking deliberate proxying (e.g. to a tunnel) and being inconsistent by ignoring the rest of 127.0.0.0/8."
+    }
+  ],
+  "extract_cost_usd": 0.0198218
+}

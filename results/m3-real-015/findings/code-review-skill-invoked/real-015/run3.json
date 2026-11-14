@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "blocking",
+      "summary": "AssertExpectationsForObjects changed its type check from obj.(Mock) to obj.(*Mock), so Mock values passed by value fall through to an unchecked assertion and panic. Pointers now wrongly get the deprecation log."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 258,
+      "line_end": 258,
+      "severity": "important",
+      "summary": "Mock now holds a sync.Mutex by value, so copying a Mock copies the lock. go vet copylocks will flag this, and it is an API-visible change for users who embed or copy Mock."
+    }
+  ],
+  "extract_cost_usd": 0.0172738
+}

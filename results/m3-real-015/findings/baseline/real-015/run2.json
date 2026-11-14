@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "blocking",
+      "summary": "Changing obj.(Mock) to obj.(*Mock) in AssertExpectationsForObjects breaks the deprecated by-value calling style: a Mock value falls through to an unchecked obj.(assertExpectationser) assertion and panics."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "important",
+      "summary": "A plain *Mock now matches the new branch and wrongly logs the 'Deprecated' message, though passing a *Mock is not the deprecated style."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Removing the `m.mutex = &sync.Mutex{}` reset in On changes behavior if a mock was copied or reused while its mutex was held."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The mutex is now a value, so any code copying a Mock by value copies a lock (go vet copylocks) and is unsafe if copied while locked; tests and other packages should be checked for such copies."
+    }
+  ],
+  "extract_cost_usd": 0.0191798
+}

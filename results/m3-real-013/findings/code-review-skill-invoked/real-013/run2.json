@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 132,
+      "line_end": 132,
+      "severity": "important",
+      "summary": "The old assertValidHeaderValue check that threw on CR/LF in header values was removed and the new code silently strips those characters, hiding header injection attempts instead of erroring."
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "The new regex removes every character above U+00FF and most control characters, so header values with Japanese text or emoji are silently truncated or emptied."
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 42,
+      "line_end": 42,
+      "severity": "important",
+      "summary": "normalizeValue now trims leading and trailing spaces and tabs from all header values, which can break values that depend on exact whitespace such as signed or hashed headers (not confirmed against the modified tests)."
+    },
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "Any loopback name now matches any other loopback name, so NO_PROXY=localhost also bypasses the proxy for 127.0.0.1 and [::1], breaking setups that proxy one loopback address on purpose. The alias check also covers only localhost, 127.0.0.1 and ::1, so forms like 127.0.0.2 are still treated differently."
+    }
+  ],
+  "extract_cost_usd": 0.0190858
+}

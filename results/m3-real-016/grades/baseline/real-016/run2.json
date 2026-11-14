@@ -1,0 +1,564 @@
+{
+  "case": "real-016",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 7,
+      "line_end": 13,
+      "severity": "important",
+      "summary": "AxiosError.from copies only message, code, name and cause instead of all own properties of the source error, so fields like errno, syscall, address, port and hostname are lost.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "match": "approx",
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Dropping other own properties in from() is plausibly a real regression, but it is not the enumerable message bug."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Dropping other own properties in from() is plausibly a real regression, but it is not the enumerable message bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Property-copy loss in from() is not the enumerability of message; candidate b1 doesn't match, and validity is unclear."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Candidate b1 is about message enumerability; this claims lost properties in from(), which is a different complaint and not clearly real."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "The new from() no longer copies the source error's own properties such as errno and syscall, which is a real regression but not the non-enumerable message bug."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": true,
+      "agreement": 0.5
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "AxiosError.from throws a TypeError on a null/undefined error, no longer falls back to 'Error' for message or name, and `code || error.code` wrongly overrides an explicit falsy code.",
+      "index": 1,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Null-handling and falsy code claims are plausible but unverifiable here and unrelated to b1."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Null-handling and falsy code claims are plausible but unverifiable here and unrelated to b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Plausible regression in from() null handling and falsy code override, though not in key."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims about null handling and code override are plausible but unverifiable and not the answer-key bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The claims about null input, the 'Error' fallback and falsy codes depend on old from() details I can't confirm from the information given."
+        }
+      ],
+      "hit_bug": null,
+      "label": "unsure",
+      "contested": false,
+      "agreement": 0.75
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 29,
+      "line_end": 29,
+      "severity": "important",
+      "summary": "isAxiosError (and __CANCEL__ in CanceledError) became own enumerable properties instead of non-enumerable prototype ones, and cause is now enumerable and assigned unconditionally, so they show up in Object.keys, spreads, toEqual and JSON.stringify and may overwrite an existing cause.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "It reports enumerable own isAxiosError and cause (a known cause issue), not the non-enumerable message loss."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It reports enumerable own isAxiosError and cause (a known cause issue), not the non-enumerable message loss."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Enumerable isAxiosError/cause changes are real behavior changes (cause matches known issue), but not the message non-enumerable bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "isAxiosError and cause becoming enumerable own properties is a real change; cause enumerable is a known problem, but it isn't message non-enumerability."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This covers enumerable isAxiosError and enumerable cause, which overlaps the known cause issue, not message becoming non-enumerable."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/cancel/CanceledError.js",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "__CANCEL__ is now an own enumerable property rather than non-enumerable on the prototype, changing enumeration, serialization and equality behavior.",
+      "index": 3,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "__CANCEL__ becoming an own enumerable property is a real behavior change, but not the message bug."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "__CANCEL__ becoming an own enumerable property is a real behavior change, but not the message bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "__CANCEL__ becoming own enumerable property is a real behavior change, distinct from b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "__CANCEL__ becoming own enumerable is plausible but unverified and not b1."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Moving __CANCEL__ from the prototype to an own enumerable property is a plausible real change in enumeration and equality behavior."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 0.75
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 31,
+      "line_end": 31,
+      "severity": "minor",
+      "summary": "this.status = response.status leaves status undefined when the response has no status, where the old code set it to null.",
+      "index": 4,
+      "candidates": [
+        "b1"
+      ],
+      "match": "approx",
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "This is the known problem that status is undefined instead of null."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem that status is undefined instead of null."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known issue that status is undefined instead of null."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known issue of status being undefined instead of null."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "status being undefined instead of null is one of the listed known issues."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "test/specs/cancel/CanceledError.spec.js",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "New tests call require('node:util/types') inside an ESM spec, which fails in browser/Karma runs because process.release can exist while require does not.",
+      "index": 5,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 5,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "The test environment claim is unverifiable and unrelated to b1."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The test environment claim is unverifiable and unrelated to b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Test environment compatibility claim can't be verified; not an answer-key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Test environment compatibility claim, can't verify."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "I can't verify whether the spec's require call actually breaks browser runs."
+        }
+      ],
+      "hit_bug": null,
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "test/specs/core/AxiosError.spec.js",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "New tests call require('node:util/types') inside an ESM spec, which fails in browser/Karma runs, and they don't cover from() regressions such as property copying or an empty error.",
+      "index": 6,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 6,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "The test environment claim is unverifiable and unrelated to b1."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The test environment claim is unverifiable and unrelated to b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Test require concern unverifiable; coverage gaps don't target b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Test environment claim and coverage gaps; not the b1 bug and unverifiable."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "I can't verify whether the require call breaks browser runs, and the coverage complaint is not about the answer-key bug."
+        }
+      ],
+      "hit_bug": null,
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.021147899999999997,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Dropping other own properties in from() is plausibly a real regression, but it is not the enumerable message bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Null-handling and falsy code claims are plausible but unverifiable here and unrelated to b1."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It reports enumerable own isAxiosError and cause (a known cause issue), not the non-enumerable message loss."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "__CANCEL__ becoming an own enumerable property is a real behavior change, but not the message bug."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem that status is undefined instead of null."
+        },
+        "5": {
+          "index": 5,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The test environment claim is unverifiable and unrelated to b1."
+        },
+        "6": {
+          "index": 6,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The test environment claim is unverifiable and unrelated to b1."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.021273900000000002,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Property-copy loss in from() is not the enumerability of message; candidate b1 doesn't match, and validity is unclear."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Plausible regression in from() null handling and falsy code override, though not in key."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Enumerable isAxiosError/cause changes are real behavior changes (cause matches known issue), but not the message non-enumerable bug."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "__CANCEL__ becoming own enumerable property is a real behavior change, distinct from b1."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known issue that status is undefined instead of null."
+        },
+        "5": {
+          "index": 5,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Test environment compatibility claim can't be verified; not an answer-key bug."
+        },
+        "6": {
+          "index": 6,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Test require concern unverifiable; coverage gaps don't target b1."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0212859,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Candidate b1 is about message enumerability; this claims lost properties in from(), which is a different complaint and not clearly real."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims about null handling and code override are plausible but unverifiable and not the answer-key bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "isAxiosError and cause becoming enumerable own properties is a real change; cause enumerable is a known problem, but it isn't message non-enumerability."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "__CANCEL__ becoming own enumerable is plausible but unverified and not b1."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known issue of status being undefined instead of null."
+        },
+        "5": {
+          "index": 5,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Test environment compatibility claim, can't verify."
+        },
+        "6": {
+          "index": 6,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Test environment claim and coverage gaps; not the b1 bug and unverifiable."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.057603800000000004,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "The new from() no longer copies the source error's own properties such as errno and syscall, which is a real regression but not the non-enumerable message bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The claims about null input, the 'Error' fallback and falsy codes depend on old from() details I can't confirm from the information given."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This covers enumerable isAxiosError and enumerable cause, which overlaps the known cause issue, not message becoming non-enumerable."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Moving __CANCEL__ from the prototype to an own enumerable property is a plausible real change in enumeration and equality behavior."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "status being undefined instead of null is one of the listed known issues."
+        },
+        "5": {
+          "index": 5,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "I can't verify whether the spec's require call actually breaks browser runs."
+        },
+        "6": {
+          "index": 6,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "I can't verify whether the require call breaks browser runs, and the coverage complaint is not about the answer-key bug."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.1213115
+}

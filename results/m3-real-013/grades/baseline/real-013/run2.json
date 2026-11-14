@@ -1,0 +1,262 @@
+{
+  "case": "real-013",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "The loopback aliasing check makes NO_PROXY=localhost also bypass the proxy for 127.0.0.1 and ::1, matching hosts that were never listed. It is too broad, and it is inconsistent because it doesn't cover the rest of 127.0.0.0/8.",
+      "index": 0,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known loopback aliasing proxy change as too broad."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback aliasing proxy change as too broad."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback aliasing change in shouldBypassProxy."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback aliasing proxy change as too broad."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem where loopback names are treated as aliases in shouldBypassProxy."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 14,
+      "line_end": 50,
+      "severity": "important",
+      "summary": "Removing assertValidHeaderValue means header values containing CR/LF are silently altered (\"a\\r\\nb\" becomes \"ab\") instead of being rejected with an error.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known silent rewriting instead of rejecting CR/LF; not the Unicode stripping bug."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known silent rewriting instead of rejecting CR/LF; not the Unicode stripping bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that values are silently rewritten instead of rejected; not the Unicode-stripping bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known problem that values are silently rewritten instead of rejected, not the Unicode-stripping bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem where CR/LF is silently stripped instead of rejected; it is not the Unicode-stripping bug."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "The sanitizer regex strips every character above \\xFF (emoji, CJK) and control characters such as \\x7F without any error. Values like \"\u540d\u524d\" become empty, which hides an error Node's http would have thrown. Values are also newly trimmed of leading and trailing whitespace.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies the regex stripping chars above \\xFF (CJK become empty) at set time, same as b1."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies the regex stripping chars above \\xFF (CJK become empty) at set time, same as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Names the sanitizer regex at line 8 stripping all characters above \\xFF, such as CJK, which is the same defect as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Names the same defect: the regex strips characters above \\xFF at set time, so values like \"\u540d\u524d\" become empty."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It identifies that the sanitizer regex strips characters above \\xFF, so CJK values become empty."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0181759,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback aliasing proxy change as too broad."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known silent rewriting instead of rejecting CR/LF; not the Unicode stripping bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies the regex stripping chars above \\xFF (CJK become empty) at set time, same as b1."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0182999,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback aliasing change in shouldBypassProxy."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that values are silently rewritten instead of rejected; not the Unicode-stripping bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Names the sanitizer regex at line 8 stripping all characters above \\xFF, such as CJK, which is the same defect as b1."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.018203900000000002,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback aliasing proxy change as too broad."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known problem that values are silently rewritten instead of rejected, not the Unicode-stripping bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Names the same defect: the regex strips characters above \\xFF at set time, so values like \"\u540d\u524d\" become empty."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.073468,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem where loopback names are treated as aliases in shouldBypassProxy."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem where CR/LF is silently stripped instead of rejected; it is not the Unicode-stripping bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It identifies that the sanitizer regex strips characters above \\xFF, so CJK values become empty."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.1281477
+}

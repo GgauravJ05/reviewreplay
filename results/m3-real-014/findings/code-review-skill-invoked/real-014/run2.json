@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "context.go",
+      "line_start": 695,
+      "line_end": 695,
+      "severity": "important",
+      "summary": "The new os.Chmod runs on filepath.Dir(dst) even when the directory already existed, so it can chmod the current directory or fail with EPERM on directories like /tmp that the process doesn't own, breaking calls that worked before."
+    },
+    {
+      "file": "context.go",
+      "line_start": 691,
+      "line_end": 691,
+      "severity": "important",
+      "summary": "The perm parameter is typed fs.FileMode but is used only as the directory mode, so a file-style mode like 0o644 creates a directory without the execute bit and os.Create then fails. It never affects the saved file, and extra variadic values are silently ignored."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 179,
+      "line_end": 179,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermission saves to the bare path \"permission_test\", so it chmods and asserts on the working directory instead of testing directory creation. It also leaves the written file behind. The \"Failed\" test depends on permission denial and will fail when run as root."
+    }
+  ],
+  "extract_cost_usd": 0.0183118
+}

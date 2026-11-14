@@ -1,0 +1,337 @@
+{
+  "case": "real-013",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 129,
+      "line_end": 129,
+      "severity": "important",
+      "summary": "The CR/LF check that threw on newline in header values was removed, so values like 'a\\r\\nInjected: 1' are silently rewritten to 'aInjected: 1' instead of rejected, hiding the bug and breaking callers expecting the throw.",
+      "index": 0,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known problem of values being silently rewritten instead of rejected."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem of values being silently rewritten instead of rejected."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known problem that values are silently rewritten instead of rejected."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known issue of silent rewriting instead of rejecting CR/LF."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem: CR/LF is now silently removed instead of rejected."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "The new sanitizing regex silently strips all characters above 0xFF and control characters except tab, so non-Latin values like '\u65e5\u672c\u8a9e' or '\u041f\u0440\u0438\u0432\u0435\u0442' are emptied/truncated and 'a\\x00b' becomes 'ab' without warning.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: the regex strips characters above 0xFF at set time, so non-Latin values are emptied."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: the regex strips characters above 0xFF at set time, so non-Latin values are emptied."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the regex stripping characters above 0xFF at set time, emptying non-Latin values."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Regex strips all characters above 0xFF at set time, emptying non-Latin values, which is the key bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It names the same defect: the set-time regex strips every character above 0xFF, which empties Unicode header values."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 42,
+      "line_end": 42,
+      "severity": "important",
+      "summary": "Every header value is now trimmed of leading/trailing spaces and tabs, whereas the old code only stripped trailing CR/LF, which goes beyond the scope of the change.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Trimming is a different complaint from the Unicode stripping, and it is not a real defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming is a different complaint from the Unicode stripping, and it is not a real defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming is not the answer-key defect, and the finding doesn't show it causes incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming spaces/tabs is not the Unicode-stripping defect, and header values are trimmed anyway; not a real harmful bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming leading and trailing whitespace from header values is harmless and matches HTTP rules; the complaint is about scope, not wrong behavior."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "NO_PROXY now treats localhost, 127.0.0.1 and ::1 as equivalent, so NO_PROXY=localhost also bypasses the proxy for the other loopback addresses, breaking deliberate proxying (e.g. to a tunnel) and being inconsistent by ignoring the rest of 127.0.0.0/8.",
+      "index": 3,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known loopback-equivalence change in shouldBypassProxy."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback-equivalence change in shouldBypassProxy."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known loopback equivalence problem in shouldBypassProxy."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback equivalence change in shouldBypassProxy."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem: NO_PROXY now treats all loopback names as equal."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.019199900000000002,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem of values being silently rewritten instead of rejected."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: the regex strips characters above 0xFF at set time, so non-Latin values are emptied."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming is a different complaint from the Unicode stripping, and it is not a real defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback-equivalence change in shouldBypassProxy."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0192279,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known problem that values are silently rewritten instead of rejected."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the regex stripping characters above 0xFF at set time, emptying non-Latin values."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming is not the answer-key defect, and the finding doesn't show it causes incorrect behavior."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known loopback equivalence problem in shouldBypassProxy."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0194179,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known issue of silent rewriting instead of rejecting CR/LF."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Regex strips all characters above 0xFF at set time, emptying non-Latin values, which is the key bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming spaces/tabs is not the Unicode-stripping defect, and header values are trimmed anyway; not a real harmful bug."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback equivalence change in shouldBypassProxy."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.044275800000000004,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem: CR/LF is now silently removed instead of rejected."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It names the same defect: the set-time regex strips every character above 0xFF, which empties Unicode header values."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming leading and trailing whitespace from header values is harmless and matches HTTP rules; the complaint is about scope, not wrong behavior."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This is the known problem: NO_PROXY now treats all loopback names as equal."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.1021215
+}

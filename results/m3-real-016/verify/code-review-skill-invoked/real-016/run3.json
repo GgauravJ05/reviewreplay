@@ -1,0 +1,25 @@
+{
+  "case": "real-016",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "confirmed",
+      "reason": "The new `from` reads `error.message` and `error.code` with no null check, so `from(null)` or `from(undefined)` throws a TypeError. The old code guarded with `error && error.message ? error.message : 'Error'` and fell back to 'Error'. The `err && err.code` in fetch.js shows callers can pass a falsy error.",
+      "evidence": [
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 7,
+          "quote": "const axiosError = new AxiosError(error.message, code || error.code, config, request, response);"
+        },
+        {
+          "file": "change.patch",
+          "line": 193,
+          "quote": "-  const msg = error && error.message ? error.message : 'Error';"
+        }
+      ],
+      "evidence_ok": 2,
+      "library": null,
+      "cost_usd": 0.0369273
+    }
+  }
+}

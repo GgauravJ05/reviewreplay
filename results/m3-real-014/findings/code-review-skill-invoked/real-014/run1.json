@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "context.go",
+      "line_start": 695,
+      "line_end": 695,
+      "severity": "important",
+      "summary": "os.Chmod runs on filepath.Dir(dst) unconditionally, even without a perm argument, so it can change the mode of the working directory or a shared existing directory and may fail with EPERM on directories the process doesn't own."
+    },
+    {
+      "file": "context.go",
+      "line_start": 688,
+      "line_end": 688,
+      "severity": "important",
+      "summary": "The perm argument is applied to the directory rather than the file, undocumented, so a caller passing 0o644 gets a directory without an execute bit and writing the file fails with permission denied."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 179,
+      "line_end": 179,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermission uses filepath.Dir(\"permission_test\") which is \".\", so it chmods the package directory and leaves a stray file instead of using t.TempDir(); the failure test depends on test/ being uncreatable and can leave a test directory behind."
+    }
+  ],
+  "extract_cost_usd": 0.0175758
+}

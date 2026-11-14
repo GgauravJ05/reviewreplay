@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 526,
+      "severity": "blocking",
+      "summary": "Changing the type assertion in AssertExpectationsForObjects from Mock to *Mock means a Mock value no longer matches and falls through to the assertExpectationser assertion, which panics because AssertExpectations has a pointer receiver."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "important",
+      "summary": "A *Mock (e.g. &myMock.Mock), the correct call style, now hits the branch that logs the 'Deprecated\u2026' warning, so the warning is wrong for pointers."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Making the mutex a non-pointer sync.Mutex means any code or test that copies a Mock by value (including a restored value case) triggers go vet copylocks warnings."
+    }
+  ],
+  "extract_cost_usd": 0.0177598
+}

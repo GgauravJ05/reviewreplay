@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 6,
+      "line_end": 12,
+      "severity": "important",
+      "summary": "AxiosError.from no longer copies the original error's own properties (errno, syscall, address, port, hostname, custom fields), only message, code and name, so callers reading them get undefined."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 7,
+      "line_end": 7,
+      "severity": "important",
+      "summary": "AxiosError.from reads error.message without a null check, so a falsy error (undefined/null) throws a TypeError that hides the real failure, and a missing message becomes undefined instead of 'Error'."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 9,
+      "line_end": 26,
+      "severity": "minor",
+      "summary": "cause and isAxiosError are now enumerable own properties (previously non-enumerable/prototype), showing up in Object.keys, spreads, inspect and Object.assign; from overwrites existing cause unconditionally; static error codes are now writable and enumerable."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 33,
+      "line_end": 33,
+      "severity": "minor",
+      "summary": "status is set to response.status directly, so a response with no status yields undefined instead of null, breaking callers that check === null."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "New specs use require('node:util/types') inside an ESM-style spec file, which may fail depending on the test runner."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "No tests cover AxiosError.from's property copying, cause handling, or the null-error case, so the regressions would go unnoticed."
+    }
+  ],
+  "extract_cost_usd": 0.021851799999999998
+}

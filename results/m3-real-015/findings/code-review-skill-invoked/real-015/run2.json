@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "important",
+      "summary": "Changing the type assertion from obj.(Mock) to obj.(*Mock) means a Mock value passed to AssertExpectationsForObjects falls through to the unchecked assertExpectationser assertion and panics, since Mock (value) doesn't implement the pointer-receiver interface."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "important",
+      "summary": "A *Mock passed directly now matches the deprecated branch and logs a spurious deprecation notice even though it is valid, non-deprecated use."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "minor",
+      "summary": "The old by-value copy of Mock now copies the mutex (go vet copylocks); the by-value branch should be dropped or handled without copying."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Any other place that copies a Mock by value will now trigger a go vet copylocks warning; vet and tests weren't run."
+    }
+  ],
+  "extract_cost_usd": 0.0184998
+}

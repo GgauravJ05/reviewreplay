@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "context.go",
+      "line_start": 695,
+      "line_end": 695,
+      "severity": "blocking",
+      "summary": "The new os.Chmod on filepath.Dir(dst) runs on every SaveUploadedFile call, so it can chmod the working directory (for a bare filename) or silently change permissions on existing shared directories. It can also fail with EPERM and make the upload fail. It should be removed or made opt-in."
+    },
+    {
+      "file": "context.go",
+      "line_start": 685,
+      "line_end": 685,
+      "severity": "important",
+      "summary": "perm is applied only to the directory (MkdirAll and chmod), not the file, which is still created with os.Create (0666 minus umask). A caller passing 0o600 does not get a private file, modes like 0o644 on directories lack the execute bit, and the doc comment does not explain this."
+    },
+    {
+      "file": "context.go",
+      "line_start": 686,
+      "line_end": 686,
+      "severity": "minor",
+      "summary": "The variadic perm parameter is handled with append, which is harmless but unclear. A plain mode variable defaulting to 0o750 and overridden by perm[0] would read better."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermission checks the wrong directory: filepath.Dir(\"permission_test\") is \".\", so it asserts the package directory's mode and never checks the saved file or a created directory. It depends on umask and checkout permissions, leaves a permission_test file behind, chmods the source tree, and should use t.TempDir() with a nested path."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermissionFailed is fragile: it expects an error only because a 0644 directory is not writable. A leftover test/ directory or running as root changes the outcome, and it leaves a test/ directory in the package folder."
+    }
+  ],
+  "extract_cost_usd": 0.0225278
+}

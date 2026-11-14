@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "important",
+      "summary": "Changing the type assertion from obj.(Mock) to obj.(*Mock) breaks legacy by-value Mock callers: they no longer match, so the later obj.(assertExpectationser) assertion panics because AssertExpectations has a pointer receiver."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "important",
+      "summary": "A valid *Mock argument now wrongly triggers the \"Deprecated\" log message in AssertExpectationsForObjects."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "With mutex now a sync.Mutex value, copying a Mock by value (including user structs embedding Mock, e.g. via value receivers) copies the lock, triggers go vet copylocks warnings, and shares lock state."
+    }
+  ],
+  "extract_cost_usd": 0.0181738
+}

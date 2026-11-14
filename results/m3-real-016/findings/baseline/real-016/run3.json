@@ -1,0 +1,54 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 6,
+      "line_end": 6,
+      "severity": "important",
+      "summary": "AxiosError.from no longer copies the original error's own properties (errno, syscall, address, port), drops the old message/name 'Error' fallbacks, throws a TypeError on null/undefined error, and treats a falsy code differently from the old `code == null` check."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 9,
+      "line_end": 9,
+      "severity": "important",
+      "summary": "`cause` is now an enumerable own property, where it used to be non-enumerable on purpose to keep JSON and log output clean."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 34,
+      "line_end": 34,
+      "severity": "important",
+      "summary": "`this.status = response.status` drops the old `null` fallback, so a response with no status gives `undefined` instead of `null`."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 29,
+      "line_end": 29,
+      "severity": "important",
+      "summary": "`isAxiosError` is now an own, enumerable, writable property. It used to be a non-enumerable property on the prototype."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 58,
+      "line_end": 58,
+      "severity": "important",
+      "summary": "Static error codes (ERR_*, ECONNABORTED, ETIMEDOUT) were non-writable and non-enumerable. They are now ordinary assignable properties and can be overwritten."
+    },
+    {
+      "file": "lib/cancel/CanceledError.js",
+      "line_start": 19,
+      "line_end": 19,
+      "severity": "important",
+      "summary": "`__CANCEL__` moved from the prototype to an enumerable own property on every instance, so it shows up in Object.keys and equality assertions."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "Both classes now require `new`, so third-party code using `AxiosError.call(this, ...)` with `utils.inherits` throws 'Class constructor cannot be invoked without new'."
+    }
+  ],
+  "extract_cost_usd": 0.022177799999999998
+}
