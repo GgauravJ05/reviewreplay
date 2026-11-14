@@ -1,0 +1,19 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "command.go",
+      "anchor": "SliceFlagSeparator:        cmd.SliceFlagSeparator,",
+      "span": 1,
+      "class": "regression",
+      "severity": "important",
+      "summary": "To make parallel runs safe, the change removes the package globals for slice parsing and passes each command's own SliceFlagSeparator to its flags (setMultiValueParsingConfig). Before, setting SliceFlagSeparator on the root command set the global, so every subcommand used it unless it set its own. Now a subcommand that leaves the field empty falls back to the default \",\", so a separator set on the root no longer applies in subcommands, including the root's own flags given after a subcommand name. Values are silently split on the wrong separator.",
+      "trigger": "Root command with SliceFlagSeparator: \";\" and a StringSliceFlag; run `app sub --names \"a,b;c\"`: before (v3.5.0) the value splits on ';' into [\"a,b\", \"c\"], after it splits on ',' into [\"a\", \"b;c\"]. The fix (bf96dc85, 'Since 57bfb1c9 (#2215, v3.6.0) a command splits slice flag values with only its own SliceFlagSeparator') walks the parent chain for the nearest separator."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "MapFlagKeyValueSeparator is new and per-command too, so it is not inherited either (the fix keeps that behaviour and documents it).",
+    "DisableSliceFlagSeparator is no longer inherited by subcommands."
+  ]
+}
