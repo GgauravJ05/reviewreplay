@@ -77,7 +77,9 @@ def _slug(text: str) -> str:
 
 
 def _track(path: str) -> str:
-    return {"py": "python", "ts": "typescript", "js": "javascript", "go": "go", "rs": "rust",
+    return {"py": "python", "ts": "typescript", "tsx": "typescript", "mts": "typescript",
+            "cts": "typescript", "js": "javascript", "jsx": "javascript", "mjs": "javascript",
+            "cjs": "javascript", "go": "go", "rs": "rust",
             "java": "java"}.get(path.rsplit(".", 1)[-1], "other")
 
 

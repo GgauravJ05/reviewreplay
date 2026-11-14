@@ -41,15 +41,35 @@ def _git(repo: Path, *args: str) -> str:
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True).stdout
 
 
+CODE_EXTENSIONS = (".py", ".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".mts", ".cts",
+                   ".go", ".rs", ".java")
+NOT_CODE_DIRS = {"docs", "doc", "examples", "example", "benchmarks", "benchmark"}
+VENDORED_DIRS = {"node_modules", "vendor", "third_party", "dist", "build", "out", "coverage"}
+TEST_DIRS = {"test", "tests", "testing", "__tests__", "__mocks__", "testdata", "fixtures"}
+
+
+def _is_test(parts: list[str], name: str) -> bool:
+    if any(d in TEST_DIRS for d in parts[:-1]):
+        return True
+    if "/".join(parts[:-1]).startswith("src/test") or "/src/test/" in "/".join(parts):
+        return True                                            # Maven/Gradle: src/test/java/...
+    stem = name.rsplit(".", 1)[0]
+    return (name.startswith("test_") or name == "conftest.py"           # Python
+            or stem.endswith(("_test", ".test", ".spec"))               # foo_test.py/.go, foo.test.ts, foo.spec.js
+            or (name.endswith(".java") and stem.endswith(("Test", "Tests", "IT"))))
+
+
 def _is_code(path: str) -> bool:
-    """Library code: a .py file outside tests and docs (src/click/testing.py counts as code)."""
+    """Library code in a supported language, outside tests, docs, examples and vendored or built
+    folders (src/click/testing.py counts as code). Type declarations and minified files are not."""
     parts = path.lower().split("/")
     name = parts[-1]
-    if not name.endswith(".py") or parts[0] in ("docs", "doc", "examples", "benchmarks"):
+    if not name.endswith(CODE_EXTENSIONS) or name.endswith((".d.ts", ".min.js", ".min.mjs")):
         return False
-    is_test = (any(d in ("test", "tests", "testing") for d in parts[:-1])
-               or name.startswith("test_") or name.endswith("_test.py") or name == "conftest.py")
-    return not is_test
+    if parts[0] in NOT_CODE_DIRS or any(d in VENDORED_DIRS for d in parts[:-1]):
+        return False
+    # keep the real-path case for Java names (FooTest.java), lower-case for everything else
+    return not _is_test(parts, path.split("/")[-1] if name.endswith(".java") else name)
 
 
 def _referenced(repo: Path, message: str, fix: str) -> list[str]:
