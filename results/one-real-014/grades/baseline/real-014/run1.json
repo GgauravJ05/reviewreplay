@@ -1,0 +1,163 @@
+{
+  "case": "real-014",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "context.go",
+      "line_start": 693,
+      "line_end": 693,
+      "severity": "blocking",
+      "summary": "SaveUploadedFile unconditionally chmods the parent directory of dst (even \".\" or a shared existing directory) on every call, which can alter existing directory modes, lock out users, or fail with EPERM; it should be dropped or limited to directories MkdirAll created.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes unconditional chmod of existing directory causing EPERM or mode changes, same as b1."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes unconditional chmod of existing directory causing EPERM or mode changes, same as b1."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "context.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The variadic `perm` parameter only sets the directory mode, not the saved file's mode, which is misleading; the doc comment doesn't say so, and extra variadic values after perm[0] are silently ignored.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "file",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Extra variadic values ignored is a known other problem; the rest is documentation complaint, not b1."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Extra variadic values ignored is a known other problem; the rest is documentation complaint, not b1."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 178,
+      "line_end": 181,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermission asserts on the current directory (filepath.Dir(\"permission_test\") is \".\") instead of a created directory, passes only because of the buggy chmod, leaves the directory at 0o755, leaves a stray file in the repo, and may vary with umask; it should use t.TempDir() with a nested path.",
+      "index": 2,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test asserts on current directory and passes only due to the buggy chmod, a real test defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test asserts on current directory and passes only due to the buggy chmod, a real test defect."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 196,
+      "line_end": 196,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermissionFailed depends on the environment: it expects an error from a non-executable directory, which doesn't occur when running as root (e.g. CI containers), and it leaves a test/ directory behind.",
+      "index": 3,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Test fails to error when run as root and leaves a directory behind, a real environment-dependent flaw."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test fails to error when run as root and leaves a directory behind, a real environment-dependent flaw."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0185499,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes unconditional chmod of existing directory causing EPERM or mode changes, same as b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Extra variadic values ignored is a known other problem; the rest is documentation complaint, not b1."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test asserts on current directory and passes only due to the buggy chmod, a real test defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Test fails to error when run as root and leaves a directory behind, a real environment-dependent flaw."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0185499
+}

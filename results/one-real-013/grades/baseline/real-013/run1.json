@@ -1,0 +1,125 @@
+{
+  "case": "real-013",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 132,
+      "line_end": 132,
+      "severity": "important",
+      "summary": "Removing assertValidHeaderValue means header values with CR/LF are silently sanitized instead of throwing, which hides the bug from callers, mangles values, and drops an existing tested security behavior that callers and tests may expect.",
+      "index": 0,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known problem that values are silently sanitized instead of rejected."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that values are silently sanitized instead of rejected."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "INVALID_HEADER_VALUE_CHARS_RE silently strips all characters above U+00FF (non-Latin-1 text, CJK, emoji) and control characters like \\x7F, so requests go out with altered header values such as Unicode filenames, instead of throwing or encoding.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: the regex strips characters above U+00FF at set time, so Unicode values are lost."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: the regex strips characters above U+00FF at set time, so Unicode values are lost."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "Loopback aliasing makes a no_proxy entry of localhost also bypass 127.0.0.1 and ::1 (and vice versa), widening the match beyond standard exact-hostname NO_PROXY semantics and sending traffic direct that a user intended to proxy.",
+      "index": 2,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known loopback aliasing change in shouldBypassProxy."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback aliasing change in shouldBypassProxy."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.036304,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that values are silently sanitized instead of rejected."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: the regex strips characters above U+00FF at set time, so Unicode values are lost."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback aliasing change in shouldBypassProxy."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.036304
+}
