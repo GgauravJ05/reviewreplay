@@ -1,0 +1,30 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "completions.go",
+      "anchor": "type CompletionFunc func(cmd *Command, args []string, toComplete string) ([]string, ShellCompDirective)",
+      "span": 1,
+      "class": "api-break",
+      "severity": "important",
+      "summary": "The change declares CompletionFunc as a new defined (named) type and uses it for Command.ValidArgsFunction and for the parameter of RegisterFlagCompletionFunc, which used to take the plain func type. In Go a value of a different named func type is not assignable to another named type, so projects that declared their own named type for completion functions (for example `type compFn func(*cobra.Command, []string, string) ([]string, cobra.ShellCompDirective)`) and passed it to ValidArgsFunction or RegisterFlagCompletionFunc no longer compile. A type alias (`type CompletionFunc = func(...)`) would have kept them working.",
+      "trigger": "var f myCompFunc (a user-defined named func type with the same signature); cobra.Command{ValidArgsFunction: f} or cmd.RegisterFlagCompletionFunc(\"x\", f): compiles before this change, fails after with 'cannot use f (variable of type myCompFunc) as CompletionFunc value'. The fix (#2234) makes CompletionFunc a type alias and adds TestCompletionFuncCompatibility.",
+      "also": [
+        {
+          "file": "command.go",
+          "anchor": "ValidArgsFunction CompletionFunc",
+          "span": 1
+        },
+        {
+          "file": "completions.go",
+          "anchor": "func (c *Command) RegisterFlagCompletionFunc(flagName string, f CompletionFunc) error {",
+          "span": 1
+        }
+      ]
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "flagCompletionFunctions now stores CompletionFunc values; any code reading them by reflection sees the new type name."
+  ]
+}
