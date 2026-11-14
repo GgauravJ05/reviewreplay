@@ -1,0 +1,18 @@
+{
+  "id": "real-019",
+  "kind": "real",
+  "track": "go",
+  "title": "fix: parallel running - remove globals used for splicing slices and maps",
+  "source": "https://github.com/urfave/cli@57bfb1c91f9087a60c6ffa8eef3a7d54e7983c0b",
+  "license": "MIT",
+  "added": "2026-11-14",
+  "repo": "https://github.com/urfave/cli",
+  "commit": "57bfb1c91f9087a60c6ffa8eef3a7d54e7983c0b",
+  "fix": "bf96dc85cbd766b890bf23e22bec76e496923531",
+  "status": "ready",
+  "drafted_by": "hand",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": true
+  }
+}
