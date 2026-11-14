@@ -1,0 +1,19 @@
+{
+  "id": "real-020",
+  "kind": "real",
+  "track": "go",
+  "title": "fix race condition for SetFormatter and properly fix SetReportCaller race as well",
+  "source": "https://github.com/sirupsen/logrus@78f838918da24e1487e8341227d48cc80bb73966",
+  "license": "MIT",
+  "added": "2026-11-14",
+  "repo": "https://github.com/sirupsen/logrus",
+  "commit": "78f838918da24e1487e8341227d48cc80bb73966",
+  "fix": "f42291d3f9146a01a496abaa9fd438ca5a228f4c",
+  "status": "ready",
+  "drafted_by": "hand",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/sirupsen/logrus/issues/1448"
+}
