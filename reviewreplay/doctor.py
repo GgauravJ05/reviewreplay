@@ -116,6 +116,11 @@ def estimate(n_reviews: int, workers: int) -> dict:
     return {"reviews": n_reviews, "cost": (lo, mid, hi), "minutes": (t_mid, t_hi)}
 
 
+def duration(minutes: float) -> str:
+    """'45 s' under a minute, '6 min' above it, so short runs never read as '0 min'."""
+    return f"{round(minutes * 60)} s" if minutes < 1 else f"{minutes:.0f} min"
+
+
 def describe_run(case_ids: list[str], subject_names: list[str], runs: int, out: Path, workers: int) -> str:
     total, done = pending_reviews(case_ids, subject_names, runs, out)
     todo = total - done
@@ -125,7 +130,7 @@ def describe_run(case_ids: list[str], subject_names: list[str], runs: int, out: 
     if done:
         lines.append(f"{done} already in {out}; {todo} left to run")
     lines.append(f"estimated cost: about ${mid:.2f} (${lo:.2f} to ${hi:.2f}), reviews only")
-    lines.append(f"estimated time: about {e['minutes'][0]:.0f} min (up to {e['minutes'][1]:.0f}) "
+    lines.append(f"estimated time: about {duration(e['minutes'][0])} (up to {duration(e['minutes'][1])}) "
                  f"with {workers} worker(s)")
     lines.append("Nothing was run (--dry-run). Drop --dry-run to start; runs resume if stopped.")
     return "\n".join(lines)
