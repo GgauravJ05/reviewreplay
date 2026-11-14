@@ -230,7 +230,9 @@ A fixed extractor prompt + `--json-schema` turns each raw review into:
 ### ④ Grade
 
 1. **Location match (code):** a finding *hits* a truth bug if same file and line ranges overlap
-   (±3 lines tolerance).
+   (±3 lines tolerance). If no bug is that close, a finding in the same file within ±15 lines still
+   reaches the judge, marked `match: "approx"`: reviewers often cite lines from memory ("~212").
+   Decoy traps keep the strict ±3, so the wider window never hides a false alarm.
 2. **Same-bug check (AI judge):** for each location hit, the judge sees the truth `summary` +
    `trigger` and the finding, and answers `same_bug: yes/no`. A hit only counts if `yes`.
 3. **Other findings:** every finding at `important` or above that doesn't match a truth bug is

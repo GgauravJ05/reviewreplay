@@ -3,8 +3,10 @@
 Extraction: one structured call per review turns free text into findings (same prompt for every subject).
 Grading, two stages:
   1. location match (code): a finding is a *candidate* for a truth bug if it names the same file and its
-     line range overlaps one of the bug's locations (± TOLERANCE lines). Decoy traps are found the same
-     way against `known_ok` spots.
+     line range overlaps one of the bug's locations (± TOLERANCE lines). If no bug is that close, a
+     finding in the same file within ± APPROX_TOLERANCE lines still reaches the judge (`match: "approx"`):
+     reviewers often cite lines from memory ("~212"). Decoy traps are found against `known_ok` spots
+     with the strict tolerance only, so a wider window never hides a false alarm.
   2. judge (one structured call per review): decides whether each candidate is the *same defect*, and
      classifies everything else as valid_other / invalid / unsure.
 A finding counts as a hit only if both stages agree.
@@ -25,6 +27,7 @@ from .cases import Case, Spot
 
 PKG = Path(__file__).resolve().parent
 TOLERANCE = 3
+APPROX_TOLERANCE = 15   # bugs only: a cited line this close still reaches the judge
 SERIOUS = {"blocking", "important"}
 
 FINDINGS_SCHEMA = {
@@ -82,14 +85,29 @@ def overlaps(finding: dict, file: str, start: int, end: int, tol: int = TOLERANC
     return fs <= end + tol and fe >= start - tol
 
 
-def candidates(finding: dict, spots: list[Spot], *, no_line_same_file: bool = False) -> list[str]:
-    """Spots the finding may describe. With no_line_same_file, a finding that gives no line at all
-    may still match a spot in the same file (the judge's same-defect rule decides)."""
+def location_match(finding: dict, spots: list[Spot], *, no_line_same_file: bool = False,
+                   approx_tol: int | None = None) -> tuple[list[str], str | None]:
+    """Spots the finding may describe, and how they matched: "exact" (within ± TOLERANCE), "approx"
+    (no exact match, but within ± approx_tol in the same file) or "file" (no_line_same_file: the
+    finding gives no line at all, so any spot in the same file). The judge's same-defect rule decides."""
     hit = [s.id for s in spots if any(overlaps(finding, *loc) for loc in s.locations)]
-    if not hit and no_line_same_file and finding.get("line_start", 0) <= 0:
+    if hit:
+        return hit, "exact"
+    if approx_tol is not None and finding.get("line_start", 0) > 0:
+        hit = [s.id for s in spots if any(overlaps(finding, *loc, tol=approx_tol) for loc in s.locations)]
+        if hit:
+            return hit, "approx"
+    if no_line_same_file and finding.get("line_start", 0) <= 0:
         hit = [s.id for s in spots
                if any(same_file(finding.get("file", ""), loc[0]) for loc in s.locations)]
-    return hit
+        if hit:
+            return hit, "file"
+    return [], None
+
+
+def candidates(finding: dict, spots: list[Spot], *, no_line_same_file: bool = False,
+               approx_tol: int | None = None) -> list[str]:
+    return location_match(finding, spots, no_line_same_file=no_line_same_file, approx_tol=approx_tol)[0]
 
 
 # ---------- extraction ----------
@@ -213,8 +231,11 @@ def grade_one(case: Case, findings_file: Path, out_file: Path, model: str, force
               judges: list[str] | None = None, call=_call_judge) -> str:
     want = judges or [model]
     findings = json.loads(findings_file.read_text())["findings"]
-    rows = [{**f, "index": i, "candidates": candidates(f, case.bugs, no_line_same_file=True),
-             "decoy_spot": candidates(f, case.known_ok)} for i, f in enumerate(findings)]
+    rows = []
+    for i, f in enumerate(findings):
+        hit, how = location_match(f, case.bugs, no_line_same_file=True, approx_tol=APPROX_TOLERANCE)
+        rows.append({**f, "index": i, "candidates": hit, "match": how,
+                     "decoy_spot": candidates(f, case.known_ok)})
     have: list[dict] = []
     if out_file.exists() and not force:
         have = _legacy_runs(json.loads(out_file.read_text()), model)
