@@ -1,0 +1,23 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "lib/core/AxiosHeaders.js",
+      "anchor": "function sanitizeHeaderValue(str) {",
+      "span": 3,
+      "also": [
+        {"file": "lib/core/AxiosHeaders.js", "anchor": "const INVALID_HEADER_VALUE_CHARS_RE = /[^\\x09\\x20-\\x7E\\x80-\\xFF]/g;", "span": 1},
+        {"file": "lib/core/AxiosHeaders.js", "anchor": "return utils.isArray(value) ? value.map(normalizeValue) : sanitizeHeaderValue(String(value));", "span": 1}
+      ],
+      "class": "data-loss",
+      "severity": "important",
+      "summary": "AxiosHeaders.set() now strips every character outside HT, printable ASCII and Latin-1 (\\x80-\\xFF) as soon as a header is stored. Any Unicode above U+00FF is silently deleted inside the header object, so request interceptors and user code can no longer read or encode (e.g. encodeURIComponent) the value they set. Before this change only CR/LF were rejected and Unicode round-tripped.",
+      "trigger": "new AxiosHeaders().set('x-name', '请求用户'); headers.get('x-name') returns '' instead of '请求用户', so an interceptor that encodes the header sends an empty value (issue #10849). The fix (#10850) keeps non-control Unicode at set time, strips only C0/DEL there, and moves the byte-string sanitising into the http, xhr and fetch adapters; its tests assert '请求用户', 'naïve' and 'プロジェクト' survive set/get."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "Header values are now silently rewritten instead of rejected; a value with CR/LF in the middle has those characters removed and the remaining text joined (e.g. 'a\\r\\nInjected: b' becomes 'aInjected: b'), which hides the bad input rather than reporting it.",
+    "shouldBypassProxy now treats any two loopback names (localhost, 127.0.0.1, ::1) as equal, so NO_PROXY=localhost also bypasses the proxy for 127.0.0.1 and ::1; a reviewer may question that this proxy change is bundled into a header fix."
+  ]
+}

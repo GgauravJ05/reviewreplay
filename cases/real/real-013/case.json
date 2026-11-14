@@ -1,0 +1,19 @@
+{
+  "id": "real-013",
+  "kind": "real",
+  "track": "javascript",
+  "title": "fix: update the implementation to rather parse out the values than throw (#10687)",
+  "source": "https://github.com/axios/axios@163da7226fd2cd21f0f238f99b2f75a51bf9b2a3",
+  "license": "MIT",
+  "added": "2026-11-14",
+  "repo": "https://github.com/axios/axios",
+  "commit": "163da7226fd2cd21f0f238f99b2f75a51bf9b2a3",
+  "fix": "cabead530614ec86761d92d81af2783aafeb9d01",
+  "status": "ready",
+  "drafted_by": "hand",
+  "signals": {
+    "referenced": false,
+    "blame_agrees": false
+  },
+  "issue": "https://github.com/axios/axios/issues/10849"
+}
