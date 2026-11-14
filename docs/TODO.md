@@ -12,8 +12,8 @@ Last updated: 2026-11-14.
 ## Where things stand
 
 - Public repo, site live at https://ggauravj05.github.io/reviewreplay/, PR rules on `main`.
-- 14 real bugs from 11 projects in 3 languages (`cases/real/real-001` … `real-014`; real-013 axios
-  is JavaScript, real-014 gin is Go).
+- 16 real bugs from 12 projects in 3 languages (`cases/real/real-001` … `real-016`; real-013 and
+  real-016 axios are JavaScript, real-014 gin and real-015 testify are Go).
 - Headline (12 Python bugs, `results/m2-compare` + `results/m2-real-more`, code-checked): precision
   **72% without vs 82% with code-review-skill**, paired +10 pts [+1, +16]; serious false alarms 13 vs 10.
   `real-011` (black) and `real-012` (peft) were missed in every run.
@@ -36,14 +36,17 @@ Brief: [02](tasks/02-correct-published-numbers.md). Drafts are in the git-ignore
 
 Brief: [07](tasks/07-run-and-grade.md). About $0.70.
 
-- [ ] real-013 and real-014: 3 runs, four judges, code checks, so they join the headline
+- [ ] real-013 to real-016: 3 runs, four judges, code checks, so they join the headline
       (`results/one-real-013`, `one-real-014` hold only a 1-run smoke test).
 
 ### 3. More real bugs (target: 20+ cases, 3+ languages)
 
 Brief: [05](tasks/05-mine-real-cases.md), [06](tasks/06-language-support.md), [07](tasks/07-run-and-grade.md)
 
-- [ ] Mine 6+ more cases, JS/TS and Go first (zod, testify, chalk, cobra, chi shortlists exist).
+- [x] real-015 testify (#24), real-016 axios (#25).
+- [ ] Mine 4+ more cases to reach 20 (chalk, cobra, chi shortlists exist). zod was read and
+      skipped: its fixes are defensive guards away from the introducing change, or span large
+      internal rewrites, so the answer key would be ambiguous.
       Read every candidate's fix and introducer; keep only behaviour bugs the introducer added.
 - [ ] **(you)** Run, grade and verify the new cases on your login.
 
@@ -65,16 +68,18 @@ Brief: [08](tasks/08-more-reviewers.md), [09](tasks/09-skill-verify-step.md)
 
 Brief: [12](tasks/12-release.md)
 
-- [ ] CHANGELOG, version bump, release notes draft.
-- [ ] 5–8 good-first-issues drafted, then **(you)** approve and post.
-- [ ] **(you)** Social preview image: upload in GitHub → Settings → General.
+- [x] CHANGELOG, version bump to 0.2.0, release notes draft (`docs/drafts/12-release-notes.md`).
+- [x] 7 good-first-issues drafted in `docs/drafts/12-good-first-issues.md`.
+- [ ] **(you)** Approve and post the good-first-issues.
+- [x] Social preview image: `docs/media/social-preview.png`.
+- [ ] **(you)** Upload it in GitHub → Settings → General → Social preview.
 - [ ] **(you)** Tag and publish v0.2.0. PyPI only when you decide to.
 
 ### 6. GitHub Action
 
 Brief: [10](tasks/10-github-action.md)
 
-- [ ] `action.yml`, docs and an example workflow; a dry run that needs no secret.
+- [x] `action.yml`, docs and an example workflow; a dry run that needs no secret (#23).
 - [ ] **(you)** A demo repository with the API key secret, showing a real PR comment.
 
 ### Optional
@@ -87,7 +92,8 @@ Brief: [10](tasks/10-github-action.md)
 
 - 2026-11-13: multi-judge grading (#5), `verify` (#7), new site (#10, #11), task briefs (#9).
 - 2026-11-14: approximate line matching (#13), contested findings (#14, issue #17), `doctor` and
-  `--dry-run` (#15, #21), multi-language miner (#16), first JS and Go cases and runs (#18–#20).
+  `--dry-run` (#15, #21), multi-language miner (#16), first JS and Go cases and runs (#18–#20),
+  GitHub Action (#23), real-015 and real-016 (#24, #25), v0.2.0 prep.
 
 ## Rules to keep
 

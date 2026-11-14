@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "reviewreplay"
-version = "0.1.0"
+version = "0.2.0"
 description = "Benchmark AI code reviewers (Claude Code, Codex, Gemini, your own prompts and skills) on the bugs your repository actually shipped."
 readme = "README.md"
 license = "MIT"
