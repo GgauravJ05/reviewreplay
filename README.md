@@ -129,19 +129,20 @@ gap from +16 pts to +10; with contested verdicts left out it touches zero (+9 pt
 grading is checked across models, not yet by people. Details:
 [first 4 bugs](results/m2-compare/README.md), [8 more](results/m2-real-more/README.md).
 
-**On 4 JavaScript and Go bugs the skill did worse** (axios ×2, gin, testify; 24 reviews, same
-grading):
+**On 8 JavaScript and Go bugs the skill's precision was lower, but not clearly** (axios ×2, gin,
+testify, cobra ×2, urfave/cli, logrus; 48 reviews, same grading):
 
 | JS and Go bugs | Claude Code | With code-review-skill |
 |---|---|---|
-| Bug found | 9 / 12 | 8 / 12 |
-| Precision (serious findings) | **95%** | 77% (paired −18 pts [−22, −12]) |
-| Serious false alarms | **2** | 7 |
-| Median cost per review | $0.054 | $0.075 |
+| Bug found | 18 / 24 | 15 / 24 |
+| Precision (serious findings) | **90%** | 77% (paired −13 pts [−20, +3]) |
+| Serious false alarms | **5** | 10 |
+| Median cost per review | $0.049 | $0.074 |
 
-Its precision was lower on every one of the 4 cases, the opposite of the Python result. One axios
-bug (an `Error` subclass that made `message` non-enumerable) was missed in all 6 reviews. Four cases
-is a small sample. Details: [m3-js-go](results/m3-js-go/README.md).
+That is the opposite direction to the Python result, but the interval now includes zero. Two bugs
+were missed in all 6 reviews: an axios `Error` subclass that made `message` non-enumerable, and a
+cobra type change that stops some callers compiling. Details and caveats:
+[m3-js-go](results/m3-js-go/README.md).
 
 ## Supported reviewers
 
