@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "flag_impl.go",
+      "line_start": 128,
+      "line_end": 136,
+      "severity": "important",
+      "summary": "PostParse calls f.Set directly, bypassing setMultiValueParsingConfig, so env-var and file sources ignore the custom slice/map separators (regression from the previous global setup)."
+    },
+    {
+      "file": "flag_impl.go",
+      "line_start": 159,
+      "line_end": 193,
+      "severity": "important",
+      "summary": "PreParse re-creates f.value, discarding the injected separator config (nil value for unapplied flags, old value for Local flags), so the first --flag value is split with default separators."
+    },
+    {
+      "file": "command.go",
+      "line_start": 354,
+      "line_end": 356,
+      "severity": "important",
+      "summary": "Separator config is read from the parsing command rather than the root or nearest ancestor, so subcommands and inherited persistent flags fall back to default separators (behavior regression)."
+    },
+    {
+      "file": "flag.go",
+      "line_start": 13,
+      "line_end": 13,
+      "severity": "minor",
+      "summary": "disableSliceFlagSeparator changed from var to const and is always false, leaving dead state that flag_test.go:3094 still passes as an argument."
+    },
+    {
+      "file": "flag_test.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "New tests do not cover env or file sources, Local flags, or subcommands, so the regressions are not caught."
+    }
+  ],
+  "extract_cost_usd": 0.0206558
+}

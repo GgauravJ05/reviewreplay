@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "command.go",
+      "line_start": 356,
+      "line_end": 448,
+      "severity": "important",
+      "summary": "Env-var and file Sources bypass the separator config because PostParse calls f.Set directly without setMultiValueParsingConfig, so slice/map flags from Sources ignore custom separators (e.g. \"a;b\" parses as one item, \"k:v\" fails)."
+    },
+    {
+      "file": "command.go",
+      "line_start": 448,
+      "line_end": 455,
+      "severity": "important",
+      "summary": "Subcommands do not inherit separator settings (SliceFlagSeparator, DisableSliceFlagSeparator, MapFlagKeyValueSeparator) from parent/root commands, so they silently fall back to defaults."
+    },
+    {
+      "file": "flag.go",
+      "line_start": 13,
+      "line_end": 17,
+      "severity": "minor",
+      "summary": "disableSliceFlagSeparator is now a constant false used only by tests; it is dead code and can be removed."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "New tests only cover CLI-arg parsing on a single root command; env-source and subcommand cases are untested."
+    }
+  ],
+  "extract_cost_usd": 0.0192338
+}

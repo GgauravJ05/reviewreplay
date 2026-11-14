@@ -1,0 +1,70 @@
+{
+  "subjects": {
+    "baseline": {
+      "caught": {
+        "mean": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n_cases": 1
+      },
+      "precision": {
+        "mean": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n_cases": 1
+      },
+      "reviews": 3,
+      "median_cost": 0.0771609,
+      "median_seconds": 16.1,
+      "mean_findings": 3.6666666666666665
+    },
+    "code-review-skill-invoked": {
+      "caught": {
+        "mean": 0.3333333333333333,
+        "lo": 0.3333333333333333,
+        "hi": 0.3333333333333333,
+        "n_cases": 1
+      },
+      "precision": {
+        "mean": 0.8888888888888888,
+        "lo": 0.8888888888888888,
+        "hi": 0.8888888888888888,
+        "n_cases": 1
+      },
+      "reviews": 3,
+      "median_cost": 0.10793520000000001,
+      "median_seconds": 19.4,
+      "mean_findings": 4.0
+    }
+  },
+  "paired_vs_baseline": {
+    "code-review-skill-invoked": {
+      "caught": {
+        "diff": -0.6666666666666667,
+        "lo": -0.6666666666666667,
+        "hi": -0.6666666666666667,
+        "n_cases": 1
+      },
+      "precision": {
+        "diff": -0.11111111111111116,
+        "lo": -0.11111111111111116,
+        "hi": -0.11111111111111116,
+        "n_cases": 1
+      }
+    }
+  },
+  "per_case": {
+    "baseline": {
+      "real-019": {
+        "caught": 1.0,
+        "precision": 1.0
+      }
+    },
+    "code-review-skill-invoked": {
+      "real-019": {
+        "caught": 0.3333333333333333,
+        "precision": 0.8888888888888888
+      }
+    }
+  }
+}

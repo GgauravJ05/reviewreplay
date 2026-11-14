@@ -3,6 +3,18 @@
 All notable changes to ReviewReplay. Numbers quoted here come from the committed runs in
 [`results/`](results/).
 
+## Unreleased
+
+### Cases
+
+- **real-017**, **real-018** cobra (#28, #29), **real-019** urfave/cli (#30), **real-020** logrus
+  (#31), all Go. 20 real bugs from 15 projects in 3 languages.
+
+### Results
+
+- `results/m3-js-go` now covers all 8 JavaScript and Go bugs (48 reviews): precision 90% without
+  the skill and 77% with it, paired −13 pts [−20, +3]. Two bugs were missed in every review.
+
 ## 0.2.0 (2026-11-14)
 
 ### Added

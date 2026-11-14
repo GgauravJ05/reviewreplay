@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 194,
+      "line_end": 194,
+      "severity": "important",
+      "summary": "The new prefix check `[[ $comp == \"$cur\"* ]] || continue` no longer skips empty completion lines. With an empty `$cur`, blank or description-only lines are added to COMPREPLY as empty candidates. This shows blank rows and can turn a single match into two, which skips the single-match path that strips the description."
+    },
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 183,
+      "line_end": 194,
+      "severity": "minor",
+      "summary": "The no-description fast path (line 183) filters with `compgen -W`, but the description path now uses a literal prefix match. Entries with spaces or `$` are handled differently, so the same completion list can give different results depending on whether any entry has a description."
+    }
+  ],
+  "extract_cost_usd": 0.035727999999999996
+}

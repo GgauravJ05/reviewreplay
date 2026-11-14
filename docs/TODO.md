@@ -12,8 +12,10 @@ Last updated: 2026-11-14.
 ## Where things stand
 
 - Public repo, site live at https://ggauravj05.github.io/reviewreplay/, PR rules on `main`.
-- 16 real bugs from 12 projects in 3 languages (`cases/real/real-001` … `real-016`; real-013 and
-  real-016 axios are JavaScript, real-014 gin and real-015 testify are Go).
+- 20 real bugs from 15 projects in 3 languages (`cases/real/real-001` … `real-020`): 12 Python,
+  2 JavaScript (axios), 6 Go (gin, testify, cobra ×2, urfave/cli, logrus). v0.2.0 released.
+- JS/Go result (8 bugs, `results/m3-js-go`): precision 90% without vs 77% with the skill, paired
+  −13 pts [−20, +3], so lower but not clearly.
 - Headline (12 Python bugs, `results/m2-compare` + `results/m2-real-more`, code-checked): precision
   **72% without vs 82% with code-review-skill**, paired +10 pts [+1, +16]; serious false alarms 13 vs 10.
   `real-011` (black) and `real-012` (peft) were missed in every run.
@@ -36,19 +38,21 @@ Brief: [02](tasks/02-correct-published-numbers.md). Drafts are in the git-ignore
 
 Brief: [07](tasks/07-run-and-grade.md). About $0.70.
 
-- [x] real-013 to real-016: 3 runs, four judges, code checks (`results/m3-js-go`). The skill's
-      precision was 77% vs 95% without it, the opposite of the Python result.
+- [x] real-013 to real-020: 3 runs, four judges, code checks (`results/m3-js-go`).
 
 ### 3. More real bugs (target: 20+ cases, 3+ languages)
 
 Brief: [05](tasks/05-mine-real-cases.md), [06](tasks/06-language-support.md), [07](tasks/07-run-and-grade.md)
 
 - [x] real-015 testify (#24), real-016 axios (#25).
-- [ ] Mine 4+ more cases to reach 20 (chalk, cobra, chi shortlists exist). zod was read and
-      skipped: its fixes are defensive guards away from the introducing change, or span large
-      internal rewrites, so the answer key would be ambiguous.
+- [x] real-017 to real-020 (#28–#31): cobra ×2, urfave/cli, logrus. 20 cases reached.
+- [ ] A TypeScript case (issue #35) and a Rust or Java case (issue #36). Tried and skipped: zod
+      (guards away from the introducing change), ky (leak older than any one change), date-fns
+      (358 changed lines, over the 300-line limit), chalk and chi (nothing usable).
       Read every candidate's fix and introducer; keep only behaviour bugs the introducer added.
-- [x] **(you)** Run, grade and verify the new cases on your login (real-015, real-016 in `results/m3-js-go`).
+- [x] **(you)** Run, grade and verify the new cases on your login (all in `results/m3-js-go`).
+- [ ] Judge fix: a finding that describes the answer-key bug but cites a line outside the gate
+      must not be labelled a false alarm (seen on real-019). Then **(you)** regrade.
 
 Lessons: the miner's introducer is often wrong when message and blame disagree, and many fixes
 are hardening, refactors or older bugs. Expect 1 usable case per 5–10 candidates.
@@ -70,10 +74,10 @@ Brief: [12](tasks/12-release.md)
 
 - [x] CHANGELOG, version bump to 0.2.0, release notes draft (`docs/drafts/12-release-notes.md`).
 - [x] 7 good-first-issues drafted in `docs/drafts/12-good-first-issues.md`.
-- [ ] **(you)** Approve and post the good-first-issues.
+- [x] Good-first-issues posted (#32–#38).
 - [x] Social preview image: `docs/media/social-preview.png`.
 - [ ] **(you)** Upload it in GitHub → Settings → General → Social preview.
-- [ ] **(you)** Tag and publish v0.2.0. PyPI only when you decide to.
+- [x] v0.2.0 tagged and released. PyPI only when you decide to.
 
 ### 6. GitHub Action
 

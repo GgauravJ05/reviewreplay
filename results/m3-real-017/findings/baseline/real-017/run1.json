@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 194,
+      "line_end": 194,
+      "severity": "minor",
+      "summary": "Replacing the compgen filter with a literal prefix test drops the old empty-completion skip, so an empty $comp (e.g. a description-only line) matches when $cur is empty and gets added to COMPREPLY, counted in the single-completion check, and formatted."
+    }
+  ],
+  "extract_cost_usd": 0.033944
+}

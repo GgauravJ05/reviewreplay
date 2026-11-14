@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "entry.go",
+      "line_start": 287,
+      "line_end": 288,
+      "severity": "minor",
+      "summary": "Format now runs while Logger.mu is held, so a custom formatter that logs through the same logger or calls a locking Logger method will deadlock, and slow formatters serialize all logging."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 285,
+      "line_end": 300,
+      "severity": "minor",
+      "summary": "TestEntryFormatterRace starts goroutines without a WaitGroup or Wait, so the test can finish before they run and pass without exercising the race (same problem in TestEntryReportCallerRace)."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 273,
+      "line_end": 289,
+      "severity": "minor",
+      "summary": "Test comments are wrong or sloppy: they say \"logging before SetReportCaller\" in the formatter test, \"Doing it twice\" is copy-pasted, and \"likelyhood\" is misspelled."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 273,
+      "line_end": 276,
+      "severity": "minor",
+      "summary": "The extra entry.Info goroutine added to TestEntryReportCallerRace doesn't test anything new."
+    }
+  ],
+  "extract_cost_usd": 0.0185798
+}

@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "completions.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "GetFlagCompletionFunc and FixedCompletions now return the named type CompletionFunc instead of the unnamed func type, so code that uses reflection to compare types or uses the result as a type parameter could behave differently (edge case)."
+    },
+    {
+      "file": "completions.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The FixedCompletions doc comment is missing a trailing period after \"[CompletionFunc]\" (cosmetic)."
+    }
+  ],
+  "extract_cost_usd": 0.034392
+}

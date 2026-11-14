@@ -1,0 +1,410 @@
+{
+  "case": "real-020",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "entry.go",
+      "line_start": 287,
+      "line_end": 289,
+      "severity": "important",
+      "summary": "write() holds the non-reentrant Logger.mu while calling Formatter.Format, so any formatter, String() or MarshalJSON that logs via the same logger or calls SetFormatter/SetOutput/SetReportCaller/AddHook will deadlock, and formatting is serialized across goroutines, hurting hot-path performance.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies holding non-reentrant Logger.mu during Format causing deadlock when formatter code logs via same logger."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies holding non-reentrant Logger.mu during Format causing deadlock when formatter code logs via same logger."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies holding non-reentrant Logger.mu during Format causing deadlock when formatter/user code logs via same logger."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies holding non-reentrant Logger.mu during Format causing deadlock when formatter code logs via same logger, plus serialization."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Points to the same cause as b1: Format is called while holding the non-reentrant Logger.mu, so a formatter that logs through the same logger deadlocks."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "important",
+      "summary": "TestEntryReportCallerRace and TestEntryFormatterRace spawn goroutines without waiting (no sync.WaitGroup), so tests may finish before goroutines run and the race detector often detects nothing.",
+      "index": 1,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test-quality complaint about missing WaitGroup; not a defect in the changed logic matching the key."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test-quality complaint about missing WaitGroup; not a defect in the changed logic matching the key."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test-structure complaint, not the answer-key bug and not a real defect in the changed logic."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test-quality complaint, not a defect in the changed production code relevant to the key."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is about how well the tests detect races; it is not a defect that makes the changed code behave incorrectly."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "minor",
+      "summary": "Comment claims logging occurs before SetReportCaller but nothing guarantees that ordering.",
+      "index": 2,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Comment wording nitpick, not a real defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Comment wording nitpick, not a real defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Comment nitpick, not a real defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Comment nitpick about test ordering, not a real defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A test comment that overstates the ordering is not a real defect."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "minor",
+      "summary": "The goroutine added in TestEntryReportCallerRace duplicates an existing one.",
+      "index": 3,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Duplicate goroutine in test is a style matter, not incorrect behavior."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Duplicate goroutine in test is a style matter, not incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test duplication is style only."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Duplicate goroutine in a test is style, not incorrect behavior."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A duplicated goroutine in a test is a style issue only."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "minor",
+      "summary": "The word 'likelyhood' is misspelled in a comment.",
+      "index": 4,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Spelling error in a comment is pure style."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Spelling error in a comment is pure style."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Spelling error is pure style."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Spelling error in a comment is pure style."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A misspelled word in a comment is purely cosmetic."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0184079,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies holding non-reentrant Logger.mu during Format causing deadlock when formatter code logs via same logger."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test-quality complaint about missing WaitGroup; not a defect in the changed logic matching the key."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Comment wording nitpick, not a real defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Duplicate goroutine in test is a style matter, not incorrect behavior."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Spelling error in a comment is pure style."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0181759,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies holding non-reentrant Logger.mu during Format causing deadlock when formatter/user code logs via same logger."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test-structure complaint, not the answer-key bug and not a real defect in the changed logic."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Comment nitpick, not a real defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test duplication is style only."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Spelling error is pure style."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0184159,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies holding non-reentrant Logger.mu during Format causing deadlock when formatter code logs via same logger, plus serialization."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test-quality complaint, not a defect in the changed production code relevant to the key."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Comment nitpick about test ordering, not a real defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Duplicate goroutine in a test is style, not incorrect behavior."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Spelling error in a comment is pure style."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0396078,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Points to the same cause as b1: Format is called while holding the non-reentrant Logger.mu, so a formatter that logs through the same logger deadlocks."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is about how well the tests detect races; it is not a defect that makes the changed code behave incorrectly."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A test comment that overstates the ordering is not a real defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A duplicated goroutine in a test is a style issue only."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A misspelled word in a comment is purely cosmetic."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0946075
+}
