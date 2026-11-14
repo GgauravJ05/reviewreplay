@@ -1,0 +1,16 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "bash_completionsV2.go",
+      "anchor": "[[ $comp == \"$cur\"* ]] || continue",
+      "span": 1,
+      "class": "regression",
+      "severity": "minor",
+      "summary": "The bash-v2 completion script reads candidate lines with `while IFS='' read -r compline; ... done < <(printf \"%s\\n\" \"$out\")`, and the last read yields an empty line after the trailing newline. The old filter `comp=$(compgen -W \"$comp\" -- \"$cur\"); [[ -z $comp ]] && continue` dropped that empty entry. The new prefix test `[[ $comp == \"$cur\"* ]]` matches the empty string whenever nothing has been typed yet ($cur is empty), so an empty completion is added to COMPREPLY when completions have descriptions.",
+      "trigger": "Press TAB with nothing typed on a command whose completions carry descriptions: an extra empty candidate appears. The fix (e1ded5cd, #1691, 'Regression from fb8031162c') adds `[[ -z $compline ]] && continue` before the filter."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": []
+}
