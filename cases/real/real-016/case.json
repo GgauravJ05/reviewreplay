@@ -1,0 +1,19 @@
+{
+  "id": "real-016",
+  "kind": "real",
+  "track": "javascript",
+  "title": "fix: turn AxiosError into a native error (#5394) (#5558)",
+  "source": "https://github.com/axios/axios@1c6a86dd2c0623ee1af043a8491dbc96d40e883b",
+  "license": "MIT",
+  "added": "2026-11-14",
+  "repo": "https://github.com/axios/axios",
+  "commit": "1c6a86dd2c0623ee1af043a8491dbc96d40e883b",
+  "fix": "822e3e40b4f9287b5a787f5d1dfb3ae7f8a0faa3",
+  "status": "ready",
+  "drafted_by": "hand",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/axios/axios/pull/7392"
+}

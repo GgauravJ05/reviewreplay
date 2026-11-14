@@ -1,0 +1,20 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "lib/core/AxiosError.js",
+      "anchor": "super(message);",
+      "span": 2,
+      "class": "regression",
+      "severity": "important",
+      "summary": "AxiosError now extends Error and sets its message with super(message). The native Error constructor defines message as a non-enumerable own property, whereas the old function constructor assigned this.message = message (enumerable). So Object.keys(err), Object.entries(err), {...err} and for...in on an AxiosError no longer include message, silently breaking code that copies or logs errors that way.",
+      "trigger": "const err = new AxiosError('Request failed', 'ERR_BAD_REQUEST'); Object.keys(err).includes('message') is true before this change and false after it; {...err}.message becomes undefined. The fix (#7392) redefines message with Object.defineProperty(this, 'message', {value: message, enumerable: true, writable: true, configurable: true}) and its message names this commit (v1.13.3) as the breaking change."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "AxiosError.from assigns axiosError.cause = error as a plain enumerable property, so JSON.stringify or a deep copy of the error walks into the original error and can hit circular structures (later fixed in #10913 by making cause non-enumerable).",
+    "status is now set to response.status even when it is undefined, where it used to be null.",
+    "AxiosError.from overwrites name with the wrapped error's name, so err.name may no longer be 'AxiosError'."
+  ]
+}
