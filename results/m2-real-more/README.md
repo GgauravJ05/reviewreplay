@@ -147,6 +147,7 @@ source (over the download cap) and real-007 needs the standard library's pickle 
 
 ## Next
 
-1. A short yes/no review of the 12 contested findings, by a person or contributors.
+1. The 12 contested findings: 10 are settled with quoted code in
+   [contested-real](../contested-real/README.md); 2 are open for outside labelling.
 2. Test the skill's verify-before-reporting change (awesome-skills/code-review-skill#34), and
    Claude Code's `/code-review`, on the two cases nobody caught.
