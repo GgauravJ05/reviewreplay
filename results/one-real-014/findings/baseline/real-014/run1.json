@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "context.go",
+      "line_start": 693,
+      "line_end": 693,
+      "severity": "blocking",
+      "summary": "SaveUploadedFile unconditionally chmods the parent directory of dst (even \".\" or a shared existing directory) on every call, which can alter existing directory modes, lock out users, or fail with EPERM; it should be dropped or limited to directories MkdirAll created."
+    },
+    {
+      "file": "context.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The variadic `perm` parameter only sets the directory mode, not the saved file's mode, which is misleading; the doc comment doesn't say so, and extra variadic values after perm[0] are silently ignored."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 178,
+      "line_end": 181,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermission asserts on the current directory (filepath.Dir(\"permission_test\") is \".\") instead of a created directory, passes only because of the buggy chmod, leaves the directory at 0o755, leaves a stray file in the repo, and may vary with umask; it should use t.TempDir() with a nested path."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 196,
+      "line_end": 196,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermissionFailed depends on the environment: it expects an error from a non-executable directory, which doesn't occur when running as root (e.g. CI containers), and it leaves a test/ directory behind."
+    }
+  ],
+  "extract_cost_usd": 0.0209518
+}

@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "context.go",
+      "line_start": 695,
+      "line_end": 695,
+      "severity": "important",
+      "summary": "SaveUploadedFile unconditionally chmods the destination's parent directory even if it already exists, altering permissions of directories like '.' or failing on '/tmp' for non-owners and breaking previously working saves."
+    },
+    {
+      "file": "context.go",
+      "line_start": 686,
+      "line_end": 686,
+      "severity": "important",
+      "summary": "The file perm is reused as the directory mode, so a mode like 0o644 lacks the execute bit, making the created directory untraversable and causing the following os.Create to fail with permission denied."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 182,
+      "line_end": 182,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermission stats filepath.Dir(\"permission_test\") which is the package directory '.', never creating its own directory, leaves the permission_test file behind, and the 0o644 failure test depends on not running as root; should use t.TempDir() with a nested path."
+    }
+  ],
+  "extract_cost_usd": 0.0175418
+}

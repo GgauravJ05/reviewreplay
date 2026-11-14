@@ -1,0 +1,201 @@
+{
+  "case": "real-013",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 132,
+      "severity": "blocking",
+      "summary": "The header-injection check (assertValidHeaderValue) was removed and normalizeValue now silently strips CR/LF/control characters instead of rejecting them, so injection attempts go unnoticed and merged values can change meaning (e.g. pass allowlist checks).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known problem that values are silently rewritten instead of rejected, not the Unicode-stripping bug."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that values are silently rewritten instead of rejected, not the Unicode-stripping bug."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "The regex [^\\x09\\x20-\\x7E\\x80-\\xFF] silently drops \\x7F and all code points above 0xFF (e.g. \u20ac or CJK), corrupting header values without error, and tests don't cover it.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Identifies the regex dropping all code points above 0xFF, which is the b1 defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies the regex dropping all code points above 0xFF, which is the b1 defect."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "trimSPorHTAB now trims leading and trailing whitespace on every header value, a behavior change for all callers beyond the injection case.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "match": "file",
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Trimming whitespace is not the Unicode stripping defect, and it is unlikely to be a real regression."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming whitespace is not the Unicode stripping defect, and it is unlikely to be a real regression."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "note",
+      "summary": "Loopback aliasing means no_proxy=localhost now also bypasses the proxy for 127.0.0.1 and [::1] and vice versa, which is wider than what the user typed (deliberate but worth noting).",
+      "index": 3,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known loopback aliasing problem in the proxy change."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known loopback aliasing problem in the proxy change."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "Updated tests only assert the new sanitizing behavior and do not check that header injection is detected or rejected.",
+      "index": 4,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Test coverage gap for injection rejection is not tied to the answer-key bug, and rejection is no longer the intended behavior."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test coverage gap for injection rejection is not tied to the answer-key bug, and rejection is no longer the intended behavior."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.038218,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that values are silently rewritten instead of rejected, not the Unicode-stripping bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Identifies the regex dropping all code points above 0xFF, which is the b1 defect."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming whitespace is not the Unicode stripping defect, and it is unlikely to be a real regression."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known loopback aliasing problem in the proxy change."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test coverage gap for injection rejection is not tied to the answer-key bug, and rejection is no longer the intended behavior."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.038218
+}
