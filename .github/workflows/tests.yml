@@ -33,3 +33,21 @@ jobs:
         run: python -m pytest -q
       - name: Check the CLI starts
         run: reviewreplay --help
+
+  action-dry-run:
+    name: action (dry run, no secret)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - id: rr
+        uses: ./
+        with:
+          cases: cases/real
+          subjects: baseline,code-review-skill-invoked
+          dry-run: "true"
+          comment: "false"
+      - name: The scorecard says it was a dry run
+        env:
+          SCORECARD: ${{ steps.rr.outputs.scorecard }}
+        run: |
+          grep -q "Dry run: nothing was reviewed" "$SCORECARD"
