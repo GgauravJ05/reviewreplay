@@ -1,0 +1,19 @@
+{
+  "id": "real-014",
+  "kind": "real",
+  "track": "go",
+  "title": "refactor(context): add an optional permission parameter to the SaveUploadedFile method (#4068) (#4088)",
+  "source": "https://github.com/gin-gonic/gin@e46bd521859fdfc83c508f1d42c92cb7f91e9fcb",
+  "license": "MIT",
+  "added": "2026-11-14",
+  "repo": "https://github.com/gin-gonic/gin",
+  "commit": "e46bd521859fdfc83c508f1d42c92cb7f91e9fcb",
+  "fix": "d9307dbcbbe796a64d9e0ef23452da888dd7f904",
+  "status": "ready",
+  "drafted_by": "hand",
+  "signals": {
+    "referenced": false,
+    "blame_agrees": false
+  },
+  "issue": "https://github.com/gin-gonic/gin/issues/4622"
+}
