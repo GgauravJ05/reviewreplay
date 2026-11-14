@@ -1,5 +1,6 @@
 """reviewreplay command line.
 
+  reviewreplay doctor [--login]                    check git, claude, Python and the cache folder
   reviewreplay init  [REPO] --out .reviewreplay   build a benchmark from a repo's own bugs
   reviewreplay check [CASES_DIR]
   reviewreplay make-patch CASE_DIR...
@@ -20,11 +21,11 @@ import json
 import sys
 from pathlib import Path
 
-from . import claude
+from . import claude, doctor
 from .cases import check_case, find_case_dirs, load_cases, make_patch
 from .compare import write_comparison
 from .grade import extract_all, grade_all, wanted_judges
-from .init import init
+from .init import init, usable_candidates
 from .label import label_sheet
 from .mine import as_dicts, mine, table
 from .report import agreement, write_label_sheet, write_report
@@ -42,6 +43,10 @@ def _subjects_dir() -> Path:
     return Path("subjects") if Path("subjects").is_dir() else BUILTIN_SUBJECTS
 
 
+_NO_CANDIDATES = ("no usable fix commits since {since}. Try an earlier --since (e.g. 2023-01-01), "
+                  "or --pattern with your project's wording for fixes (e.g. 'fix|bug|regress').")
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="reviewreplay")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -53,6 +58,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--max-cases", type=int, default=10)
     p.add_argument("--model", default=claude.DEFAULT_MODEL)
     p.add_argument("--pattern", help="commit-message regex for fix commits")
+    p.add_argument("--dry-run", action="store_true", help="list usable fixes and stop; spends nothing")
+
+    p = sub.add_parser("doctor", help="check git, claude, Python and the cache folder")
+    p.add_argument("--login", action="store_true",
+                   help="also send one tiny prompt to check the claude login works")
 
     p = sub.add_parser("check", help="validate cases")
     p.add_argument("cases", nargs="?")
@@ -70,6 +80,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--total-budget", type=float, help="stop the run after this est. $")
     p.add_argument("--workers", type=int, default=3)
     p.add_argument("--include-drafts", action="store_true", help="also run unconfirmed draft cases")
+    p.add_argument("--dry-run", action="store_true", help="show reviews, cost and time; run nothing")
 
     for name in ("extract", "grade"):
         p = sub.add_parser(name)
@@ -127,12 +138,32 @@ def main(argv: list[str] | None = None) -> int:
 
     a = ap.parse_args(argv)
 
+    if a.cmd == "doctor":
+        return 0 if doctor.print_checks(doctor.checks(login=a.login)) else 1
+
     if a.cmd == "init":
         out = Path(a.out)
+        if a.dry_run:
+            cands = usable_candidates(a.repo, since=a.since, max_cases=a.max_cases, pattern=a.pattern)
+            if not cands:
+                print(_NO_CANDIDATES.format(since=a.since))
+                return 1
+            n = min(len(cands), a.max_cases)
+            print(f"{len(cands)} usable fix commit(s) since {a.since}; init would try them in order "
+                  f"until {n} draft case(s) are made, one model call each.")
+            for c in cands[:n]:
+                print(f"  {c.fix[:10]}  {c.subject[:70]}")
+            print("Nothing was drafted (--dry-run).")
+            return 0
+        if not doctor.preflight():
+            return 1
         report = init(a.repo, out, since=a.since, max_cases=a.max_cases, model=a.model,
                       pattern=a.pattern)
         for fix, msg in report:
             print(f"{fix}  {msg}")
+        if not report:
+            print(_NO_CANDIDATES.format(since=a.since))
+            return 1
         drafted = sum(1 for _, m in report if m == "drafted")
         print(f"\n{drafted} draft case(s) in {out / 'cases'}. Confirm each (see its NOTES.md), then:\n"
               f"  reviewreplay run --cases {out / 'cases'} --out {out / 'results'} --include-drafts")
@@ -166,6 +197,15 @@ def main(argv: list[str] | None = None) -> int:
             print(f"skipping {len(drafts)} draft case(s) (confirm them or pass --include-drafts)")
             cases = [c for c in cases if c.meta.get("status") != "draft"]
         subjects = load_subjects(_subjects_dir(), a.subjects.split(",") if a.subjects else None)
+        if not cases:
+            print(f"no cases found in {a.cases or 'cases'}: run `reviewreplay init` first, or pass --cases DIR")
+            return 1
+        if a.dry_run:
+            print(doctor.describe_run([c.id for c in cases], [s.name for s in subjects], a.runs,
+                                      Path(a.out), a.workers))
+            return 0
+        if not doctor.preflight():
+            return 1
         run_all(cases, subjects, a.runs, Path(a.out), model=a.model, budget=a.budget,
                 workers=a.workers, total_budget=a.total_budget)
         return 0

@@ -140,13 +140,20 @@ def draft_case(repo: Path, repo_ref: str, cand: Candidate, out: Path, model: str
     return case_dir, "drafted"
 
 
-def init(repo_ref: str, out: Path, *, since: str, max_cases: int, model: str,
-         pattern: str | None = None) -> list[tuple[str, str]]:
-    repo = repo_clone(repo_ref)
+def usable_candidates(repo_ref: str, *, since: str, max_cases: int,
+                      pattern: str | None = None) -> list[Candidate]:
+    """Fix commits with a small introducing commit, most trustworthy first. Reads git only."""
     kw = {"pattern": pattern} if pattern else {}
     cands = [c for c in mine(repo_ref, since=since, limit=max_cases * 5, **kw)
              if c.introducer and c.introducer_lines and c.introducer_lines <= MAX_CHANGED_LINES]
     cands.sort(key=lambda c: (not c.agree, not c.referenced))
+    return cands
+
+
+def init(repo_ref: str, out: Path, *, since: str, max_cases: int, model: str,
+         pattern: str | None = None) -> list[tuple[str, str]]:
+    repo = repo_clone(repo_ref)
+    cands = usable_candidates(repo_ref, since=since, max_cases=max_cases, pattern=pattern)
     report: list[tuple[str, str]] = []
     made = 0
     for cand in cands:
