@@ -1,0 +1,64 @@
+{
+  "case": "real-019",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "PreParse builds a fresh value for each flag, so the separator config starts at its zero value. The config is only pushed in by cmd.set and cmd.Set, which handle CLI args and explicit Set calls. PostParse calls f.Set directly for env-var and file sources, so SliceBase.Set splits with the default separator and ignores a custom SliceFlagSeparator or DisableSliceFlagSeparator. The map flag has the same gap, since it takes its config through the same setter.",
+      "evidence": [
+        {
+          "file": "project/flag_impl.go",
+          "line": 134,
+          "quote": "if err := f.Set(f.Name, val); err != nil {"
+        },
+        {
+          "file": "project/command.go",
+          "line": 356,
+          "quote": "cmd.setMultiValueParsingConfig(f)"
+        },
+        {
+          "file": "project/command_run.go",
+          "line": 210,
+          "quote": "if err := flag.PostParse(); err != nil {"
+        },
+        {
+          "file": "project/flag_impl.go",
+          "line": 163,
+          "quote": "f.value = f.creator.Create(newVal, new(T), f.Config)"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": null,
+      "cost_usd": 0.07302990000000001
+    },
+    "1": {
+      "verdict": "confirmed",
+      "reason": "Command.set injects the separator config into f.value and then calls f.Set. FlagBase.Set re-runs PreParse when `!f.applied || f.Local`, and PreParse rebuilds f.value through creator.Create. SliceBase.Create returns a fresh SliceBase with no separator config, so for Local flags (and any never-applied flag) the injected config is lost and default separators are used. The \"nil value for unapplied flags\" detail is narrower than claimed, because command_run pre-applies flags, but the Local-flag case is real.",
+      "evidence": [
+        {
+          "file": "project/flag_impl.go",
+          "line": 188,
+          "quote": "if !f.applied || f.Local {"
+        },
+        {
+          "file": "project/flag_impl.go",
+          "line": 163,
+          "quote": "f.value = f.creator.Create(newVal, new(T), f.Config)"
+        },
+        {
+          "file": "project/command.go",
+          "line": 356,
+          "quote": "cmd.setMultiValueParsingConfig(f)"
+        },
+        {
+          "file": "project/flag_slice_base.go",
+          "line": 25,
+          "quote": "return &SliceBase[T, C, VC]{"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": null,
+      "cost_usd": 0.1002844
+    }
+  }
+}

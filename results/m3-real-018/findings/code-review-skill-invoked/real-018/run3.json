@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "completions.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The doc comment on FixedCompletions is missing a trailing period after \"satisfies [CompletionFunc]\"."
+    }
+  ],
+  "extract_cost_usd": 0.0150798
+}

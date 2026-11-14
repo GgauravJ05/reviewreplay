@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "flag_impl.go",
+      "line_start": 134,
+      "line_end": 134,
+      "severity": "blocking",
+      "summary": "FlagBase.PostParse calls f.Set directly, bypassing Command.set/Set so setMultiValueParsingConfig never runs; env-var and file sources ignore custom slice/map separators and DisableSliceFlagSeparator, regressing slice flags and breaking the new map feature."
+    },
+    {
+      "file": "command.go",
+      "line_start": 356,
+      "line_end": 456,
+      "severity": "blocking",
+      "summary": "Separator settings are read only from the cmd calling set (command.go:356, 448-456) instead of the global removed from command_setup.go:133-139, so subcommands and persistent flags parsed by a child no longer inherit the parent's separator settings; should fall back through the parent chain."
+    },
+    {
+      "file": "flag.go",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "minor",
+      "summary": "disableSliceFlagSeparator is now a const that is always false and only referenced by tests, making it dead code."
+    }
+  ],
+  "extract_cost_usd": 0.0187118
+}

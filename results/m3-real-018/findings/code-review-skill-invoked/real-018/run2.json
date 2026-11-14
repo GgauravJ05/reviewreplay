@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Exported signatures now name the CompletionFunc type, which could matter for code using reflection type comparison or interfaces expecting the exact unnamed func type (minor API-surface change)."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The doc comment on FixedCompletions is missing a trailing period after \"[CompletionFunc]\"."
+    }
+  ],
+  "extract_cost_usd": 0.0160498
+}

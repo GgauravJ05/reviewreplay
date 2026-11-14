@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "entry.go",
+      "line_start": 287,
+      "line_end": 287,
+      "severity": "blocking",
+      "summary": "Logger.mu is now held while the formatter runs, and the mutex isn't reentrant, so a custom Formatter that calls back into the logger (logging, SetOutput, SetFormatter, SetLevel, AddHook) will deadlock."
+    },
+    {
+      "file": "entry.go",
+      "line_start": 287,
+      "line_end": 287,
+      "severity": "important",
+      "summary": "Holding the lock during formatting serializes formatting across all goroutines, which reduces throughput with slow formatters."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "important",
+      "summary": "TestEntryReportCallerRace and TestEntryFormatterRace start goroutines without waiting for them (no sync.WaitGroup), so the tests may finish before the race occurs and -race may never detect it."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 272,
+      "line_end": 274,
+      "severity": "minor",
+      "summary": "The comment says 'logging before SetReportCaller', but TestEntryFormatterRace has no SetReportCaller call (a copy-paste leftover), and 'likelyhood' is misspelled."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 290,
+      "line_end": 292,
+      "severity": "minor",
+      "summary": "The same misleading 'logging before SetReportCaller' comment appears in a test with no SetReportCaller call, and 'likelyhood' is misspelled."
+    }
+  ],
+  "extract_cost_usd": 0.019957799999999998
+}
