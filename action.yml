@@ -1,0 +1,130 @@
+name: ReviewReplay scorecard
+description: >-
+  Re-score your AI code reviewer on bugs from your own history when its prompt, skill or cases
+  change, and comment the scorecard on the pull request.
+author: Gaurav Jadhav
+branding:
+  icon: check-circle
+  color: gray-dark
+
+inputs:
+  cases:
+    description: Folder of cases (from `reviewreplay init`, committed to your repository).
+    default: .reviewreplay/cases
+  subjects:
+    description: >-
+      Comma-separated reviewers to run. Built-in names, or JSON files in ./subjects. Include
+      `baseline` to get the paired difference against plain Claude Code.
+    default: baseline
+  runs:
+    description: Runs per case and reviewer. 1 keeps CI cheap; 3 gives steadier numbers.
+    default: "1"
+  budget:
+    description: Stop starting new reviews after this estimated spend in US dollars.
+    default: "2"
+  model:
+    description: Model for reviews, extraction and grading.
+    default: claude-sonnet-5-5
+  include-drafts:
+    description: Also run cases still marked draft.
+    default: "false"
+  dry-run:
+    description: Only print the reviews, cost and time. Needs no secret and installs no CLI.
+    default: "false"
+  comment:
+    description: Post (or update) the scorecard as a pull-request comment.
+    default: "true"
+  anthropic-api-key:
+    description: An Anthropic API key, from a repository secret. Never printed or stored.
+    default: ""
+  claude-code-oauth-token:
+    description: Or a `claude setup-token` token, from a repository secret.
+    default: ""
+  claude-code-version:
+    description: The Claude Code CLI version to install.
+    default: 2.1.325
+  results:
+    description: Where to write the run's results.
+    default: .reviewreplay/ci-results
+  github-token:
+    description: Token used to post the comment.
+    default: ${{ github.token }}
+
+outputs:
+  scorecard:
+    description: Path to the scorecard markdown (the comment body).
+    value: ${{ steps.score.outputs.scorecard }}
+  results:
+    description: Path to the run's results folder.
+    value: ${{ inputs.results }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      with:
+        python-version: "3.13"
+
+    - name: Install ReviewReplay
+      shell: bash
+      run: python -m pip install --quiet "$GITHUB_ACTION_PATH"
+
+    - if: inputs.dry-run != 'true'
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: "22"
+
+    - name: Install Claude Code
+      if: inputs.dry-run != 'true'
+      shell: bash
+      env:
+        CLAUDE_VERSION: ${{ inputs.claude-code-version }}
+      run: npm install --global --silent "@anthropic-ai/claude-code@${CLAUDE_VERSION}"
+
+    - name: Score the reviewers
+      id: score
+      shell: bash
+      env:
+        RR_CASES: ${{ inputs.cases }}
+        RR_SUBJECTS: ${{ inputs.subjects }}
+        RR_RUNS: ${{ inputs.runs }}
+        RR_BUDGET: ${{ inputs.budget }}
+        RR_MODEL: ${{ inputs.model }}
+        RR_DRAFTS: ${{ inputs.include-drafts }}
+        RR_DRY: ${{ inputs.dry-run }}
+        RR_OUT: ${{ inputs.results }}
+        RR_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        REVIEWREPLAY_ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        REVIEWBENCH_OAUTH_TOKEN: ${{ inputs.claude-code-oauth-token }}
+      run: |
+        set -euo pipefail
+        args=(--cases "$RR_CASES" --out "$RR_OUT" --subjects "$RR_SUBJECTS" --runs "$RR_RUNS" --model "$RR_MODEL")
+        [ "$RR_DRAFTS" = "true" ] && args+=(--include-drafts)
+        comment="$RUNNER_TEMP/reviewreplay-comment.md"
+        if [ "$RR_DRY" = "true" ]; then
+          reviewreplay run "${args[@]}" --dry-run | tee "$RUNNER_TEMP/reviewreplay-dry-run.txt"
+          reviewreplay comment --dry-run-file "$RUNNER_TEMP/reviewreplay-dry-run.txt" --run-url "$RR_RUN_URL" --out "$comment"
+        else
+          if [ -z "$REVIEWREPLAY_ANTHROPIC_API_KEY" ] && [ -z "$REVIEWBENCH_OAUTH_TOKEN" ]; then
+            echo "::error::No credential: pass anthropic-api-key or claude-code-oauth-token from a repository secret (or set dry-run: true)."
+            exit 1
+          fi
+          reviewreplay run "${args[@]}" --total-budget "$RR_BUDGET"
+          reviewreplay extract "$RR_OUT" --model "$RR_MODEL"
+          reviewreplay grade "$RR_OUT" --model "$RR_MODEL" --cases "$RR_CASES"
+          reviewreplay report "$RR_OUT" --cases "$RR_CASES" > /dev/null
+          reviewreplay comment "$RR_OUT" --run-url "$RR_RUN_URL" --out "$comment"
+        fi
+        cat "$comment" >> "$GITHUB_STEP_SUMMARY"
+        echo "scorecard=$comment" >> "$GITHUB_OUTPUT"
+
+    - name: Comment on the pull request
+      if: inputs.comment == 'true' && github.event_name == 'pull_request'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        PR: ${{ github.event.pull_request.number }}
+        BODY: ${{ steps.score.outputs.scorecard }}
+      run: |
+        gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body-file "$BODY" --edit-last 2>/dev/null \
+          || gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body-file "$BODY"

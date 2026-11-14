@@ -37,6 +37,20 @@ reviewreplay report .reviewreplay/results
 estimate uses the committed reviews: about $0.06 and 15 seconds per review. For 12 cases, 2
 reviewers and 3 runs, that's about $4.25 and 6 minutes. A stopped run resumes where it left off.
 
+## Use it in CI
+
+The ReviewReplay GitHub Action re-scores your reviewer when its subject file or your cases change,
+and comments the scorecard on the pull request:
+
+```yaml
+- uses: GgauravJ05/reviewreplay@main
+  with:
+    subjects: baseline,our-reviewer
+    anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+```
+
+Setup, inputs, cost and safety are in [docs/github-action.md](docs/github-action.md).
+
 ## Why
 
 Teams are adopting AI code review on faith. Public benchmarks test reviewers on shared,

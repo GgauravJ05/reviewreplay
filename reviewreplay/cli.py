@@ -13,6 +13,7 @@
   reviewreplay label   results/<id>/labels.csv
   reviewreplay mine    https://github.com/<owner>/<repo> [--since 2025-06-01]
   reviewreplay agreement results/<id>/labels.csv
+  reviewreplay comment  results/<id> --out comment.md   the scorecard as a PR comment (CI)
 """
 from __future__ import annotations
 
@@ -23,6 +24,7 @@ from pathlib import Path
 
 from . import claude, doctor
 from .cases import check_case, find_case_dirs, load_cases, make_patch
+from .ci import write_comment
 from .compare import write_comparison
 from .grade import extract_all, grade_all, wanted_judges
 from .init import init, usable_candidates
@@ -132,6 +134,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--limit", type=int, default=40)
     p.add_argument("--json", help="also write candidates to this file")
     p.add_argument("--pattern", help="commit-message regex (default: regression wording)")
+
+    p = sub.add_parser("comment", help="write the scorecard as a pull-request comment (for CI)")
+    p.add_argument("run_dir", nargs="?")
+    p.add_argument("--out", required=True)
+    p.add_argument("--dry-run-file", help="a saved `run --dry-run` output to post instead")
+    p.add_argument("--run-url", help="link to the workflow run")
 
     p = sub.add_parser("agreement", help="judge vs. human labels (Cohen's kappa)")
     p.add_argument("sheet")
@@ -250,6 +258,12 @@ def main(argv: list[str] | None = None) -> int:
         print(table(cands))
         if a.json:
             Path(a.json).write_text(json.dumps(as_dicts(cands), indent=2))
+        return 0
+
+    if a.cmd == "comment":
+        print(write_comment(Path(a.out), run_dir=Path(a.run_dir) if a.run_dir else None,
+                            dry_run_file=Path(a.dry_run_file) if a.dry_run_file else None,
+                            run_url=a.run_url))
         return 0
 
     if a.cmd == "agreement":

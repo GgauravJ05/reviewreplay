@@ -20,6 +20,7 @@ ISOLATION = ["--setting-sources", "project", "--strict-mcp-config", "--no-sessio
 
 
 TOKEN_VAR = "REVIEWBENCH_OAUTH_TOKEN"   # from `claude setup-token`; set in your own shell
+API_KEY_VAR = "REVIEWREPLAY_ANTHROPIC_API_KEY"   # CI: an Anthropic API key from a repository secret
 FATAL_MARKERS = ("hit your session limit", "hit your usage limit", "Failed to authenticate",
                  "OAuth session expired", "Invalid API key", "rate_limit")
 
@@ -37,11 +38,19 @@ def clean_env() -> dict[str, str]:
     if token:
         env["CLAUDE_CODE_OAUTH_TOKEN"] = token
     env.pop(TOKEN_VAR, None)
+    # Every ANTHROPIC_* variable is dropped above so a host setting can't leak into a run; an API
+    # key meant for runs is passed under its own name and handed to `claude` only here.
+    key = os.environ.get(API_KEY_VAR)
+    if key:
+        env["ANTHROPIC_API_KEY"] = key
+    env.pop(API_KEY_VAR, None)
     return env
 
 
 def auth_mode() -> str:
-    return "setup-token" if os.environ.get(TOKEN_VAR) else "keychain login"
+    if os.environ.get(TOKEN_VAR):
+        return "setup-token"
+    return "api key" if os.environ.get(API_KEY_VAR) else "keychain login"
 
 
 def check_fatal(text: str) -> None:
