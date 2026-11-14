@@ -25,10 +25,17 @@ pallets/click, rewound to the commit that caused it and replayed to Claude Code.
 ```bash
 pip install git+https://github.com/GgauravJ05/reviewreplay
 cd your-repo
+reviewreplay doctor                   # git, claude, Python and the cache folder; spends nothing
+reviewreplay init --dry-run           # which fixed bugs it would use; spends nothing
 reviewreplay init                     # mine your fixed bugs into draft test cases
+reviewreplay run --cases .reviewreplay/cases --out .reviewreplay/results --include-drafts --dry-run
 reviewreplay run --cases .reviewreplay/cases --out .reviewreplay/results --include-drafts
 reviewreplay report .reviewreplay/results
 ```
+
+`run --dry-run` prints the number of reviews, the cost and the time before anything runs. The
+estimate uses the committed reviews: about $0.06 and 15 seconds per review. For 12 cases, 2
+reviewers and 3 runs, that's about $4.25 and 6 minutes. A stopped run resumes where it left off.
 
 ## Why
 
