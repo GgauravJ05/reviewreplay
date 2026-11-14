@@ -41,4 +41,4 @@ The two open ones:
   `None` id being pushed. It counts as a hit today. If it isn't the same bug, baseline recall drops
   from 26 to 25 of 36.
 
-Both are listed for outside labelling in a "help label these" issue.
+Both are open for outside labelling in [#17](https://github.com/GgauravJ05/reviewreplay/issues/17).
