@@ -12,88 +12,82 @@ Last updated: 2026-11-14.
 ## Where things stand
 
 - Public repo, site live at https://ggauravj05.github.io/reviewreplay/, PR rules on `main`.
-- 12 real bugs from 9 projects (`cases/real/real-001` … `real-012`), 162 reviews in
-  `results/m2-compare` and `results/m2-real-more`.
-- Latest numbers (code-checked, on `main`, README and site updated): precision
+- 14 real bugs from 11 projects in 3 languages (`cases/real/real-001` … `real-014`; real-013 axios
+  is JavaScript, real-014 gin is Go).
+- Headline (12 Python bugs, `results/m2-compare` + `results/m2-real-more`, code-checked): precision
   **72% without vs 82% with code-review-skill**, paired +10 pts [+1, +16]; serious false alarms 13 vs 10.
   `real-011` (black) and `real-012` (peft) were missed in every run.
+- Tooling: `doctor`, `--dry-run`, approximate line matching, multi-language miner, 10 of 12 contested
+  findings settled (`results/contested-real`), 2 open in issue #17.
 
-## 1. Land the open PRs (done 2026-11-13)
+## Priority order
 
-Brief: [01](tasks/01-land-open-prs.md)
+Work top to bottom. **(you)** marks steps that need the author: posting, logins, model usage,
+settings, releases.
 
-- [x] **PR #5** (multi-judge grading): conflicts fixed, merged.
-- [x] **PR #7** (`reviewreplay verify`): merged, with the new site (#10, #11).
-- [x] Close issues #4 and #6 once their PRs are in.
-- [x] Check that the site and README show the 72% vs 82% numbers after the merge.
+### 1. Correct the published numbers **(you)**
 
-## 2. Fix the numbers already published
+Brief: [02](tasks/02-correct-published-numbers.md). Drafts are in the git-ignored `docs/drafts/`.
 
-Brief: [02](tasks/02-correct-published-numbers.md)
+- [ ] Post `02-code-review-skill-32-update.md` as a follow-up on awesome-skills/code-review-skill#32.
+- [ ] Post `02-linkedin-repost.md`.
 
-- [ ] Post a short update on awesome-skills/code-review-skill#32 with the code-checked numbers
-      (the comment there has the older ones).
-- [ ] LinkedIn: short repost with the corrected numbers (the live post has the older ones).
+### 2. Full runs for the JS and Go cases **(you)**
 
-## 3. Roadmap Phase 1 — finish trustworthy grading
+Brief: [07](tasks/07-run-and-grade.md). About $0.70.
 
-Brief: [03](tasks/03-approximate-line-matching.md), [04](tasks/04-contested-findings.md)
+- [ ] real-013 and real-014: 3 runs, four judges, code checks, so they join the headline
+      (`results/one-real-013`, `one-real-014` hold only a 1-run smoke test).
 
-- [x] 1.1 `reviewreplay compare` (PR #3)
-- [x] 1.2 Multi-judge grading — PR #5
-- [x] 1.3 `unsure` checker (`reviewreplay verify`) — PR #7
-- [ ] 1.4 Approximate-line matching: a finding with the right file and bug, but lines slightly outside
-      ±3 (real-002's "~212, ~265"), should reach the judge. Add tests.
-- [ ] Look at the real-012 finding the judge graded both ways; list any finding that is still
-      contested in a short "help label these" issue.
-
-## 4. Roadmap Phase 2 — more real bugs (target: 20+ cases, 3+ languages)
+### 3. More real bugs (target: 20+ cases, 3+ languages)
 
 Brief: [05](tasks/05-mine-real-cases.md), [06](tasks/06-language-support.md), [07](tasks/07-run-and-grade.md)
 
-- [ ] Mine 8–10 more cases. Include **JS/TS and Go** from permissively licensed repos:
-      `reviewreplay mine <repo-url> --since 2024-01-01 --limit 40 --json out.json`
-- [ ] For each candidate: read the fix and the introducing commit; keep only behaviour bugs the
-      introducing commit really added (skip typing, docs, lint, CI, refactor and "missing feature"
-      fixes). Follow [ADDING_A_CASE.md](ADDING_A_CASE.md); `reviewreplay check` must pass.
-- [ ] Make sure export, prompts and grading work on one JS/TS and one Go case end to end.
-- [ ] Run, grade and verify the new cases (your Claude login, in a plain terminal tab):
-      `reviewreplay run --out results/<name> --subjects baseline,code-review-skill-invoked --runs 3`,
-      then `extract`, `grade`, `verify`, `report`.
+- [ ] Mine 6+ more cases, JS/TS and Go first (zod, testify, chalk, cobra, chi shortlists exist).
+      Read every candidate's fix and introducer; keep only behaviour bugs the introducer added.
+- [ ] **(you)** Run, grade and verify the new cases on your login.
 
-Lessons from mining so far: the miner's introducer is often wrong when message and blame don't
-agree. In the last batch the drafter rejected 4 of 14 candidates and 2 more were dropped by hand,
-so read every one.
+Lessons: the miner's introducer is often wrong when message and blame disagree, and many fixes
+are hardening, refactors or older bugs. Expect 1 usable case per 5–10 candidates.
 
-## 5. Roadmap Phase 3 — more reviewers
+### 4. More reviewers — the launch story
 
 Brief: [08](tasks/08-more-reviewers.md), [09](tasks/09-skill-verify-step.md)
 
-- [ ] Install and log in to Codex CLI and Gemini CLI, then run one case each with
+- [ ] **(you)** Install and log in to Codex CLI and Gemini CLI; run one case each with
       `reviewreplay/subjects/examples/codex.json` and `gemini.json`.
-- [ ] Try Claude Code `/code-review` (`examples/claude-code-review.json`) on one case.
-- [ ] code-review-skill with the verify step from your PR awesome-skills/code-review-skill#34
-      (pinned branch): first on real-011 and real-012, then all real cases.
-- [ ] Write up "Codex vs Gemini vs Claude Code on 20 real bugs", the launch-sized post
-      (see [LAUNCH.md](LAUNCH.md) for Show HN).
+- [ ] **(you)** Claude Code `/code-review` (`examples/claude-code-review.json`) on one case.
+- [ ] code-review-skill with the verify step from awesome-skills/code-review-skill#34: first on
+      real-011 and real-012, then all real cases.
+- [ ] Write up "Codex vs Gemini vs Claude Code on 20 real bugs" (see [LAUNCH.md](LAUNCH.md)).
 
-## 6. Roadmap Phase 4 — product
-
-Brief: [10](tasks/10-github-action.md), [11](tasks/11-quickstart.md)
-
-- [ ] GitHub Action: re-score a reviewer when its prompt or skill file changes and comment the
-      scorecard on the PR. Example workflow, docs and a demo repo.
-- [ ] Five-minute quickstart: clear errors (no `claude`, not logged in, usage limit), a `--dry-run`
-      cost estimate, and `init` → `run` → `report` tested on a fresh clone of a popular repo.
-
-## 7. Release and community
+### 5. Release v0.2.0
 
 Brief: [12](tasks/12-release.md)
 
-- [ ] Social preview image: upload it in GitHub → Settings → General (there's no API for it).
-- [ ] 5–8 good-first-issues (add a case from X, a reviewer adapter, a language).
-- [ ] v0.2.0: changelog, tag, release notes.
-- [ ] PyPI (`pip install reviewreplay`) only when you decide to.
+- [ ] CHANGELOG, version bump, release notes draft.
+- [ ] 5–8 good-first-issues drafted, then **(you)** approve and post.
+- [ ] **(you)** Social preview image: upload in GitHub → Settings → General.
+- [ ] **(you)** Tag and publish v0.2.0. PyPI only when you decide to.
+
+### 6. GitHub Action
+
+Brief: [10](tasks/10-github-action.md)
+
+- [ ] `action.yml`, docs and an example workflow; a dry run that needs no secret.
+- [ ] **(you)** A demo repository with the API key secret, showing a real PR comment.
+
+### Optional
+
+- [ ] **(you)** Regrade `results/m2-compare` so committed grades use approximate line matching
+      (can't change published precision; at most one review's catch).
+- [ ] Timed end-to-end quickstart on a fresh clone of a popular repo (brief [11](tasks/11-quickstart.md)).
+
+## Done
+
+- 2026-11-13: multi-judge grading (#5), `verify` (#7), new site (#10, #11), task briefs (#9).
+- 2026-11-14: approximate line matching (#13), contested findings (#14, issue #17), `doctor` and
+  `--dry-run` (#15, #21), multi-language miner (#16), first JS and Go cases and runs (#18–#20).
 
 ## Rules to keep
 
