@@ -1,0 +1,19 @@
+{
+  "id": "real-017",
+  "kind": "real",
+  "track": "go",
+  "title": "perf(bash-v2): speed up filtering entries with descriptions (#1689)",
+  "source": "https://github.com/spf13/cobra@fb8031162c2ffab270774f13c6904bb04cbba5a7",
+  "license": "Apache-2.0",
+  "added": "2026-11-14",
+  "repo": "https://github.com/spf13/cobra",
+  "commit": "fb8031162c2ffab270774f13c6904bb04cbba5a7",
+  "fix": "e1ded5cd9480aa9921a8cb0f646b6b569ac1b9d8",
+  "status": "ready",
+  "drafted_by": "hand",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/spf13/cobra/pull/1691"
+}
