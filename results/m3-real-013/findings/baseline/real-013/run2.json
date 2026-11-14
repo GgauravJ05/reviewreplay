@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "The loopback aliasing check makes NO_PROXY=localhost also bypass the proxy for 127.0.0.1 and ::1, matching hosts that were never listed. It is too broad, and it is inconsistent because it doesn't cover the rest of 127.0.0.0/8."
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 14,
+      "line_end": 50,
+      "severity": "important",
+      "summary": "Removing assertValidHeaderValue means header values containing CR/LF are silently altered (\"a\\r\\nb\" becomes \"ab\") instead of being rejected with an error."
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "The sanitizer regex strips every character above \\xFF (emoji, CJK) and control characters such as \\x7F without any error. Values like \"\u540d\u524d\" become empty, which hides an error Node's http would have thrown. Values are also newly trimmed of leading and trailing whitespace."
+    }
+  ],
+  "extract_cost_usd": 0.0194338
+}

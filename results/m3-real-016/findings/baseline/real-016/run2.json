@@ -1,0 +1,54 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 7,
+      "line_end": 13,
+      "severity": "important",
+      "summary": "AxiosError.from copies only message, code, name and cause instead of all own properties of the source error, so fields like errno, syscall, address, port and hostname are lost."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "AxiosError.from throws a TypeError on a null/undefined error, no longer falls back to 'Error' for message or name, and `code || error.code` wrongly overrides an explicit falsy code."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 29,
+      "line_end": 29,
+      "severity": "important",
+      "summary": "isAxiosError (and __CANCEL__ in CanceledError) became own enumerable properties instead of non-enumerable prototype ones, and cause is now enumerable and assigned unconditionally, so they show up in Object.keys, spreads, toEqual and JSON.stringify and may overwrite an existing cause."
+    },
+    {
+      "file": "lib/cancel/CanceledError.js",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "__CANCEL__ is now an own enumerable property rather than non-enumerable on the prototype, changing enumeration, serialization and equality behavior."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 31,
+      "line_end": 31,
+      "severity": "minor",
+      "summary": "this.status = response.status leaves status undefined when the response has no status, where the old code set it to null."
+    },
+    {
+      "file": "test/specs/cancel/CanceledError.spec.js",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "New tests call require('node:util/types') inside an ESM spec, which fails in browser/Karma runs because process.release can exist while require does not."
+    },
+    {
+      "file": "test/specs/core/AxiosError.spec.js",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "New tests call require('node:util/types') inside an ESM spec, which fails in browser/Karma runs, and they don't cover from() regressions such as property copying or an empty error."
+    }
+  ],
+  "extract_cost_usd": 0.023419799999999998
+}

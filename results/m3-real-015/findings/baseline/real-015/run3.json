@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "blocking",
+      "summary": "Changing the type assertion from obj.(Mock) to obj.(*Mock) makes AssertExpectationsForObjects panic on the deprecated by-value Mock call, because the following obj.(assertExpectationser) assertion runs on a plain Mock that lacks the pointer-receiver method, and the deprecation warning now fires for the wrong (*Mock) case."
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Changing mutex from a lazily created *sync.Mutex to a value sync.Mutex means copying a Mock by value copies lock state, which go vet's copylocks flags."
+    }
+  ],
+  "extract_cost_usd": 0.0177518
+}

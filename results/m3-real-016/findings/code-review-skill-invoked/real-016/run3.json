@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 6,
+      "line_end": 12,
+      "severity": "blocking",
+      "summary": "AxiosError.from copies only message, code and name instead of all own properties, so errno, syscall, address, port, response and the original stack are lost."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 7,
+      "line_end": 7,
+      "severity": "blocking",
+      "summary": "from(null) or from(undefined) now throws a TypeError because error.message is read without a guard; the old code fell back to 'Error'."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 9,
+      "line_end": 27,
+      "severity": "important",
+      "summary": "cause and isAxiosError are now enumerable own properties, so they show up in Object.keys, spreads, Object.assign, toFlatObject and deep-equality checks."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 35,
+      "line_end": 35,
+      "severity": "important",
+      "summary": "status is assigned response.status directly and can now be undefined instead of null, which breaks status === null checks."
+    },
+    {
+      "file": "lib/cancel/CanceledError.js",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "minor",
+      "summary": "__CANCEL__ moved from the prototype to an enumerable own instance property and is no longer on CanceledError.prototype."
+    },
+    {
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The new tests only check isNativeError and the static error codes. They don't cover from() with extra properties, a null error, or a response with no status."
+    }
+  ],
+  "extract_cost_usd": 0.0207718
+}

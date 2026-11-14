@@ -1,0 +1,341 @@
+{
+  "case": "real-015",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "blocking",
+      "summary": "Changing obj.(Mock) to obj.(*Mock) in AssertExpectationsForObjects breaks the deprecated by-value calling style: a Mock value falls through to an unchecked obj.(assertExpectationser) assertion and panics.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the by-value Mock falling through to the unchecked assertion and panicking."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the by-value Mock falling through to the unchecked assertion and panicking."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the by-value Mock falling through to the unchecked assertion and panicking."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the by-value Mock falling through to the unchecked assertion and panicking."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same defect: a Mock passed by value misses the *Mock branch and panics at the unchecked assertExpectationser assertion."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 522,
+      "line_end": 522,
+      "severity": "important",
+      "summary": "A plain *Mock now matches the new branch and wrongly logs the 'Deprecated' message, though passing a *Mock is not the deprecated style.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Matching *Mock in the deprecated branch is a side effect not described as the key bug; the claim of a wrong log is speculative and not the real defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Matching *Mock in the deprecated branch is a side effect not described as the key bug; the claim of a wrong log is speculative and not the real defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Logging a deprecation for *Mock is a minor message quirk, not the identified defect, and not clearly a real incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A *Mock matching the branch and logging a deprecation is a minor claim, not the answer-key defect; the original code likely behaved similarly, so no real new bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Logging the deprecation for a *Mock is intended behaviour and is kept in the upstream fix, so this is not a defect."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "Removing the `m.mutex = &sync.Mutex{}` reset in On changes behavior if a mock was copied or reused while its mutex was held.",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "match": "file",
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Speculative behavior change from removing the mutex reset; not a demonstrated defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative behavior change from removing the mutex reset; not a demonstrated defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative mutex reset behavior claim; not a real defect and not the key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative behavior change about mutex reset, not a demonstrated defect and unrelated to b1."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "It speculates about a behaviour change but shows no concrete incorrect behaviour from removing the mutex reset."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "mock/mock.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The mutex is now a value, so any code copying a Mock by value copies a lock (go vet copylocks) and is unsafe if copied while locked; tests and other packages should be checked for such copies.",
+      "index": 3,
+      "candidates": [
+        "b1"
+      ],
+      "match": "file",
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Matches the known issue of Mock holding a mutex by value and copylocks."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known issue of Mock holding a mutex by value and copylocks."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known issue of copying a Mock copying the mutex (go vet copylocks)."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known problem: Mock holds a mutex by value, so copying copies the lock (vet copylocks)."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It matches the known issue that Mock now holds the mutex by value, so copying a Mock copies the lock and go vet flags it."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.018307900000000002,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the by-value Mock falling through to the unchecked assertion and panicking."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Matching *Mock in the deprecated branch is a side effect not described as the key bug; the claim of a wrong log is speculative and not the real defect."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative behavior change from removing the mutex reset; not a demonstrated defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known issue of Mock holding a mutex by value and copylocks."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0182999,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the by-value Mock falling through to the unchecked assertion and panicking."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Logging a deprecation for *Mock is a minor message quirk, not the identified defect, and not clearly a real incorrect behavior."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative mutex reset behavior claim; not a real defect and not the key bug."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known issue of copying a Mock copying the mutex (go vet copylocks)."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0185019,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the by-value Mock falling through to the unchecked assertion and panicking."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A *Mock matching the branch and logging a deprecation is a minor claim, not the answer-key defect; the original code likely behaved similarly, so no real new bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Speculative behavior change about mutex reset, not a demonstrated defect and unrelated to b1."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches known problem: Mock holds a mutex by value, so copying copies the lock (vet copylocks)."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0479318,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same defect: a Mock passed by value misses the *Mock branch and panics at the unchecked assertExpectationser assertion."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Logging the deprecation for a *Mock is intended behaviour and is kept in the upstream fix, so this is not a defect."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "It speculates about a behaviour change but shows no concrete incorrect behaviour from removing the mutex reset."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It matches the known issue that Mock now holds the mutex by value, so copying a Mock copies the lock and go vet flags it."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.10304150000000001
+}

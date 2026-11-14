@@ -1,0 +1,35 @@
+{
+  "case": "real-016",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "1": {
+      "verdict": "confirmed",
+      "reason": "The new `from` dereferences `error.message` and `error.name` with no null guard, so a null or undefined error throws a TypeError. The old code guarded with `error &&` and fell back to 'Error' for both message and name. It also uses `code || error.code` where the old code used `code == null && error ? error.code : code`, so an explicit falsy code such as '' or 0 is now replaced by error.code.",
+      "evidence": [
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 7,
+          "quote": "const axiosError = new AxiosError(error.message, code || error.code, config, request, response);"
+        },
+        {
+          "file": "project/lib/core/AxiosError.js",
+          "line": 9,
+          "quote": "axiosError.name = error.name;"
+        },
+        {
+          "file": "change.patch",
+          "line": 193,
+          "quote": "-  const msg = error && error.message ? error.message : 'Error';"
+        },
+        {
+          "file": "change.patch",
+          "line": 196,
+          "quote": "-  const errCode = code == null && error ? error.code : code;"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": null,
+      "cost_usd": 0.062262200000000004
+    }
+  }
+}

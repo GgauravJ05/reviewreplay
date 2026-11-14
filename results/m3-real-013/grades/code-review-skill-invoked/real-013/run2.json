@@ -1,0 +1,337 @@
+{
+  "case": "real-013",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 132,
+      "line_end": 132,
+      "severity": "important",
+      "summary": "The old assertValidHeaderValue check that threw on CR/LF in header values was removed and the new code silently strips those characters, hiding header injection attempts instead of erroring.",
+      "index": 0,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known problem that CR/LF are silently stripped instead of rejected."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that CR/LF are silently stripped instead of rejected."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that values are silently rewritten instead of rejected."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known problem that CR/LF are silently stripped instead of rejected."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This matches the known problem: CR/LF is now silently stripped instead of rejected."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "The new regex removes every character above U+00FF and most control characters, so header values with Japanese text or emoji are silently truncated or emptied.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: the regex strips characters above U+00FF when the header is set, so non-Latin-1 values are emptied or truncated."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: the regex strips characters above U+00FF when the header is set, so non-Latin-1 values are emptied or truncated."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: regex strips characters above U+00FF at set time, emptying Unicode values."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the regex stripping characters above U+00FF at set time, which is the same defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes set() stripping every character above U+00FF, which empties or truncates Unicode header values."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 42,
+      "line_end": 42,
+      "severity": "important",
+      "summary": "normalizeValue now trims leading and trailing spaces and tabs from all header values, which can break values that depend on exact whitespace such as signed or hashed headers (not confirmed against the modified tests).",
+      "index": 2,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Trimming whitespace is a different, speculative claim, unrelated to the Unicode stripping bug, and the reviewer did not confirm it."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming whitespace is a different, speculative claim, unrelated to the Unicode stripping bug, and the reviewer did not confirm it."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming whitespace is a different, speculative claim, unrelated to the Unicode stripping bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming whitespace is a different claim, unconfirmed, and not the Unicode stripping bug; candidate b1 doesn't fit."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "HTTP treats leading and trailing whitespace as optional and not part of the value, so trimming it is not a real defect, and the finding is unconfirmed."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "Any loopback name now matches any other loopback name, so NO_PROXY=localhost also bypasses the proxy for 127.0.0.1 and [::1], breaking setups that proxy one loopback address on purpose. The alias check also covers only localhost, 127.0.0.1 and ::1, so forms like 127.0.0.2 are still treated differently.",
+      "index": 3,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the known loopback-alias change in shouldBypassProxy."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback-alias change in shouldBypassProxy."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known loopback aliasing issue in shouldBypassProxy."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known loopback alias proxy bypass problem."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This matches the known problem: shouldBypassProxy now treats all loopback names as equal."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0192959,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that CR/LF are silently stripped instead of rejected."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: the regex strips characters above U+00FF when the header is set, so non-Latin-1 values are emptied or truncated."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming whitespace is a different, speculative claim, unrelated to the Unicode stripping bug, and the reviewer did not confirm it."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known loopback-alias change in shouldBypassProxy."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0190259,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the known problem that values are silently rewritten instead of rejected."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: regex strips characters above U+00FF at set time, emptying Unicode values."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming whitespace is a different, speculative claim, unrelated to the Unicode stripping bug."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known loopback aliasing issue in shouldBypassProxy."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0191059,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known problem that CR/LF are silently stripped instead of rejected."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the regex stripping characters above U+00FF at set time, which is the same defect."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Trimming whitespace is a different claim, unconfirmed, and not the Unicode stripping bug; candidate b1 doesn't fit."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Matches the known loopback alias proxy bypass problem."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0439318,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This matches the known problem: CR/LF is now silently stripped instead of rejected."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes set() stripping every character above U+00FF, which empties or truncates Unicode header values."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "HTTP treats leading and trailing whitespace as optional and not part of the value, so trimming it is not a real defect, and the finding is unconfirmed."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This matches the known problem: shouldBypassProxy now treats all loopback names as equal."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.10135949999999999
+}

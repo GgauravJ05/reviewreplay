@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "context.go",
+      "line_start": 695,
+      "line_end": 695,
+      "severity": "important",
+      "summary": "The new os.Chmod runs on every SaveUploadedFile call, even without perm, and chmods the existing parent directory (e.g. '.', '/tmp', '/'), which can fail with EPERM or alter shared directory permissions; it should apply only to directories MkdirAll created and only when perm is passed."
+    },
+    {
+      "file": "context.go",
+      "line_start": 690,
+      "line_end": 690,
+      "severity": "important",
+      "summary": "The perm argument is applied only to the directory and never to the saved file (still created with os.Create default mode), which is misleading; a value like 0o644 leaves the directory untraversable, and only perm[0] is used with extra values silently ignored."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "TestSaveUploadedFileWithPermission saves into the current directory, asserts on and chmods the package/repo directory, and leaves a file behind; it should use t.TempDir() and a subdirectory."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The 'Failed' permission test doesn't fail when run as root, writes test/permission_test into the package directory when it doesn't fail, and doesn't clean up."
+    }
+  ],
+  "extract_cost_usd": 0.0197998
+}

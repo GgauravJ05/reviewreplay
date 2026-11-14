@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 132,
+      "line_end": 132,
+      "severity": "important",
+      "summary": "The check that threw on CR/LF in header values was removed, so invalid characters (including anything above 0xFF) are silently stripped. This allows header content to be silently altered or lost, such as CJK characters, and tests expecting the old throw will likely fail."
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 50,
+      "line_end": 50,
+      "severity": "important",
+      "summary": "normalizeValue now trims leading and trailing spaces and tabs from every header value, where the old code only stripped trailing CR/LF. This changes header values, for example '  value ' becomes 'value'."
+    },
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "Any loopback entry in NO_PROXY now matches every loopback host, so NO_PROXY=localhost also bypasses the proxy for 127.0.0.1 and [::1], and the reverse. Traffic the operator meant to proxy may be sent directly."
+    }
+  ],
+  "extract_cost_usd": 0.017833799999999997
+}

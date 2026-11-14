@@ -1,0 +1,75 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "Rewritten from() no longer copies the original error's own properties, so Node fields like errno, syscall, address and port are lost."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "from() throws a TypeError when error is null or undefined, which can happen since fetch.js:257 passes err && err.code."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "The old default message 'Error' in from() is gone."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 10,
+      "line_end": 10,
+      "severity": "important",
+      "summary": "cause is now enumerable, whereas the old code made it non-enumerable on purpose to avoid JSON noise."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "minor",
+      "summary": "`code || error.code` replaces `code == null ? error.code : code`, so an explicit falsy code now loses to error.code."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 36,
+      "line_end": 36,
+      "severity": "important",
+      "summary": "status is now undefined instead of null when the response has no status."
+    },
+    {
+      "file": "lib/core/AxiosError.js",
+      "line_start": 29,
+      "line_end": 29,
+      "severity": "important",
+      "summary": "isAxiosError is now an own enumerable property instead of a non-enumerable prototype one, so it shows up in spreads, Object.keys and equality checks."
+    },
+    {
+      "file": "lib/cancel/CanceledError.js",
+      "line_start": 18,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "__CANCEL__ is now an own enumerable instance property instead of a prototype one, with the same side effects as isAxiosError. Objects built with Object.create(CanceledError.prototype) are no longer recognized by isCancel."
+    },
+    {
+      "file": "AxiosError.spec.js",
+      "line_start": 53,
+      "line_end": 53,
+      "severity": "minor",
+      "summary": "The new isNativeError tests use require inside ESM specs and skip silently outside Node. Nothing covers the from() regressions."
+    },
+    {
+      "file": "CanceledError.spec.js",
+      "line_start": 15,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "The new isNativeError tests use require inside ESM specs and skip silently outside Node."
+    }
+  ],
+  "extract_cost_usd": 0.0234618
+}

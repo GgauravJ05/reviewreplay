@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 8,
+      "line_end": 8,
+      "severity": "important",
+      "summary": "The new header sanitizer keeps only \\x09, \\x20-\\x7E and \\x80-\\xFF, so characters above U+00FF (CJK, emoji) are silently dropped from header values instead of being sent or rejected."
+    },
+    {
+      "file": "lib/core/AxiosHeaders.js",
+      "line_start": 132,
+      "line_end": 132,
+      "severity": "important",
+      "summary": "Header injection no longer throws: values containing CR or LF are now silently stripped (e.g. 'bad\\nvalue' becomes 'badvalue') instead of raising 'Invalid character in header content', which will break callers and tests expecting the error."
+    },
+    {
+      "file": "lib/helpers/shouldBypassProxy.js",
+      "line_start": 108,
+      "line_end": 108,
+      "severity": "important",
+      "summary": "NO_PROXY loopback aliasing makes localhost, 127.0.0.1 and ::1 bypass the proxy interchangeably, which breaks deliberate proxying of 127.0.0.1 (e.g. SSH tunnels). It also covers only those three names, so 127.0.0.2 is treated inconsistently."
+    }
+  ],
+  "extract_cost_usd": 0.0185318
+}

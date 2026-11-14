@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "context.go",
+      "line_start": 695,
+      "line_end": 695,
+      "severity": "blocking",
+      "summary": "os.Chmod on filepath.Dir(dst) rewrites permissions of pre-existing directories (e.g. the working directory, /tmp) on every call, and fails with EPERM for directories owned by others, causing uploads that previously succeeded to error; it also masks the intent of TestSaveUploadedCreateFailed."
+    },
+    {
+      "file": "context.go",
+      "line_start": 691,
+      "line_end": 691,
+      "severity": "important",
+      "summary": "The single perm argument is applied only as a directory mode while the file is created with os.Create (0o666 before umask); a value like 0o644 yields a non-enterable directory, and the parameter is misleading as a file mode."
+    },
+    {
+      "file": "context.go",
+      "line_start": 687,
+      "line_end": 687,
+      "severity": "minor",
+      "summary": "`len(perm) <= 0` should be `== 0`, and extra variadic arguments are silently ignored."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermission saves to a bare filename so Dir is \".\", chmods the package directory and asserts on \".\", never testing directory creation; it leaves a permission_test file in the repo, doesn't use t.TempDir() with a nested path, and has assert.Equal arguments reversed."
+    },
+    {
+      "file": "context_test.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "important",
+      "summary": "TestSaveUploadedFileWithPermissionFailed relies on a 0o644 directory being unwritable, which fails when run as root or in many CI containers; it leaves a test/ directory behind and only passes for an incidental reason (no execute bit) rather than meaningfully checking permission handling."
+    }
+  ],
+  "extract_cost_usd": 0.0224638
+}
