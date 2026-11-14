@@ -1,0 +1,19 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "mock/mock.go",
+      "anchor": "if m, ok := obj.(*Mock); ok {",
+      "span": 5,
+      "class": "regression",
+      "severity": "important",
+      "summary": "AssertExpectationsForObjects now type-asserts *Mock instead of Mock, so a mock.Mock passed by value (the deprecated AssertExpectationsForObjects(t, myMock.Mock) form, which used to work and log a deprecation warning) no longer matches that branch. It falls through to the unchecked obj.(assertExpectationser), and because AssertExpectations has a pointer receiver a Mock value does not implement the interface, so the call panics instead of checking expectations.",
+      "trigger": "AssertExpectationsForObjects(t, myMock.Mock) with a value mock.Mock: before this change it logged the deprecation and checked expectations; after it, obj.(assertExpectationser) panics with 'interface conversion: mock.Mock is not mock.assertExpectationser'. The fix (#1795, issue #1227) uses a checked type assertion and reports a test error instead; its test passes Mock{} and expects one Errorf."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": [
+    "Mock now holds sync.Mutex by value, so copying a Mock (passing it by value anywhere) copies the lock; go vet flags this.",
+    "The deprecation message for passing myMock.Mock is unreachable for the by-value form it describes."
+  ]
+}

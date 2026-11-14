@@ -1,0 +1,19 @@
+{
+  "id": "real-015",
+  "kind": "real",
+  "track": "go",
+  "title": "fixing panic in calls to assertion with nil m.mutex (#1212)",
+  "source": "https://github.com/stretchr/testify@b5ce16571001d6e96e1693ac891fed5c2510c651",
+  "license": "MIT",
+  "added": "2026-11-14",
+  "repo": "https://github.com/stretchr/testify",
+  "commit": "b5ce16571001d6e96e1693ac891fed5c2510c651",
+  "fix": "0bf6b946d985309f37a4364b0b1f01a92698730e",
+  "status": "ready",
+  "drafted_by": "hand",
+  "signals": {
+    "referenced": true,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/stretchr/testify/issues/1227"
+}
