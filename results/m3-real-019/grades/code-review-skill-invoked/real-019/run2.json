@@ -1,0 +1,408 @@
+{
+  "case": "real-019",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "flag_impl.go",
+      "line_start": 128,
+      "line_end": 136,
+      "severity": "important",
+      "summary": "PostParse calls f.Set directly, bypassing setMultiValueParsingConfig, so env-var and file sources ignore the custom slice/map separators (regression from the previous global setup).",
+      "index": 0,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Claims env/file sources bypass the separator config; this can't be verified from the given info and isn't the key bug."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass the separator config; this can't be verified from the given info and isn't the key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass separator config; not the answer-key bug and unverifiable from the given info."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claim that env/file sources bypass separator config is plausible but unverified and not in the key."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claim that env/file sources bypass the separator config can't be checked from the information given."
+        }
+      ],
+      "hit_bug": null,
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "flag_impl.go",
+      "line_start": 159,
+      "line_end": 193,
+      "severity": "important",
+      "summary": "PreParse re-creates f.value, discarding the injected separator config (nil value for unapplied flags, old value for Local flags), so the first --flag value is split with default separators.",
+      "index": 1,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "PreParse recreating the value is plausible but unverifiable, and it differs from the inheritance bug."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "PreParse recreating the value is plausible but unverifiable, and it differs from the inheritance bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PreParse discards injected config; plausible but unverifiable and not the inheritance bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "PreParse re-creating value is a plausible separate bug, but cannot be verified from the given information."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claim that PreParse discards the injected separator config can't be checked from the information given."
+        }
+      ],
+      "hit_bug": null,
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "command.go",
+      "line_start": 354,
+      "line_end": 356,
+      "severity": "important",
+      "summary": "Separator config is read from the parsing command rather than the root or nearest ancestor, so subcommands and inherited persistent flags fall back to default separators (behavior regression).",
+      "index": 2,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Describes the right root cause, but candidates is empty, so no key id can be assigned. Under the rules this can't be marked matching."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Describes the right root cause, but candidates is empty, so no key id can be assigned. Under the rules this can't be marked matching."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the answer-key bug (subcommands not inheriting the root's separator), but candidates is empty so it cannot be matched; it is still a real defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Candidates are empty, so it cannot be matched to b1. It is also anchored at command.go:354-356 rather than the b1 location."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the separator-inheritance regression (b1), but candidates is empty so it can't be matched; it is still a real defect."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": true,
+      "agreement": 0.5
+    },
+    {
+      "file": "flag.go",
+      "line_start": 13,
+      "line_end": 13,
+      "severity": "minor",
+      "summary": "disableSliceFlagSeparator changed from var to const and is always false, leaving dead state that flag_test.go:3094 still passes as an argument.",
+      "index": 3,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Dead-state or style complaint, not incorrect behavior."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-state or style complaint, not incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-state/style complaint, not incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-state cleanup is a style concern, not incorrect behavior."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead constant is a style issue, not incorrect behavior."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "flag_test.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "New tests do not cover env or file sources, Local flags, or subcommands, so the regressions are not caught.",
+      "index": 4,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Says the tests don't cover subcommand inheritance, which is the answer-key bug; that always counts as valid_other."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Says the tests don't cover subcommand inheritance, which is the answer-key bug; that always counts as valid_other."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "A test-coverage gap for the regressions is always valid_other."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "A finding that tests miss subcommand coverage is always valid_other. It is a test-coverage complaint, not a distinct defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Points out that the tests miss the subcommand case, which is a coverage gap for the answer-key bug."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0191099,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass the separator config; this can't be verified from the given info and isn't the key bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "PreParse recreating the value is plausible but unverifiable, and it differs from the inheritance bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Describes the right root cause, but candidates is empty, so no key id can be assigned. Under the rules this can't be marked matching."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-state or style complaint, not incorrect behavior."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Says the tests don't cover subcommand inheritance, which is the answer-key bug; that always counts as valid_other."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0190179,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass separator config; not the answer-key bug and unverifiable from the given info."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PreParse discards injected config; plausible but unverifiable and not the inheritance bug."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the answer-key bug (subcommands not inheriting the root's separator), but candidates is empty so it cannot be matched; it is still a real defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-state/style complaint, not incorrect behavior."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "A test-coverage gap for the regressions is always valid_other."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0191239,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claim that env/file sources bypass separator config is plausible but unverified and not in the key."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "PreParse re-creating value is a plausible separate bug, but cannot be verified from the given information."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Candidates are empty, so it cannot be matched to b1. It is also anchored at command.go:354-356 rather than the b1 location."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-state cleanup is a style concern, not incorrect behavior."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "A finding that tests miss subcommand coverage is always valid_other. It is a test-coverage complaint, not a distinct defect."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0429638,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claim that env/file sources bypass the separator config can't be checked from the information given."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claim that PreParse discards the injected separator config can't be checked from the information given."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the separator-inheritance regression (b1), but candidates is empty so it can't be matched; it is still a real defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead constant is a style issue, not incorrect behavior."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Points out that the tests miss the subcommand case, which is a coverage gap for the answer-key bug."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.1002155
+}

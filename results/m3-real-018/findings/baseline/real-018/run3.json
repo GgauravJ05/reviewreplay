@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "command.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "The static type of ValidArgsFunction and related values changes from the unnamed function type to CompletionFunc, so code using reflect.TypeOf or type assertions against the old unnamed type would behave differently (unlikely in practice)."
+    },
+    {
+      "file": "completions.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The FixedCompletions doc comment is missing a period after \"[CompletionFunc]\"."
+    }
+  ],
+  "extract_cost_usd": 0.034364
+}

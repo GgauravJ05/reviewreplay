@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "flag_impl.go",
+      "line_start": 134,
+      "line_end": 134,
+      "severity": "important",
+      "summary": "Env-var, file, default and Sources values bypass the custom separator config because FlagBase.PostParse calls f.Set without a cmd, so setMultiValueParsingConfig is never applied and values are split on the default separators."
+    },
+    {
+      "file": "command.go",
+      "line_start": 448,
+      "line_end": 455,
+      "severity": "important",
+      "summary": "Subcommands no longer inherit SliceFlagSeparator, DisableSliceFlagSeparator and MapFlagKeyValueSeparator from parent commands, since only the owning command's settings are read (previously process-global), also affecting persistent flags parsed by a child."
+    },
+    {
+      "file": "flag.go",
+      "line_start": 13,
+      "line_end": 17,
+      "severity": "minor",
+      "summary": "disableSliceFlagSeparator is now an untyped const that is dead in non-test code, so the flag_test.go test using it does not exercise the disable path; use explicit true/false or delete it."
+    },
+    {
+      "file": "flag.go",
+      "line_start": 230,
+      "line_end": 234,
+      "severity": "minor",
+      "summary": "flagSplitMultiValues uses else after a return, which a linter will flag."
+    }
+  ],
+  "extract_cost_usd": 0.019825799999999998
+}

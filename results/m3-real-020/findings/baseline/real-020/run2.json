@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "entry.go",
+      "line_start": 287,
+      "line_end": 287,
+      "severity": "minor",
+      "summary": "Format now runs while holding the logger mutex, serializing formatting across goroutines and reducing throughput under contention; a custom Formatter that logs via the same logger or calls SetFormatter/SetLevel will deadlock."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 272,
+      "line_end": 300,
+      "severity": "important",
+      "summary": "Test goroutines are never waited on (no sync.WaitGroup), so the test can return before they run, making the race tests flaky detectors rather than reliable regression tests."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 273,
+      "line_end": 289,
+      "severity": "minor",
+      "summary": "The comment 'logging before SetReportCaller ...' was copy-pasted into TestEntryFormatterRace where it should refer to SetFormatter, and is duplicated in TestEntryReportCallerRace."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 291,
+      "line_end": 293,
+      "severity": "minor",
+      "summary": "TestEntryFormatterRace writes to the default os.Stderr and relies on -race being enabled to catch anything."
+    }
+  ],
+  "extract_cost_usd": 0.0189358
+}

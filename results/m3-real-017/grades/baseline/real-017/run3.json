@@ -1,0 +1,187 @@
+{
+  "case": "real-017",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 194,
+      "line_end": 194,
+      "severity": "minor",
+      "summary": "The new check `[[ $comp == \"$cur\"* ]]` passes when both $comp and $cur are empty, so a line with an empty value (e.g. `\\tsome description`) is added to COMPREPLY as a blank candidate; the old compgen-based code filtered these out.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect: empty comp matches the prefix test when cur is empty, adding a blank candidate."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: empty comp matches the prefix test when cur is empty, adding a blank candidate."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the empty string matching the new prefix test when $cur is empty, adding a blank candidate."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: empty comp matches the empty prefix check and is added as blank candidate."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It identifies the same defect: the new prefix test lets an empty comp through when $cur is empty, which adds a blank candidate that the old compgen filter dropped."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 183,
+      "line_end": 194,
+      "severity": "minor",
+      "summary": "The no-description path (line 183) uses `compgen -W \"$out\"`, which splits on whitespace and expands `$` and backticks, while the description path (line 194) does a literal prefix match, so the same completion behaves differently depending on whether any line has a description.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Describes a different inconsistency between paths (word splitting/expansion), not the empty-candidate regression; the literal match is arguably intended."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Describes a different inconsistency between paths (word splitting/expansion), not the empty-candidate regression; the literal match is arguably intended."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Complains about inconsistency between compgen and literal matching paths, which is not the empty-candidate regression in the key."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Different complaint about compgen vs literal matching inconsistency; not the empty-candidate bug and likely intentional."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "It complains that the two paths behave differently, not about the empty candidate; the literal prefix match is intended and the compgen path was not changed."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.034418,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: empty comp matches the prefix test when cur is empty, adding a blank candidate."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Describes a different inconsistency between paths (word splitting/expansion), not the empty-candidate regression; the literal match is arguably intended."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0161719,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the empty string matching the new prefix test when $cur is empty, adding a blank candidate."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Complains about inconsistency between compgen and literal matching paths, which is not the empty-candidate regression in the key."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0161219,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect: empty comp matches the empty prefix check and is added as blank candidate."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Different complaint about compgen vs literal matching inconsistency; not the empty-candidate bug and likely intentional."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.036871799999999996,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It identifies the same defect: the new prefix test lets an empty comp through when $cur is empty, which adds a blank candidate that the old compgen filter dropped."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "It complains that the two paths behave differently, not about the empty candidate; the literal prefix match is intended and the compgen path was not changed."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.1035836
+}

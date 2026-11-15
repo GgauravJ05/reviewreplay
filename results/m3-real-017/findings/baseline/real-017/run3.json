@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 194,
+      "line_end": 194,
+      "severity": "minor",
+      "summary": "The new check `[[ $comp == \"$cur\"* ]]` passes when both $comp and $cur are empty, so a line with an empty value (e.g. `\\tsome description`) is added to COMPREPLY as a blank candidate; the old compgen-based code filtered these out."
+    },
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 183,
+      "line_end": 194,
+      "severity": "minor",
+      "summary": "The no-description path (line 183) uses `compgen -W \"$out\"`, which splits on whitespace and expands `$` and backticks, while the description path (line 194) does a literal prefix match, so the same completion behaves differently depending on whether any line has a description."
+    }
+  ],
+  "extract_cost_usd": 0.035081999999999995
+}

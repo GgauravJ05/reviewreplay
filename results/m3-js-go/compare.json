@@ -3,98 +3,102 @@
     "m3-real-013",
     "m3-real-014",
     "m3-real-015",
-    "m3-real-016"
+    "m3-real-016",
+    "m3-real-017",
+    "m3-real-018",
+    "m3-real-019",
+    "m3-real-020"
   ],
   "kind": "real",
   "drop_contested": false,
   "subjects": {
     "baseline": {
-      "cases": 4,
-      "reviews": 12,
-      "found": 9,
-      "bug_reviews": 12,
+      "cases": 8,
+      "reviews": 24,
+      "found": 18,
+      "bug_reviews": 24,
       "recall": {
         "mean": 0.75,
-        "lo": 0.25,
+        "lo": 0.375,
         "hi": 1.0
       },
       "precision": {
-        "mean": 0.9523809523809523,
-        "lo": 0.8666666666666667,
+        "mean": 0.9038461538461539,
+        "lo": 0.7142857142857143,
         "hi": 1.0,
-        "good": 40,
-        "serious": 42
+        "good": 47,
+        "serious": 52
       },
-      "false_alarms": 2,
+      "false_alarms": 5,
       "unsure": 0,
-      "contested": 4,
-      "minor_per_review": 1.25,
-      "mean_cost": 0.05548854166666667,
-      "median_cost": 0.053764400000000004
+      "contested": 8,
+      "minor_per_review": 1.5,
+      "mean_cost": 0.05429671666666667,
+      "median_cost": 0.0490029
     },
     "code-review-skill-invoked": {
-      "cases": 4,
-      "reviews": 12,
-      "found": 8,
-      "bug_reviews": 12,
+      "cases": 8,
+      "reviews": 24,
+      "found": 15,
+      "bug_reviews": 24,
       "recall": {
-        "mean": 0.6666666666666666,
-        "lo": 0.25,
-        "hi": 1.0
+        "mean": 0.625,
+        "lo": 0.2916666666666667,
+        "hi": 0.875
       },
       "precision": {
         "mean": 0.7692307692307693,
-        "lo": 0.7142857142857143,
-        "hi": 0.8,
-        "good": 30,
-        "serious": 39
+        "lo": 0.7111111111111111,
+        "hi": 0.8163265306122449,
+        "good": 40,
+        "serious": 52
       },
-      "false_alarms": 7,
+      "false_alarms": 10,
       "unsure": 2,
-      "contested": 4,
-      "minor_per_review": 1,
-      "mean_cost": 0.0780468,
-      "median_cost": 0.0753795
+      "contested": 6,
+      "minor_per_review": 1.3333333333333333,
+      "mean_cost": 0.07770996250000001,
+      "median_cost": 0.07352485
     }
   },
   "paired": {
     "code-review-skill-invoked": {
       "recall": {
-        "diff": -0.08333333333333334,
-        "lo": -0.25,
+        "diff": -0.125,
+        "lo": -0.33333333333333337,
         "hi": 0.0,
-        "n_cases": 4
+        "n_cases": 8
       },
       "precision": {
-        "diff": -0.18315018315018305,
-        "lo": -0.22448979591836737,
-        "hi": -0.1166666666666667,
-        "n_cases": 4
+        "diff": -0.13461538461538458,
+        "lo": -0.2042857142857143,
+        "hi": 0.03318077803203656,
+        "n_cases": 8
       }
     }
   },
   "judges": {
-    "findings": 108,
+    "findings": 172,
     "votes_per_finding": 4,
-    "unanimous": 71,
-    "contested": 8,
+    "unanimous": 123,
+    "contested": 14,
     "between_models": {
       "models": [
         "claude-sonnet-5-5",
         "claude-opus-5-5"
       ],
-      "findings": 108,
-      "agreement": 0.7685185185185185,
-      "kappa": 0.6357749898826385
+      "findings": 172,
+      "agreement": 0.8197674418604651,
+      "kappa": 0.7455135547919053
     }
   },
   "checks": {
-    "checked": 6,
-    "confirmed": 6,
+    "checked": 13,
+    "confirmed": 13,
     "refuted": 0,
     "unsure": 0,
     "downgraded": 0,
-    "cost_usd": 0.2792294
+    "cost_usd": 0.8692415
   },
   "use_checks": true
 }

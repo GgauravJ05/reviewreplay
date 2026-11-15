@@ -1,0 +1,183 @@
+{
+  "case": "real-019",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "flag_impl.go",
+      "line_start": 134,
+      "line_end": 134,
+      "severity": "important",
+      "summary": "PostParse calls f.Set directly instead of cmd.set, so env and file flag sources ignore the configured slice/map separators and DisableSliceFlagSeparator (a regression).",
+      "index": 0,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Claims PostParse bypasses separator config for env/file sources; candidates empty and can't verify from the given info."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses separator config for env/file sources; candidates empty and can't verify from the given info."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses cmd.set for env/file sources; not the inheritance bug and unverifiable from given info."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Different claim (PostParse using f.Set), no candidates; can't verify from given info."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The claim that env/file sources skip the per-command separators is plausible, but nothing given here confirms or rules it out."
+        }
+      ],
+      "hit_bug": null,
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "command.go",
+      "line_start": 356,
+      "line_end": 356,
+      "severity": "minor",
+      "summary": "Subcommands don't inherit separator settings from a parent command, so a subcommand with an empty config splits on the default \",\" even if the root set a custom separator; the reviewer is unsure whether inheritance is intended.",
+      "index": 1,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "valid_other",
+        "reason": "Describes the lack of inheritance of separator settings, which matches the b1 defect, but candidates is empty so same_bug_as must be null; it is a real defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the lack of inheritance of separator settings, which matches the b1 defect, but candidates is empty so same_bug_as must be null; it is a real defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes subcommands not inheriting separator settings, which is the real regression, but candidates is empty so it cannot be matched to b1; it also hedges on whether inheritance is intended."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes subcommands not inheriting separator settings, a real defect matching the key bug's cause, but candidates list is empty so can't map to b1."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This describes the b1 defect (subcommands no longer inherit the root's separator), but its candidates list is empty, so it can't be matched and is graded as a real other defect."
+        }
+      ],
+      "hit_bug": null,
+      "label": "valid_other",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0165779,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses separator config for env/file sources; candidates empty and can't verify from the given info."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes the lack of inheritance of separator settings, which matches the b1 defect, but candidates is empty so same_bug_as must be null; it is a real defect."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0166899,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses cmd.set for env/file sources; not the inheritance bug and unverifiable from given info."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes subcommands not inheriting separator settings, which is the real regression, but candidates is empty so it cannot be matched to b1; it also hedges on whether inheritance is intended."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.016423899999999998,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Different claim (PostParse using f.Set), no candidates; can't verify from given info."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Describes subcommands not inheriting separator settings, a real defect matching the key bug's cause, but candidates list is empty so can't map to b1."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0365758,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The claim that env/file sources skip the per-command separators is plausible, but nothing given here confirms or rules it out."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "This describes the b1 defect (subcommands no longer inherit the root's separator), but its candidates list is empty, so it can't be matched and is graded as a real other defect."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0862675
+}

@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 194,
+      "line_end": 202,
+      "severity": "minor",
+      "summary": "The new prefix match `[[ $comp == \"$cur\"* ]]` no longer filters out empty completions. When cur is empty, a blank line or a description-only line adds an empty candidate to COMPREPLY. That can show an empty entry and break the single-completion check."
+    }
+  ],
+  "extract_cost_usd": 0.0158558
+}

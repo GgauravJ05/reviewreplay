@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "command.go",
+      "line_start": 446,
+      "line_end": 456,
+      "severity": "blocking",
+      "summary": "Env var and file sources (FlagBase.PostParse calling f.Set directly) bypass setMultiValueParsingConfig, so configured slice/map separators are ignored for those sources, a regression from the previous global behavior."
+    },
+    {
+      "file": "command.go",
+      "line_start": 448,
+      "line_end": 452,
+      "severity": "important",
+      "summary": "Separator config is taken from the command owning the flag rather than inherited from ancestors, so subcommand flags no longer honor a root command's separator settings."
+    },
+    {
+      "file": "flag_slice_base.go",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "The config setter overwrites a flag's own separator fields on every set call, including with empty/zero values, resetting the flag's config."
+    },
+    {
+      "file": "flag_map_impl.go",
+      "line_start": 42,
+      "line_end": 42,
+      "severity": "minor",
+      "summary": "The config setter overwrites a flag's own separator fields on every set call, including with empty/zero values, resetting the flag's config."
+    },
+    {
+      "file": "flag.go",
+      "line_start": 13,
+      "line_end": 13,
+      "severity": "minor",
+      "summary": "disableSliceFlagSeparator is now an always-false const used only by a test, which is misleading and could be removed."
+    }
+  ],
+  "extract_cost_usd": 0.0194458
+}

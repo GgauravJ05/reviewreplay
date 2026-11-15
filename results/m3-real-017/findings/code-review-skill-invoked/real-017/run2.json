@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 194,
+      "line_end": 202,
+      "severity": "important",
+      "summary": "The new prefix test `[[ $comp == \"$cur\"* ]]` lets empty completions through when cur is empty, so blank entries land in COMPREPLY, skip the single-completion branch, show a blank candidate and can block unique auto-completion."
+    },
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 183,
+      "line_end": 194,
+      "severity": "minor",
+      "summary": "The new prefix match treats completions containing spaces as one literal word. The no-description fast path (line 183) and the menu-complete branch (line 162) still use compgen, so the paths handle spaces inconsistently."
+    }
+  ],
+  "extract_cost_usd": 0.0170078
+}

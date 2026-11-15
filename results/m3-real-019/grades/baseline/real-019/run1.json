@@ -1,0 +1,260 @@
+{
+  "case": "real-019",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "flag_impl.go",
+      "line_start": 134,
+      "line_end": 134,
+      "severity": "blocking",
+      "summary": "FlagBase.PostParse calls f.Set directly, bypassing Command.set/Set so setMultiValueParsingConfig never runs; env-var and file sources ignore custom slice/map separators and DisableSliceFlagSeparator, regressing slice flags and breaking the new map feature.",
+      "index": 0,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Claims PostParse bypasses setMultiValueParsingConfig for env/file sources; plausible but not in the key and unverifiable here."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses setMultiValueParsingConfig for env/file sources; plausible but not in the key and unverifiable here."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses setMultiValueParsingConfig for env/file sources; plausible but not verifiable and not the answer-key bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses setMultiValueParsingConfig; plausible but not verifiable and not the inheritance bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Without the code I can't check whether env-var and file values skip the per-command separator config, and the answer key doesn't mention it."
+        }
+      ],
+      "hit_bug": null,
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "command.go",
+      "line_start": 356,
+      "line_end": 456,
+      "severity": "blocking",
+      "summary": "Separator settings are read only from the cmd calling set (command.go:356, 448-456) instead of the global removed from command_setup.go:133-139, so subcommands and persistent flags parsed by a child no longer inherit the parent's separator settings; should fall back through the parent chain.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes subcommands no longer inheriting the parent's separator settings, which is the key bug (fix walks the parent chain)."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes subcommands no longer inheriting the parent's separator settings, which is the key bug (fix walks the parent chain)."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes separator settings no longer inherited from parent chain, same as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes subcommands no longer inheriting the parent's separator settings and proposes falling back through the parent chain."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same bug: subcommands no longer inherit the parent's SliceFlagSeparator after the global was removed, and the fix is to walk the parent chain."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "flag.go",
+      "line_start": 16,
+      "line_end": 16,
+      "severity": "minor",
+      "summary": "disableSliceFlagSeparator is now a const that is always false and only referenced by tests, making it dead code.",
+      "index": 2,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Dead-code const is a style point, not an incorrect-behavior defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code const is a style point, not an incorrect-behavior defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code/style complaint, not incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code style complaint about a const; not a behavioral defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a dead-code and style comment, not a behaviour defect."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0176299,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses setMultiValueParsingConfig for env/file sources; plausible but not in the key and unverifiable here."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes subcommands no longer inheriting the parent's separator settings, which is the key bug (fix walks the parent chain)."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code const is a style point, not an incorrect-behavior defect."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0174579,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses setMultiValueParsingConfig for env/file sources; plausible but not verifiable and not the answer-key bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes separator settings no longer inherited from parent chain, same as b1."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code/style complaint, not incorrect behavior."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0175299,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse bypasses setMultiValueParsingConfig; plausible but not verifiable and not the inheritance bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes subcommands no longer inheriting the parent's separator settings and proposes falling back through the parent chain."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Dead-code style complaint about a const; not a behavioral defect."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0394478,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Without the code I can't check whether env-var and file values skip the per-command separator config, and the answer key doesn't mention it."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same bug: subcommands no longer inherit the parent's SliceFlagSeparator after the global was removed, and the fix is to walk the parent chain."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a dead-code and style comment, not a behaviour defect."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0920655
+}

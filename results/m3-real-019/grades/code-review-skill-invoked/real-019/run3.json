@@ -1,0 +1,412 @@
+{
+  "case": "real-019",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "command.go",
+      "line_start": 446,
+      "line_end": 456,
+      "severity": "blocking",
+      "summary": "Env var and file sources (FlagBase.PostParse calling f.Set directly) bypass setMultiValueParsingConfig, so configured slice/map separators are ignored for those sources, a regression from the previous global behavior.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Claims env/file sources bypass separator config; this is a different defect from inheritance and can't be verified here."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass separator config; this is a different defect from inheritance and can't be verified here."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass the config; not the answer-key inheritance bug and cannot be verified from the information given."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass the config setter; this is a different defect from inheritance and can't be verified from the given information."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "This blames env var and file sources skipping the config setter, not the missing inheritance from the parent command, and I can't confirm the claim from the information given."
+        }
+      ],
+      "hit_bug": null,
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "command.go",
+      "line_start": 448,
+      "line_end": 452,
+      "severity": "important",
+      "summary": "Separator config is taken from the command owning the flag rather than inherited from ancestors, so subcommand flags no longer honor a root command's separator settings.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes that subcommand flags no longer inherit the root's separator settings, which is the same cause as b1."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes that subcommand flags no longer inherit the root's separator settings, which is the same cause as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Subcommand flags no longer inherit the root's separator settings, which is the same defect as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes that subcommand flags no longer inherit the root's separator settings, which is the same cause as b1."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes subcommand flags no longer using the root command's separator because the config now comes only from the owning command."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "flag_slice_base.go",
+      "line_start": 38,
+      "line_end": 38,
+      "severity": "minor",
+      "summary": "The config setter overwrites a flag's own separator fields on every set call, including with empty/zero values, resetting the flag's config.",
+      "index": 2,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Overwriting the flag's config with the command's values is the intended design, not a defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Overwriting the flag's config with the command's values is the intended design, not a defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Speculative claim that the setter overwrites a flag's own fields; cannot be confirmed from the information given."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Overwriting with the command's config is the intended design, and no concrete wrong behavior is shown."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "There's no evidence the flag keeps its own separator setting that this overwrites; the values are meant to come from the command."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 0.75
+    },
+    {
+      "file": "flag_map_impl.go",
+      "line_start": 42,
+      "line_end": 42,
+      "severity": "minor",
+      "summary": "The config setter overwrites a flag's own separator fields on every set call, including with empty/zero values, resetting the flag's config.",
+      "index": 3,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "This is the same intended overwrite as finding 2, applied to map flags, and isn't a real defect."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is the same intended overwrite as finding 2, applied to map flags, and isn't a real defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Same speculative overwrite claim for map flags; cannot be confirmed."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Overwriting with the command's config is the intended design, and no concrete wrong behavior is shown."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is the same unsupported overwrite claim as finding 2, applied to map flags."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 0.75
+    },
+    {
+      "file": "flag.go",
+      "line_start": 13,
+      "line_end": 13,
+      "severity": "minor",
+      "summary": "disableSliceFlagSeparator is now an always-false const used only by a test, which is misleading and could be removed.",
+      "index": 4,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 4,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "This is a style/cleanup complaint and doesn't describe incorrect behavior."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a style/cleanup complaint and doesn't describe incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A leftover const used only by a test is a style complaint, not incorrect behavior."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a style or cleanup remark and describes no incorrect behavior."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a dead-code and style complaint, not a behavior bug."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0189779,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass separator config; this is a different defect from inheritance and can't be verified here."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes that subcommand flags no longer inherit the root's separator settings, which is the same cause as b1."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Overwriting the flag's config with the command's values is the intended design, not a defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is the same intended overwrite as finding 2, applied to map flags, and isn't a real defect."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a style/cleanup complaint and doesn't describe incorrect behavior."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.018997899999999998,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass the config; not the answer-key inheritance bug and cannot be verified from the information given."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Subcommand flags no longer inherit the root's separator settings, which is the same defect as b1."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Speculative claim that the setter overwrites a flag's own fields; cannot be confirmed from the information given."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Same speculative overwrite claim for map flags; cannot be confirmed."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A leftover const used only by a test is a style complaint, not incorrect behavior."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.019017899999999997,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims env/file sources bypass the config setter; this is a different defect from inheritance and can't be verified from the given information."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes that subcommand flags no longer inherit the root's separator settings, which is the same cause as b1."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Overwriting with the command's config is the intended design, and no concrete wrong behavior is shown."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Overwriting with the command's config is the intended design, and no concrete wrong behavior is shown."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a style or cleanup remark and describes no incorrect behavior."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0427158,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "This blames env var and file sources skipping the config setter, not the missing inheritance from the parent command, and I can't confirm the claim from the information given."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes subcommand flags no longer using the root command's separator because the config now comes only from the owning command."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "There's no evidence the flag keeps its own separator setting that this overwrites; the values are meant to come from the command."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is the same unsupported overwrite claim as finding 2, applied to map flags."
+        },
+        "4": {
+          "index": 4,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a dead-code and style complaint, not a behavior bug."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.09970949999999999
+}

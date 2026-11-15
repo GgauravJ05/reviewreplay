@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "important",
+      "summary": "TestEntryReportCallerRace and TestEntryFormatterRace start goroutines without waiting (no WaitGroup), so the tests may return before goroutines run, letting them pass without the fix and risking goroutines touching t after the test finishes."
+    },
+    {
+      "file": "entry.go",
+      "line_start": 287,
+      "line_end": 288,
+      "severity": "minor",
+      "summary": "Holding Logger.mu during Formatter.Format serializes formatting across goroutines, and a custom Formatter calling a locking Logger method (e.g. SetLevel) would now deadlock."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "minor",
+      "summary": "Comment 'logging before SetReportCaller' was copy-pasted into TestEntryFormatterRace where it should refer to SetFormatter, and 'likelyhood' is misspelled in both places."
+    }
+  ],
+  "extract_cost_usd": 0.0181598
+}

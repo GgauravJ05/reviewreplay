@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "flag_impl.go",
+      "line_start": 134,
+      "line_end": 134,
+      "severity": "important",
+      "summary": "PostParse calls f.Set directly instead of cmd.set, so env and file flag sources ignore the configured slice/map separators and DisableSliceFlagSeparator (a regression)."
+    },
+    {
+      "file": "command.go",
+      "line_start": 356,
+      "line_end": 356,
+      "severity": "minor",
+      "summary": "Subcommands don't inherit separator settings from a parent command, so a subcommand with an empty config splits on the default \",\" even if the root set a custom separator; the reviewer is unsure whether inheritance is intended."
+    }
+  ],
+  "extract_cost_usd": 0.0162518
+}

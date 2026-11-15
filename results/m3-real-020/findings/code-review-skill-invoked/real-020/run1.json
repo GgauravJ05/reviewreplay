@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "file": "entry.go",
+      "line_start": 287,
+      "line_end": 289,
+      "severity": "important",
+      "summary": "write() holds the non-reentrant Logger.mu while calling Formatter.Format, so any formatter, String() or MarshalJSON that logs via the same logger or calls SetFormatter/SetOutput/SetReportCaller/AddHook will deadlock, and formatting is serialized across goroutines, hurting hot-path performance."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "important",
+      "summary": "TestEntryReportCallerRace and TestEntryFormatterRace spawn goroutines without waiting (no sync.WaitGroup), so tests may finish before goroutines run and the race detector often detects nothing."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "minor",
+      "summary": "Comment claims logging occurs before SetReportCaller but nothing guarantees that ordering."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "minor",
+      "summary": "The goroutine added in TestEntryReportCallerRace duplicates an existing one."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "minor",
+      "summary": "The word 'likelyhood' is misspelled in a comment."
+    }
+  ],
+  "extract_cost_usd": 0.0192238
+}

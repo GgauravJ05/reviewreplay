@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "bash_completionsV2.go",
+      "line_start": 194,
+      "line_end": 194,
+      "severity": "important",
+      "summary": "Replacing the `[[ -z $comp ]] && continue` check with `[[ $comp == \"$cur\"* ]] || continue` drops the skip for empty completions, so blank or tab-only lines are added to COMPREPLY when $cur is empty and can break the single-completion check that follows."
+    }
+  ],
+  "extract_cost_usd": 0.033226
+}

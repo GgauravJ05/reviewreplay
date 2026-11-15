@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "entry_test.go",
+      "line_start": 269,
+      "line_end": 300,
+      "severity": "important",
+      "summary": "TestEntryReportCallerRace and TestEntryFormatterRace start goroutines without a WaitGroup, so tests may finish before the race occurs and pass even with the fix reverted."
+    },
+    {
+      "file": "entry.go",
+      "line_start": 286,
+      "line_end": 290,
+      "severity": "note",
+      "summary": "Formatting now runs inside the Logger.mu critical section, so slow formatters serialize concurrent logging, and a formatter that logs through the same logger would deadlock."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 290,
+      "line_end": 291,
+      "severity": "minor",
+      "summary": "Copy-pasted comment in TestEntryFormatterRace says 'before SetReportCaller' while the call is SetFormatter."
+    },
+    {
+      "file": "entry_test.go",
+      "line_start": 273,
+      "line_end": 274,
+      "severity": "minor",
+      "summary": "Typo in comment: 'likelyhood' should be 'likelihood'."
+    }
+  ],
+  "extract_cost_usd": 0.0183158
+}

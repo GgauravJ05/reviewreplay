@@ -1,0 +1,35 @@
+{
+  "case": "real-019",
+  "model": "claude-sonnet-5-5",
+  "findings": {
+    "0": {
+      "verdict": "confirmed",
+      "reason": "PostParse applies env/file sources by calling f.Set on the FlagBase. That path never calls Command.setMultiValueParsingConfig, which only runs in Command.set and Command.Set. The slice and map values therefore keep their zero-value separators when values come from env or file sources. flagSplitMultiValues then falls back to the default separator, so a custom SliceFlagSeparator, a custom MapFlagKeyValueSeparator or DisableSliceFlagSeparator is ignored for those sources.",
+      "evidence": [
+        {
+          "file": "project/flag_impl.go",
+          "line": 134,
+          "quote": "if err := f.Set(f.Name, val); err != nil {"
+        },
+        {
+          "file": "project/command.go",
+          "line": 356,
+          "quote": "cmd.setMultiValueParsingConfig(f)"
+        },
+        {
+          "file": "project/command.go",
+          "line": 462,
+          "quote": "cmd.setMultiValueParsingConfig(f)"
+        },
+        {
+          "file": "project/flag.go",
+          "line": 233,
+          "quote": "return strings.Split(val, defaultSliceFlagSeparator)"
+        }
+      ],
+      "evidence_ok": 4,
+      "library": null,
+      "cost_usd": 0.0970404
+    }
+  }
+}

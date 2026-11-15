@@ -1,0 +1,335 @@
+{
+  "case": "real-019",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "flag_impl.go",
+      "line_start": 134,
+      "line_end": 134,
+      "severity": "important",
+      "summary": "Env-var, file, default and Sources values bypass the custom separator config because FlagBase.PostParse calls f.Set without a cmd, so setMultiValueParsingConfig is never applied and values are split on the default separators.",
+      "index": 0,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "unsure",
+        "reason": "Plausible separate issue with PostParse lacking cmd, but can't verify from the given information."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Plausible separate issue with PostParse lacking cmd, but can't verify from the given information."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claim about PostParse bypassing config isn't in the answer key and can't be verified from the given information."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse env/default values bypass config; not in the key and can't be verified from the given information."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "unsure",
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The answer key doesn't mention env/default values skipping the per-command separator config, and the diff isn't available to check it."
+        }
+      ],
+      "hit_bug": null,
+      "label": "unsure",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "command.go",
+      "line_start": 448,
+      "line_end": 455,
+      "severity": "important",
+      "summary": "Subcommands no longer inherit SliceFlagSeparator, DisableSliceFlagSeparator and MapFlagKeyValueSeparator from parent commands, since only the owning command's settings are read (previously process-global), also affecting persistent flags parsed by a child.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes subcommands no longer inheriting the parent's SliceFlagSeparator, which is the key bug (it also covers the known-other items)."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes subcommands no longer inheriting the parent's SliceFlagSeparator, which is the key bug (it also covers the known-other items)."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the loss of inheritance of SliceFlagSeparator from parent commands, which is the key bug (also covers the known related issues)."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the loss of parent-to-subcommand inheritance of SliceFlagSeparator, which is the key bug, and also names the known-other problems."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes b1: subcommands no longer inherit the parent's SliceFlagSeparator, because only the owning command's setting is read."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "flag.go",
+      "line_start": 13,
+      "line_end": 17,
+      "severity": "minor",
+      "summary": "disableSliceFlagSeparator is now an untyped const that is dead in non-test code, so the flag_test.go test using it does not exercise the disable path; use explicit true/false or delete it.",
+      "index": 2,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 2,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "This is a test or style concern and does not describe a behavioral defect in the changed code."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a test or style concern and does not describe a behavioral defect in the changed code."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test-constant style/dead-code complaint, not a behavioral defect."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is about test or const style and doesn't describe a behavioral defect in the changed code."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is about dead code and test quality, not a defect that causes incorrect behavior."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "flag.go",
+      "line_start": 230,
+      "line_end": 234,
+      "severity": "minor",
+      "summary": "flagSplitMultiValues uses else after a return, which a linter will flag.",
+      "index": 3,
+      "candidates": [],
+      "match": null,
+      "decoy_spot": [],
+      "judge": {
+        "index": 3,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "This is a pure lint/style complaint."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a pure lint/style complaint."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Pure lint style issue."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a pure lint or style complaint."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Using else after a return is a style nit only."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0181939,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Plausible separate issue with PostParse lacking cmd, but can't verify from the given information."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes subcommands no longer inheriting the parent's SliceFlagSeparator, which is the key bug (it also covers the known-other items)."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a test or style concern and does not describe a behavioral defect in the changed code."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a pure lint/style complaint."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0181179,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claim about PostParse bypassing config isn't in the answer key and can't be verified from the given information."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the loss of inheritance of SliceFlagSeparator from parent commands, which is the key bug (also covers the known related issues)."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Test-constant style/dead-code complaint, not a behavioral defect."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Pure lint style issue."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0182419,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "Claims PostParse env/default values bypass config; not in the key and can't be verified from the given information."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the loss of parent-to-subcommand inheritance of SliceFlagSeparator, which is the key bug, and also names the known-other problems."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is about test or const style and doesn't describe a behavioral defect in the changed code."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is a pure lint or style complaint."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0400438,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "unsure",
+          "reason": "The answer key doesn't mention env/default values skipping the per-command separator config, and the diff isn't available to check it."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes b1: subcommands no longer inherit the parent's SliceFlagSeparator, because only the owning command's setting is read."
+        },
+        "2": {
+          "index": 2,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "This is about dead code and test quality, not a defect that causes incorrect behavior."
+        },
+        "3": {
+          "index": 3,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Using else after a return is a style nit only."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0945975
+}

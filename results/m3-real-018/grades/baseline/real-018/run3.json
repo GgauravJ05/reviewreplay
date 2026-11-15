@@ -1,0 +1,187 @@
+{
+  "case": "real-018",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "command.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "note",
+      "summary": "The static type of ValidArgsFunction and related values changes from the unnamed function type to CompletionFunc, so code using reflect.TypeOf or type assertions against the old unnamed type would behave differently (unlikely in practice).",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "match": "file",
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Talks about reflection/type assertion changes, not the compile break for user-defined named func types; the reflect point is only the known minor issue and is vague, though it is closely related."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Talks about reflection/type assertion changes, not the compile break for user-defined named func types; the reflect point is only the known minor issue and is vague, though it is closely related."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "It mentions reflect/type assertions, which is not the compile-time assignability break for user-defined named func types, and it calls the effect unlikely."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Reflection-visible type change matches the known other problem, not the compile-break bug."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "valid_other",
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It describes the already-known reflection and type-identity change. It does not describe the compile failure when a user-defined named func type is assigned to the field."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": true,
+      "agreement": 0.5
+    },
+    {
+      "file": "completions.go",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The FixedCompletions doc comment is missing a period after \"[CompletionFunc]\".",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "file",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": null,
+        "verdict": "invalid",
+        "reason": "Doc comment punctuation is pure style and unrelated to the assignability bug."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Doc comment punctuation is pure style and unrelated to the assignability bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A missing period in a doc comment is pure style and has nothing to do with the bug."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A doc comment punctuation nit is pure style and not a defect."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "false_alarm",
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A missing period in a doc comment is pure style, not a defect."
+        }
+      ],
+      "hit_bug": null,
+      "label": "false_alarm",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0163999,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Talks about reflection/type assertion changes, not the compile break for user-defined named func types; the reflect point is only the known minor issue and is vague, though it is closely related."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "Doc comment punctuation is pure style and unrelated to the assignability bug."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0163039,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "It mentions reflect/type assertions, which is not the compile-time assignability break for user-defined named func types, and it calls the effect unlikely."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A missing period in a doc comment is pure style and has nothing to do with the bug."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.016083899999999998,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "Reflection-visible type change matches the known other problem, not the compile-break bug."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A doc comment punctuation nit is pure style and not a defect."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.0350998,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": null,
+          "verdict": "valid_other",
+          "reason": "It describes the already-known reflection and type-identity change. It does not describe the compile failure when a user-defined named func type is assigned to the field."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": null,
+          "verdict": "invalid",
+          "reason": "A missing period in a doc comment is pure style, not a defect."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.0838875
+}
