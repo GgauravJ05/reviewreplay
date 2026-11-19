@@ -15,6 +15,12 @@ All notable changes to ReviewReplay. Numbers quoted here come from the committed
 - `results/m3-js-go` now covers all 8 JavaScript and Go bugs (48 reviews): precision 90% without
   the skill and 77% with it, paired −13 pts [−20, +3]. Two bugs were missed in every review.
 
+### Docs
+
+- README diagram of the two shared misses: the changed line is in the diff, the code that breaks
+  is outside it. Animated GIF in the README, interactive page at `site/diff-vs-damage.html`, PNG,
+  MP4 and the Archify spec in `docs/media/`.
+
 ## 0.2.0 (2026-11-14)
 
 ### Added
