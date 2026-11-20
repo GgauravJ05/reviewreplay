@@ -18,8 +18,15 @@ All notable changes to ReviewReplay. Numbers quoted here come from the committed
 ### Docs
 
 - README diagram of the two shared misses: the changed line is in the diff, the code that breaks
-  is outside it. Animated GIF in the README, interactive page at `site/diff-vs-damage.html`, PNG,
-  MP4 and the Archify spec in `docs/media/`.
+  is outside it. Animated GIF in the README, interactive page at `site/artifacts/diff-vs-damage.html`,
+  PNG, MP4 and the Archify spec in `docs/media/`.
+
+### Website
+
+- The landing page is rebuilt in a light theme: a live frame with four interactive Archify
+  diagrams (pipeline, grading, the shared misses, axios real-016), results for both language
+  groups, all 20 real bugs with filters, the grading gates, quick start and FAQ. One stylesheet
+  and one script replace the old design kit. The old diagram URL redirects to its new path.
 
 ## 0.2.0 (2026-11-14)
 
