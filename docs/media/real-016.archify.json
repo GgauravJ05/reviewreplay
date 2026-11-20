@@ -1,0 +1,194 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "One real bug, start to finish: axios real-016",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "output": "site/artifacts/real-016.html",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "database": {
+          "label": "axios history"
+        },
+        "backend": {
+          "label": "ReviewReplay"
+        },
+        "frontend": {
+          "label": "Reviews"
+        },
+        "messagebus": {
+          "label": "Result"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "upstream",
+      "label": "axios history"
+    },
+    {
+      "id": "rr",
+      "label": "ReviewReplay"
+    },
+    {
+      "id": "reviews",
+      "label": "6 reviews"
+    }
+  ],
+  "phases": [
+    {
+      "id": "p-find",
+      "label": "Find the bug",
+      "fromCol": 0,
+      "toCol": 2
+    },
+    {
+      "id": "p-replay",
+      "label": "Replay it",
+      "fromCol": 3,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "p-grade",
+      "label": "Grade",
+      "fromCol": 5,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "intro",
+    "fix",
+    "mine",
+    "key",
+    "replay",
+    "review",
+    "grade"
+  ],
+  "nodes": [
+    {
+      "id": "intro",
+      "lane": "upstream",
+      "col": 0,
+      "type": "database",
+      "label": "Commit 1c6a86d",
+      "sublabel": "AxiosError extends Error",
+      "tag": "v1.13.3",
+      "width": 160
+    },
+    {
+      "id": "fix",
+      "lane": "upstream",
+      "col": 1,
+      "type": "database",
+      "label": "Fix 822e3e4",
+      "sublabel": "message enumerable again",
+      "width": 160
+    },
+    {
+      "id": "mine",
+      "lane": "rr",
+      "col": 2,
+      "type": "backend",
+      "label": "Mine",
+      "sublabel": "fix names 1c6a86d",
+      "width": 160
+    },
+    {
+      "id": "key",
+      "lane": "rr",
+      "col": 3,
+      "type": "backend",
+      "label": "Answer key",
+      "sublabel": "super(message), line 26",
+      "width": 160
+    },
+    {
+      "id": "replay",
+      "lane": "rr",
+      "col": 4,
+      "type": "backend",
+      "label": "Replay",
+      "sublabel": "1c6a86d as a local change",
+      "width": 160
+    },
+    {
+      "id": "review",
+      "lane": "reviews",
+      "col": 4,
+      "type": "frontend",
+      "label": "Baseline ×3, skill ×3",
+      "sublabel": "read the same lines",
+      "width": 160
+    },
+    {
+      "id": "grade",
+      "lane": "rr",
+      "col": 5,
+      "type": "messagebus",
+      "label": "0 of 6 found it",
+      "sublabel": "message loss never named",
+      "width": 160
+    }
+  ],
+  "edges": [
+    {
+      "id": "r-break",
+      "from": "intro",
+      "to": "fix",
+      "label": "users lose message",
+      "variant": "dashed"
+    },
+    {
+      "id": "r-mine",
+      "from": "fix",
+      "to": "mine",
+      "label": "blame agrees"
+    },
+    {
+      "id": "r-key",
+      "from": "mine",
+      "to": "key"
+    },
+    {
+      "id": "r-replay",
+      "from": "key",
+      "to": "replay",
+      "variant": "emphasis"
+    },
+    {
+      "id": "r-review",
+      "from": "replay",
+      "to": "review",
+      "variant": "emphasis"
+    },
+    {
+      "id": "r-grade",
+      "from": "review",
+      "to": "grade",
+      "label": "findings"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "The bug",
+      "items": [
+        "Native Error defines message as non-enumerable",
+        "Object.keys, spread and for...in stop seeing it, with no error"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "What the reviews said",
+      "items": [
+        "They discussed isAxiosError, cause and __CANCEL__ on the same lines",
+        "Source: results/m3-real-016"
+      ]
+    }
+  ]
+}
