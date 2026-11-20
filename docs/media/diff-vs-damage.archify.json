@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Where reviewers looked vs where the damage showed up",
+    "output": "site/diff-vs-damage.html",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "backend": { "label": "Changed line (in the diff)" },
+        "external": { "label": "What reviews flagged" },
+        "cloud": { "label": "Language rule" },
+        "frontend": { "label": "Code that broke (outside the diff)" }
+      }
+    }
+  },
+  "components": [
+    { "id": "ax-flagged", "type": "external", "label": "All 6 reviews flagged", "sublabel": "isAxiosError, cause, __CANCEL__", "pos": [40, 40], "size": [200, 64] },
+    { "id": "ax-change", "type": "backend", "label": "AxiosError.js", "sublabel": "class AxiosError extends Error", "tag": "axios · real-016", "pos": [40, 170], "size": [200, 64] },
+    { "id": "ax-rule", "type": "cloud", "label": "Native Error", "sublabel": "message is non-enumerable", "pos": [370, 170], "size": [190, 64] },
+    { "id": "ax-consumer", "type": "frontend", "label": "Caller code", "sublabel": "{...err}, Object.keys, logs", "pos": [690, 170], "size": [210, 64] },
+    { "id": "cb-change", "type": "backend", "label": "completions.go", "sublabel": "type CompletionFunc func(...)", "tag": "cobra · real-018", "pos": [40, 320], "size": [200, 64] },
+    { "id": "cb-rule", "type": "cloud", "label": "Go assignability", "sublabel": "named type to named type fails", "pos": [370, 320], "size": [190, 64] },
+    { "id": "cb-consumer", "type": "frontend", "label": "Downstream projects", "sublabel": "own named completion func type", "pos": [690, 320], "size": [210, 64] },
+    { "id": "cb-flagged", "type": "external", "label": "All 6 reviews flagged", "sublabel": "the type change, as reflection", "pos": [40, 450], "size": [200, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Inside the diff: where reviews looked", "wraps": ["ax-flagged", "ax-change", "cb-change", "cb-flagged"] },
+    { "kind": "region", "label": "Outside the diff: where users broke", "wraps": ["ax-consumer", "cb-consumer"] }
+  ],
+  "connections": [
+    { "id": "ax-noticed", "from": "ax-flagged", "to": "ax-change", "label": "never message", "variant": "dashed" },
+    { "id": "ax-super", "from": "ax-change", "to": "ax-rule", "label": "super(message)" },
+    { "id": "ax-hidden", "from": "ax-rule", "to": "ax-consumer", "label": "message lost", "variant": "emphasis" },
+    { "id": "cb-noticed", "from": "cb-flagged", "to": "cb-change", "label": "never callers", "variant": "dashed" },
+    { "id": "cb-field", "from": "cb-change", "to": "cb-rule", "label": "ValidArgsFunction" },
+    { "id": "cb-break", "from": "cb-rule", "to": "cb-consumer", "label": "won't compile", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "axios (real-016)", "items": ["super(message) makes message non-enumerable", "{...err} and Object.keys drop it in caller code", "Reviews discussed enumerability of other fields on the same lines"] },
+    { "dot": "amber", "title": "cobra (real-018)", "items": ["ValidArgsFunction and RegisterFlagCompletionFunc now take a named type", "A caller's own named func type is no longer assignable", "Reviews saw the type change but talked about reflection"] },
+    { "dot": "slate", "title": "What it suggests", "items": ["Both changed lines sit in the diff; the break is in code that is not", "2 of 8 JS/Go cases: a pattern to test, not a finding"] }
+  ]
+}
