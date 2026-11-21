@@ -148,9 +148,9 @@ cobra type change that stops some callers compiling. Details and caveats:
 every review read it. The break shows up in code the diff doesn't touch: callers that spread or
 log an axios error, and downstream projects that pass cobra their own named function type.
 
-[![Two bugs missed in all 6 reviews: the changed line is inside the diff, the code that breaks is outside it](docs/media/diff-vs-damage.gif)](https://ggauravj05.github.io/reviewreplay/diff-vs-damage.html)
+[![Two bugs missed in all 6 reviews: the changed line is inside the diff, the code that breaks is outside it](docs/media/diff-vs-damage.gif)](https://ggauravj05.github.io/reviewreplay/artifacts/diff-vs-damage.html)
 
-<sub>▶ [Open the interactive diagram](https://ggauravj05.github.io/reviewreplay/diff-vs-damage.html)
+<sub>▶ [Open the interactive diagram](https://ggauravj05.github.io/reviewreplay/artifacts/diff-vs-damage.html)
 (click a box to trace it) · [PNG](docs/media/diff-vs-damage.png) · [MP4](docs/media/diff-vs-damage-live.mp4) ·
 made with [Archify](https://github.com/tt-a1i/archify) from [this spec](docs/media/diff-vs-damage.archify.json).
 That's 2 of 8 cases, so it's a pattern to test with more cases, not a finding yet.</sub>

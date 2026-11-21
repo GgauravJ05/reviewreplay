@@ -1,0 +1,234 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "How ReviewReplay scores a reviewer",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "output": "site/artifacts/pipeline.html",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "external": {
+          "label": "You"
+        },
+        "database": {
+          "label": "Your history"
+        },
+        "backend": {
+          "label": "ReviewReplay"
+        },
+        "frontend": {
+          "label": "Reviewer under test"
+        },
+        "security": {
+          "label": "Grading"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "you",
+      "label": "Your repository"
+    },
+    {
+      "id": "build",
+      "label": "Build cases"
+    },
+    {
+      "id": "review",
+      "label": "Review (read-only)"
+    },
+    {
+      "id": "grade",
+      "label": "Grade"
+    }
+  ],
+  "phases": [
+    {
+      "id": "p-cases",
+      "label": "Real bugs become cases",
+      "fromCol": 0,
+      "toCol": 2
+    },
+    {
+      "id": "p-review",
+      "label": "Replay and review",
+      "fromCol": 3,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "p-grade",
+      "label": "Score",
+      "fromCol": 5,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "history",
+    "mine",
+    "key",
+    "confirm",
+    "replay",
+    "reviewer",
+    "extract",
+    "judge",
+    "scorecard"
+  ],
+  "nodes": [
+    {
+      "id": "history",
+      "lane": "you",
+      "col": 0,
+      "type": "database",
+      "label": "Git history",
+      "sublabel": "fix commits",
+      "width": 140
+    },
+    {
+      "id": "mine",
+      "lane": "build",
+      "col": 1,
+      "type": "backend",
+      "label": "Mine",
+      "sublabel": "fix → commit that caused it",
+      "tag": "SZZ",
+      "width": 150
+    },
+    {
+      "id": "key",
+      "lane": "build",
+      "col": 2,
+      "type": "backend",
+      "label": "Answer key",
+      "sublabel": "file, line, the bug",
+      "width": 140
+    },
+    {
+      "id": "confirm",
+      "lane": "you",
+      "col": 2,
+      "type": "external",
+      "label": "You confirm",
+      "sublabel": "each case, by reading it",
+      "width": 150
+    },
+    {
+      "id": "replay",
+      "lane": "build",
+      "col": 3,
+      "type": "backend",
+      "label": "Replay",
+      "sublabel": "buggy change, no history",
+      "width": 150
+    },
+    {
+      "id": "reviewer",
+      "lane": "review",
+      "col": 4,
+      "type": "frontend",
+      "label": "Each reviewer",
+      "sublabel": "3 runs per case",
+      "tag": "read-only",
+      "width": 140
+    },
+    {
+      "id": "extract",
+      "lane": "grade",
+      "col": 4,
+      "type": "security",
+      "label": "Findings",
+      "sublabel": "file, line, severity",
+      "width": 140
+    },
+    {
+      "id": "judge",
+      "lane": "grade",
+      "col": 5,
+      "type": "security",
+      "label": "Gate, judges, code check",
+      "sublabel": "4 votes per finding",
+      "width": 180
+    },
+    {
+      "id": "scorecard",
+      "lane": "you",
+      "col": 5,
+      "type": "external",
+      "label": "Scorecard",
+      "sublabel": "recall, precision, cost",
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-mine",
+      "from": "history",
+      "to": "mine",
+      "label": "fixes"
+    },
+    {
+      "id": "e-key",
+      "from": "mine",
+      "to": "key"
+    },
+    {
+      "id": "e-confirm",
+      "from": "key",
+      "to": "confirm",
+      "label": "draft",
+      "variant": "dashed"
+    },
+    {
+      "id": "e-replay",
+      "from": "confirm",
+      "to": "replay",
+      "label": "approved",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-review",
+      "from": "replay",
+      "to": "reviewer",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-extract",
+      "from": "reviewer",
+      "to": "extract",
+      "label": "review text"
+    },
+    {
+      "id": "e-judge",
+      "from": "extract",
+      "to": "judge"
+    },
+    {
+      "id": "e-score",
+      "from": "judge",
+      "to": "scorecard",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Real bugs, not planted ones",
+      "items": [
+        "Each case is a commit that shipped a bug, found from its later fix",
+        "The reviewer sees the change the way a pull request showed it"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Nothing leaks",
+      "items": [
+        "The project is exported without git history, so the fix can't be read",
+        "Reviewers can read files and run git diff, log and show, nothing else"
+      ]
+    }
+  ]
+}

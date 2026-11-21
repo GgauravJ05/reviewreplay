@@ -1,57 +1,41 @@
 <!doctype html>
-<html lang="en" data-type="software" data-radius="sharp" data-buttons="pill">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Privacy at ReviewReplay</title>
 <meta name="description" content="How ReviewReplay and this website handle your data.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#faf8f4">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/system.css">
-<link rel="stylesheet" href="assets/motion/motion.css">
-<style>
-:root {
-  --p-bg: #000000; --p-surface: #0d0d0d; --p-ink: #ffffff; --p-muted: #999999;
-  --p-accent: #93f1f7; --p-accent-ink: #000000; --p-action: #93f1f7; --p-action-ink: #000000;
-  --p-inv-bg: #9ae187; --p-inv-surface: #8bcc7a; --p-inv-ink: #000000; --p-inv-muted: #24391e;
-  --p-inv-accent: #000000; --p-inv-accent-ink: #9ae187; --p-inv-action: #000000; --p-inv-action-ink: #9ae187;
-  --font-display: "Instrument Sans", system-ui, sans-serif;
-  --font-text: "Instrument Sans", system-ui, sans-serif;
-  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  --display-weight: 500;
-  --display-tracking: -0.028em;
-  --display-tracking-xl: -0.036em;
-  --display-stretch: 96%;
-  --ly-scale: 1.04;
-}
-</style>
-<style>
-  .doc { padding: calc(var(--nav) + var(--s-9)) 0 var(--s-9); min-height: 100svh; box-sizing: border-box; }
-  .doc .stack-5 { max-width: 640px; }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-<header class="nav nav--centre">
-  <div class="wrap nav__bar">
-    <a class="skip-link" href="#main">Skip to content</a>
-    <a class="nav__logo" href="index.html"><span class="mark" data-mark="arc" aria-hidden="true"></span>ReviewReplay</a>
-    <div class="nav__actions" style="margin-left:auto"><a class="btn btn--primary" href="index.html#install">Get ReviewReplay</a></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav is-scrolled">
+  <div class="wrap nav__row">
+    <a class="brand" href="" aria-label="ReviewReplay home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c2410c"/><stop offset="1" stop-color="#db2777"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#bg)"/><path d="M10 9.5v13M10 9.5h6.5a4 4 0 0 1 0 8H10m6 0 5 5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      ReviewReplay
+    </a>
+    <div class="nav__right"><a class="btn btn--dark btn--sm" href="#start">Get started</a></div>
   </div>
 </header>
-<main id="main" class="doc">
-  <div class="wrap"><div class="stack-5">
+<main id="main" class="wrap">
+  <div class="doc">
+    <div class="kicker"><b>i</b> Privacy</div>
     <h1>Privacy at ReviewReplay</h1>
     <p>ReviewReplay is a command line tool that runs on your machine. It has no accounts and sends no analytics or telemetry to its author.</p>
     <p>When you run a benchmark, the code under review goes to the reviewer you configure, such as Claude Code, Codex CLI or Gemini CLI, under that provider's own terms. Results are written to local files you choose.</p>
+    <h2>This website</h2>
     <p>This website sets no cookies and runs no tracking scripts. Fonts load from Google Fonts; everything else is served from this site.</p>
-    <p>Questions go to the <a class="link" href="https://github.com/GgauravJ05/reviewreplay/issues">issue tracker</a>.</p>
-  </div></div>
+    <p>The interactive diagrams remember two display settings in your browser's local storage: light or dark theme, and whether the flow animation plays. They never leave your browser.</p>
+    <p>Questions go to the <a href="https://github.com/GgauravJ05/reviewreplay/issues">issue tracker</a>.</p>
+  </div>
 </main>
-<script type="module" src="assets/system.js"></script>
-<script type="module" src="assets/motion/motion.js"></script>
+<footer class="foot"><div class="wrap"><div class="foot__row"><span>ReviewReplay · MIT © 2026 <a href="https://github.com/GgauravJ05">Gaurav Jadhav</a></span><span class="foot__links"><a href="https://github.com/GgauravJ05/reviewreplay">GitHub</a><a href="privacy.html">Privacy</a></span></div></div></footer>
 </body>
 </html>

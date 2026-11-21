@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "How one finding is graded",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "output": "site/artifacts/grading.html",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": { "label": "Review" },
+        "security": { "label": "Check" },
+        "backend": { "label": "Counts as correct" },
+        "messagebus": { "label": "Counts against" },
+        "external": { "label": "Reported apart" }
+      }
+    }
+  },
+  "lanes": [
+    { "id": "review", "label": "Review" },
+    { "id": "checks", "label": "Checks" },
+    { "id": "correct", "label": "Correct" },
+    { "id": "wrong", "label": "Not correct", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "p-split", "label": "Split into findings", "fromCol": 0, "toCol": 1 },
+    { "id": "p-judge", "label": "Judge", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "p-label", "label": "Label", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "mainPath": ["text", "finding", "gate", "judges", "hit"],
+  "nodes": [
+    { "id": "text", "lane": "review", "col": 0, "type": "frontend", "label": "Review text", "sublabel": "free prose", "width": 140 },
+    { "id": "finding", "lane": "review", "col": 1, "type": "frontend", "label": "One finding", "sublabel": "file, line, severity", "width": 150 },
+    { "id": "gate", "lane": "checks", "col": 2, "type": "security", "label": "Location gate", "sublabel": "±3 lines, ±15 near", "width": 150 },
+    { "id": "judges", "lane": "checks", "col": 3, "type": "security", "label": "4 judge votes", "sublabel": "Sonnet ×3 + Opus", "width": 150 },
+    { "id": "verify", "lane": "checks", "col": 4, "type": "security", "label": "Code check", "sublabel": "unsure → read the code", "width": 160 },
+    { "id": "hit", "lane": "correct", "col": 4, "type": "backend", "label": "Same bug", "sublabel": "matches the answer key", "width": 160 },
+    { "id": "valid", "lane": "correct", "col": 5, "type": "backend", "label": "Other real problem", "sublabel": "true, but not the key", "width": 160 },
+    { "id": "false", "lane": "wrong", "col": 4, "type": "messagebus", "label": "False alarm", "sublabel": "not a real problem", "width": 160 },
+    { "id": "contested", "lane": "wrong", "col": 5, "type": "external", "label": "Contested", "sublabel": "no majority vote", "width": 160 }
+  ],
+  "edges": [
+    { "id": "g-split", "from": "text", "to": "finding" },
+    { "id": "g-gate", "from": "finding", "to": "gate" },
+    { "id": "g-judges", "from": "gate", "to": "judges", "variant": "emphasis" },
+    { "id": "g-hit", "from": "judges", "to": "hit", "label": "matches", "variant": "emphasis" },
+    { "id": "g-unsure", "from": "judges", "to": "verify", "label": "unsure", "variant": "dashed" },
+    { "id": "g-confirmed", "from": "verify", "to": "valid", "label": "confirmed", "role": "branch" },
+    { "id": "g-refuted", "from": "verify", "to": "false", "label": "refuted", "role": "error", "variant": "security" },
+    { "id": "g-split-vote", "from": "judges", "to": "contested", "label": "split", "variant": "dashed", "role": "branch" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Precision", "items": ["(same bug + other real problem) ÷ serious findings", "Serious means blocking or important"] },
+    { "dot": "amber", "title": "Checked across models", "items": ["Sonnet and Opus agreed on 82% of 172 JS/Go findings (κ 0.75)", "Contested findings can be left out with --drop-contested"] }
+  ]
+}

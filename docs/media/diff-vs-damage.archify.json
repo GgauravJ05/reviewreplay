@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "Where reviewers looked vs where the damage showed up",
-    "output": "site/diff-vs-damage.html",
+    "output": "site/artifacts/diff-vs-damage.html",
     "locale": "en",
     "quality_profile": "showcase",
     "legend": {
