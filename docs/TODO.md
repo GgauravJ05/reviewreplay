@@ -7,13 +7,14 @@ Start here when you come back to ReviewReplay. The *why* and the full plan are i
 `Read CLAUDE.md and docs/tasks/<brief>.md, then do the task.` Project rules for every session are in
 [CLAUDE.md](../CLAUDE.md).
 
-Last updated: 2026-11-14.
+Last updated: 2026-11-24.
 
 ## Where things stand
 
 - Public repo, site live at https://ggauravj05.github.io/reviewreplay/, PR rules on `main`.
-- 20 real bugs from 15 projects in 3 languages (`cases/real/real-001` … `real-020`): 12 Python,
-  2 JavaScript (axios), 6 Go (gin, testify, cobra ×2, urfave/cli, logrus). v0.2.0 released.
+- 21 real bugs from 16 projects in 4 languages (`cases/real/real-001` … `real-021`): 12 Python,
+  2 JavaScript (axios), 1 TypeScript (hono), 6 Go (gin, testify, cobra ×2, urfave/cli, logrus).
+  v0.2.0 released.
 - JS/Go result (8 bugs, `results/m3-js-go`): precision 90% without vs 77% with the skill, paired
   −13 pts [−20, +3], so lower but not clearly.
 - Headline (12 Python bugs, `results/m2-compare` + `results/m2-real-more`, code-checked): precision
@@ -46,10 +47,11 @@ Brief: [05](tasks/05-mine-real-cases.md), [06](tasks/06-language-support.md), [0
 
 - [x] real-015 testify (#24), real-016 axios (#25).
 - [x] real-017 to real-020 (#28–#31): cobra ×2, urfave/cli, logrus. 20 cases reached.
-- [ ] A TypeScript case (issue #35) and a Rust or Java case (issue #36). Tried and skipped: zod
-      (guards away from the introducing change), ky (leak older than any one change), date-fns
-      (358 changed lines, over the 300-line limit), chalk and chi (nothing usable).
-      Read every candidate's fix and introducer; keep only behaviour bugs the introducer added.
+- [x] A TypeScript case (issue #35): real-021, the compress middleware ignoring Accept-Encoding.
+- [ ] A Rust or Java case (issue #36). Tried and skipped: zod (guards away from the introducing
+      change), ky (leak older than any one change), date-fns (358 changed lines, over the 300-line
+      limit), chalk and chi (nothing usable). Read every candidate's fix and introducer; keep only
+      behaviour bugs the introducer added.
 - [x] **(you)** Run, grade and verify the new cases on your login (all in `results/m3-js-go`).
 - [ ] Judge fix: a finding that describes the answer-key bug but cites a line outside the gate
       must not be labelled a false alarm (seen on real-019). Then **(you)** regrade.
@@ -98,6 +100,7 @@ Brief: [10](tasks/10-github-action.md)
 - 2026-11-14: approximate line matching (#13), contested findings (#14, issue #17), `doctor` and
   `--dry-run` (#15, #21), multi-language miner (#16), first JS and Go cases and runs (#18–#20),
   GitHub Action (#23), real-015 and real-016 (#24, #25), v0.2.0 prep.
+- 2026-11-24: first TypeScript real case, real-021 from hono (#35).
 
 ## Rules to keep
 
