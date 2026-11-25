@@ -260,6 +260,7 @@ td + td, th + th { padding-left: 12px; }
 .lang--python { background: #e8f0fb; color: #1d4f91; }
 .lang--javascript { background: #fdf4d6; color: #6b4f00; }
 .lang--go { background: #e2f5f8; color: #0b5f6d; }
+.lang--typescript { background: #e6eefa; color: #24508c; }
 .case__repo { font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
 .case__title { font-size: 13.5px; color: var(--muted); line-height: 1.45; flex: 1; }
 .case__foot { font-size: 11.5px; color: var(--faint); overflow-wrap: anywhere; }

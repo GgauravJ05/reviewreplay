@@ -129,15 +129,15 @@ gap from +16 pts to +10; with contested verdicts left out it touches zero (+9 pt
 grading is checked across models, not yet by people. Details:
 [first 4 bugs](results/m2-compare/README.md), [8 more](results/m2-real-more/README.md).
 
-**On 8 JavaScript and Go bugs the skill's precision was lower, but not clearly** (axios ×2, gin,
-testify, cobra ×2, urfave/cli, logrus; 48 reviews, same grading):
+**On 9 JavaScript, TypeScript and Go bugs the skill's precision was lower, but not clearly**
+(axios ×2, hono, gin, testify, cobra ×2, urfave/cli, logrus; 54 reviews, same grading):
 
-| JS and Go bugs | Claude Code | With code-review-skill |
+| JS, TS and Go bugs | Claude Code | With code-review-skill |
 |---|---|---|
-| Bug found | 18 / 24 | 15 / 24 |
-| Precision (serious findings) | **90%** | 77% (paired −13 pts [−20, +3]) |
+| Bug found | 21 / 27 | 18 / 27 |
+| Precision (serious findings) | **91%** | 79% (paired −13 pts [−19, +2]) |
 | Serious false alarms | **5** | 10 |
-| Median cost per review | $0.049 | $0.074 |
+| Median cost per review | $0.046 | $0.071 |
 
 That is the opposite direction to the Python result, but the interval now includes zero. Two bugs
 were missed in all 6 reviews: an axios `Error` subclass that made `message` non-enumerable, and a
