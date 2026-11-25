@@ -18,9 +18,10 @@ pallets/click, rewound to the commit that caused it and replayed to Claude Code.
 ![No dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![Status: alpha](https://img.shields.io/badge/status-alpha-orange)
 
-> **v0.1, built in public.** The method and the tool work; the results are early (12 graded real
-> bugs from 9 projects, judge agreement checked against a second model, not yet a person). Read the numbers as a direction. Progress, new cases and corrections land here as they
-> happen, and [contributions are welcome](CONTRIBUTING.md).
+> **v0.1, built in public.** The method and the tool work; the results are early (21 graded real
+> bugs from 16 projects in Python, JavaScript, TypeScript and Go; judge agreement checked against a
+> second model, not yet a person). Read the numbers as a direction. Progress, new cases and
+> corrections land here as they happen, and [contributions are welcome](CONTRIBUTING.md).
 
 ```bash
 pip install git+https://github.com/GgauravJ05/reviewreplay
