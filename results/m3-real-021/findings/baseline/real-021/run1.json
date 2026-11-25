@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 12,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "When options.encoding is configured, the Accept-Encoding header is never checked, so responses get compressed with an encoding the client did not advertise, breaking content negotiation."
+    },
+    {
+      "file": "deno_dist/middleware/compress/index.ts",
+      "line_start": 12,
+      "line_end": 15,
+      "severity": "important",
+      "summary": "Same change as in src: a configured options.encoding bypasses the Accept-Encoding check, so responses are compressed with an encoding the client did not accept."
+    },
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 12,
+      "line_end": 15,
+      "severity": "minor",
+      "summary": "Substring matching on Accept-Encoding (accepted.includes('gzip')) matches 'gzip;q=0' (a refusal) and does not parse q-values; this flaw already existed in the old regex, so it is not a regression."
+    }
+  ],
+  "extract_cost_usd": 0.03596
+}

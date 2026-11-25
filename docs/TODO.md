@@ -7,7 +7,7 @@ Start here when you come back to ReviewReplay. The *why* and the full plan are i
 `Read CLAUDE.md and docs/tasks/<brief>.md, then do the task.` Project rules for every session are in
 [CLAUDE.md](../CLAUDE.md).
 
-Last updated: 2026-11-24.
+Last updated: 2026-11-25.
 
 ## Where things stand
 
@@ -15,8 +15,8 @@ Last updated: 2026-11-24.
 - 21 real bugs from 16 projects in 4 languages (`cases/real/real-001` … `real-021`): 12 Python,
   2 JavaScript (axios), 1 TypeScript (hono), 6 Go (gin, testify, cobra ×2, urfave/cli, logrus).
   v0.2.0 released.
-- JS/Go result (8 bugs, `results/m3-js-go`): precision 90% without vs 77% with the skill, paired
-  −13 pts [−20, +3], so lower but not clearly.
+- JS/TS/Go result (9 bugs, `results/m3-js-go`): precision 91% without vs 79% with the skill, paired
+  −13 pts [−19, +2], so lower but not clearly.
 - Headline (12 Python bugs, `results/m2-compare` + `results/m2-real-more`, code-checked): precision
   **72% without vs 82% with code-review-skill**, paired +10 pts [+1, +16]; serious false alarms 13 vs 10.
   `real-011` (black) and `real-012` (peft) were missed in every run.
@@ -48,6 +48,7 @@ Brief: [05](tasks/05-mine-real-cases.md), [06](tasks/06-language-support.md), [0
 - [x] real-015 testify (#24), real-016 axios (#25).
 - [x] real-017 to real-020 (#28–#31): cobra ×2, urfave/cli, logrus. 20 cases reached.
 - [x] A TypeScript case (issue #35): real-021, the compress middleware ignoring Accept-Encoding.
+      Run, graded and added to `results/m3-js-go`: found in all 6 reviews.
 - [ ] A Rust or Java case (issue #36). Tried and skipped: zod (guards away from the introducing
       change), ky (leak older than any one change), date-fns (358 changed lines, over the 300-line
       limit), chalk and chi (nothing usable). Read every candidate's fix and introducer; keep only

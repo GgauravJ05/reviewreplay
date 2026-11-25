@@ -1,0 +1,26 @@
+{
+  "findings": [
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 13,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "When options.encoding is set it is used without checking the client's Accept-Encoding header, so clients that did not request that encoding (identity, no header, or only deflate) still get a compressed body with Content-Encoding set."
+    },
+    {
+      "file": "deno_dist/middleware/compress/index.ts",
+      "line_start": 13,
+      "line_end": 18,
+      "severity": "important",
+      "summary": "The deno_dist copy has the same bug: options.encoding bypasses the Accept-Encoding check, so unrequested compression is applied."
+    },
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 13,
+      "line_end": 18,
+      "severity": "minor",
+      "summary": "The substring match on Accept-Encoding via accepted?.includes also matches 'gzip;q=0', which means the client refuses gzip. The reviewer says this is not a regression."
+    }
+  ],
+  "extract_cost_usd": 0.035966
+}

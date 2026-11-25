@@ -110,10 +110,10 @@
     <p class="tour__note">Diagrams made with <a href="https://github.com/tt-a1i/archify">Archify</a>; their specs are in <a href="https://github.com/GgauravJ05/reviewreplay/tree/main/docs/media">docs/media</a>.</p>
 
     <div class="stats reveal" aria-label="The benchmark in numbers">
-      <div class="stat"><b>20</b><span>real bugs, each from a commit that shipped</span></div>
-      <div class="stat"><b>15</b><span>open-source projects</span></div>
-      <div class="stat"><b>3</b><span>languages: Python, JavaScript, Go</span></div>
-      <div class="stat"><b>120</b><span>graded reviews of those bugs</span></div>
+      <div class="stat"><b>21</b><span>real bugs, each from a commit that shipped</span></div>
+      <div class="stat"><b>16</b><span>open-source projects</span></div>
+      <div class="stat"><b>4</b><span>languages: Python, JavaScript, TypeScript, Go</span></div>
+      <div class="stat"><b>126</b><span>graded reviews of those bugs</span></div>
       <div class="stat"><b>4</b><span>judge votes on every finding</span></div>
       <div class="stat"><b>0</b><span>lines of third-party code run</span></div>
     </div>
@@ -136,7 +136,7 @@
 
 <section class="section wrap" id="results">
   <div class="kicker reveal"><b>02</b> Results so far</div>
-  <h2 class="reveal">A review skill helped on Python. Not on JavaScript and Go.</h2>
+  <h2 class="reveal">A review skill helped on Python. Not on JavaScript, TypeScript or Go.</h2>
   <p class="section__lead reveal">Claude Code (<code>claude-sonnet-5-5</code>) alone, and with <a href="https://github.com/awesome-skills/code-review-skill">code-review-skill</a> at commit <code>4850184</code>. Three runs per bug for each reviewer. Each card links to its committed runs.</p>
   <div class="results">
     <article class="card result reveal">
@@ -156,28 +156,28 @@
       <p>Paired difference in precision: <b>+10 pts</b> [+1, +16]. A modest lead, at about 1.5× the cost. Runs: <a href="https://github.com/GgauravJ05/reviewreplay/blob/main/results/m2-compare/README.md">first 4 bugs</a>, <a href="https://github.com/GgauravJ05/reviewreplay/blob/main/results/m2-real-more/README.md">8 more</a>.</p>
     </article>
     <article class="card result reveal">
-      <div class="result__head"><h3>8 JavaScript and Go bugs</h3><span>48 reviews · 6 projects</span></div>
+      <div class="result__head"><h3>9 JavaScript, TypeScript and Go bugs</h3><span>54 reviews · 7 projects</span></div>
       <div class="result__big">
-        <div class="win"><b>90%</b><span>precision, Claude Code alone</span></div>
-        <div><b>77%</b><span>precision, with the skill</span></div>
+        <div class="win"><b>91%</b><span>precision, Claude Code alone</span></div>
+        <div><b>79%</b><span>precision, with the skill</span></div>
       </div>
       <table>
         <thead><tr><th scope="col"><span class="sr">Measure</span></th><th scope="col">Alone</th><th scope="col">With skill</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Bug found</th><td>18 / 24</td><td>15 / 24</td></tr>
+          <tr><th scope="row">Bug found</th><td>21 / 27</td><td>18 / 27</td></tr>
           <tr><th scope="row">Serious false alarms</th><td>5</td><td>10</td></tr>
-          <tr><th scope="row">Median cost per review</th><td>$0.049</td><td>$0.074</td></tr>
+          <tr><th scope="row">Median cost per review</th><td>$0.046</td><td>$0.071</td></tr>
         </tbody>
       </table>
-      <p>Paired difference in precision: <b>−13 pts</b> [−20, +3]. The interval includes zero, so the gap isn't clear yet. Run: <a href="https://github.com/GgauravJ05/reviewreplay/blob/main/results/m3-js-go/README.md">m3-js-go</a>.</p>
+      <p>Paired difference in precision: <b>−13 pts</b> [−19, +2]. The interval includes zero, so the gap isn't clear yet. Run: <a href="https://github.com/GgauravJ05/reviewreplay/blob/main/results/m3-js-go/README.md">m3-js-go</a>.</p>
     </article>
   </div>
   <article class="card missed reveal">
-    <div class="missed__num">4 / 20</div>
+    <div class="missed__num">4 / 21</div>
     <div><h3>bugs were missed in every run, with or without the skill.</h3><p>A Black f-string tokenizer state, a PEFT LoRA conv that drops <code>dilation</code>, an axios error that loses <code>message</code>, and a cobra type that stops some callers compiling.</p></div>
     <a class="btn btn--light btn--sm" href="#tour" data-show-tab="t-misses">See where</a>
   </article>
-  <p class="note reveal">Grading is checked across two models (Sonnet and Opus agreed on 82% of 172 JS/Go findings, κ 0.75), not yet by people. Eight and twelve bugs are small samples: read these numbers as a direction.</p>
+  <p class="note reveal">Grading is checked across two models (Sonnet and Opus agreed on 83% of 187 JS, TS and Go findings, κ 0.77), not yet by people. Nine and twelve bugs are small samples: read these numbers as a direction.</p>
 </section>
 
 <section class="section wrap" id="bugs">
@@ -185,9 +185,10 @@
   <h2 class="reveal">Twenty bugs that really shipped.</h2>
   <p class="section__lead reveal">Each case is a commit from a permissively licensed project that introduced a bug a later commit fixed. Each card shows that commit's title. Open one for the answer key and how it was checked.</p>
   <div class="filters reveal" role="group" aria-label="Filter cases">
-    <button class="filter" type="button" data-filter="all" aria-pressed="true">All · <span id="case-count">20</span></button>
+    <button class="filter" type="button" data-filter="all" aria-pressed="true">All · <span id="case-count">21</span></button>
     <button class="filter" type="button" data-filter="python" aria-pressed="false">Python</button>
     <button class="filter" type="button" data-filter="javascript" aria-pressed="false">JavaScript</button>
+    <button class="filter" type="button" data-filter="typescript" aria-pressed="false">TypeScript</button>
     <button class="filter" type="button" data-filter="go" aria-pressed="false">Go</button>
     <button class="filter" type="button" data-filter="missed" aria-pressed="false">Missed in every run</button>
   </div>
@@ -212,6 +213,7 @@
     <a class="case reveal" data-tags="go missed" href="https://github.com/GgauravJ05/reviewreplay/blob/main/cases/real/real-018/NOTES.md"><span class="case__top"><span class="mono">real-018</span><span class="lang lang--go">Go</span></span><span class="case__repo">spf13/cobra</span><span class="case__title">feat: add CompletionFunc type to help with completions</span><span class="tag tag--miss">missed in every run</span><span class="case__foot mono">completions.go · Apache-2.0</span></a>
     <a class="case reveal" data-tags="go" href="https://github.com/GgauravJ05/reviewreplay/blob/main/cases/real/real-019/NOTES.md"><span class="case__top"><span class="mono">real-019</span><span class="lang lang--go">Go</span></span><span class="case__repo">urfave/cli</span><span class="case__title">fix: parallel running - remove globals used for splicing slices and maps</span><span class="case__foot mono">command.go · MIT</span></a>
     <a class="case reveal" data-tags="go" href="https://github.com/GgauravJ05/reviewreplay/blob/main/cases/real/real-020/NOTES.md"><span class="case__top"><span class="mono">real-020</span><span class="lang lang--go">Go</span></span><span class="case__repo">sirupsen/logrus</span><span class="case__title">fix race condition for SetFormatter and properly fix SetReportCaller race as well</span><span class="case__foot mono">entry.go · MIT</span></a>
+    <a class="case reveal" data-tags="typescript" href="https://github.com/GgauravJ05/reviewreplay/blob/main/cases/real/real-021/NOTES.md"><span class="case__top"><span class="mono">real-021</span><span class="lang lang--typescript">TypeScript</span></span><span class="case__repo">honojs/hono</span><span class="case__title">refactor(compress-middleware): resolve type assertion using const assertion</span><span class="case__foot mono">src/middleware/compress/index.ts · MIT</span></a>
   </div>
 </section>
 
@@ -228,15 +230,15 @@
     </div>
     <div class="term reveal" role="figure" aria-label="Output of reviewreplay compare on the JavaScript and Go runs">
       <div class="term__bar"><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>compare · m3-js-go</div>
-<pre><span class="p">$</span> reviewreplay compare results/m3-real-0{13..20} --kind real
+<pre><span class="p">$</span> reviewreplay compare results/m3-real-0{13..21} --kind real
 
 <span class="p">subject</span>                     <span class="p">bug found  precision</span>
-baseline                    18 / 24    <span class="g">90%</span> (47/52)
-code-review-skill-invoked   15 / 24    <span class="o">77%</span> (40/52)
+baseline                    21 / 27    <span class="g">91%</span> (53/58)
+code-review-skill-invoked   18 / 27    <span class="o">79%</span> (44/56)
 
 <span class="p">paired vs baseline</span>
-precision Δ  <span class="o">-13 pts</span> [-20, +3]
-recall Δ     <span class="o">-12 pts</span> [-33, 0]
+precision Δ  <span class="o">-13 pts</span> [-19, +2]
+recall Δ     <span class="o">-11 pts</span> [-30, 0]
 
 <span class="p">judges</span>      172 findings, 4.0 votes each
             123 unanimous · 14 contested
@@ -275,8 +277,8 @@ recall Δ     <span class="o">-12 pts</span> [-33, 0]
   <h2 class="reveal">Any reviewer that prints a review.</h2>
   <p class="section__lead reveal">A reviewer is a small JSON file. Claude Code is built in; anything else is a command that takes a prompt and prints a review.</p>
   <div class="reviewers">
-    <article class="card rv rv--tested reveal"><span class="rv__state">Tested · 20 bugs</span><h3>Claude Code</h3><p>Any model, with a read-only allow-list.</p><code>subjects/baseline.json</code></article>
-    <article class="card rv rv--tested reveal"><span class="rv__state">Tested · 20 bugs</span><h3>Claude Code + a skill</h3><p>Natural or invoked. Tested with code-review-skill @ 4850184.</p><code>subjects/code-review-skill-invoked.json</code></article>
+    <article class="card rv rv--tested reveal"><span class="rv__state">Tested · 21 bugs</span><h3>Claude Code</h3><p>Any model, with a read-only allow-list.</p><code>subjects/baseline.json</code></article>
+    <article class="card rv rv--tested reveal"><span class="rv__state">Tested · 21 bugs</span><h3>Claude Code + a skill</h3><p>Natural or invoked. Tested with code-review-skill @ 4850184.</p><code>subjects/code-review-skill-invoked.json</code></article>
     <article class="card rv reveal"><span class="rv__state">Adapter ready</span><h3>Codex CLI, Gemini CLI</h3><p>Run read-only through their own CLIs. Results to come.</p><code>subjects/examples/codex.json</code></article>
     <article class="card rv reveal"><span class="rv__state">Adapter ready</span><h3>Your own reviewer</h3><p>Claude Code's <code>/code-review</code>, a team prompt, or any command.</p><code>"command": ["your-cli", "{prompt}"]</code></article>
   </div>

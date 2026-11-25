@@ -1,0 +1,33 @@
+{
+  "findings": [
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 15,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "When options.encoding is set, the Accept-Encoding check is skipped, so responses get compressed with an encoding the client may not accept (or sent no header for), producing unreadable responses."
+    },
+    {
+      "file": "deno_dist/middleware/compress/index.ts",
+      "line_start": 15,
+      "line_end": 16,
+      "severity": "important",
+      "summary": "Same change in the Deno dist copy: options.encoding bypasses the Accept-Encoding check, so responses may be compressed with an encoding the client doesn't accept."
+    },
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 15,
+      "line_end": 16,
+      "severity": "minor",
+      "summary": "Substring matching on Accept-Encoding with includes() ignores q=0, so 'gzip;q=0' (not acceptable) still matches; this flaw pre-existed."
+    },
+    {
+      "file": "deno_dist/middleware/compress/index.ts",
+      "line_start": 15,
+      "line_end": 16,
+      "severity": "minor",
+      "summary": "Same substring matching issue in the Deno dist copy: q=0 in Accept-Encoding is ignored."
+    }
+  ],
+  "extract_cost_usd": 0.036836
+}

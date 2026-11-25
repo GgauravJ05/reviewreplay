@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Using `options?.encoding ?? ENCODING_TYPES.find(...)` skips the Accept-Encoding header check when the encoding option is set, so the body is compressed with an encoding the client may not support (e.g. gzip sent to a client that only accepts deflate or sends no header)."
+    },
+    {
+      "file": "deno_dist/middleware/compress/index.ts",
+      "line_start": 0,
+      "line_end": 0,
+      "severity": "minor",
+      "summary": "The generated copy in deno_dist likely contains the same Accept-Encoding bug; the reviewer did not verify it."
+    }
+  ],
+  "extract_cost_usd": 0.0160738
+}

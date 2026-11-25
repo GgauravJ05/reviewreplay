@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "When options.encoding is set, the middleware skips the client's Accept-Encoding check, so clients that did not accept that encoding (header missing or only deflate) still receive a body compressed with the configured encoding and Content-Encoding header."
+    },
+    {
+      "file": "deno_dist/middleware/compress/index.ts",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Same change in the deno_dist copy: the configured options.encoding is used without checking Accept-Encoding, so clients that did not ask for it get compressed responses they can't decode."
+    }
+  ],
+  "extract_cost_usd": 0.03417
+}

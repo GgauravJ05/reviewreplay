@@ -7,89 +7,90 @@
     "m3-real-017",
     "m3-real-018",
     "m3-real-019",
-    "m3-real-020"
+    "m3-real-020",
+    "m3-real-021"
   ],
   "kind": "real",
   "drop_contested": false,
   "subjects": {
     "baseline": {
-      "cases": 8,
-      "reviews": 24,
-      "found": 18,
-      "bug_reviews": 24,
+      "cases": 9,
+      "reviews": 27,
+      "found": 21,
+      "bug_reviews": 27,
       "recall": {
-        "mean": 0.75,
-        "lo": 0.375,
+        "mean": 0.7777777777777778,
+        "lo": 0.4444444444444444,
         "hi": 1.0
       },
       "precision": {
-        "mean": 0.9038461538461539,
-        "lo": 0.7142857142857143,
+        "mean": 0.9137931034482759,
+        "lo": 0.75,
         "hi": 1.0,
-        "good": 47,
-        "serious": 52
+        "good": 53,
+        "serious": 58
       },
       "false_alarms": 5,
       "unsure": 0,
       "contested": 8,
-      "minor_per_review": 1.5,
-      "mean_cost": 0.05429671666666667,
-      "median_cost": 0.0490029
+      "minor_per_review": 1.4444444444444444,
+      "mean_cost": 0.052508766666666665,
+      "median_cost": 0.045964399999999996
     },
     "code-review-skill-invoked": {
-      "cases": 8,
-      "reviews": 24,
-      "found": 15,
-      "bug_reviews": 24,
+      "cases": 9,
+      "reviews": 27,
+      "found": 18,
+      "bug_reviews": 27,
       "recall": {
-        "mean": 0.625,
-        "lo": 0.2916666666666667,
-        "hi": 0.875
+        "mean": 0.6666666666666666,
+        "lo": 0.3703703703703704,
+        "hi": 0.8888888888888888
       },
       "precision": {
-        "mean": 0.7692307692307693,
-        "lo": 0.7111111111111111,
-        "hi": 0.8163265306122449,
-        "good": 40,
-        "serious": 52
+        "mean": 0.7857142857142857,
+        "lo": 0.7288135593220338,
+        "hi": 0.8461538461538461,
+        "good": 44,
+        "serious": 56
       },
       "false_alarms": 10,
       "unsure": 2,
       "contested": 6,
-      "minor_per_review": 1.3333333333333333,
-      "mean_cost": 0.07770996250000001,
-      "median_cost": 0.07352485
+      "minor_per_review": 1.2592592592592593,
+      "mean_cost": 0.07554453333333333,
+      "median_cost": 0.0711059
     }
   },
   "paired": {
     "code-review-skill-invoked": {
       "recall": {
-        "diff": -0.125,
-        "lo": -0.33333333333333337,
+        "diff": -0.1111111111111111,
+        "lo": -0.29629629629629634,
         "hi": 0.0,
-        "n_cases": 8
+        "n_cases": 9
       },
       "precision": {
-        "diff": -0.13461538461538458,
-        "lo": -0.2042857142857143,
-        "hi": 0.03318077803203656,
-        "n_cases": 8
+        "diff": -0.1280788177339902,
+        "lo": -0.19272445820433437,
+        "hi": 0.02160278745644595,
+        "n_cases": 9
       }
     }
   },
   "judges": {
-    "findings": 172,
+    "findings": 187,
     "votes_per_finding": 4,
-    "unanimous": 123,
+    "unanimous": 137,
     "contested": 14,
     "between_models": {
       "models": [
         "claude-sonnet-5-5",
         "claude-opus-5-5"
       ],
-      "findings": 172,
-      "agreement": 0.8197674418604651,
-      "kappa": 0.7455135547919053
+      "findings": 187,
+      "agreement": 0.8342245989304813,
+      "kappa": 0.768693639773362
     }
   },
   "checks": {
