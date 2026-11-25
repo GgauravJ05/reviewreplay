@@ -1,0 +1,19 @@
+{
+  "id": "real-021",
+  "kind": "real",
+  "track": "typescript",
+  "title": "refactor(compress-middleware): resolve type assertion using const assertion (#1343)",
+  "source": "https://github.com/honojs/hono@49ce5376846bc7eba14104764cfbbe71ea809a3a",
+  "license": "MIT",
+  "added": "2026-11-24",
+  "repo": "https://github.com/honojs/hono",
+  "commit": "49ce5376846bc7eba14104764cfbbe71ea809a3a",
+  "fix": "f0ed2465913f2a89ebdf65cc54d6254915fc3ff6",
+  "status": "ready",
+  "drafted_by": "hand",
+  "signals": {
+    "referenced": false,
+    "blame_agrees": true
+  },
+  "issue": "https://github.com/honojs/hono/pull/4951"
+}

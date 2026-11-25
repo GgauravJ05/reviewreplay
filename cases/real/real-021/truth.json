@@ -1,0 +1,23 @@
+{
+  "bugs": [
+    {
+      "id": "b1",
+      "file": "src/middleware/compress/index.ts",
+      "anchor": "options?.encoding ?? ENCODING_TYPES.find",
+      "span": 1,
+      "also": [
+        {
+          "file": "deno_dist/middleware/compress/index.ts",
+          "anchor": "options?.encoding ?? ENCODING_TYPES.find",
+          "span": 1
+        }
+      ],
+      "class": "regression",
+      "severity": "important",
+      "summary": "The refactor replaced the Accept-Encoding match with `options?.encoding ?? ENCODING_TYPES.find(...)`. When the `encoding` option is set, `??` short-circuits and the request's Accept-Encoding header is never consulted, so the middleware compresses every response with that encoding regardless of what the client accepts. A client that advertises only deflate, or sends no Accept-Encoding at all, still receives a gzip body labelled `Content-Encoding: gzip` and cannot decode it.",
+      "trigger": "Mount `compress({ encoding: 'gzip' })`, return any response with a body, and request it with `Accept-Encoding: deflate` (or without that header): the response still carries `Content-Encoding: gzip`. Before this commit the same request was returned uncompressed. The fix (#4951) adds `selectEncoding()`, which parses Accept-Encoding (q-values, wildcard, case) even when an encoding is configured; its regression test expects no Content-Encoding when the configured encoding is not accepted."
+    }
+  ],
+  "known_ok": [],
+  "related_valid": []
+}
