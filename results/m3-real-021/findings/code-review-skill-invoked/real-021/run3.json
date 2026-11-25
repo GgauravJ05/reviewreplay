@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 13,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "When options.encoding is set, the Accept-Encoding header is no longer checked, so responses may be compressed with an encoding (e.g. gzip) the client never accepted and can't decode."
+    }
+  ],
+  "extract_cost_usd": 0.0152958
+}

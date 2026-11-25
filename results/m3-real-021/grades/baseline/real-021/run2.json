@@ -1,0 +1,187 @@
+{
+  "case": "real-021",
+  "kind": "real",
+  "findings": [
+    {
+      "file": "src/middleware/compress/index.ts",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "When options.encoding is set, the middleware skips the client's Accept-Encoding check, so clients that did not accept that encoding (header missing or only deflate) still receive a body compressed with the configured encoding and Content-Encoding header.",
+      "index": 0,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 0,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Describes the configured encoding bypassing the Accept-Encoding check, the same defect as b1."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the configured encoding bypassing the Accept-Encoding check, the same defect as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the configured encoding bypassing the Accept-Encoding check, the same defect as b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes configured encoding bypassing Accept-Encoding check, same as b1."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same problem: when an encoding is configured, Accept-Encoding is never checked, so clients get compressed responses they didn't ask for."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    },
+    {
+      "file": "deno_dist/middleware/compress/index.ts",
+      "line_start": 14,
+      "line_end": 14,
+      "severity": "important",
+      "summary": "Same change in the deno_dist copy: the configured options.encoding is used without checking Accept-Encoding, so clients that did not ask for it get compressed responses they can't decode.",
+      "index": 1,
+      "candidates": [
+        "b1"
+      ],
+      "match": "exact",
+      "decoy_spot": [],
+      "judge": {
+        "index": 1,
+        "same_bug_as": "b1",
+        "verdict": "matches_truth",
+        "reason": "Same defect in the deno_dist copy, which the key also lists for b1."
+      },
+      "votes": [
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect in the deno_dist copy, which the key also lists for b1."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "The deno_dist copy has the same bypass of the Accept-Encoding check, which b1 lists."
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect in the deno_dist copy, which b1 also covers."
+        },
+        {
+          "model": "claude-opus-5-5",
+          "label": "hit",
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It is the same bug in the deno_dist copy, which the answer key also lists for b1."
+        }
+      ],
+      "hit_bug": "b1",
+      "label": "hit",
+      "contested": false,
+      "agreement": 1.0
+    }
+  ],
+  "judge_runs": [
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.034426,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the configured encoding bypassing the Accept-Encoding check, the same defect as b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect in the deno_dist copy, which the key also lists for b1."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0163219,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes the configured encoding bypassing the Accept-Encoding check, the same defect as b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "The deno_dist copy has the same bypass of the Accept-Encoding check, which b1 lists."
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "cost_usd": 0.0161539,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Describes configured encoding bypassing Accept-Encoding check, same as b1."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "Same defect in the deno_dist copy, which b1 also covers."
+        }
+      }
+    },
+    {
+      "model": "claude-opus-5-5",
+      "cost_usd": 0.069792,
+      "grades": {
+        "0": {
+          "index": 0,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It describes the same problem: when an encoding is configured, Accept-Encoding is never checked, so clients get compressed responses they didn't ask for."
+        },
+        "1": {
+          "index": 1,
+          "same_bug_as": "b1",
+          "verdict": "matches_truth",
+          "reason": "It is the same bug in the deno_dist copy, which the answer key also lists for b1."
+        }
+      }
+    }
+  ],
+  "judge_cost_usd": 0.1366938
+}
